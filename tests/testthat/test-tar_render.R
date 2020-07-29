@@ -1,4 +1,7 @@
-test_that("tar_render() runs", {
+# Building in a temporary directory with tar_test() seems to break
+# fs::path_rel() on the GitHub Actions Windows check job,
+# and I am not sure why.
+test_that("tar_render() works", {
   on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
   lines <- c(
     "---",
