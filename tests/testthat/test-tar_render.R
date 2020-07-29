@@ -1,4 +1,5 @@
-tar_test("tar_render() runs", {
+test_that("tar_render() runs", {
+  on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
   lines <- c(
     "---",
     "title: report",
