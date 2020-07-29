@@ -2,8 +2,7 @@
 % Please edit documentation in R/tar_render.R
 \name{tar_render}
 \alias{tar_render}
-\title{Target that renders an R Markdown report
-which depends on upstream targets.}
+\title{Alternative to \code{tar_target()} R Markdown.}
 \usage{
 tar_render(
   name,
@@ -83,19 +82,30 @@ all returned paths are \emph{relative} paths to ensure portability
 without invalidating the target).
 }
 \description{
-Dependency targets are explicitly declared with
-\code{tar_load()} or \code{tar_read()} in active R code chunks in the
-report itself (stems and patterns only, no branch names).
+Shorthand for the correct way to include an R Markdown
+report in a \code{targets} pipeline.
 }
-\section{Working directory}{
-
-The current working directory (i.e. \code{getwd()}) must contain the
-\verb{_targets/} data store not only when \code{tar_knitr()} is evaluated,
-but also when the actual report is run. That is why \code{tar_render()}
-always sets \code{knitr_root_dir} to the working directory from which
-\code{rmarkdown::render()} is called.
+\details{
+\code{tar_render()} is an alternative to \code{tar_target()} for
+R Markdown reports that depend on other targets. The R Markdown source
+should mention dependency targets with \code{tar_load()} and \code{tar_read()}
+in the active code chunks (which also allows you to render the report
+outside the pipeline if the \verb{_targets/} data store already exists).
+Then, \code{tar_render()} defines a special kind of target. It
+1. Finds all the \code{tar_load()}/\code{tar_read()} dependencies in the report
+and inserts them into the target's command.
+This enforces the proper dependency relationships.
+2. Sets \code{format = "file"} (see \code{tar_target()}) so \code{targets}
+watches the files at the returned paths and reruns the report
+if those files change.
+3. Configures the target's command to return both the output
+report files and the input source file. All these file paths
+are relative paths so the project stays portable.
+4. Forces the report to run in the user's current working directory
+instead of the working directory of the report.
+5. Sets convenient default options such as \code{deployment = "local"}
+in the target and \code{quiet = TRUE} in \code{rmarkdown::render()}.
 }
-
 \examples{
 \dontrun{
 targets::tar_dir({
