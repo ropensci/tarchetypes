@@ -30,7 +30,6 @@ Imports:
   withr (>= 2.1.2)
 Suggests:
   digest (>= 0.6.25),
-  knitr (>= 1.28),
   rmarkdown (>= 2.1),
   testthat (>= 2.3.2)
 Remotes:
@@ -39,4 +38,3 @@ Encoding: UTF-8
 Language: en-US
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1.9000
-VignetteBuilder: knitr
