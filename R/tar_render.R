@@ -89,7 +89,8 @@ tar_render_command <- function(path, quiet, args) {
   args$knit_root_dir <- quote(getwd())
   args$quiet <- quiet
   expr_deps <- call_list(deps)
-  expr_render <- call_path_rel(call_c(list(call_render(args), path)))
+  expr_path <- call_c(list(call_render(args), path))
+  expr_render <- call_path_rel(list(expr_path, start = quote(getwd())))
   expr <- call_brace(list(expr_deps, expr_render))
   as.expression(expr)
 }
