@@ -1,7 +1,7 @@
-#' @title Alternative to `tar_target()` R Markdown.
+#' @title Alternative to `tar_target()` for an R Markdown document.
 #' @export
-#' @description Shorthand for the correct way to include an R Markdown
-#'   report in a `targets` pipeline.
+#' @description Shorthand to include an R Markdown report in a
+#'   `targets` pipeline.
 #' @details `tar_render()` is an alternative to `tar_target()` for
 #'   R Markdown reports that depend on other targets. The R Markdown source
 #'   should mention dependency targets with `tar_load()` and `tar_read()`
@@ -103,4 +103,11 @@ tar_render_command <- function(path, quiet, args) {
   expr_render <- call_path_rel(call_c(list(call_render(args), path)))
   expr <- call_brace(list(expr_deps, expr_render))
   as.expression(expr)
+}
+
+call_render <- function(args) {
+  expr_render_ns <- as.call(c(sym_ns, rlang::syms(c("rmarkdown", "render"))))
+  expr_render <- as.call(c(rlang::sym("render"), args))
+  expr_render[[1]] <- expr_render_ns
+  expr_render <- match.call(rmarkdown::render, expr_render)
 }

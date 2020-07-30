@@ -15,13 +15,6 @@ call_path_rel <- function(args) {
   as.call(c(expr_path_rel_ns, args))
 }
 
-call_render <- function(args) {
-  expr_render_ns <- as.call(c(sym_ns, rlang::syms(c("rmarkdown", "render"))))
-  expr_render <- as.call(c(rlang::sym("render"), args))
-  expr_render[[1]] <- expr_render_ns
-  expr_render <- match.call(rmarkdown::render, expr_render)
-}
-
 sym_ns <- rlang::sym("::")
 
 deparse_language <- function(x) {

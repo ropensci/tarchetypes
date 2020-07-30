@@ -2,7 +2,7 @@
 % Please edit documentation in R/tar_render.R
 \name{tar_render}
 \alias{tar_render}
-\title{Alternative to \code{tar_target()} R Markdown.}
+\title{Alternative to \code{tar_target()} for an R Markdown document.}
 \usage{
 tar_render(
   name,
@@ -82,8 +82,8 @@ all returned paths are \emph{relative} paths to ensure portability
 without invalidating the target).
 }
 \description{
-Shorthand for the correct way to include an R Markdown
-report in a \code{targets} pipeline.
+Shorthand to include an R Markdown report in a
+\code{targets} pipeline.
 }
 \details{
 \code{tar_render()} is an alternative to \code{tar_target()} for
