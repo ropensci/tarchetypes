@@ -3,7 +3,7 @@
 #' @description Shorthand to include `knitr` document in a
 #'   `targets` pipeline.
 #' @details `tar_knit()` is an alternative to `tar_target()` for
-#'   `knitr` reports that depend on other targets. The R Markdown source
+#'   `knitr` reports that depend on other targets. The `knitr` source
 #'   should mention dependency targets with `tar_load()` and `tar_read()`
 #'   in the active code chunks (which also allows you to knit the report
 #'   outside the pipeline if the `_targets/` data store already exists).
@@ -24,14 +24,14 @@
 #' @return A `tar_target()` object with `format = "file"`.
 #'   When this target runs, it returns a character vector
 #'   of file paths. The first file paths are the output files
-#'   (returned by `knitr::knit()`) and the R Markdown
+#'   (returned by `knitr::knit()`) and the `knitr`
 #'   source file is last. But unlike `knitr::knit()`,
 #'   all returned paths are *relative* paths to ensure portability
 #'   (so that the project can be moved from one file system to another
 #'   without invalidating the target).
 #' @inheritParams targets::tar_target_raw
 #' @inheritParams knitr::knit
-#' @param path Character string, file path to the R Markdown source file.
+#' @param path Character string, file path to the `knitr` source file.
 #'   Must have length 1.
 #' @param ... Named arguments to `knitr::knit()`
 #' @examples
@@ -79,7 +79,7 @@ tar_knit <- function(
   assert_path(path, paste("the path", path, "for tar_knit() does not exist"))
   tar_target_raw(
     name = deparse_language(substitute(name)),
-    command = tar_knit_command(path, quiet, list(...)),
+    command = tar_knit_command(path, list(...), quiet),
     packages = packages,
     library = library,
     envir = targets::tar_option("envir", globalenv()),
@@ -94,22 +94,29 @@ tar_knit <- function(
   )
 }
 
-tar_knit_command <- function(path, quiet, args) {
-  deps <- rlang::syms(knitr_deps(path))
+tar_knit_command <- function(path, args, quiet) {
   args$input <- path
   args$quiet <- quiet
-  expr_deps <- call_list(deps)
-  expr_knit <- call_path_rel(call_c(list(call_knit(args), path)))
-  expr_opt <- quote(opt <- knitr::opts_knit$get("root.dir"))
-  expr_set <- quote(knitr::opts_knit$set(root.dir = getwd()))
-  expr_exit <- quote(on.exit(knitr::opts_knit$set(root.dir = opt)))
-  expr <- call_brace(list(expr_deps, expr_opt, expr_set, expr_exit, expr_knit))
-  as.expression(expr)
+  expr_args <- call_list(args)
+  expr_deps <- call_list(rlang::syms(knitr_deps(path)))
+  expr_fun <- call_ns("tarchetypes", "tar_knit_run")
+  exprs <- list(expr_fun, path = path, args = expr_args, deps = expr_deps)
+  as.expression(as.call(exprs))
 }
 
-call_knit <- function(args) {
-  expr_knit_ns <- as.call(c(sym_ns, rlang::syms(c("knitr", "knit"))))
-  expr_knit <- as.call(c(rlang::sym("knit"), args))
-  expr_knit[[1]] <- expr_knit_ns
-  expr_knit <- match.call(knitr::knit, expr_knit)
+#' @title Run a `knitr` report inside a `tar_knit()` target.
+#' @description Internal function needed for `tar_knit()`.
+#'   Users should not invoke it directly.
+#' @export
+#' @keywords internal
+#' @param path Path to the `knitr` source file.
+#' @param args A named list of arguments to `knitr::knit()`.
+#' @param deps An unnamed list of target dependencies of the `knitr`
+#'   report, automatically created by `tar_knit()`.
+tar_knit_run <- function(path, args, deps) {
+  assert_package("knitr")
+  opt <- knitr::opts_knit$get("root.dir")
+  knitr::opts_knit$set(root.dir = getwd())
+  on.exit(knitr::opts_knit$set(root.dir = opt))
+  fs::path_rel(c(do.call(knitr::knit, args), path))
 }

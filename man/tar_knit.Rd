@@ -23,7 +23,7 @@ tar_knit(
 \arguments{
 \item{name}{Character of length 1, name of the target.}
 
-\item{path}{Character string, file path to the R Markdown source file.
+\item{path}{Character string, file path to the \code{knitr} source file.
 Must have length 1.}
 
 \item{packages}{Character vector of packages to load right before
@@ -75,7 +75,7 @@ rules that decide whether the target is up to date.}
 A \code{tar_target()} object with \code{format = "file"}.
 When this target runs, it returns a character vector
 of file paths. The first file paths are the output files
-(returned by \code{knitr::knit()}) and the R Markdown
+(returned by \code{knitr::knit()}) and the \code{knitr}
 source file is last. But unlike \code{knitr::knit()},
 all returned paths are \emph{relative} paths to ensure portability
 (so that the project can be moved from one file system to another
@@ -87,7 +87,7 @@ Shorthand to include \code{knitr} document in a
 }
 \details{
 \code{tar_knit()} is an alternative to \code{tar_target()} for
-\code{knitr} reports that depend on other targets. The R Markdown source
+\code{knitr} reports that depend on other targets. The \code{knitr} source
 should mention dependency targets with \code{tar_load()} and \code{tar_read()}
 in the active code chunks (which also allows you to knit the report
 outside the pipeline if the \verb{_targets/} data store already exists).

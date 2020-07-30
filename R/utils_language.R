@@ -1,21 +1,14 @@
-call_brace <- function(args) {
-  as.call(c(rlang::sym("{"), args))
-}
-
-call_c <- function(args) {
-  as.call(c(rlang::sym("c"), args))
-}
-
 call_list <- function(args) {
-  as.call(c(rlang::sym("list"), args))
+  call_function("list", args)
 }
 
-call_path_rel <- function(args) {
-  expr_path_rel_ns <- as.call(c(sym_ns, rlang::syms(c("fs", "path_rel"))))
-  as.call(c(expr_path_rel_ns, args))
+call_ns <- function(pkg, fun) {
+  call_function("::", rlang::syms(c(pkg, fun)))
 }
 
-sym_ns <- rlang::sym("::")
+call_function <- function(name, args) {
+  as.call(c(rlang::sym(name), args))
+}
 
 deparse_language <- function(x) {
   trn(!is.character(x) && !is.null(x), safe_deparse(x), x)

@@ -79,7 +79,7 @@ tar_render <- function(
   assert_path(path, paste("the path", path, "for tar_render() does not exist"))
   tar_target_raw(
     name = deparse_language(substitute(name)),
-    command = tar_render_command(path, quiet, list(...)),
+    command = tar_render_command(path, list(...), quiet),
     packages = packages,
     library = library,
     envir = targets::tar_option("envir", globalenv()),
@@ -94,20 +94,27 @@ tar_render <- function(
   )
 }
 
-tar_render_command <- function(path, quiet, args) {
-  deps <- rlang::syms(knitr_deps(path))
+tar_render_command <- function(path, args, quiet) {
   args$input <- path
   args$knit_root_dir <- quote(getwd())
   args$quiet <- quiet
-  expr_deps <- call_list(deps)
-  expr_render <- call_path_rel(call_c(list(call_render(args), path)))
-  expr <- call_brace(list(expr_deps, expr_render))
-  as.expression(expr)
+  expr_args <- call_list(args)
+  expr_deps <- call_list(rlang::syms(knitr_deps(path)))
+  expr_fun <- call_ns("tarchetypes", "tar_render_run")
+  exprs <- list(expr_fun, path = path, args = expr_args, deps = expr_deps)
+  as.expression(as.call(exprs))
 }
 
-call_render <- function(args) {
-  expr_render_ns <- as.call(c(sym_ns, rlang::syms(c("rmarkdown", "render"))))
-  expr_render <- as.call(c(rlang::sym("render"), args))
-  expr_render[[1]] <- expr_render_ns
-  expr_render <- match.call(rmarkdown::render, expr_render)
+#' @title Render an R Markdown report inside a `tar_render()` target.
+#' @description Internal function needed for `tar_render()`.
+#'   Users should not invoke it directly.
+#' @export
+#' @keywords internal
+#' @param path Path to the R Markdown source file.
+#' @param args A named list of arguments to `rmarkdown::render()`.
+#' @param deps An unnamed list of target dependencies of the R Markdown
+#'   report, automatically created by `tar_render()`.
+tar_render_run <- function(path, args, deps) {
+  assert_package("rmarkdown")
+  fs::path_rel(c(do.call(rmarkdown::render, args), path))
 }
