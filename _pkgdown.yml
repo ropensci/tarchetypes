@@ -20,4 +20,5 @@ reference:
   - '`tarchetypes-package`'
 - title: Literate programming
   contents:
+  - '`tar_knit`'
   - '`tar_render`'

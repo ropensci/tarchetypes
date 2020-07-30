@@ -1,13 +1,13 @@
-#' @title Alternative to `tar_target()` for an R Markdown document.
+#' @title Alternative to `tar_target()` for a `knitr` document.
 #' @export
-#' @description Shorthand to include an R Markdown document in a
+#' @description Shorthand to include `knitr` document in a
 #'   `targets` pipeline.
-#' @details `tar_render()` is an alternative to `tar_target()` for
-#'   R Markdown reports that depend on other targets. The R Markdown source
+#' @details `tar_knit()` is an alternative to `tar_target()` for
+#'   `knitr` reports that depend on other targets. The R Markdown source
 #'   should mention dependency targets with `tar_load()` and `tar_read()`
-#'   in the active code chunks (which also allows you to render the report
+#'   in the active code chunks (which also allows you to knit the report
 #'   outside the pipeline if the `_targets/` data store already exists).
-#'   Then, `tar_render()` defines a special kind of target. It
+#'   Then, `tar_knit()` defines a special kind of target. It
 #'     1. Finds all the `tar_load()`/`tar_read()` dependencies in the report
 #'       and inserts them into the target's command.
 #'       This enforces the proper dependency relationships.
@@ -20,20 +20,20 @@
 #'     4. Forces the report to run in the user's current working directory
 #'       instead of the working directory of the report.
 #'     5. Sets convenient default options such as `deployment = "local"`
-#'       in the target and `quiet = TRUE` in `rmarkdown::render()`.
+#'       in the target and `quiet = TRUE` in `knitr::knit()`.
 #' @return A `tar_target()` object with `format = "file"`.
 #'   When this target runs, it returns a character vector
 #'   of file paths. The first file paths are the output files
-#'   (returned by `rmarkdown::render()`) and the R Markdown
-#'   source file is last. But unlike `rmarkdown::render()`,
+#'   (returned by `knitr::knit()`) and the R Markdown
+#'   source file is last. But unlike `knitr::knit()`,
 #'   all returned paths are *relative* paths to ensure portability
 #'   (so that the project can be moved from one file system to another
 #'   without invalidating the target).
 #' @inheritParams targets::tar_target_raw
-#' @inheritParams rmarkdown::render
+#' @inheritParams knitr::knit
 #' @param path Character string, file path to the R Markdown source file.
 #'   Must have length 1.
-#' @param ... Named arguments to `rmarkdown::render()`
+#' @param ... Named arguments to `knitr::knit()`
 #' @examples
 #' \dontrun{
 #' targets::tar_dir({
@@ -52,13 +52,13 @@
 #'   library(tarchetypes)
 #'   tar_pipeline(
 #'     tar_target(data, data.frame(x = seq_len(26), y = letters)),
-#'     tar_render(report, "report.Rmd")
+#'     tar_knit(report, "report.Rmd")
 #'   )
 #' })
 #' targets::tar_make()
 #' })
 #' }
-tar_render <- function(
+tar_knit <- function(
   name,
   path,
   packages = targets::tar_option("packages", (.packages())),
@@ -73,13 +73,13 @@ tar_render <- function(
   quiet = TRUE,
   ...
 ) {
-  assert_package("rmarkdown", "tar_render() requires the rmarkdown package.")
-  assert_scalar(path, "tar_render() only takes one file at a time.")
-  assert_chr(path, "path argument of tar_render() must be a character.")
-  assert_path(path, paste("the path", path, "for tar_render() does not exist"))
+  assert_package("knitr", "tar_knit() requires the knitr package.")
+  assert_scalar(path, "tar_knit() only takes one file at a time.")
+  assert_chr(path, "path argument of tar_knit() must be a character.")
+  assert_path(path, paste("the path", path, "for tar_knit() does not exist"))
   tar_target_raw(
     name = deparse_language(substitute(name)),
-    command = tar_render_command(path, quiet, list(...)),
+    command = tar_knit_command(path, quiet, list(...)),
     packages = packages,
     library = library,
     envir = targets::tar_option("envir", globalenv()),
@@ -94,20 +94,22 @@ tar_render <- function(
   )
 }
 
-tar_render_command <- function(path, quiet, args) {
+tar_knit_command <- function(path, quiet, args) {
   deps <- rlang::syms(knitr_deps(path))
   args$input <- path
-  args$knit_root_dir <- quote(getwd())
   args$quiet <- quiet
   expr_deps <- call_list(deps)
-  expr_render <- call_path_rel(call_c(list(call_render(args), path)))
-  expr <- call_brace(list(expr_deps, expr_render))
+  expr_knit <- call_path_rel(call_c(list(call_knit(args), path)))
+  expr_opt <- quote(opt <- knitr::opts_knit$get("root.dir"))
+  expr_set <- quote(knitr::opts_knit$set(root.dir = getwd()))
+  expr_exit <- quote(on.exit(knitr::opts_knit$set(root.dir = opt)))
+  expr <- call_brace(list(expr_deps, expr_opt, expr_set, expr_exit, expr_knit))
   as.expression(expr)
 }
 
-call_render <- function(args) {
-  expr_render_ns <- as.call(c(sym_ns, rlang::syms(c("rmarkdown", "render"))))
-  expr_render <- as.call(c(rlang::sym("render"), args))
-  expr_render[[1]] <- expr_render_ns
-  expr_render <- match.call(rmarkdown::render, expr_render)
+call_knit <- function(args) {
+  expr_knit_ns <- as.call(c(sym_ns, rlang::syms(c("knitr", "knit"))))
+  expr_knit <- as.call(c(rlang::sym("knit"), args))
+  expr_knit[[1]] <- expr_knit_ns
+  expr_knit <- match.call(knitr::knit, expr_knit)
 }
