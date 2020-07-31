@@ -8,7 +8,7 @@
 #' @name tarchetypes-package
 #' @importFrom fs path_rel
 #' @importFrom rlang syms
-#' @importFrom targets tar_dir tar_load tar_option tar_read tar_script
+#' @importFrom targets tar_dir tar_load tar_option_get tar_read tar_script
 #'   tar_target_raw
 #' @importFrom withr with_options
 NULL

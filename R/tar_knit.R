@@ -63,13 +63,13 @@ tar_knit <- function(
   path,
   packages = (.packages()),
   library = NULL,
-  error = targets::tar_option("error"),
+  error = targets::tar_option_get("error"),
   deployment = "local",
   priority = 0,
-  template = targets::tar_option("template"),
-  resources = targets::tar_option("resources"),
-  retrieval = targets::tar_option("retrieval"),
-  cue = targets::tar_option("cue"),
+  template = targets::tar_option_get("template"),
+  resources = targets::tar_option_get("resources"),
+  retrieval = targets::tar_option_get("retrieval"),
+  cue = targets::tar_option_get("cue"),
   quiet = TRUE,
   ...
 ) {

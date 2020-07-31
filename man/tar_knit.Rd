@@ -9,13 +9,13 @@ tar_knit(
   path,
   packages = (.packages()),
   library = NULL,
-  error = targets::tar_option("error"),
+  error = targets::tar_option_get("error"),
   deployment = "local",
   priority = 0,
-  template = targets::tar_option("template"),
-  resources = targets::tar_option("resources"),
-  retrieval = targets::tar_option("retrieval"),
-  cue = targets::tar_option("cue"),
+  template = targets::tar_option_get("template"),
+  resources = targets::tar_option_get("resources"),
+  retrieval = targets::tar_option_get("retrieval"),
+  cue = targets::tar_option_get("cue"),
   quiet = TRUE,
   ...
 )
@@ -27,7 +27,7 @@ tar_knit(
 Must have length 1.}
 
 \item{packages}{Character vector of packages to load right before
-the target builds. Use \code{tar_options()} to set packages
+the target builds. Use \code{tar_option_set()} to set packages
 globally for all subsequent targets you define.}
 
 \item{library}{Character vector of library paths to try
