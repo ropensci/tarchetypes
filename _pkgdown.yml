@@ -22,7 +22,8 @@ reference:
   contents:
   - '`tar_knit`'
   - '`tar_render`'
-- title: Custom cues
+- title: Custom build decision rules
   contents:
   - '`tar_change`'
+  - '`tar_force`'
   - '`tar_skip`'

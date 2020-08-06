@@ -91,6 +91,8 @@ tar_force <- function(
 #' @export
 #' @keywords internal
 tar_force_change <- function(condition) {
-  previous <- trn(file.exists(tar_path()), readRDS(tar_path()), tempfile())
-  trn(condition, tempfile(), previous)
+  path <- targets::tar_path()
+  new <- basename(tempfile(pattern = ""))
+  old <- trn(file.exists(path), readRDS(path), new)
+  trn(condition, new, old)
 }
