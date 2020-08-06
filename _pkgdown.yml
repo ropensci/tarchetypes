@@ -22,3 +22,6 @@ reference:
   contents:
   - '`tar_knit`'
   - '`tar_render`'
+- title: Custom cues
+  contents:
+  - '`tar_change`'
