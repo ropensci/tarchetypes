@@ -68,7 +68,7 @@ tar_change <- function(
     packages = packages,
     library = library,
     envir = envir,
-    format = format,
+    format = "rds",
     iteration = iteration,
     error = error,
     memory = memory,
