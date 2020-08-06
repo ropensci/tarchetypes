@@ -13,6 +13,9 @@
 #'   The upstream one triggers the change, and the downstream one
 #'   responds to it. See the examples for details.
 #' @param change R code for the upstream change-inducing target.
+#' @param tidy_eval Whether to invoke tidy evaluation
+#'   (e.g. the `!!` operator from `rlang`) as soon as the target is defined
+#'   (before `tar_make()`). Applies to arguments `command` and `change`.
 #' @examples
 #' \dontrun{
 #' # Without loss of generality,

@@ -25,3 +25,4 @@ reference:
 - title: Custom cues
   contents:
   - '`tar_change`'
+  - '`tar_skip`'
