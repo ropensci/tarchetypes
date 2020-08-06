@@ -64,6 +64,46 @@ tar_change <- function(
   envir <- tar_option_get("envir")
   command <- tidy_eval(substitute(command), envir, tidy_eval)
   change <- tidy_eval(substitute(change), envir, tidy_eval)
+  tar_change_pair(
+    name = name,
+    name_change = name_change,
+    command = command,
+    change = change,
+    packages = packages,
+    library = library,
+    format = format,
+    iteration = iteration,
+    error = error,
+    memory = memory,
+    deployment = deployment,
+    priority = priority,
+    template = template,
+    resources = resources,
+    storage = storage,
+    retrieval = retrieval,
+    cue = cue
+  )
+}
+
+tar_change_pair <- function(
+  name,
+  name_change,
+  command,
+  change,
+  packages,
+  library,
+  format,
+  iteration,
+  error,
+  memory,
+  deployment,
+  priority,
+  template,
+  resources,
+  storage,
+  retrieval,
+  cue
+) {
   upstream <- tar_target_raw(
     name = name_change,
     command = change,
