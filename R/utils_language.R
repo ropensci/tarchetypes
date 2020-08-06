@@ -1,3 +1,7 @@
+call_brace <- function(args) {
+  call_function("{", args)
+}
+
 call_list <- function(args) {
   call_function("list", args)
 }
@@ -33,4 +37,12 @@ produce_direct_deparse <- function() {
   .deparseOpts <- identity
   environment(deparse) <- environment()
   deparse
+}
+
+tidy_eval <- function(expr, envir, tidy_eval) {
+  if (tidy_eval) {
+    expr <- as.call(c(quote(rlang::expr), expr))
+    expr <- rlang::quo_squash(eval(expr, envir = envir))
+  }
+  expr
 }
