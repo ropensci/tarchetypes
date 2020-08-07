@@ -18,11 +18,14 @@ reference:
 - title: Help
   contents:
   - '`tarchetypes-package`'
+- title: Files
+  contents:
+  - '`tar_files`'
 - title: Literate programming
   contents:
   - '`tar_knit`'
   - '`tar_render`'
-- title: Custom build decision rules
+- title: Custom decision rules
   contents:
   - '`tar_change`'
   - '`tar_force`'
