@@ -64,7 +64,7 @@ tar_change <- function(
   envir <- tar_option_get("envir")
   command <- tidy_eval(substitute(command), envir, tidy_eval)
   change <- tidy_eval(substitute(change), envir, tidy_eval)
-  tar_change_pair(
+  tar_change_raw(
     name = name,
     name_change = name_change,
     command = command,
@@ -85,7 +85,7 @@ tar_change <- function(
   )
 }
 
-tar_change_pair <- function(
+tar_change_raw <- function(
   name,
   name_change,
   command,

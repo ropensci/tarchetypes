@@ -75,7 +75,7 @@ tar_files <- function(
   envir <- tar_option_get("envir")
   command <- tidy_eval(substitute(command), envir, tidy_eval)
   files <- tidy_eval(substitute(files), envir, tidy_eval)
-  tar_files_pair(
+  tar_files_raw(
     name = name,
     name_files = name_files,
     command = command,
@@ -96,7 +96,7 @@ tar_files <- function(
   )
 }
 
-tar_files_pair <- function(
+tar_files_raw <- function(
   name,
   name_files,
   command,

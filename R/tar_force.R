@@ -64,7 +64,7 @@ tar_force <- function(
   command <- tidy_eval(substitute(command), envir, tidy_eval)
   force <- tidy_eval(substitute(force), envir, tidy_eval)
   change <- as.call(list(call_ns("tarchetypes", "tar_force_change"), force))
-  tar_change_pair(
+  tar_change_raw(
     name = name,
     name_change = name_change,
     command = command,
