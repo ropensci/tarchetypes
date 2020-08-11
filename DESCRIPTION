@@ -32,7 +32,8 @@ Suggests:
   digest (>= 0.6.25),
   knitr (>= 1.28),
   rmarkdown (>= 2.1),
-  testthat (>= 2.3.2)
+  testthat (>= 2.3.2),
+  curl
 Remotes:
   wlandau/targets
 Encoding: UTF-8
