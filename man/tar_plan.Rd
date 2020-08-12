@@ -2,7 +2,7 @@
 % Please edit documentation in R/tar_plan.R
 \name{tar_plan}
 \alias{tar_plan}
-\title{The \code{drake}-plan-like pipeline archetype}
+\title{A \code{drake}-plan-like pipeline archetype}
 \usage{
 tar_plan(...)
 }
