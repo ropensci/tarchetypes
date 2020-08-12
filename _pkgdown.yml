@@ -30,3 +30,6 @@ reference:
   - '`tar_change`'
   - '`tar_force`'
   - '`tar_skip`'
+- title: Pipeline archetypes
+  contents:
+  - '`tar_plan`'
