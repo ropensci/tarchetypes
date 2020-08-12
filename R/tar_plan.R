@@ -1,4 +1,4 @@
-#' @title The `drake`-plan-like pipeline archetype
+#' @title A `drake`-plan-like pipeline archetype
 #' @description Simplify target specification in pipelines.
 #' @details Allows targets with just targets and commands
 #'   to be written in the pipeline as `target = command` instead of
