@@ -7,7 +7,7 @@ Description: The targets package is a pipeline toolkit that brings together
   making pipelines easier to create and read.
 Version: 0.0.0.9000
 License: MIT + file LICENSE
-URL: https://wlandau.github.io/tarchetypes, https://github.com/wlandau/tarchetypes
+URL: https://wlandau.github.io/tarchetypes/, https://github.com/wlandau/tarchetypes
 BugReports: https://github.com/wlandau/tarchetypes/issues
 Authors@R: c(
   person(
