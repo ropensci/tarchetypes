@@ -10,6 +10,12 @@ tar_test("tar_rds()", {
   expect_equal(x$settings$format, "rds")
 })
 
+tar_test("tar_rds() runs", {
+  targets::tar_script(targets::tar_pipeline(tarchetypes::tar_rds(x, 0L)))
+  targets::tar_make(callr_function = NULL)
+  expect_equal(targets::tar_read(x), 0L)
+})
+
 tar_test("tar_qs()", {
   x <- tar_qs(x, 0)
   expect_true(inherits(x, "tar_target"))
