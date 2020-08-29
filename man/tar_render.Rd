@@ -11,7 +11,7 @@ tar_render(
   library = targets::tar_option_get("library"),
   error = targets::tar_option_get("error"),
   deployment = "local",
-  priority = 0,
+  priority = targets::tar_option_get("priority"),
   template = targets::tar_option_get("template"),
   resources = targets::tar_option_get("resources"),
   retrieval = targets::tar_option_get("retrieval"),
