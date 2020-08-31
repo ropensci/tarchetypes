@@ -1,5 +1,6 @@
 knitr_deps <- function(path) {
   expr <- knitr_expr(path)
+  knitr_expr_warn_raw(expr)
   counter <- counter_init()
   walk_expr(expr, counter)
   counter_get_names(counter)
@@ -17,6 +18,18 @@ knitr_expr <- function(path) {
       )
     }
   )
+}
+
+knitr_expr_warn_raw <- function(expr) {
+  vars <- all.vars(expr, functions = TRUE)
+  if (any(c("tar_load_raw", "tar_read_raw") %in% vars)) {
+    warn_validate(
+      "targets loaded with tar_load_raw() or tar_read_raw() ",
+      "will not be detected as dependencies in literate programming reports. ",
+      "To properly register target dependencies of reports, use tar_load() ",
+      "or tar_read() instead."
+    )
+  }
 }
 
 knitr_lines <- function(path) {

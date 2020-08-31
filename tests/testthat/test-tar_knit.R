@@ -42,6 +42,59 @@ test_that("tar_knit() works", {
   expect_equal(sort(targets::tar_progress()$name), sort(c("data", "report")))
 })
 
+test_that("tar_knit() warns about tar_read_raw()", {
+  on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
+  lines <- c(
+    "---",
+    "title: report",
+    "output_format: html_document",
+    "---",
+    "",
+    "```{r}",
+    "targets::tar_read_raw('data')",
+    "```"
+  )
+  writeLines(lines, "report.Rmd")
+  targets::tar_script({
+    library(tarchetypes)
+    tar_pipeline(
+      tar_target(data, data.frame(x = seq_len(26L), y = letters)),
+      tar_knit(report, "report.Rmd", quiet = TRUE)
+    )
+  })
+  expect_warning(
+    targets::tar_make(callr_function = NULL),
+    class = "condition_validate"
+  )
+})
+
+test_that("tar_knit() warns about tar_load_raw()", {
+  on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
+  lines <- c(
+    "---",
+    "title: report",
+    "output_format: html_document",
+    "---",
+    "",
+    "```{r}",
+    "envir <- new.env(parent = emptyenv())",
+    "targets::tar_load_raw('data', envir = envir)",
+    "```"
+  )
+  writeLines(lines, "report.Rmd")
+  targets::tar_script({
+    library(tarchetypes)
+    tar_pipeline(
+      tar_target(data, data.frame(x = seq_len(26L), y = letters)),
+      tar_knit(report, "report.Rmd", quiet = TRUE)
+    )
+  })
+  expect_warning(
+    targets::tar_make(callr_function = NULL),
+    class = "condition_validate"
+  )
+})
+
 tar_test("tar_knit() on a nested report still runs from the project root", {
   lines <- c(
     "---",

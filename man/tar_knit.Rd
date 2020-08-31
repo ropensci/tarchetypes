@@ -91,10 +91,12 @@ Shorthand to include \code{knitr} document in a
 should mention dependency targets with \code{tar_load()} and \code{tar_read()}
 in the active code chunks (which also allows you to knit the report
 outside the pipeline if the \verb{_targets/} data store already exists).
+(Do not use \code{tar_load_raw()} or \code{tar_read_raw()} for this.)
 Then, \code{tar_knit()} defines a special kind of target. It
 1. Finds all the \code{tar_load()}/\code{tar_read()} dependencies in the report
 and inserts them into the target's command.
 This enforces the proper dependency relationships.
+(Do not use \code{tar_load_raw()} or \code{tar_read_raw()} for this.)
 2. Sets \code{format = "file"} (see \code{tar_target()}) so \code{targets}
 watches the files at the returned paths and reruns the report
 if those files change.
