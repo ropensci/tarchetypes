@@ -56,3 +56,9 @@ tar_test("tar_format()", {
   expect_true(inherits(x, "tar_target"))
   expect_equal(x$settings$format, "file")
 })
+
+tar_test("tar_rds() with pattern", {
+  x <- tar_rds(x, 1, pattern = map(y))
+  expect_true(inherits(x, "tar_target"))
+  expect_equal(x$settings$dimensions, "y")
+})

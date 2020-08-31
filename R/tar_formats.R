@@ -22,10 +22,13 @@ NULL
 tar_format <- function(format) {
   out <- tar_format_api
   body(out) <- substitute({
+    name <- deparse_language(substitute(name))
     envir <- tar_option_get("envir")
+    command <- tidy_eval(as.expression(substitute(command)), envir, tidy_eval)
+    pattern <- tidy_eval(as.expression(substitute(pattern)), envir, tidy_eval)
     targets::tar_target_raw(
-      name = deparse_language(substitute(name)),
-      command = tidy_eval(substitute(command), envir, tidy_eval),
+      name = name,
+      command = command,
       pattern = pattern,
       packages = packages,
       library = library,
