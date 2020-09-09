@@ -13,8 +13,11 @@ Lists can be arbitrarily nested, as in \code{targets::tar_pipeline()}.}
 \item{values}{Named list or data frame with values to iterate over.
 The names are the names of symbols in the commands and pattern statements,
 and the elements are values that get substituted in place of those
-symbols. If you want the new values to also be symbols,
-use \code{rlang::syms()} on each respective vector or column.}
+symbols. Elements of the \code{values} list
+should be small objects that can easily deparse to names,
+such as characters, integers, and symbols.
+To create a list of symbols as a column of \code{values},
+use \code{rlang::syms()}.}
 
 \item{names}{Subset of \code{names(values)}
 used to generate the suffixes in the names of the new targets.

@@ -14,6 +14,10 @@ call_function <- function(name, args) {
   as.call(c(rlang::sym(name), args))
 }
 
+call_substitute <- function(expr, env) {
+  call_function("substitute", args = list(expr = expr, env = env))
+}
+
 deparse_language <- function(x) {
   trn(!is.character(x) && !is.null(x), safe_deparse(x), x)
 }
@@ -37,6 +41,14 @@ produce_direct_deparse <- function() {
   .deparseOpts <- identity
   environment(deparse) <- environment()
   deparse
+}
+
+substitute_expr <- function(expr, env) {
+  as.expression(lapply(expr, substitute_lang, env = env))
+}
+
+substitute_lang <- function(lang, env) {
+  eval(call_substitute(lang, env), envir = baseenv())
 }
 
 tidy_eval <- function(expr, envir, tidy_eval) {

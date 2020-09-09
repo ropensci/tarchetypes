@@ -9,3 +9,12 @@ map_chr <- function(x, f, ...) {
 map_int <- function(x, f, ...) {
   vapply(X = x, FUN = as_function(f), FUN.VALUE = integer(1), ...)
 }
+
+transpose <- function(x) {
+  x <- lapply(x, as.list)
+  lapply(seq_along(x[[1]]), transpose_elt, x = x)
+}
+
+transpose_elt <- function(index, x) {
+  lapply(x, `[[`, index)
+}

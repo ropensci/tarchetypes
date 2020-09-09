@@ -10,8 +10,11 @@
 #' @param values Named list or data frame with values to iterate over.
 #'   The names are the names of symbols in the commands and pattern statements,
 #'   and the elements are values that get substituted in place of those
-#'   symbols. If you want the new values to also be symbols,
-#'   use `rlang::syms()` on each respective vector or column.
+#'   symbols. Elements of the `values` list
+#'   should be small objects that can easily deparse to names,
+#'   such as characters, integers, and symbols.
+#'   To create a list of symbols as a column of `values`,
+#'   use `rlang::syms()`.
 #' @param names Subset of `names(values)`
 #'   used to generate the suffixes in the names of the new targets.
 #'   You can supply symbols, a character vector,
@@ -35,7 +38,7 @@ tar_map <- function(..., values, names = tidyselect::everything()) {
   names_quosure <- rlang::enquo(names)
   names <- eval_tidyselect(names_quosure, base::names(values))
   values <- tar_map_extend_values(targets, values, names)
-  lapply(targets, tar_map_target, values = values)
+  unlist(lapply(targets, tar_map_target, values = values))
 }
 
 tar_map_assert_values <- function(values) {
@@ -58,7 +61,7 @@ tar_map_extend_values <- function(targets, values, names) {
       names(values),
       paste("target", name, "cannot be in names(values).")
     )
-    values[[name]] <- make.names(paste(name, suffix, sep = "_"))
+    values[[name]] <- rlang::syms(make.names(paste(name, suffix, sep = "_")))
   }
   values
 }
@@ -73,5 +76,48 @@ tar_map_produce_suffix <- function(values, names) {
 }
 
 tar_map_target <- function(target, values) {
-  browser()
+  command <- target$command$expr
+  pattern <- tar_map_pattern(target)
+  lapply(
+    transpose(values),
+    tar_map_iter,
+    target = target,
+    command = command,
+    pattern = pattern
+  )
+}
+
+tar_map_pattern <- function(target) {
+  growth <- target$settings$growth
+  dimensions <- target$settings$dimensions
+  trn(
+    growth == "none",
+    NULL,
+    as.expression(call_function(growth, rlang::syms(dimensions)))
+  )
+}
+
+tar_map_iter <- function(values, target, command, pattern) {
+  settings <- target$settings
+  name <- as.character(values[[settings$name]])
+  command <- substitute_expr(command, values)
+  pattern <- substitute_expr(pattern, values) %|||% NULL
+  tar_target_raw(
+    name = name,
+    command = command,
+    pattern = pattern,
+    packages = target$command$packages,
+    library = target$command$library,
+    format = settings$format,
+    iteration = settings$iteration,
+    error = settings$error,
+    memory = settings$memory,
+    deployment = settings$deployment,
+    priority = settings$priority,
+    template = settings$template,
+    resources = settings$resources,
+    storage = settings$storage,
+    retrieval = settings$retrieval,
+    cue = target$cue
+  )
 }
