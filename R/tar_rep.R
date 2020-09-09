@@ -26,6 +26,12 @@
 #'   a list or data frame because `tar_rep()` will try to append
 #'   new elements/columns `tar_batch` and `tar_rep` to the output
 #'   to denote the batch and rep-within-batch IDs, respectively.
+#'
+#'   `tar_read(your_target)` (on the downstream target with the actual work)
+#'   will return a list of lists, where the outer list has one element per
+#'   batch and each inner list has one element per rep within batch.
+#'   To un-batch this nested list, call
+#'   `tar_read(your_target, recursive = FALSE)`.
 #' @param command R code to run multiple times. Must return a list or
 #'   data frame because `tar_rep()` will try to append new elements/columns
 #'   `tar_batch` and `tar_rep` to the output to denote the batch
@@ -33,16 +39,37 @@
 #' @param batches Number of batches. This is also the number of dynamic
 #'   branches created during `tar_make()`.
 #' @param reps Number of replications in each batch. The total number
-#'   of replications is `batches * reps`. 
+#'   of replications is `batches * reps`.
 #' @param tidy_eval Whether to invoke tidy evaluation
 #'   (e.g. the `!!` operator from `rlang`) as soon as the target is defined
 #'   (before `tar_make()`). Applies to the `command` argument.
+#' @param iteration Character of length 1, name of the iteration mode
+#'   of the target. Choices:
+#'   * `"vector"`: branching happens with `vectors::vec_slice()` and
+#'     aggregation happens with `vctrs::vec_c()`.
+#'   * `"list"`, branching happens with `[[]]` and aggregation happens with
+#'     `list()`. In the case of `tar_batch()`, `tar_read(your_target)`
+#'     will return a list of lists, where the outer list has one element per
+#'     batch and each inner list has one element per rep within batch.
+#'     To un-batch this nested list, call
+#'     `tar_read(your_target, recursive = FALSE)`.
+#'   * `"group"`: `dplyr::group_by()`-like functionality to branch over
+#'     subsets of a data frame. The target's return value must be a data
+#'     frame with a special `tar_group` column of consecutive integers
+#'     from 1 through the number of groups. Each integer designates a group,
+#'     and a branch is created for each collection of rows in a group.
+#'     See the [tar_group()] function to see how you can
+#'     create the special `tar_group` column with `dplyr::group_by()`.
 #' @examples
 #' \dontrun{
 #' targets::tar_script({
-#'   library(tarchetypes)
-#'   tar_pipeline(
-#'     tar_rep(x, data.frame(x = sample.int(1e4, 2)), batches = 2, reps = 3)
+#'   targets::tar_pipeline(
+#'     tarchetypes::tar_rep(
+#'       x,
+#'       data.frame(x = sample.int(1e4, 2)),
+#'       batches = 2,
+#'       reps = 3
+#'     )
 #'   )
 #' })
 #' targets::tar_make()
@@ -118,18 +145,24 @@ tar_rep <- function(
 #' @param batches Number of batches. This is also the number of dynamic
 #'   branches created during `tar_make()`.
 #' @param reps Number of replications in each batch. The total number
-#'   of replications is `batches * reps`. 
+#'   of replications is `batches * reps`.
 #' @param tidy_eval Whether to invoke tidy evaluation
 #'   (e.g. the `!!` operator from `rlang`) as soon as the target is defined
 #'   (before `tar_make()`). Applies to the `command` argument.
 #' @examples
 #' \dontrun{
 #' targets::tar_script({
-#'   library(tarchetypes)
-#'   tar_pipeline(
-#'     tar_rep(sample.int(1e4, 1))
+#'   targets::tar_pipeline(
+#'     tarchetypes::tar_rep_raw(
+#'       "x",
+#'       expression(data.frame(x = sample.int(1e4, 2))),
+#'       batches = 2,
+#'       reps = 3
+#'     )
 #'   )
 #' })
+#' targets::tar_make()
+#' targets::tar_read(x)
 #' }
 tar_rep_raw <- function(
   name,
@@ -307,7 +340,10 @@ tar_rep_map <- function(expr, envir, batch, reps) {
 
 tar_rep_rep <- function(expr, envir, batch, rep) {
   out <- eval(expr, envir = envir)
-  out$tar_rep <- as.integer(batch)
+  if (!is.list(out)) {
+    throw_run("tar_rep() targets must return lists or data frames.")
+  }
+  out$tar_batch <- as.integer(batch)
   out$tar_rep <- as.integer(rep)
   out
 }

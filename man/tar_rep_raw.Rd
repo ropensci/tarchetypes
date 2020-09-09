@@ -165,10 +165,16 @@ then \code{vctrs::vec_c()}. If \code{"group"}, then \code{vctrs::vec_rbind()}.
 \examples{
 \dontrun{
 targets::tar_script({
-  library(tarchetypes)
-  tar_pipeline(
-    tar_rep(sample.int(1e4, 1))
+  targets::tar_pipeline(
+    tarchetypes::tar_rep_raw(
+      "x",
+      expression(data.frame(x = sample.int(1e4, 2))),
+      batches = 2,
+      reps = 3
+    )
   )
 })
+targets::tar_make()
+targets::tar_read(x)
 }
 }

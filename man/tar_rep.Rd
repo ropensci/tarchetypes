@@ -82,13 +82,17 @@ of the target. Choices:
 \item \code{"vector"}: branching happens with \code{vectors::vec_slice()} and
 aggregation happens with \code{vctrs::vec_c()}.
 \item \code{"list"}, branching happens with \verb{[[]]} and aggregation happens with
-\code{list()}.
+\code{list()}. In the case of \code{tar_batch()}, \code{tar_read(your_target)}
+will return a list of lists, where the outer list has one element per
+batch and each inner list has one element per rep within batch.
+To un-batch this nested list, call
+\code{tar_read(your_target, recursive = FALSE)}.
 \item \code{"group"}: \code{dplyr::group_by()}-like functionality to branch over
 subsets of a data frame. The target's return value must be a data
 frame with a special \code{tar_group} column of consecutive integers
 from 1 through the number of groups. Each integer designates a group,
 and a branch is created for each collection of rows in a group.
-See the \code{\link[targets:tar_group]{tar_group()}} function to see how you can
+See the \code{\link[=tar_group]{tar_group()}} function to see how you can
 create the special \code{tar_group} column with \code{dplyr::group_by()}.
 }}
 
@@ -148,6 +152,12 @@ to run the command multiple times. The command must return
 a list or data frame because \code{tar_rep()} will try to append
 new elements/columns \code{tar_batch} and \code{tar_rep} to the output
 to denote the batch and rep-within-batch IDs, respectively.
+
+\code{tar_read(your_target)} (on the downstream target with the actual work)
+will return a list of lists, where the outer list has one element per
+batch and each inner list has one element per rep within batch.
+To un-batch this nested list, call
+\code{tar_read(your_target, recursive = FALSE)}.
 }
 \description{
 Shorthand for a pattern that replicates a command
@@ -174,9 +184,13 @@ then \code{vctrs::vec_c()}. If \code{"group"}, then \code{vctrs::vec_rbind()}.
 \examples{
 \dontrun{
 targets::tar_script({
-  library(tarchetypes)
-  tar_pipeline(
-    tar_rep(x, data.frame(x = sample.int(1e4, 2)), batches = 2, reps = 3)
+  targets::tar_pipeline(
+    tarchetypes::tar_rep(
+      x,
+      data.frame(x = sample.int(1e4, 2)),
+      batches = 2,
+      reps = 3
+    )
   )
 })
 targets::tar_make()
