@@ -1,8 +1,5 @@
 eval_tidyselect <- function(names_quosure, choices) {
-  if (is.null(rlang::quo_squash(names_quosure))) {
-    return(NULL)
-  }
-  if (!length(choices)) {
+  if (is.null(rlang::quo_squash(names_quosure)) || !length(choices)) {
     return(NULL)
   }
   names(choices) <- choices

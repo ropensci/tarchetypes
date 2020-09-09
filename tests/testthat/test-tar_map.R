@@ -8,6 +8,28 @@ tar_test("tar_map() return value", {
   map(out, ~expect_true(inherits(.x, "tar_target")))
 })
 
+tar_test("tar_map() with names turned off", {
+  out <- tar_map(
+    targets::tar_target(x, a + b),
+    targets::tar_target(y, x + a, pattern = map(x)),
+    values = list(a = c(12, 34), b = c(56, 78)),
+    names = NULL
+  )
+  names <- map_chr(out, ~.x$settings$name)
+  expect_equal(sort(names), sort(c("x_1", "x_2", "y_1", "y_2")))
+})
+
+tar_test("tar_map() with names misspecified", {
+  out <- tar_map(
+    targets::tar_target(x, a + b),
+    targets::tar_target(y, x + a, pattern = map(x)),
+    values = list(a = c(12, 34), b = c(56, 78)),
+    names = "z"
+  )
+  names <- map_chr(out, ~.x$settings$name)
+  expect_equal(sort(names), sort(c("x_1", "x_2", "y_1", "y_2")))
+})
+
 tar_test("tar_map() manifest", {
   targets::tar_script({
     targets::tar_pipeline(
