@@ -18,7 +18,12 @@
 #' targets::tar_script({
 #'   target1 <- targets::tar_target(x, head(mtcars))
 #'   target2 <- targets::tar_target(y, tail(mtcars))
-#'   target3 <- tar_combine(target1, target2, command = bind_rows(!!!.x))
+#'   target3 <- tar_combine(
+#'     new_target_name,
+#'     target1,
+#'     target2,
+#'     command = bind_rows(!!!.x)
+#'   )
 #'   targets::tar_pipeline(target1, target2, target3)
 #' })
 #' targets::tar_manifest(callr_function = NULL)
@@ -88,7 +93,7 @@ tar_combine <- function(
 #' targets::tar_script({
 #'   target1 <- targets::tar_target(x, head(mtcars))
 #'   target2 <- targets::tar_target(y, tail(mtcars))
-#'   target3 <- tar_combine(z, target1, target2)
+#'   target3 <- tar_combine(new_target_name, target1, target2)
 #'   targets::tar_pipeline(target1, target2, target3)
 #' })
 #' targets::tar_manifest(callr_function = NULL)
