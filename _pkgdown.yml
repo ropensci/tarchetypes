@@ -18,14 +18,17 @@ reference:
 - title: Help
   contents:
   - '`tarchetypes-package`'
-- title: Formats
-  contents:
-  - '`tar_formats`'
-  - '`tar_files`'
 - title: Literate programming
   contents:
   - '`tar_knit`'
   - '`tar_render`'
+- title: Branching
+  contents:
+  - '`tar_rep`'
+- title: Formats
+  contents:
+  - '`tar_formats`'
+  - '`tar_files`'
 - title: Custom decision rules
   contents:
   - '`tar_change`'

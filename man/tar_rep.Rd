@@ -2,7 +2,7 @@
 % Please edit documentation in R/tar_rep.R
 \name{tar_rep}
 \alias{tar_rep}
-\title{Batched replication using dynamic branching.}
+\title{Batched replication with dynamic branching.}
 \usage{
 tar_rep(
   name,
@@ -13,7 +13,7 @@ tar_rep(
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
   format = targets::tar_option_get("format"),
-  iteration = "list",
+  iteration = targets::tar_option_get("iteration"),
   error = targets::tar_option_get("error"),
   memory = targets::tar_option_get("memory"),
   deployment = targets::tar_option_get("deployment"),
@@ -28,7 +28,9 @@ tar_rep(
 \arguments{
 \item{name}{Symbol, name of the target.}
 
-\item{command}{R code to run the target.}
+\item{command}{R code to run multiple times. Must return a list or
+data frame because \code{tar_rep()} will try to append new elements/columns
+\code{tar_rep} and \code{tar_rep} to the output.}
 
 \item{batches}{Number of batches. This is also the number of dynamic
 branches created during \code{tar_make()}.}
@@ -139,8 +141,11 @@ rules that decide whether the target is up to date.}
 }
 \value{
 A list of two targets, one upstream and one downstream.
-The upstream one does some work and returns some file paths,
-and the downstream target is a pattern that applies \code{format = "file"}.
+The upstream target returns a numeric index of batch ids,
+and the downstream one dynamically maps over the batch ids
+to run the command multiple times. The command must return
+a list or data frame because \code{tar_rep()} will try to append
+new elements/columns \code{tar_rep} and \code{tar_rep} to the output.
 }
 \description{
 Shorthand for a pattern that replicates a command
@@ -153,14 +158,28 @@ an upstream local stem
 with an integer vector of batch ids, and a downstream pattern
 that maps over the batch ids. (Thus, each batch is a branch.)
 Each batch/branch replicates the command a certain number of times.
+The command must return
+a list or data frame because \code{tar_rep()} will try to append
+new elements/columns \code{tar_rep} and \code{tar_rep} to the output.
 
 Both batches and reps within each batch
 are aggregated according to the method you specify
 in the \code{iteration} argument. If \code{"list"}, reps and batches
 are aggregated with \code{list()}. If \code{"vector"},
 then \code{vctrs::vec_c()}. If \code{"group"}, then \code{vctrs::vec_rbind()}.
+
+The output from running the downstream target has new elements
+\code{tar_rep}
 }
 \examples{
 \dontrun{
+targets::tar_script({
+  library(tarchetypes)
+  tar_pipeline(
+    tar_rep(x, data.frame(x = sample.int(1e4, 2)), batches = 2, reps = 3)
+  )
+})
+targets::tar_make()
+targets::tar_read(x)
 }
 }

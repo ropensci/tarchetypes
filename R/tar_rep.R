@@ -1,15 +1,15 @@
-#' @title Batched replication using dynamic branching.
+#' @title Batched replication with dynamic branching.
 #' @description Shorthand for a pattern that replicates a command
 #'   using batches. Batches reduce the number of targets
 #'   and thus reduce overhead.
-#' @details `tar_batch()` and `tar_batch_raw()` each create two targets:
+#' @details `tar_rep()` and `tar_rep_raw()` each create two targets:
 #'   an upstream local stem
 #'   with an integer vector of batch ids, and a downstream pattern
 #'   that maps over the batch ids. (Thus, each batch is a branch.)
 #'   Each batch/branch replicates the command a certain number of times.
 #'   The command must return
-#'   a list or data frame because `tar_batch()` will try to append
-#'   new elements/columns `tar_batch` and `tar_rep` to the output.
+#'   a list or data frame because `tar_rep()` will try to append
+#'   new elements/columns `tar_rep` and `tar_rep` to the output.
 #'
 #'   Both batches and reps within each batch
 #'   are aggregated according to the method you specify
@@ -18,18 +18,18 @@
 #'   then `vctrs::vec_c()`. If `"group"`, then `vctrs::vec_rbind()`.
 #'
 #'   The output from running the downstream target has new elements
-#'   `tar_batch`
+#'   `tar_rep`
 #' @export
 #' @inheritParams targets::tar_target
 #' @return A list of two targets, one upstream and one downstream.
 #'   The upstream target returns a numeric index of batch ids,
 #'   and the downstream one dynamically maps over the batch ids
 #'   to run the command multiple times. The command must return
-#'   a list or data frame because `tar_batch()` will try to append
-#'   new elements/columns `tar_batch` and `tar_rep` to the output.
+#'   a list or data frame because `tar_rep()` will try to append
+#'   new elements/columns `tar_rep` and `tar_rep` to the output.
 #' @param command R code to run multiple times. Must return a list or
-#'   data frame because `tar_batch()` will try to append new elements/columns
-#'   `tar_batch` and `tar_rep` to the output.
+#'   data frame because `tar_rep()` will try to append new elements/columns
+#'   `tar_rep` and `tar_rep` to the output.
 #' @param batches Number of batches. This is also the number of dynamic
 #'   branches created during `tar_make()`.
 #' @param reps Number of replications in each batch. The total number
@@ -39,8 +39,16 @@
 #'   (before `tar_make()`). Applies to the `command` argument.
 #' @examples
 #' \dontrun{
+#' targets::tar_script({
+#'   library(tarchetypes)
+#'   tar_pipeline(
+#'     tar_rep(x, data.frame(x = sample.int(1e4, 2)), batches = 2, reps = 3)
+#'   )
+#' })
+#' targets::tar_make()
+#' targets::tar_read(x)
 #' }
-tar_batch <- function(
+tar_rep <- function(
   name,
   command,
   batches = 1,
@@ -49,7 +57,7 @@ tar_batch <- function(
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
   format = targets::tar_option_get("format"),
-  iteration = "list",
+  iteration = targets::tar_option_get("iteration"),
   error = targets::tar_option_get("error"),
   memory = targets::tar_option_get("memory"),
   deployment = targets::tar_option_get("deployment"),
@@ -63,7 +71,7 @@ tar_batch <- function(
   name <- deparse_language(substitute(name))
   envir <- targets::tar_option_get("envir")
   command <- tidy_eval(substitute(command), envir, tidy_eval)
-  tar_batch_raw(
+  tar_rep_raw(
     name = name,
     command = command,
     batches = batches,
@@ -84,12 +92,12 @@ tar_batch <- function(
   )
 }
 
-#' @title Batched replication using dynamic branching
+#' @title Batched replication with dynamic branching
 #'   (raw version).
 #' @description Shorthand for a pattern that replicates a command
 #'   using batches. Batches reduce the number of targets
 #'   and thus reduce overhead.
-#' @details `tar_batch()` and `tar_batch_raw` each create two targets:
+#' @details `tar_rep()` and `tar_rep_raw` each create two targets:
 #'   an upstream local stem
 #'   with an integer vector of batch ids, and a downstream pattern
 #'   that maps over the batch ids. (Thus, each batch is a branch.)
@@ -116,8 +124,14 @@ tar_batch <- function(
 #'   (before `tar_make()`). Applies to the `command` argument.
 #' @examples
 #' \dontrun{
+#' targets::tar_script({
+#'   library(tarchetypes)
+#'   tar_pipeline(
+#'     tar_rep(sample.int(1e4, 1))
+#'   )
+#' })
 #' }
-tar_batch_raw <- function(
+tar_rep_raw <- function(
   name,
   command,
   batches = 1,
@@ -126,7 +140,7 @@ tar_batch_raw <- function(
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
   format = targets::tar_option_get("format"),
-  iteration = "list",
+  iteration = targets::tar_option_get("iteration"),
   error = targets::tar_option_get("error"),
   memory = targets::tar_option_get("memory"),
   deployment = targets::tar_option_get("deployment"),
@@ -138,7 +152,7 @@ tar_batch_raw <- function(
   cue = targets::tar_option_get("cue")
 ) {
   name_batch <- paste0(name, "_batch")
-  batch <- tar_batch_batch(
+  batch <- tar_rep_batch(
     name_batch = name_batch,
     batches = batches,
     error = error,
@@ -146,7 +160,7 @@ tar_batch_raw <- function(
     priority = priority,
     cue = cue
   )
-  target <- tar_batch_target(
+  target <- tar_rep_target(
     name = name,
     name_batch = name_batch,
     command,
@@ -169,7 +183,7 @@ tar_batch_raw <- function(
   list(batch, target)
 }
 
-tar_batch_batch <- function(
+tar_rep_batch <- function(
   name_batch,
   batches,
   error,
@@ -179,7 +193,7 @@ tar_batch_batch <- function(
 ) {
   targets::tar_target_raw(
     name = name_batch,
-    command = expression(seq_len(batches)),
+    command = tar_rep_command_batch(batches),
     packages = character(0),
     format = "rds",
     iteration = "vector",
@@ -193,7 +207,7 @@ tar_batch_batch <- function(
   )
 }
 
-tar_batch_target <- function(
+tar_rep_target <- function(
   name,
   name_batch,
   command,
@@ -215,8 +229,8 @@ tar_batch_target <- function(
 ) {
   targets::tar_target_raw(
     name = name,
-    command = tar_batch_command(command, name_batch, reps, iteration),
-    pattern = tar_batch_pattern(name_batch),
+    command = tar_rep_command_target(command, name_batch, reps, iteration),
+    pattern = tar_rep_pattern(name_batch),
     packages = packages,
     library = library,
     format = format,
@@ -233,9 +247,13 @@ tar_batch_target <- function(
   )
 }
 
-tar_batch_command <- function(command, name_batch, reps, iteration) {
+tar_rep_command_batch <- function(batches) {
+  as.expression(substitute(seq_len(x), env = list(x = batches)))
+}
+
+tar_rep_command_target <- function(command, name_batch, reps, iteration) {
   out <- substitute(
-    tarchetypes::tar_batch_run(
+    tarchetypes::tar_rep_run(
       command = command,
       batch = batch,
       reps = reps,
@@ -251,12 +269,12 @@ tar_batch_command <- function(command, name_batch, reps, iteration) {
   as.expression(out)
 }
 
-tar_batch_pattern <- function(name_batch) {
+tar_rep_pattern <- function(name_batch) {
   substitute(map(x), env = list(x = rlang::sym(name_batch)))
 }
 
-#' @title Run a batch in a `tar_batch()` archetype.
-#' @description Internal function needed for `tar_batch()`.
+#' @title Run a batch in a `tar_rep()` archetype.
+#' @description Internal function needed for `tar_rep()`.
 #'   Users should not invoke it directly.
 #' @export
 #' @keywords internal
@@ -265,30 +283,31 @@ tar_batch_pattern <- function(name_batch) {
 #' @param batch Numeric, batch index.
 #' @param reps Numeric, number of reps per batch.
 #' @param iteration Character, iteration method.
-tar_batch_run <- function(command, batch, reps, iteration) {
+tar_rep_run <- function(command, batch, reps, iteration) {
   expr <- substitute(command)
   envir <- parent.frame()
   switch(
-    list = tar_batch_map(expr, envir, batch, reps),
-    vector = do.call(vctrs::vec_c, tar_batch_map(expr, envir, batch, reps)),
-    group = do.call(vctrs::vec_rbind, tar_batch_map(expr, envir, batch, reps)),
+    iteration,
+    list = tar_rep_map(expr, envir, batch, reps),
+    vector = do.call(vctrs::vec_c, tar_rep_map(expr, envir, batch, reps)),
+    group = do.call(vctrs::vec_rbind, tar_rep_map(expr, envir, batch, reps)),
     throw_validate("unsupported iteration method")
   )
 }
 
-tar_batch_map <- function(expr, envir, batch, reps) {
+tar_rep_map <- function(expr, envir, batch, reps) {
   lapply(
     seq_len(reps),
-    tar_batch_rep,
+    tar_rep_rep,
     expr = expr,
     envir = envir,
     batch = batch
   )
 }
 
-tar_batch_rep <- function(expr, envir, batch, rep) {
+tar_rep_rep <- function(expr, envir, batch, rep) {
   out <- eval(expr, envir = envir)
-  out$tar_batch <- as.integer(batch)
+  out$tar_rep <- as.integer(batch)
   out$tar_rep <- as.integer(rep)
   out
 }

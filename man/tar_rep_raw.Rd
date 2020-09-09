@@ -2,7 +2,7 @@
 % Please edit documentation in R/tar_rep.R
 \name{tar_rep_raw}
 \alias{tar_rep_raw}
-\title{Batched replication using dynamic branching
+\title{Batched replication with dynamic branching
 (raw version).}
 \usage{
 tar_rep_raw(
@@ -14,7 +14,7 @@ tar_rep_raw(
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
   format = targets::tar_option_get("format"),
-  iteration = "list",
+  iteration = targets::tar_option_get("iteration"),
   error = targets::tar_option_get("error"),
   memory = targets::tar_option_get("memory"),
   deployment = targets::tar_option_get("deployment"),
@@ -29,10 +29,8 @@ tar_rep_raw(
 \arguments{
 \item{name}{Character of length 1, name of the target.}
 
-\item{command}{Similar to the \code{command} argument of \code{\link[targets:tar_target]{tar_target()}} except
-the object must already be an expression instead of
-informally quoted code.
-\code{base::expression()} and \code{base::quote()} can produce such objects.}
+\item{command}{Expression object with code to run multiple times.
+Must return a list or data frame when evaluated.}
 
 \item{batches}{Number of batches. This is also the number of dynamic
 branches created during \code{tar_make()}.}
@@ -166,5 +164,11 @@ then \code{vctrs::vec_c()}. If \code{"group"}, then \code{vctrs::vec_rbind()}.
 }
 \examples{
 \dontrun{
+targets::tar_script({
+  library(tarchetypes)
+  tar_pipeline(
+    tar_rep(sample.int(1e4, 1))
+  )
+})
 }
 }
