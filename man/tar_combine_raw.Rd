@@ -151,7 +151,7 @@ tar_dir({
 targets::tar_script({
   target1 <- targets::tar_target(x, head(mtcars))
   target2 <- targets::tar_target(y, tail(mtcars))
-  target3 <- tar_combine(new_target_name, target1, target2)
+  target3 <- tarchetypes::tar_combine(new_target_name, target1, target2)
   targets::tar_pipeline(target1, target2, target3)
 })
 targets::tar_manifest(callr_function = NULL)
