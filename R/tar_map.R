@@ -12,16 +12,18 @@
 #'   and the elements are values that get substituted in place of those
 #'   symbols. If you want the new values to also be symbols,
 #'   use `rlang::syms()` on each respective vector or column.
-#' @param names Character vector, subset of `names(values)`
+#' @param names Subset of `names(values)`
 #'   used to generate the suffixes in the names of the new targets.
-#'   Can use `tidyselect` 
+#'   You can supply symbols, a character vector,
+#'   or tidyselect helpers like [starts_with()].
 #' @examples
 #' \dontrun{
 #' targets::tar_script({
 #'   targets::tar_pipeline(
 #'     tarchetypes::tar_map(
 #'       targets::tar_target(x, a + b),
-#'       targets::tar_target(y, x + a, pattern = map(x))
+#'       targets::tar_target(y, x + a, pattern = map(x)),
+#'       values = list(a = 1:2, b = 3:4)
 #'     )
 #'   )
 #' })
@@ -48,7 +50,7 @@ tar_map_assert_values <- function(values) {
 }
 
 tar_map_extend_values <- function(targets, values, names) {
-  suffix <- produce_suffix(values, names)
+  suffix <- tar_map_produce_suffix(values, names)
   for (target in targets) {
     name <- target$settings$name
     assert_not_in(
@@ -56,23 +58,18 @@ tar_map_extend_values <- function(targets, values, names) {
       names(values),
       paste("target", name, "cannot be in names(values).")
     )
-    values[[name]] <- paste(name, suffix, sep = "_")
+    values[[name]] <- make.names(paste(name, suffix, sep = "_"))
   }
   values
 }
 
 tar_map_produce_suffix <- function(values, names) {
   data <- values[names] %|||% list(id = seq_along(values[[1]]))
-  data <- lapply(data, tar_map_suffix_elt)
+  data <- map(data, ~as.character(unlist(x)))
   out <- apply(as.data.frame(data), 1, paste, collapse = "_")
+  out <- gsub("'", "", out)
+  out <- gsub("\"", "", out)
   make.unique(out, sep = "_")
-}
-
-tar_map_suffix_elt <- function(x) {
-  x <- as.character(unlist(x))
-  x <- gsub("'", "", x)
-  x <- gsub("\"", "", x)
-  make.names(x, unique = FALSE)
 }
 
 tar_map_target <- function(target, values) {

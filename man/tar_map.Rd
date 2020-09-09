@@ -16,9 +16,10 @@ and the elements are values that get substituted in place of those
 symbols. If you want the new values to also be symbols,
 use \code{rlang::syms()} on each respective vector or column.}
 
-\item{names}{Character vector, subset of \code{names(values)}
+\item{names}{Subset of \code{names(values)}
 used to generate the suffixes in the names of the new targets.
-Can use \code{tidyselect}}
+You can supply symbols, a character vector,
+or tidyselect helpers like \code{\link[=starts_with]{starts_with()}}.}
 }
 \value{
 A list of new target objects.
@@ -37,7 +38,8 @@ targets::tar_script({
   targets::tar_pipeline(
     tarchetypes::tar_map(
       targets::tar_target(x, a + b),
-      targets::tar_target(y, x + a, pattern = map(x))
+      targets::tar_target(y, x + a, pattern = map(x)),
+      values = list(a = 1:2, b = 3:4)
     )
   )
 })
