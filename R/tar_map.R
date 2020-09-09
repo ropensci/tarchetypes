@@ -65,7 +65,7 @@ tar_map_extend_values <- function(targets, values, names) {
 
 tar_map_produce_suffix <- function(values, names) {
   data <- values[names] %|||% list(id = seq_along(values[[1]]))
-  data <- map(data, ~as.character(unlist(x)))
+  data <- map(data, ~as.character(unlist(.x)))
   out <- apply(as.data.frame(data), 1, paste, collapse = "_")
   out <- gsub("'", "", out)
   out <- gsub("\"", "", out)
