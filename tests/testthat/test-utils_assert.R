@@ -20,6 +20,11 @@ tar_test("assert_chr()", {
   expect_error(assert_chr(123), class = "condition_validate")
 })
 
+tar_test("assert_inherits()", {
+  expect_silent(assert_inherits(structure(list(), class = "xyz"), "xyz"))
+  expect_error(assert_inherits(letters, "xyz"), class = "condition_validate")
+})
+
 tar_test("assert_int()", {
   expect_silent(assert_int(123L))
   expect_error(assert_int(letters), class = "condition_validate")

@@ -61,7 +61,7 @@
 #'     See the [tar_group()] function to see how you can
 #'     create the special `tar_group` column with `dplyr::group_by()`.
 #' @examples
-#' tar_dir({
+#' targets::tar_dir({
 #' targets::tar_script({
 #'   targets::tar_pipeline(
 #'     tarchetypes::tar_rep(
@@ -150,7 +150,7 @@ tar_rep <- function(
 #'   (e.g. the `!!` operator from `rlang`) as soon as the target is defined
 #'   (before `tar_make()`). Applies to the `command` argument.
 #' @examples
-#' tar_dir({
+#' targets::tar_dir({
 #' targets::tar_script({
 #'   targets::tar_pipeline(
 #'     tarchetypes::tar_rep_raw(

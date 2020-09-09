@@ -4,12 +4,9 @@
 \alias{tar_map}
 \title{Static branching.}
 \usage{
-tar_map(..., values, names = tidyselect::everything())
+tar_map(values, ..., names = tidyselect::everything(), unlist = TRUE)
 }
 \arguments{
-\item{...}{One or more target objects or list of target objects.
-Lists can be arbitrarily nested, as in \code{targets::tar_pipeline()}.}
-
 \item{values}{Named list or data frame with values to iterate over.
 The names are the names of symbols in the commands and pattern statements,
 and the elements are values that get substituted in place of those
@@ -19,13 +16,22 @@ such as characters, integers, and symbols.
 To create a list of symbols as a column of \code{values},
 use \code{rlang::syms()}.}
 
+\item{...}{One or more target objects or list of target objects.
+Lists can be arbitrarily nested, as in \code{targets::tar_pipeline()}.}
+
 \item{names}{Subset of \code{names(values)}
 used to generate the suffixes in the names of the new targets.
 You can supply symbols, a character vector,
 or tidyselect helpers like \code{\link[=starts_with]{starts_with()}}.}
+
+\item{unlist}{Logical, whether to flatten the returned list of targets.
+If \code{unlist = FALSE}, the list is nested and sub-lists
+are grouped by the original input targets.}
 }
 \value{
-A list of new target objects.
+A list of new target objects. If \code{unlist} is \code{FALSE},
+the list is nested and sub-lists are grouped by the original
+input targets.
 }
 \description{
 Define collections of new targets.
@@ -36,14 +42,16 @@ targets by iterating over a list of arguments
 and substituting symbols into commands and pattern statements.
 }
 \examples{
+targets::tar_dir({
 targets::tar_script({
   targets::tar_pipeline(
     tarchetypes::tar_map(
+      list(a = c(12, 34), b = c(45, 78)),
       targets::tar_target(x, a + b),
-      targets::tar_target(y, x + a, pattern = map(x)),
-      values = list(a = c(12, 34), b = c(45, 78))
+      targets::tar_target(y, x + a, pattern = map(x))
     )
   )
 })
 targets::tar_manifest(callr_function = NULL)
+})
 }

@@ -4,9 +4,9 @@
 #' @details `tar_map()` creates collections of new
 #'   targets by iterating over a list of arguments
 #'   and substituting symbols into commands and pattern statements.
-#' @return A list of new target objects.
-#' @param ... One or more target objects or list of target objects.
-#'   Lists can be arbitrarily nested, as in `targets::tar_pipeline()`.
+#' @return A list of new target objects. If `unlist` is `FALSE`,
+#'   the list is nested and sub-lists are grouped by the original
+#'   input targets.
 #' @param values Named list or data frame with values to iterate over.
 #'   The names are the names of symbols in the commands and pattern statements,
 #'   and the elements are values that get substituted in place of those
@@ -15,28 +15,42 @@
 #'   such as characters, integers, and symbols.
 #'   To create a list of symbols as a column of `values`,
 #'   use `rlang::syms()`.
+#' @param ... One or more target objects or list of target objects.
+#'   Lists can be arbitrarily nested, as in `targets::tar_pipeline()`.
 #' @param names Subset of `names(values)`
 #'   used to generate the suffixes in the names of the new targets.
 #'   You can supply symbols, a character vector,
 #'   or tidyselect helpers like [starts_with()].
+#' @param unlist Logical, whether to flatten the returned list of targets.
+#'   If `unlist = FALSE`, the list is nested and sub-lists
+#'   are grouped by the original input targets.
 #' @examples
+#' targets::tar_dir({
 #' targets::tar_script({
 #'   targets::tar_pipeline(
 #'     tarchetypes::tar_map(
+#'       list(a = c(12, 34), b = c(45, 78)),
 #'       targets::tar_target(x, a + b),
-#'       targets::tar_target(y, x + a, pattern = map(x)),
-#'       values = list(a = c(12, 34), b = c(45, 78))
+#'       targets::tar_target(y, x + a, pattern = map(x))
 #'     )
 #'   )
 #' })
 #' targets::tar_manifest(callr_function = NULL)
-tar_map <- function(..., values, names = tidyselect::everything()) {
+#' })
+tar_map <- function(
+  values,
+  ...,
+  names = tidyselect::everything(),
+  unlist = TRUE
+) {
   targets <- unlist(list(...), recursive = TRUE)
+  assert_targets(targets)
   tar_map_assert_values(values)
   names_quosure <- rlang::enquo(names)
   names <- eval_tidyselect(names_quosure, base::names(values))
   values <- tar_map_extend_values(targets, values, names)
-  unlist(lapply(targets, tar_map_target, values = values))
+  out <- lapply(targets, tar_map_target, values = values)
+  trn(unlist, unlist(out), out)
 }
 
 tar_map_assert_values <- function(values) {

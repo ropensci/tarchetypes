@@ -1,4 +1,4 @@
-tar_test("tar_map() return value", {
+tar_test("tar_map() return value with unlist = TRUE", {
   out <- tar_map(
     targets::tar_target(x, a + b),
     targets::tar_target(y, x + a, pattern = map(x)),
@@ -6,6 +6,20 @@ tar_test("tar_map() return value", {
   )
   expect_equal(length(out), 4)
   map(out, ~expect_true(inherits(.x, "tar_target")))
+})
+
+tar_test("tar_map() return value with unlist = FALSE", {
+  out <- tar_map(
+    targets::tar_target(x, a + b),
+    targets::tar_target(y, x + a, pattern = map(x)),
+    values = list(a = c(12, 34), b = c(56, 78)),
+    unlist = FALSE
+  )
+  expect_equal(length(out), 2)
+  expect_equal(length(out[[1]]), 2)
+  expect_equal(length(out[[2]]), 2)
+  map(out[[1]], ~expect_true(inherits(.x, "tar_target")))
+  map(out[[2]], ~expect_true(inherits(.x, "tar_target")))
 })
 
 tar_test("tar_map() with names turned off", {

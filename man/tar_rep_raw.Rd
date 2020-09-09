@@ -163,7 +163,7 @@ are aggregated with \code{list()}. If \code{"vector"},
 then \code{vctrs::vec_c()}. If \code{"group"}, then \code{vctrs::vec_rbind()}.
 }
 \examples{
-tar_dir({
+targets::tar_dir({
 targets::tar_script({
   targets::tar_pipeline(
     tarchetypes::tar_rep_raw(

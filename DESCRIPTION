@@ -30,6 +30,7 @@ Imports:
   rlang (>= 0.4.7),
   targets,
   tidyselect (>= 1.1.0),
+  utils,
   vctrs (>= 0.3.4),
   withr (>= 2.1.2)
 Suggests:
