@@ -9,7 +9,7 @@ assert_correct_fields <- function(object, constructor) {
 }
 
 assert_equal_lengths <- function(x, msg = NULL) {
-  lengths <- vapply(x, length, FUN.VALUE = integer(1))
+  lengths <- map_int(x, length)
   if (length(unique(lengths)) > 1L) {
     throw_validate(msg %||% "x must have equal-length elements.")
   }
@@ -56,6 +56,12 @@ assert_names <- function(x, msg = NULL) {
 assert_nonempty <- function(x, msg = NULL) {
   if (length(x) < 1L) {
     throw_validate(msg %||% "x must be nonempty.")
+  }
+}
+
+assert_not_in <- function(x, choices, msg = NULL) {
+  if (any(x %in% choices)) {
+    throw_validate(msg %||% paste(deparse(x), " is in ", deparse(choices)))
   }
 }
 

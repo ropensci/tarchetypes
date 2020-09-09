@@ -29,11 +29,11 @@
 #' }
 tar_map <- function(..., values, names = tidyselect::everything()) {
   targets <- unlist(list(...), recursive = TRUE)
-  values <- as.list(values)
   tar_map_assert_values(values)
   names_quosure <- rlang::enquo(names)
   names <- eval_tidyselect(names_quosure, base::names(values))
-  suffix <- produce_suffix(values, names)
+  values <- tar_map_extend_values(targets, values, names)
+  lapply(targets, tar_map_target, values = values)
 }
 
 tar_map_assert_values <- function(values) {
@@ -45,6 +45,20 @@ tar_map_assert_values <- function(values) {
   assert_names(names(values), "names(values) must be legal symbol names.")
   assert_nonempty(values, "values in tar_map() must not be empty.")
   assert_equal_lengths(values, "values must have equal-length elements.")
+}
+
+tar_map_extend_values <- function(targets, values, names) {
+  suffix <- produce_suffix(values, names)
+  for (target in targets) {
+    name <- target$settings$name
+    assert_not_in(
+      name,
+      names(values),
+      paste("target", name, "cannot be in names(values).")
+    )
+    values[[name]] <- paste(name, suffix, sep = "_")
+  }
+  values
 }
 
 tar_map_produce_suffix <- function(values, names) {
@@ -59,4 +73,8 @@ tar_map_suffix_elt <- function(x) {
   x <- gsub("'", "", x)
   x <- gsub("\"", "", x)
   make.names(x, unique = FALSE)
+}
+
+tar_map_target <- function(target, values) {
+  browser()
 }

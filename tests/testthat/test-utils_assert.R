@@ -40,6 +40,12 @@ tar_test("assert_nonempty()", {
   expect_error(assert_nonempty(list()), class = "condition_validate")
 })
 
+tar_test("assert_not_in()", {
+  expect_silent(assert_not_in("x", c("a", "b")))
+  expect_error(assert_not_in("b", c("a", "b")), class = "condition_validate")
+})
+
+
 tar_test("assert_nzchr()", {
   expect_silent(assert_nzchr(c("a", "b")))
   expect_error(assert_nzchr(c("a", "")), class = "condition_validate")
