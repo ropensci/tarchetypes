@@ -20,18 +20,16 @@
 #'   You can supply symbols, a character vector,
 #'   or tidyselect helpers like [starts_with()].
 #' @examples
-#' \dontrun{
 #' targets::tar_script({
 #'   targets::tar_pipeline(
 #'     tarchetypes::tar_map(
 #'       targets::tar_target(x, a + b),
 #'       targets::tar_target(y, x + a, pattern = map(x)),
-#'       values = list(a = 1:2, b = 3:4)
+#'       values = list(a = c(12, 34), b = c(45, 78))
 #'     )
 #'   )
 #' })
-#' targets::tar_manifest()
-#' }
+#' targets::tar_manifest(callr_function = NULL)
 tar_map <- function(..., values, names = tidyselect::everything()) {
   targets <- unlist(list(...), recursive = TRUE)
   tar_map_assert_values(values)

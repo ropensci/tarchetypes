@@ -36,16 +36,14 @@ targets by iterating over a list of arguments
 and substituting symbols into commands and pattern statements.
 }
 \examples{
-\dontrun{
 targets::tar_script({
   targets::tar_pipeline(
     tarchetypes::tar_map(
       targets::tar_target(x, a + b),
       targets::tar_target(y, x + a, pattern = map(x)),
-      values = list(a = 1:2, b = 3:4)
+      values = list(a = c(12, 34), b = c(45, 78))
     )
   )
 })
-targets::tar_manifest()
-}
+targets::tar_manifest(callr_function = NULL)
 }

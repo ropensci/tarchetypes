@@ -25,6 +25,7 @@ reference:
 - title: Branching
   contents:
   - '`tar_rep`'
+  - '`tar_map`'
 - title: Formats
   contents:
   - '`tar_formats`'

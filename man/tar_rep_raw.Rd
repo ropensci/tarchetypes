@@ -163,7 +163,7 @@ are aggregated with \code{list()}. If \code{"vector"},
 then \code{vctrs::vec_c()}. If \code{"group"}, then \code{vctrs::vec_rbind()}.
 }
 \examples{
-\dontrun{
+tar_dir({
 targets::tar_script({
   targets::tar_pipeline(
     tarchetypes::tar_rep_raw(
@@ -174,7 +174,7 @@ targets::tar_script({
     )
   )
 })
-targets::tar_make()
+targets::tar_make(callr_function = NULL)
 targets::tar_read(x)
-}
+})
 }
