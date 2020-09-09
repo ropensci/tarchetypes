@@ -4,12 +4,9 @@
 \alias{tar_map}
 \title{Static branching.}
 \usage{
-tar_map(..., values, names = tidyselect::everything(), unlist = TRUE)
+tar_map(values, ..., names = tidyselect::everything(), unlist = TRUE)
 }
 \arguments{
-\item{...}{One or more target objects or list of target objects.
-Lists can be arbitrarily nested, as in \code{targets::tar_pipeline()}.}
-
 \item{values}{Named list or data frame with values to iterate over.
 The names are the names of symbols in the commands and pattern statements,
 and the elements are values that get substituted in place of those
@@ -18,6 +15,9 @@ should be small objects that can easily deparse to names,
 such as characters, integers, and symbols.
 To create a list of symbols as a column of \code{values},
 use \code{rlang::syms()}.}
+
+\item{...}{One or more target objects or list of target objects.
+Lists can be arbitrarily nested, as in \code{targets::tar_pipeline()}.}
 
 \item{names}{Subset of \code{names(values)}
 used to generate the suffixes in the names of the new targets.
@@ -45,9 +45,9 @@ and substituting symbols into commands and pattern statements.
 targets::tar_script({
   targets::tar_pipeline(
     tarchetypes::tar_map(
+      list(a = c(12, 34), b = c(45, 78)),
       targets::tar_target(x, a + b),
       targets::tar_target(y, x + a, pattern = map(x)),
-      values = list(a = c(12, 34), b = c(45, 78))
     )
   )
 })

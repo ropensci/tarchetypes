@@ -7,8 +7,6 @@
 #' @return A list of new target objects. If `unlist` is `FALSE`,
 #'   the list is nested and sub-lists are grouped by the original
 #'   input targets.
-#' @param ... One or more target objects or list of target objects.
-#'   Lists can be arbitrarily nested, as in `targets::tar_pipeline()`.
 #' @param values Named list or data frame with values to iterate over.
 #'   The names are the names of symbols in the commands and pattern statements,
 #'   and the elements are values that get substituted in place of those
@@ -17,6 +15,8 @@
 #'   such as characters, integers, and symbols.
 #'   To create a list of symbols as a column of `values`,
 #'   use `rlang::syms()`.
+#' @param ... One or more target objects or list of target objects.
+#'   Lists can be arbitrarily nested, as in `targets::tar_pipeline()`.
 #' @param names Subset of `names(values)`
 #'   used to generate the suffixes in the names of the new targets.
 #'   You can supply symbols, a character vector,
@@ -28,16 +28,16 @@
 #' targets::tar_script({
 #'   targets::tar_pipeline(
 #'     tarchetypes::tar_map(
+#'       list(a = c(12, 34), b = c(45, 78)),
 #'       targets::tar_target(x, a + b),
 #'       targets::tar_target(y, x + a, pattern = map(x)),
-#'       values = list(a = c(12, 34), b = c(45, 78))
 #'     )
 #'   )
 #' })
 #' targets::tar_manifest(callr_function = NULL)
 tar_map <- function(
-  ...,
   values,
+  ...,
   names = tidyselect::everything(),
   unlist = TRUE
 ) {
