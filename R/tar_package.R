@@ -9,6 +9,7 @@
 #' @importFrom fs path_rel
 #' @importFrom rlang sym syms
 #' @importFrom targets tar_cue tar_dir tar_load tar_option_get tar_path
-#'   tar_pipeline tar_read tar_script tar_target_raw
+#'   tar_pipeline tar_read tar_script tar_target tar_target_raw
+#' @importFrom vctrs vec_c vec_rbind
 #' @importFrom withr with_options
 NULL

@@ -12,7 +12,7 @@
 #'   <https://github.com/wlandau/targets/issues/136> and
 #'   <https://github.com/ropensci/drake/issues/1302>.
 #' @export
-#' @inheritParams targets::tar_target_raw
+#' @inheritParams targets::tar_target
 #' @return A list of two targets, one upstream and one downstream.
 #'   The upstream one does some work and returns some file paths,
 #'   and the downstream target is a pattern that applies `format = "file"`.

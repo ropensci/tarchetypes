@@ -25,12 +25,9 @@ tar_change(
 )
 }
 \arguments{
-\item{name}{Character of length 1, name of the target.}
+\item{name}{Symbol, name of the target.}
 
-\item{command}{Similar to the \code{command} argument of \code{\link[targets:tar_target]{tar_target()}} except
-the object must already be an expression instead of
-informally quoted code.
-\code{base::expression()} and \code{base::quote()} can produce such objects.}
+\item{command}{R code to run the target.}
 
 \item{change}{R code for the upstream change-inducing target.}
 

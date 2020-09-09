@@ -7,7 +7,7 @@
 #'   an upstream auxiliary target to indicate the custom condition
 #'   and a downstream target that responds to it and does your work.
 #' @export
-#' @inheritParams targets::tar_target_raw
+#' @inheritParams targets::tar_target
 #' @return A list of targets: one to indicate whether the custom
 #'   condition is met, and another to respond to it and do your
 #'   actual work.

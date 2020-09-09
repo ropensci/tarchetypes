@@ -21,7 +21,7 @@ tar_knit(
 )
 }
 \arguments{
-\item{name}{Character of length 1, name of the target.}
+\item{name}{Symbol, name of the target.}
 
 \item{path}{Character string, file path to the \code{knitr} source file.
 Must have length 1.}

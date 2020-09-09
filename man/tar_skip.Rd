@@ -25,12 +25,9 @@ tar_skip(
 )
 }
 \arguments{
-\item{name}{Character of length 1, name of the target.}
+\item{name}{Symbol, name of the target.}
 
-\item{command}{Similar to the \code{command} argument of \code{\link[targets:tar_target]{tar_target()}} except
-the object must already be an expression instead of
-informally quoted code.
-\code{base::expression()} and \code{base::quote()} can produce such objects.}
+\item{command}{R code to run the target.}
 
 \item{skip}{R code for the skipping condition. If it evaluates to \code{TRUE}
 during \code{tar_make()}, the target will cancel itself.}

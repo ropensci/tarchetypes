@@ -27,6 +27,7 @@ Imports:
   fs (>= 1.4.2),
   rlang (>= 0.4.7),
   targets,
+  vctrs (>= 0.3.4),
   withr (>= 2.1.2)
 Suggests:
   digest (>= 0.6.25),

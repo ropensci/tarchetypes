@@ -7,7 +7,7 @@
 #'   even if the target does not exist yet. This behavior differs from
 #'   `tar_cue(mode = "never")`, which still runs if the target does not exist.
 #' @export
-#' @inheritParams targets::tar_target_raw
+#' @inheritParams targets::tar_target
 #' @return A target with `targets::tar_cancel(your_condition)` inserted
 #'   into the command.
 #' @param skip R code for the skipping condition. If it evaluates to `TRUE`

@@ -8,7 +8,7 @@
 #'   if the auxiliary value changes. The behavior is cancelled if
 #'   `cue` is `tar_cue(depend = FALSE)` or `tar_cue(mode = "never")`.
 #' @export
-#' @inheritParams targets::tar_target_raw
+#' @inheritParams targets::tar_target
 #' @return A list of two targets, one upstream and one downstream.
 #'   The upstream one triggers the change, and the downstream one
 #'   responds to it. See the examples for details.

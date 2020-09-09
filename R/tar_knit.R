@@ -31,7 +31,7 @@
 #'   all returned paths are *relative* paths to ensure portability
 #'   (so that the project can be moved from one file system to another
 #'   without invalidating the target).
-#' @inheritParams targets::tar_target_raw
+#' @inheritParams targets::tar_target
 #' @inheritParams knitr::knit
 #' @param path Character string, file path to the `knitr` source file.
 #'   Must have length 1.
