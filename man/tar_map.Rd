@@ -4,7 +4,7 @@
 \alias{tar_map}
 \title{Static branching.}
 \usage{
-tar_map(..., values, names = tidyselect::everything())
+tar_map(..., values, names = tidyselect::everything(), unlist = TRUE)
 }
 \arguments{
 \item{...}{One or more target objects or list of target objects.
@@ -23,9 +23,15 @@ use \code{rlang::syms()}.}
 used to generate the suffixes in the names of the new targets.
 You can supply symbols, a character vector,
 or tidyselect helpers like \code{\link[=starts_with]{starts_with()}}.}
+
+\item{unlist}{Logical, whether to flatten the returned list of targets.
+If \code{unlist = FALSE}, the list is nested and sub-lists
+are grouped by the original input targets.}
 }
 \value{
-A list of new target objects.
+A list of new target objects. If \code{unlist} is \code{FALSE},
+the list is nested and sub-lists are grouped by the original
+input targets.
 }
 \description{
 Define collections of new targets.
