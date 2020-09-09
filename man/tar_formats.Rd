@@ -248,8 +248,9 @@ For details on specialized storage formats, open the help file of the
 \dontrun{
 targets::tar_dir({
 targets::tar_script(
-  tar_pipeline(
-    tar_rds(x, 1) # equivalent to tar_target(x, 1, format = "rds")
+  targets::tar_pipeline(
+    # equivalent to tar_target(x, 1, format = "rds"):
+    tarchetypes::tar_rds(x, 1)
   )
 )
 targets::tar_make()
