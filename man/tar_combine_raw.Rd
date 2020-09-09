@@ -36,6 +36,9 @@ R command to aggregate the targets. Must contain
 \code{!!!.x} where the arguments are to be inserted,
 where \verb{!!!} is the unquote splice operator from \code{rlang}.}
 
+\item{use_names}{Logical, whether to insert the names of the targets
+into the command when splicing.}
+
 \item{pattern}{Similar to the \code{pattern} argument of \code{\link[targets:tar_target]{tar_target()}}
 except the object must already be an expression instead of
 informally quoted code.

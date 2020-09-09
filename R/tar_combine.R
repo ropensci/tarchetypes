@@ -88,6 +88,8 @@ tar_combine <- function(
 #'   R command to aggregate the targets. Must contain
 #'   `!!!.x` where the arguments are to be inserted,
 #'   where `!!!` is the unquote splice operator from `rlang`.
+#' @param use_names Logical, whether to insert the names of the targets
+#'   into the command when splicing.
 #' @examples
 #' targets::tar_dir({
 #' targets::tar_script({

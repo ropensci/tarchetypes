@@ -48,7 +48,7 @@ targets::tar_script({
     tarchetypes::tar_map(
       list(a = c(12, 34), b = c(45, 78)),
       targets::tar_target(x, a + b),
-      targets::tar_target(y, x + a, pattern = map(x)),
+      targets::tar_target(y, x + a, pattern = map(x))
     )
   )
 })
