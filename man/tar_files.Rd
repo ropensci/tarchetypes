@@ -153,23 +153,23 @@ For more information, visit
 \examples{
 \dontrun{
 # Without loss of generality,
-tar_files(your_target, c("a.txt", "b.txt"))
+# tar_files(your_target, c("a.txt", "b.txt"))
 # is equivalent to:
-list(
-  tar_target(your_target_files, c("a.txt", "b.txt")),
-  tar_target(
-    your_target,
-    your_target_files,
-    pattern = map(your_target_files),
-    format = "file",
-    deployment = "local",
-    storage = "local",
-    retrieval = "local"
-  )
-)
+# list(
+#   tar_target(your_target_files, c("a.txt", "b.txt")),
+#   tar_target(
+#     your_target,
+#     your_target_files,
+#     pattern = map(your_target_files),
+#     format = "file",
+#     deployment = "local",
+#     storage = "local",
+#     retrieval = "local"
+#   )
+# )
 # Try it out.
-file.create(c("a.txt", "b.txt"))
 targets::tar_dir({
+file.create(c("a.txt", "b.txt"))
 targets::tar_script({
   tar_pipeline(
     tarchetypes::tar_files(x, c("a.txt", "b.txt"))

@@ -246,11 +246,13 @@ For details on specialized storage formats, open the help file of the
 }
 \examples{
 \dontrun{
+targets::tar_dir({
 targets::tar_script(
   tar_pipeline(
     tar_rds(x, 1) # equivalent to tar_target(x, 1, format = "rds")
   )
 )
 targets::tar_make()
+})
 }
 }

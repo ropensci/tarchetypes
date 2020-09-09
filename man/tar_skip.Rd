@@ -151,12 +151,12 @@ even if the target does not exist yet. This behavior differs from
 \examples{
 \dontrun{
 # Without loss of generality,
-tar_skip(your_target, command = run_stuff(), skip = should_skip())
+# tar_skip(your_target, command = run_stuff(), skip = should_skip())
 # is equivalent to:
-tar_target(your_target, {
-  tar_cancel(should_skip())
-  run_stuff()
-})
+# tar_target(your_target, {
+#   tar_cancel(should_skip())
+#   run_stuff()
+# })
 # Try it out.
 targets::tar_dir({
 targets::tar_script({
