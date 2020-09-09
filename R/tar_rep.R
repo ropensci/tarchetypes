@@ -9,16 +9,14 @@
 #'   Each batch/branch replicates the command a certain number of times.
 #'   The command must return
 #'   a list or data frame because `tar_rep()` will try to append
-#'   new elements/columns `tar_rep` and `tar_rep` to the output.
+#'   new elements/columns `tar_batch` and `tar_rep` to the output
+#'   to denote the batch and rep-within-batch IDs, respectively.
 #'
 #'   Both batches and reps within each batch
 #'   are aggregated according to the method you specify
 #'   in the `iteration` argument. If `"list"`, reps and batches
 #'   are aggregated with `list()`. If `"vector"`,
 #'   then `vctrs::vec_c()`. If `"group"`, then `vctrs::vec_rbind()`.
-#'
-#'   The output from running the downstream target has new elements
-#'   `tar_rep`
 #' @export
 #' @inheritParams targets::tar_target
 #' @return A list of two targets, one upstream and one downstream.
@@ -26,10 +24,12 @@
 #'   and the downstream one dynamically maps over the batch ids
 #'   to run the command multiple times. The command must return
 #'   a list or data frame because `tar_rep()` will try to append
-#'   new elements/columns `tar_rep` and `tar_rep` to the output.
+#'   new elements/columns `tar_batch` and `tar_rep` to the output
+#'   to denote the batch and rep-within-batch IDs, respectively.
 #' @param command R code to run multiple times. Must return a list or
 #'   data frame because `tar_rep()` will try to append new elements/columns
-#'   `tar_rep` and `tar_rep` to the output.
+#'   `tar_batch` and `tar_rep` to the output to denote the batch
+#'   and rep-within-batch IDs, respectively.
 #' @param batches Number of batches. This is also the number of dynamic
 #'   branches created during `tar_make()`.
 #' @param reps Number of replications in each batch. The total number

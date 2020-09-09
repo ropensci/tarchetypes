@@ -30,7 +30,8 @@ tar_rep(
 
 \item{command}{R code to run multiple times. Must return a list or
 data frame because \code{tar_rep()} will try to append new elements/columns
-\code{tar_rep} and \code{tar_rep} to the output.}
+\code{tar_batch} and \code{tar_rep} to the output to denote the batch
+and rep-within-batch IDs, respectively.}
 
 \item{batches}{Number of batches. This is also the number of dynamic
 branches created during \code{tar_make()}.}
@@ -145,7 +146,8 @@ The upstream target returns a numeric index of batch ids,
 and the downstream one dynamically maps over the batch ids
 to run the command multiple times. The command must return
 a list or data frame because \code{tar_rep()} will try to append
-new elements/columns \code{tar_rep} and \code{tar_rep} to the output.
+new elements/columns \code{tar_batch} and \code{tar_rep} to the output
+to denote the batch and rep-within-batch IDs, respectively.
 }
 \description{
 Shorthand for a pattern that replicates a command
@@ -160,16 +162,14 @@ that maps over the batch ids. (Thus, each batch is a branch.)
 Each batch/branch replicates the command a certain number of times.
 The command must return
 a list or data frame because \code{tar_rep()} will try to append
-new elements/columns \code{tar_rep} and \code{tar_rep} to the output.
+new elements/columns \code{tar_batch} and \code{tar_rep} to the output
+to denote the batch and rep-within-batch IDs, respectively.
 
 Both batches and reps within each batch
 are aggregated according to the method you specify
 in the \code{iteration} argument. If \code{"list"}, reps and batches
 are aggregated with \code{list()}. If \code{"vector"},
 then \code{vctrs::vec_c()}. If \code{"group"}, then \code{vctrs::vec_rbind()}.
-
-The output from running the downstream target has new elements
-\code{tar_rep}
 }
 \examples{
 \dontrun{
