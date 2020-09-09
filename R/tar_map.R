@@ -27,16 +27,16 @@
 #' })
 #' targets::tar_manifest()
 #' }
-tar_map <- function(..., values, names) {
+tar_map <- function(..., values, names = tidyselect::everything()) {
   targets <- unlist(list(...), recursive = TRUE)
   values <- as.list(values)
-  assert_tar_map_values(values)
+  tar_map_assert_values(values)
   names_quosure <- rlang::enquo(names)
-  names <- eval_tidyselect(names_quosure, names(values))
-  
+  names <- eval_tidyselect(names_quosure, base::names(values))
+  suffix <- produce_suffix(values, names)
 }
 
-assert_tar_map_values <- function(values) {
+tar_map_assert_values <- function(values) {
   assert_list(values, "values in tar_map() must be a list or data frame.")
   assert_nonempty(names(values), "names(values) must not be empty.")
   assert_unique(names(values), "names(values) must be unique.")
@@ -45,4 +45,18 @@ assert_tar_map_values <- function(values) {
   assert_names(names(values), "names(values) must be legal symbol names.")
   assert_nonempty(values, "values in tar_map() must not be empty.")
   assert_equal_lengths(values, "values must have equal-length elements.")
+}
+
+tar_map_produce_suffix <- function(values, names) {
+  data <- values[names] %|||% list(id = seq_along(values[[1]]))
+  data <- lapply(data, tar_map_suffix_elt)
+  out <- apply(as.data.frame(data), 1, paste, collapse = "_")
+  make.unique(out, sep = "_")
+}
+
+tar_map_suffix_elt <- function(x) {
+  x <- as.character(unlist(x))
+  x <- gsub("'", "", x)
+  x <- gsub("\"", "", x)
+  make.names(x, unique = FALSE)
 }

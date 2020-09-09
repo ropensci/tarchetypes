@@ -4,7 +4,7 @@
 \alias{tar_map}
 \title{Static branching.}
 \usage{
-tar_map(..., values, names)
+tar_map(..., values, names = tidyselect::everything())
 }
 \arguments{
 \item{...}{One or more target objects or list of target objects.
