@@ -1,21 +1,3 @@
-tar_test("tar_rep() with non-list output", {
-  targets::tar_script({
-    targets::tar_pipeline(
-      tarchetypes::tar_rep(
-        x,
-        sample.int(1e4, 1),
-        batches = 2,
-        reps = 3,
-        iteration = "list"
-      )
-    )
-  })
-  expect_error(
-    targets::tar_make(callr_function = NULL),
-    class = "condition_run"
-  )
-})
-
 tar_test("tar_rep(iteration = 'list')", {
   targets::tar_script({
     targets::tar_pipeline(
@@ -97,4 +79,29 @@ tar_test("tar_rep(iteration = 'group')", {
   expect_equal(length(tar_meta(x, fields = "children")$children[[1]]), 2L)
   expect_equal(tar_read(x, branches = 1), out[seq_len(6), ])
   expect_equivalent(tar_read(x, branches = 2), out[seq_len(6) + 6, ])
+})
+
+tar_test("tar_rep() with non-list output", {
+  targets::tar_script({
+    targets::tar_pipeline(
+      tarchetypes::tar_rep(
+        x,
+        sample.int(1e4, 1),
+        batches = 2,
+        reps = 3,
+        iteration = "list"
+      )
+    )
+  })
+  expect_error(
+    targets::tar_make(callr_function = NULL),
+    class = "condition_run"
+  )
+})
+
+tar_test("tar_rep_run() with unsupported iteration method", {
+  expect_error(
+    tar_rep_run(quote(1), 1, 1, "nope"),
+    class = "condition_validate"
+  )
 })
