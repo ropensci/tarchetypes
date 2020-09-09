@@ -35,6 +35,12 @@ assert_identical_chr <- function(x, y, msg = NULL) {
   }
 }
 
+assert_inherits <- function(x, class, msg = NULL) {
+  if (!inherits(x, class)) {
+    throw_validate(msg %||% paste("x does not inherit from", class))
+  }
+}
+
 assert_int <- function(x, msg = NULL) {
   if (!is.integer(x)) {
     throw_validate(msg %||% "x must be an integer vector.")
@@ -93,6 +99,10 @@ assert_scalar <- function(x, msg = NULL) {
   if (length(x) != 1) {
     throw_validate(msg %||% "x must have length 1.")
   }
+}
+
+assert_targets <- function(x) {
+  map(x, assert_inherits, class = "tar_target", msg = "... must have targets")
 }
 
 assert_unique <- function(x, msg = NULL) {

@@ -42,6 +42,7 @@ tar_map <- function(
   unlist = TRUE
 ) {
   targets <- unlist(list(...), recursive = TRUE)
+  assert_targets(targets)
   tar_map_assert_values(values)
   names_quosure <- rlang::enquo(names)
   names <- eval_tidyselect(names_quosure, base::names(values))
