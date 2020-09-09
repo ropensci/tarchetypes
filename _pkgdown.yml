@@ -26,6 +26,8 @@ reference:
   contents:
   - '`tar_rep`'
   - '`tar_map`'
+  - '`tar_combine`'
+  - '`tar_combine_raw`'
 - title: Formats
   contents:
   - '`tar_formats`'
