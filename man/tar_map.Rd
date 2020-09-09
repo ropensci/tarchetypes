@@ -42,6 +42,7 @@ targets by iterating over a list of arguments
 and substituting symbols into commands and pattern statements.
 }
 \examples{
+targets::tar_dir({
 targets::tar_script({
   targets::tar_pipeline(
     tarchetypes::tar_map(
@@ -52,4 +53,5 @@ targets::tar_script({
   )
 })
 targets::tar_manifest(callr_function = NULL)
+})
 }

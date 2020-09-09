@@ -147,7 +147,7 @@ Like \code{\link[=tar_combine]{tar_combine()}} except the \code{name}, \code{com
 and \code{pattern} arguments use standard evaluation.
 }
 \examples{
-tar_dir({
+targets::tar_dir({
 targets::tar_script({
   target1 <- targets::tar_target(x, head(mtcars))
   target2 <- targets::tar_target(y, tail(mtcars))

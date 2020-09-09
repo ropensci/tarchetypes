@@ -14,7 +14,7 @@
 #' @param use_names Logical, whether to insert the names of the targets
 #'   into the command when splicing.
 #' @examples
-#' tar_dir({
+#' targets::tar_dir({
 #' targets::tar_script({
 #'   target1 <- targets::tar_target(x, head(mtcars))
 #'   target2 <- targets::tar_target(y, tail(mtcars))
@@ -89,7 +89,7 @@ tar_combine <- function(
 #'   `!!!.x` where the arguments are to be inserted,
 #'   where `!!!` is the unquote splice operator from `rlang`.
 #' @examples
-#' tar_dir({
+#' targets::tar_dir({
 #' targets::tar_script({
 #'   target1 <- targets::tar_target(x, head(mtcars))
 #'   target2 <- targets::tar_target(y, tail(mtcars))

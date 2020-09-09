@@ -25,6 +25,7 @@
 #'   If `unlist = FALSE`, the list is nested and sub-lists
 #'   are grouped by the original input targets.
 #' @examples
+#' targets::tar_dir({
 #' targets::tar_script({
 #'   targets::tar_pipeline(
 #'     tarchetypes::tar_map(
@@ -35,6 +36,7 @@
 #'   )
 #' })
 #' targets::tar_manifest(callr_function = NULL)
+#' })
 tar_map <- function(
   values,
   ...,
