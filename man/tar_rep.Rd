@@ -183,7 +183,7 @@ then \code{vctrs::vec_c()}. If \code{"group"}, then \code{vctrs::vec_rbind()}.
 }
 \examples{
 \dontrun{
-targets::tar_script({
+tar_dir({
   targets::tar_pipeline(
     tarchetypes::tar_rep(
       x,
@@ -195,5 +195,5 @@ targets::tar_script({
 })
 targets::tar_make()
 targets::tar_read(x)
-}
+})
 }

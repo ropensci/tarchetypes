@@ -1,3 +1,9 @@
+tar_test("assert_equal_lengths()", {
+  expect_silent(assert_equal_lengths(letters))
+  x <- list(x = seq_len(2), y = seq_len(3))
+  expect_error(assert_equal_lengths(x), class = "condition_validate")
+})
+
 tar_test("assert_package()", {
   expect_error(assert_package("_illegal"), class = "condition_validate")
 })
@@ -17,6 +23,26 @@ tar_test("assert_chr()", {
 tar_test("assert_int()", {
   expect_silent(assert_int(123L))
   expect_error(assert_int(letters), class = "condition_validate")
+})
+
+tar_test("assert_list()", {
+  expect_silent(assert_list(list("abc")))
+  expect_error(assert_list("abc"), class = "condition_validate")
+})
+
+tar_test("assert_names()", {
+  expect_silent(assert_names(c("a", "b")))
+  expect_error(assert_names(c("a", "_b")), class = "condition_validate")
+})
+
+tar_test("assert_nonempty()", {
+  expect_silent(assert_nonempty(c("a", "b")))
+  expect_error(assert_nonempty(list()), class = "condition_validate")
+})
+
+tar_test("assert_nzchr()", {
+  expect_silent(assert_nzchr(c("a", "b")))
+  expect_error(assert_nzchr(c("a", "")), class = "condition_validate")
 })
 
 tar_test("assert_identical()", {

@@ -8,6 +8,13 @@ assert_correct_fields <- function(object, constructor) {
   assert_identical_chr(sort(names(object)), sort(names(formals(constructor))))
 }
 
+assert_equal_lengths <- function(x, msg = NULL) {
+  lengths <- vapply(x, length, FUN.VALUE = integer(1))
+  if (length(unique(lengths)) > 1L) {
+    throw_validate(msg %||% "x must have equal-length elements.")
+  }
+}
+
 assert_envir <- function(x, msg = NULL) {
   if (!is.environment(x)) {
     throw_validate(msg %||% "x must be an environment")
@@ -31,6 +38,30 @@ assert_identical_chr <- function(x, y, msg = NULL) {
 assert_int <- function(x, msg = NULL) {
   if (!is.integer(x)) {
     throw_validate(msg %||% "x must be an integer vector.")
+  }
+}
+
+assert_list <- function(x, msg = NULL) {
+  if (!is.list(x)) {
+    throw_validate(msg %||% "x must be a list.")
+  }
+}
+
+assert_names <- function(x, msg = NULL) {
+  if (any(x != make.names(x, unique = FALSE))) {
+    throw_validate(msg %||% "x must legal symbol names.")
+  }
+}
+
+assert_nonempty <- function(x, msg = NULL) {
+  if (length(x) < 1L) {
+    throw_validate(msg %||% "x must be nonempty.")
+  }
+}
+
+assert_nzchr <- function(x, msg = NULL) {
+  if (any(!nzchar(x))) {
+    throw_validate(msg %||% "x must not have empty strings.")
   }
 }
 

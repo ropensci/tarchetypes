@@ -4,7 +4,9 @@ Description: The targets package is a pipeline toolkit that brings together
   function-oriented programming and Make-like declarative workflows for
   Statistics and data science in R. The tarchetypes package provides
   convenient user-side functions to create specialized targets,
-  making pipelines easier to create and read.
+  making pipelines easier to create and read. The methods in this package
+  were influenced by the drake R package by Will Landau (2018)
+  <doi:10.21105/joss.00550>.
 Version: 0.0.0.9000
 License: MIT + file LICENSE
 URL: https://wlandau.github.io/tarchetypes/, https://github.com/wlandau/tarchetypes
@@ -27,6 +29,7 @@ Imports:
   fs (>= 1.4.2),
   rlang (>= 0.4.7),
   targets,
+  tidyselect (>= 1.1.0),
   vctrs (>= 0.3.4),
   withr (>= 2.1.2)
 Suggests:

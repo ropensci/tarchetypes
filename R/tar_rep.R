@@ -62,7 +62,7 @@
 #'     create the special `tar_group` column with `dplyr::group_by()`.
 #' @examples
 #' \dontrun{
-#' targets::tar_script({
+#' tar_dir({
 #'   targets::tar_pipeline(
 #'     tarchetypes::tar_rep(
 #'       x,
@@ -74,7 +74,7 @@
 #' })
 #' targets::tar_make()
 #' targets::tar_read(x)
-#' }
+#' })
 tar_rep <- function(
   name,
   command,
