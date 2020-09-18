@@ -18,7 +18,6 @@ tar_combine(
   memory = targets::tar_option_get("memory"),
   deployment = targets::tar_option_get("deployment"),
   priority = targets::tar_option_get("priority"),
-  template = targets::tar_option_get("template"),
   resources = targets::tar_option_get("resources"),
   storage = targets::tar_option_get("storage"),
   retrieval = targets::tar_option_get("retrieval"),
@@ -57,13 +56,6 @@ gets a file in \verb{_targets/objects}, and each format is a different
 way to save and load this file.
 Possible formats:
 \itemize{
-\item \code{"file"}: A dynamic file. To use this format,
-the target needs to manually identify or save some data
-and return a character vector of paths
-to the data. Those paths must point to files or directories,
-and they must not contain characters \code{|} or \code{*}.
-Then, \code{targets} automatically checks those files and cues the
-appropriate build decisions if those files are out of date.
 \item \code{"rds"}: Default, uses \code{saveRDS()} and \code{readRDS()}. Should work for
 most objects, but slow.
 \item \code{"qs"}: Uses \code{qs::qsave()} and \code{qs::qread()}. Should work for
@@ -75,6 +67,23 @@ a data frame.
 \item \code{"fst_tbl"}: Same as \code{"fst"}, but the value is a \code{tibble}.
 \item \code{"keras"}: Uses \code{keras::save_model_hdf5()} and
 \code{keras::load_model_hdf5()}. The value must be a Keras model.
+\item \code{"file"}: A dynamic file. To use this format,
+the target needs to manually identify or save some data
+and return a character vector of paths
+to the data. Those paths must point to files or directories,
+and they must not contain characters \code{|} or \code{*}.
+Then, \code{targets} automatically checks those files and cues the
+appropriate build decisions if those files are out of date.
+\item \code{"url"}: A dynamic input URL. It works like \code{format = "file"}
+except the return value of the target is a URL that already exists
+and serves as input data for downstream targets.
+The data at the URL needs to have an ETag or a Last-Modified
+time stamp, or else the target will throw an error because
+it cannot track the data. Also, use extreme caution when
+trying to use \code{format = "url"} to track uploads. You must be absolutely
+certain the ETag and Last-Modified time stamp are fully updated
+and available by the time the target's command finishes running.
+\code{targets} makes no attempt to wait for the web server.
 }}
 
 \item{iteration}{Character of length 1, name of the iteration mode
@@ -115,16 +124,12 @@ the target builds on the host machine / process managing the pipeline.}
 targets get deployed first when multiple competing targets are ready
 simultaneously. Targets with priorities closer to 1 get built earlier.}
 
-\item{template}{Relevant to \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}} only.
-Named list of values to fill in the \code{clustermq} template file.
-Unsupported for now. May be supported in the future if
-\code{clustermq} ever supports heterogeneous workers with varying
-resource requirements. In the meantime, use the \code{template}
-argument of \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}}.}
-
-\item{resources}{Relevant to \code{\link[targets:tar_make_future]{tar_make_future()}} only.
-A named list of resources passed to \code{future::future()} when
-defining a new worker.}
+\item{resources}{A named list of computing resources
+for high-performance computing. Elements in this list are passed
+to \code{future::future()} in \code{\link[targets:tar_make_future]{tar_make_future()}} and
+to \code{clustermq::workers()} in \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}}
+to fill in the patterns in cluster computing
+template files with user-defined values.}
 
 \item{storage}{Character of length 1, only relevant to
 \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}} and \code{\link[targets:tar_make_future]{tar_make_future()}}.

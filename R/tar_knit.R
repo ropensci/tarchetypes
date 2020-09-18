@@ -68,7 +68,6 @@ tar_knit <- function(
   error = targets::tar_option_get("error"),
   deployment = "local",
   priority = targets::tar_option_get("priority"),
-  template = targets::tar_option_get("template"),
   resources = targets::tar_option_get("resources"),
   retrieval = targets::tar_option_get("retrieval"),
   cue = targets::tar_option_get("cue"),
@@ -88,7 +87,6 @@ tar_knit <- function(
     error = error,
     deployment = deployment,
     priority = priority,
-    template = template,
     resources = resources,
     retrieval = retrieval,
     cue = cue

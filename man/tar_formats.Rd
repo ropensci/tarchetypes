@@ -23,7 +23,6 @@ tar_file(
   memory = targets::tar_option_get("memory"),
   deployment = targets::tar_option_get("deployment"),
   priority = targets::tar_option_get("priority"),
-  template = targets::tar_option_get("template"),
   resources = targets::tar_option_get("resources"),
   storage = targets::tar_option_get("storage"),
   retrieval = targets::tar_option_get("retrieval"),
@@ -42,7 +41,6 @@ tar_rds(
   memory = targets::tar_option_get("memory"),
   deployment = targets::tar_option_get("deployment"),
   priority = targets::tar_option_get("priority"),
-  template = targets::tar_option_get("template"),
   resources = targets::tar_option_get("resources"),
   storage = targets::tar_option_get("storage"),
   retrieval = targets::tar_option_get("retrieval"),
@@ -61,7 +59,6 @@ tar_qs(
   memory = targets::tar_option_get("memory"),
   deployment = targets::tar_option_get("deployment"),
   priority = targets::tar_option_get("priority"),
-  template = targets::tar_option_get("template"),
   resources = targets::tar_option_get("resources"),
   storage = targets::tar_option_get("storage"),
   retrieval = targets::tar_option_get("retrieval"),
@@ -80,7 +77,6 @@ tar_fst(
   memory = targets::tar_option_get("memory"),
   deployment = targets::tar_option_get("deployment"),
   priority = targets::tar_option_get("priority"),
-  template = targets::tar_option_get("template"),
   resources = targets::tar_option_get("resources"),
   storage = targets::tar_option_get("storage"),
   retrieval = targets::tar_option_get("retrieval"),
@@ -99,7 +95,6 @@ tar_fst_dt(
   memory = targets::tar_option_get("memory"),
   deployment = targets::tar_option_get("deployment"),
   priority = targets::tar_option_get("priority"),
-  template = targets::tar_option_get("template"),
   resources = targets::tar_option_get("resources"),
   storage = targets::tar_option_get("storage"),
   retrieval = targets::tar_option_get("retrieval"),
@@ -118,7 +113,6 @@ tar_fst_tbl(
   memory = targets::tar_option_get("memory"),
   deployment = targets::tar_option_get("deployment"),
   priority = targets::tar_option_get("priority"),
-  template = targets::tar_option_get("template"),
   resources = targets::tar_option_get("resources"),
   storage = targets::tar_option_get("storage"),
   retrieval = targets::tar_option_get("retrieval"),
@@ -137,7 +131,6 @@ tar_keras(
   memory = targets::tar_option_get("memory"),
   deployment = targets::tar_option_get("deployment"),
   priority = targets::tar_option_get("priority"),
-  template = targets::tar_option_get("template"),
   resources = targets::tar_option_get("resources"),
   storage = targets::tar_option_get("storage"),
   retrieval = targets::tar_option_get("retrieval"),
@@ -205,16 +198,12 @@ the target builds on the host machine / process managing the pipeline.}
 targets get deployed first when multiple competing targets are ready
 simultaneously. Targets with priorities closer to 1 get built earlier.}
 
-\item{template}{Relevant to \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}} only.
-Named list of values to fill in the \code{clustermq} template file.
-Unsupported for now. May be supported in the future if
-\code{clustermq} ever supports heterogeneous workers with varying
-resource requirements. In the meantime, use the \code{template}
-argument of \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}}.}
-
-\item{resources}{Relevant to \code{\link[targets:tar_make_future]{tar_make_future()}} only.
-A named list of resources passed to \code{future::future()} when
-defining a new worker.}
+\item{resources}{A named list of computing resources
+for high-performance computing. Elements in this list are passed
+to \code{future::future()} in \code{\link[targets:tar_make_future]{tar_make_future()}} and
+to \code{clustermq::workers()} in \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}}
+to fill in the patterns in cluster computing
+template files with user-defined values.}
 
 \item{storage}{Character of length 1, only relevant to
 \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}} and \code{\link[targets:tar_make_future]{tar_make_future()}}.
