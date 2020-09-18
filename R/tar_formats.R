@@ -75,6 +75,10 @@ tar_file <- tar_format("file")
 
 #' @export
 #' @rdname tar_formats
+tar_url <- tar_format("url")
+
+#' @export
+#' @rdname tar_formats
 tar_rds <- tar_format("rds")
 
 #' @export

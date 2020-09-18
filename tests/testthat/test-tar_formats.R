@@ -4,6 +4,12 @@ tar_test("tar_file()", {
   expect_equal(x$settings$format, "file")
 })
 
+tar_test("tar_url()", {
+  x <- tar_url(x, 0)
+  expect_true(inherits(x, "tar_target"))
+  expect_equal(x$settings$format, "url")
+})
+
 tar_test("tar_rds()", {
   x <- tar_rds(x, 0)
   expect_true(inherits(x, "tar_target"))

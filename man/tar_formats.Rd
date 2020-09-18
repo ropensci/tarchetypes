@@ -198,12 +198,18 @@ the target builds on the host machine / process managing the pipeline.}
 targets get deployed first when multiple competing targets are ready
 simultaneously. Targets with priorities closer to 1 get built earlier.}
 
-\item{resources}{A named list of computing resources
-for high-performance computing. Elements in this list are passed
-to \code{future::future()} in \code{\link[targets:tar_make_future]{tar_make_future()}} and
-to \code{clustermq::workers()} in \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}}
-to fill in the patterns in cluster computing
-template files with user-defined values.}
+\item{resources}{A named list of computing resources. Uses:
+\itemize{
+\item Template file wildcards for \code{future::future()} in \code{\link[targets:tar_make_future]{tar_make_future()}}.
+\item Template file wildcards \code{clustermq::workers()} in \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}}.
+\item Custom \code{curl} handle if \code{format = "url"},
+e.g. \code{resources = list(handle = curl::new_handle())}.
+\item Custom preset for \code{qs::qsave()} if \code{format = "qs"}, e.g.
+\code{resources = list(handle = "archive")}.
+\item Custom compression level for \code{fst::write_fst()} if
+\code{format} is \code{"fst"}, \code{"fst_dt"}, or \code{"fst_tbl"}, e.g.
+\code{resources = list(compress = 100)}.
+}}
 
 \item{storage}{Character of length 1, only relevant to
 \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}} and \code{\link[targets:tar_make_future]{tar_make_future()}}.

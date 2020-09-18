@@ -1,13 +1,14 @@
-#' @title Easy branching over dynamic files.
+#' @title Easy branching over dynamic files or urls.
 #' @description Shorthand for a pattern that correctly
-#'   branches over files.
+#'   branches over files or urls.
 #' @details `tar_files()` creates a pair of targets, one upstream
 #'   and one downstream. The upstream target does some work
 #'   and returns some file paths, and the downstream
-#'   target is a pattern that applies `format = "file"`.
+#'   target is a pattern that applies `format = "file"`
+#'   or `format = "url"`.
 #'   This is the correct way to dynamically
-#'   iterate over file targets. It makes sure any downstream patterns
-#'   only rerun some of their branches if the files change.
+#'   iterate over file/url targets. It makes sure any downstream patterns
+#'   only rerun some of their branches if the files/urls change.
 #'   For more information, visit
 #'   <https://github.com/wlandau/targets/issues/136> and
 #'   <https://github.com/ropensci/drake/issues/1302>.
@@ -15,10 +16,13 @@
 #' @inheritParams targets::tar_target
 #' @return A list of two targets, one upstream and one downstream.
 #'   The upstream one does some work and returns some file paths,
-#'   and the downstream target is a pattern that applies `format = "file"`.
+#'   and the downstream target is a pattern that applies `format = "file"`
+#'   or `format = "url"`.
 #' @param tidy_eval Whether to invoke tidy evaluation
 #'   (e.g. the `!!` operator from `rlang`) as soon as the target is defined
 #'   (before `tar_make()`). Applies to the `command` argument.
+#' @param format Character, either `"file"` or `"url"`. See the `format`
+#'   argument of `targets::tar_target()` for details.
 #' @examples
 #' \dontrun{
 #' # Without loss of generality,
@@ -58,7 +62,7 @@ tar_files <- function(
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
-  format = targets::tar_option_get("format"),
+  format = c("file", "url"),
   iteration = targets::tar_option_get("iteration"),
   error = targets::tar_option_get("error"),
   memory = targets::tar_option_get("memory"),
@@ -74,6 +78,7 @@ tar_files <- function(
   envir <- tar_option_get("envir")
   command <- tidy_eval(substitute(command), envir, tidy_eval)
   files <- tidy_eval(substitute(files), envir, tidy_eval)
+  format <- match.arg(format)
   tar_files_raw(
     name = name,
     name_files = name_files,
@@ -136,7 +141,7 @@ tar_files_raw <- function(
     pattern = as.expression(call_function("map", list(name_files_sym))),
     packages = character(0),
     library = library,
-    format = "file",
+    format = format,
     iteration = iteration,
     error = error,
     memory = memory,

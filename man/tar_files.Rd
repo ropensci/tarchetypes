@@ -2,7 +2,7 @@
 % Please edit documentation in R/tar_files.R
 \name{tar_files}
 \alias{tar_files}
-\title{Easy branching over dynamic files.}
+\title{Easy branching over dynamic files or urls.}
 \usage{
 tar_files(
   name,
@@ -10,7 +10,7 @@ tar_files(
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
-  format = targets::tar_option_get("format"),
+  format = c("file", "url"),
   iteration = targets::tar_option_get("iteration"),
   error = targets::tar_option_get("error"),
   memory = targets::tar_option_get("memory"),
@@ -38,41 +38,8 @@ globally for all subsequent targets you define.}
 \item{library}{Character vector of library paths to try
 when loading \code{packages}.}
 
-\item{format}{Optional storage format for the target's return value.
-With the exception of \code{format = "file"}, each target
-gets a file in \verb{_targets/objects}, and each format is a different
-way to save and load this file.
-Possible formats:
-\itemize{
-\item \code{"rds"}: Default, uses \code{saveRDS()} and \code{readRDS()}. Should work for
-most objects, but slow.
-\item \code{"qs"}: Uses \code{qs::qsave()} and \code{qs::qread()}. Should work for
-most objects, much faster than \code{"rds"}.
-\item \code{"fst"}: Uses \code{fst::write_fst()} and \code{fst::read_fst()}.
-Much faster than \code{"rds"}, but the value must be
-a data frame.
-\item \code{"fst_dt"}: Same as \code{"fst"}, but the value is a \code{data.table}.
-\item \code{"fst_tbl"}: Same as \code{"fst"}, but the value is a \code{tibble}.
-\item \code{"keras"}: Uses \code{keras::save_model_hdf5()} and
-\code{keras::load_model_hdf5()}. The value must be a Keras model.
-\item \code{"file"}: A dynamic file. To use this format,
-the target needs to manually identify or save some data
-and return a character vector of paths
-to the data. Those paths must point to files or directories,
-and they must not contain characters \code{|} or \code{*}.
-Then, \code{targets} automatically checks those files and cues the
-appropriate build decisions if those files are out of date.
-\item \code{"url"}: A dynamic input URL. It works like \code{format = "file"}
-except the return value of the target is a URL that already exists
-and serves as input data for downstream targets.
-The data at the URL needs to have an ETag or a Last-Modified
-time stamp, or else the target will throw an error because
-it cannot track the data. Also, use extreme caution when
-trying to use \code{format = "url"} to track uploads. You must be absolutely
-certain the ETag and Last-Modified time stamp are fully updated
-and available by the time the target's command finishes running.
-\code{targets} makes no attempt to wait for the web server.
-}}
+\item{format}{Character, either \code{"file"} or \code{"url"}. See the \code{format}
+argument of \code{targets::tar_target()} for details.}
 
 \item{iteration}{Character of length 1, name of the iteration mode
 of the target. Choices:
@@ -112,12 +79,18 @@ the target builds on the host machine / process managing the pipeline.}
 targets get deployed first when multiple competing targets are ready
 simultaneously. Targets with priorities closer to 1 get built earlier.}
 
-\item{resources}{A named list of computing resources
-for high-performance computing. Elements in this list are passed
-to \code{future::future()} in \code{\link[targets:tar_make_future]{tar_make_future()}} and
-to \code{clustermq::workers()} in \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}}
-to fill in the patterns in cluster computing
-template files with user-defined values.}
+\item{resources}{A named list of computing resources. Uses:
+\itemize{
+\item Template file wildcards for \code{future::future()} in \code{\link[targets:tar_make_future]{tar_make_future()}}.
+\item Template file wildcards \code{clustermq::workers()} in \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}}.
+\item Custom \code{curl} handle if \code{format = "url"},
+e.g. \code{resources = list(handle = curl::new_handle())}.
+\item Custom preset for \code{qs::qsave()} if \code{format = "qs"}, e.g.
+\code{resources = list(handle = "archive")}.
+\item Custom compression level for \code{fst::write_fst()} if
+\code{format} is \code{"fst"}, \code{"fst_dt"}, or \code{"fst_tbl"}, e.g.
+\code{resources = list(compress = 100)}.
+}}
 
 \item{storage}{Character of length 1, only relevant to
 \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}} and \code{\link[targets:tar_make_future]{tar_make_future()}}.
@@ -137,20 +110,22 @@ rules that decide whether the target is up to date.}
 \value{
 A list of two targets, one upstream and one downstream.
 The upstream one does some work and returns some file paths,
-and the downstream target is a pattern that applies \code{format = "file"}.
+and the downstream target is a pattern that applies \code{format = "file"}
+or \code{format = "url"}.
 }
 \description{
 Shorthand for a pattern that correctly
-branches over files.
+branches over files or urls.
 }
 \details{
 \code{tar_files()} creates a pair of targets, one upstream
 and one downstream. The upstream target does some work
 and returns some file paths, and the downstream
-target is a pattern that applies \code{format = "file"}.
+target is a pattern that applies \code{format = "file"}
+or \code{format = "url"}.
 This is the correct way to dynamically
-iterate over file targets. It makes sure any downstream patterns
-only rerun some of their branches if the files change.
+iterate over file/url targets. It makes sure any downstream patterns
+only rerun some of their branches if the files/urls change.
 For more information, visit
 \url{https://github.com/wlandau/targets/issues/136} and
 \url{https://github.com/ropensci/drake/issues/1302}.
