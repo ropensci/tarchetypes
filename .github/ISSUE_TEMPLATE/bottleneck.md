@@ -23,7 +23,7 @@ Be considerate of the maintainer's time and make it as easy as possible to troub
 
 ## Benchmarks
 
-How poorly does `tarchetypes` perform? To find out, we recommend the [`proffer`](https://github.com/wlandau/proffer) package and take screenshots of the results displayed in your browser.
+How poorly does `tarchetypes` perform? To find out, we recommend you use the [`proffer`](https://github.com/r-prof/proffer) package and take screenshots of the results displayed in your browser.
 
 ```r
 library(tarchetypes)
