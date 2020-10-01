@@ -90,6 +90,10 @@ e.g. \code{resources = list(handle = curl::new_handle())}.
 \item Custom compression level for \code{fst::write_fst()} if
 \code{format} is \code{"fst"}, \code{"fst_dt"}, or \code{"fst_tbl"}, e.g.
 \code{resources = list(compress = 100)}.
+\item AWS bucket and prefix for the \code{"aws_"} formats, e.g.
+\code{resources = list(bucket = "your-bucket", prefix = "folder/name")}.
+\code{bucket} is required for AWS formats. See the cloud computing chapter
+of the manual for details.
 }}
 
 \item{storage}{Character of length 1, only relevant to

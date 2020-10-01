@@ -3,6 +3,7 @@
 \name{tar_formats}
 \alias{tar_formats}
 \alias{tar_file}
+\alias{tar_url}
 \alias{tar_rds}
 \alias{tar_qs}
 \alias{tar_fst}
@@ -12,6 +13,24 @@
 \title{Target formats}
 \usage{
 tar_file(
+  name,
+  command,
+  pattern = NULL,
+  tidy_eval = targets::tar_option_get("tidy_eval"),
+  packages = targets::tar_option_get("packages"),
+  library = targets::tar_option_get("library"),
+  iteration = targets::tar_option_get("iteration"),
+  error = targets::tar_option_get("error"),
+  memory = targets::tar_option_get("memory"),
+  deployment = targets::tar_option_get("deployment"),
+  priority = targets::tar_option_get("priority"),
+  resources = targets::tar_option_get("resources"),
+  storage = targets::tar_option_get("storage"),
+  retrieval = targets::tar_option_get("retrieval"),
+  cue = targets::tar_option_get("cue")
+)
+
+tar_url(
   name,
   command,
   pattern = NULL,
@@ -209,6 +228,10 @@ e.g. \code{resources = list(handle = curl::new_handle())}.
 \item Custom compression level for \code{fst::write_fst()} if
 \code{format} is \code{"fst"}, \code{"fst_dt"}, or \code{"fst_tbl"}, e.g.
 \code{resources = list(compress = 100)}.
+\item AWS bucket and prefix for the \code{"aws_"} formats, e.g.
+\code{resources = list(bucket = "your-bucket", prefix = "folder/name")}.
+\code{bucket} is required for AWS formats. See the cloud computing chapter
+of the manual for details.
 }}
 
 \item{storage}{Character of length 1, only relevant to
