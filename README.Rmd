@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 
 # tarchetypes
 
-[![wip](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
+[![status](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![check](https://github.com/wlandau/tarchetypes/workflows/check/badge.svg)](https://github.com/wlandau/tarchetypes/actions?query=workflow%3Acheck)
 [![lint](https://github.com/wlandau/tarchetypes/workflows/lint/badge.svg)](https://github.com/wlandau/tarchetypes/actions?query=workflow%3Alint)
 [![codecov](https://codecov.io/gh/wlandau/tarchetypes/branch/master/graph/badge.svg?token=3T5DlLwUVl)](https://codecov.io/gh/wlandau/targets)
