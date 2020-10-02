@@ -9,8 +9,17 @@
 
 The `tarchetypes` R package is a collection of target and pipeline
 archetypes for the [`targets`](https://github.com/wlandau/targets)
-package. These archetypes are shorthand that makes it easier to read and
-write pipelines.
+package. These archetypes express complicated pipelines with concise
+syntax, which enhances readability and thus reproducibility. Archetypes
+are possible because of the flexible metaprogramming capabilities of
+[`targets`](https://github.com/wlandau/targets). In
+[`targets`](https://github.com/wlandau/targets), one can define a target
+as an object outside the central pipeline, and the
+[`tar_target_raw()`](https://wlandau.github.io/targets/reference/tar_target_raw.html)
+function completely avoids non-standard evaluation. That means anyone
+can write their own niche interfaces for specialized projects.
+`tarchetypes` aims to include the most common and versatile archetypes
+and usage patterns.
 
 ## Target archetype example
 
