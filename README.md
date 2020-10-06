@@ -67,7 +67,7 @@ tar_pipeline(
     # Track the input and output files.
     format = "file",
     # Avoid building small reports on HPC.
-    deployment = "local"
+    deployment = "master"
   )
 )
 ```

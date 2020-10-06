@@ -10,7 +10,7 @@ tar_render(
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
   error = targets::tar_option_get("error"),
-  deployment = "local",
+  deployment = "master",
   priority = targets::tar_option_get("priority"),
   resources = targets::tar_option_get("resources"),
   retrieval = targets::tar_option_get("retrieval"),
@@ -38,8 +38,8 @@ and throws an error. If \code{"continue"}, the error is recorded,
 but the pipeline keeps going.}
 
 \item{deployment}{Character of length 1, only relevant to
-\code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}} and \code{\link[targets:tar_make_future]{tar_make_future()}}. If \code{"remote"},
-the target builds on a remote parallel worker. If \code{"local"},
+\code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}} and \code{\link[targets:tar_make_future]{tar_make_future()}}. If \code{"worker"},
+the target builds on a remote parallel worker. If \code{"master"},
 the target builds on the host machine / process managing the pipeline.}
 
 \item{priority}{Numeric of length 1 between 0 and 1. Controls which
@@ -65,9 +65,9 @@ of the manual for details.
 
 \item{retrieval}{Character of length 1, only relevant to
 \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}} and \code{\link[targets:tar_make_future]{tar_make_future()}}.
-If \code{"local"}, the target's dependencies are loaded on the host machine
-and sent to the remote worker before the target builds.
-If \code{"remote"}, the remote worker loads the targets dependencies.}
+If \code{"master"}, the target's dependencies are loaded on the host machine
+and sent to the worker before the target builds.
+If \code{"worker"}, the worker loads the targets dependencies.}
 
 \item{cue}{An optional object from \code{tar_cue()} to customize the
 rules that decide whether the target is up to date.}
@@ -110,7 +110,7 @@ report files and the input source file. All these file paths
 are relative paths so the project stays portable.
 4. Forces the report to run in the user's current working directory
 instead of the working directory of the report.
-5. Sets convenient default options such as \code{deployment = "local"}
+5. Sets convenient default options such as \code{deployment = "master"}
 in the target and \code{quiet = TRUE} in \code{rmarkdown::render()}.
 }
 \examples{

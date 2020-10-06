@@ -35,9 +35,9 @@
 #' #     your_target_files,
 #' #     pattern = map(your_target_files),
 #' #     format = "file",
-#' #     deployment = "local",
-#' #     storage = "local",
-#' #     retrieval = "local"
+#' #     deployment = "master",
+#' #     storage = "master",
+#' #     retrieval = "master"
 #' #   )
 #' # )
 #' # Try it out.
@@ -145,11 +145,11 @@ tar_files_raw <- function(
     iteration = iteration,
     error = error,
     memory = memory,
-    deployment = "local",
+    deployment = "master",
     priority = priority,
     resources = resources,
-    storage = "local",
-    retrieval = "local",
+    storage = "master",
+    retrieval = "master",
     cue = cue
   )
   list(upstream, downstream)

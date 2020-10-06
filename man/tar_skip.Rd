@@ -76,7 +76,7 @@ the appropriate build decisions if those files are out of date.
 Those paths must point to files or directories,
 and they must not contain characters \code{|} or \code{*}.
 All the files and directories you return must actually exist,
-or else \code{targets} will throw an error. (And if \code{storage} is \code{"remote"},
+or else \code{targets} will throw an error. (And if \code{storage} is \code{"worker"},
 \code{targets} will first stall out trying to wait for the file
 to arrive over a network file system.)
 \item \code{"url"}: A dynamic input URL. It works like \code{format = "file"}
@@ -134,15 +134,18 @@ but the pipeline keeps going.}
 
 \item{memory}{Character of length 1, memory strategy.
 If \code{"persistent"}, the target stays in memory
-until the end of the pipeline.
+until the end of the pipeline (unless \code{storage} is \code{"worker"},
+in which case \code{targets} unloads the value from memory
+right after storing it in order to avoid sending
+copious data over a network).
 If \code{"transient"}, the target gets unloaded
 after every new target completes.
 Either way, the target gets automatically loaded into memory
 whenever another target needs the value.}
 
 \item{deployment}{Character of length 1, only relevant to
-\code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}} and \code{\link[targets:tar_make_future]{tar_make_future()}}. If \code{"remote"},
-the target builds on a remote parallel worker. If \code{"local"},
+\code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}} and \code{\link[targets:tar_make_future]{tar_make_future()}}. If \code{"worker"},
+the target builds on a remote parallel worker. If \code{"master"},
 the target builds on the host machine / process managing the pipeline.}
 
 \item{priority}{Numeric of length 1 between 0 and 1. Controls which
@@ -168,15 +171,15 @@ of the manual for details.
 
 \item{storage}{Character of length 1, only relevant to
 \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}} and \code{\link[targets:tar_make_future]{tar_make_future()}}.
-If \code{"local"}, the target's return value is sent back to the
-host machine and saved locally. If \code{"remote"}, the remote worker
+If \code{"master"}, the target's return value is sent back to the
+host machine and saved locally. If \code{"worker"}, the worker
 saves the value.}
 
 \item{retrieval}{Character of length 1, only relevant to
 \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}} and \code{\link[targets:tar_make_future]{tar_make_future()}}.
-If \code{"local"}, the target's dependencies are loaded on the host machine
-and sent to the remote worker before the target builds.
-If \code{"remote"}, the remote worker loads the targets dependencies.}
+If \code{"master"}, the target's dependencies are loaded on the host machine
+and sent to the worker before the target builds.
+If \code{"worker"}, the worker loads the targets dependencies.}
 
 \item{cue}{An optional object from \code{tar_cue()} to customize the
 rules that decide whether the target is up to date.}

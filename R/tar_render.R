@@ -21,7 +21,7 @@
 #'       are relative paths so the project stays portable.
 #'     4. Forces the report to run in the user's current working directory
 #'       instead of the working directory of the report.
-#'     5. Sets convenient default options such as `deployment = "local"`
+#'     5. Sets convenient default options such as `deployment = "master"`
 #'       in the target and `quiet = TRUE` in `rmarkdown::render()`.
 #' @return A `tar_target()` object with `format = "file"`.
 #'   When this target runs, it returns a character vector
@@ -66,7 +66,7 @@ tar_render <- function(
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
   error = targets::tar_option_get("error"),
-  deployment = "local",
+  deployment = "master",
   priority = targets::tar_option_get("priority"),
   resources = targets::tar_option_get("resources"),
   retrieval = targets::tar_option_get("retrieval"),
