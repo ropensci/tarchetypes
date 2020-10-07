@@ -1,12 +1,14 @@
 Package: tarchetypes
 Title: Archetypes for Targets
-Description: The targets package is a pipeline toolkit that brings together
+Description: The 'targets' package is a pipeline toolkit that brings together
   function-oriented programming and Make-like declarative workflows for
-  Statistics and data science in R. The tarchetypes package provides
-  convenient user-side functions to create specialized targets,
-  making pipelines easier to create and read. The methods in this package
-  were influenced by the drake R package by Will Landau (2018)
-  <doi:10.21105/joss.00550>.
+  Statistics and data science in R. The 'tarchetypes' package provides
+  convenient user-side functions to make 'targets' easier to use.
+  By establishing reusable archetypes for common kinds of
+  targets and pipelines, these functions help express complicated
+  reproducible workflows concisely and compactly.
+  The methods in this package were influenced by the 'drake' R package
+  by Will Landau (2018) <doi:10.21105/joss.00550>.
 Version: 0.0.0.9000
 License: MIT + file LICENSE
 URL: https://wlandau.github.io/tarchetypes/, https://github.com/wlandau/tarchetypes
