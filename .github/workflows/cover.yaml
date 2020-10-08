@@ -7,6 +7,7 @@ jobs:
     runs-on: macOS-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUBPAT }}
+      R_REMOTES_NO_ERRORS_FROM_WARNINGS: false
     steps:
       - uses: actions/checkout@v2
 
