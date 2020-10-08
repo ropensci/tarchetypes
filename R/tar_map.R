@@ -5,12 +5,13 @@
 #'   targets by iterating over a list of arguments
 #'   and substituting symbols into commands and pattern statements.
 #' @return A list of new target objects. If `unlist` is `FALSE`,
-#'   the list is nested and sub-lists are grouped by the original
-#'   input targets.
+#'   the list is nested and sub-lists are named and grouped by the original
+#'   input targets. If `unlist = TRUE`, the return value is a flat list of
+#'   targets named by the new target names.
 #' @param values Named list or data frame with values to iterate over.
-#'   The names are the names of symbols in the commands and pattern statements,
-#'   and the elements are values that get substituted in place of those
-#'   symbols. Elements of the `values` list
+#'   The names are the names of symbols in the commands and pattern
+#'   statements, and the elements are values that get substituted
+#'   in place of those symbols. Elements of the `values` list
 #'   should be small objects that can easily deparse to names,
 #'   such as characters, integers, and symbols.
 #'   To create a list of symbols as a column of `values`,
@@ -23,7 +24,9 @@
 #'   or tidyselect helpers like [starts_with()].
 #' @param unlist Logical, whether to flatten the returned list of targets.
 #'   If `unlist = FALSE`, the list is nested and sub-lists
-#'   are grouped by the original input targets.
+#'   are named and grouped by the original input targets.
+#'   If `unlist = TRUE`, the return value is a flat list of targets
+#'   named by the new target names.
 #' @examples
 #' targets::tar_dir({
 #' targets::tar_script({
@@ -41,7 +44,7 @@ tar_map <- function(
   values,
   ...,
   names = tidyselect::everything(),
-  unlist = TRUE
+  unlist = FALSE
 ) {
   targets <- unlist(list(...), recursive = TRUE)
   assert_targets(targets)
@@ -50,7 +53,12 @@ tar_map <- function(
   names <- eval_tidyselect(names_quosure, base::names(values))
   values <- tar_map_extend_values(targets, values, names)
   out <- lapply(targets, tar_map_target, values = values)
-  trn(unlist, unlist(out), out)
+  flat <- unlist(out, recursive = TRUE)
+  trn(
+    unlist,
+    set_names(flat, map_chr(flat, ~.x$settings$name)),
+    set_names(out, map_chr(targets, ~.x$settings$name))
+  )
 }
 
 tar_map_assert_values <- function(values) {

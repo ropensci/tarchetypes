@@ -39,7 +39,7 @@ but the pipeline keeps going.}
 
 \item{deployment}{Character of length 1, only relevant to
 \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}} and \code{\link[targets:tar_make_future]{tar_make_future()}}. If \code{"worker"},
-the target builds on a remote parallel worker. If \code{"master"},
+the target builds on a parallel worker. If \code{"master"},
 the target builds on the host machine / process managing the pipeline.}
 
 \item{priority}{Numeric of length 1 between 0 and 1. Controls which

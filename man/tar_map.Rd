@@ -4,13 +4,13 @@
 \alias{tar_map}
 \title{Static branching.}
 \usage{
-tar_map(values, ..., names = tidyselect::everything(), unlist = TRUE)
+tar_map(values, ..., names = tidyselect::everything(), unlist = FALSE)
 }
 \arguments{
 \item{values}{Named list or data frame with values to iterate over.
-The names are the names of symbols in the commands and pattern statements,
-and the elements are values that get substituted in place of those
-symbols. Elements of the \code{values} list
+The names are the names of symbols in the commands and pattern
+statements, and the elements are values that get substituted
+in place of those symbols. Elements of the \code{values} list
 should be small objects that can easily deparse to names,
 such as characters, integers, and symbols.
 To create a list of symbols as a column of \code{values},
@@ -26,12 +26,15 @@ or tidyselect helpers like \code{\link[=starts_with]{starts_with()}}.}
 
 \item{unlist}{Logical, whether to flatten the returned list of targets.
 If \code{unlist = FALSE}, the list is nested and sub-lists
-are grouped by the original input targets.}
+are named and grouped by the original input targets.
+If \code{unlist = TRUE}, the return value is a flat list of targets
+named by the new target names.}
 }
 \value{
 A list of new target objects. If \code{unlist} is \code{FALSE},
-the list is nested and sub-lists are grouped by the original
-input targets.
+the list is nested and sub-lists are named and grouped by the original
+input targets. If \code{unlist = TRUE}, the return value is a flat list of
+targets named by the new target names.
 }
 \description{
 Define collections of new targets.

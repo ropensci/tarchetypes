@@ -120,7 +120,7 @@ chapter of the manual for details.
 \item{iteration}{Character of length 1, name of the iteration mode
 of the target. Choices:
 \itemize{
-\item \code{"vector"}: branching happens with \code{vectors::vec_slice()} and
+\item \code{"vector"}: branching happens with \code{vctrs::vec_slice()} and
 aggregation happens with \code{vctrs::vec_c()}.
 \item \code{"list"}, branching happens with \verb{[[]]} and aggregation happens with
 \code{list()}.
@@ -151,7 +151,7 @@ whenever another target needs the value.}
 
 \item{deployment}{Character of length 1, only relevant to
 \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}} and \code{\link[targets:tar_make_future]{tar_make_future()}}. If \code{"worker"},
-the target builds on a remote parallel worker. If \code{"master"},
+the target builds on a parallel worker. If \code{"master"},
 the target builds on the host machine / process managing the pipeline.}
 
 \item{priority}{Numeric of length 1 between 0 and 1. Controls which
