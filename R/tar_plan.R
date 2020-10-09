@@ -6,7 +6,7 @@
 #'   target objects if they are unnamed.
 #'   `tar_plan(x = 1, y = 2, tar_target(z, 3), tar_render(r, "r.Rmd"))`
 #'   is equivalent to
-#'   `tar_plan(tar_target(x, 1), tar_target(y, 2), tar_target(z, 3), tar_render(r, "r.Rmd"))`. # nolint
+#'   `tar_pipeline(tar_target(x, 1), tar_target(y, 2), tar_target(z, 3), tar_render(r, "r.Rmd"))`. # nolint
 #' @export
 #' @return A `targets::tar_pipeline()` object.
 #' @param ... Named and unnamed targets. All named targets must follow
