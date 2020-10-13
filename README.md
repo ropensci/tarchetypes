@@ -4,7 +4,7 @@
 [![status](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![check](https://github.com/wlandau/tarchetypes/workflows/check/badge.svg)](https://github.com/wlandau/tarchetypes/actions?query=workflow%3Acheck)
 [![lint](https://github.com/wlandau/tarchetypes/workflows/lint/badge.svg)](https://github.com/wlandau/tarchetypes/actions?query=workflow%3Alint)
-[![codecov](https://codecov.io/gh/wlandau/tarchetypes/branch/master/graph/badge.svg?token=3T5DlLwUVl)](https://codecov.io/gh/wlandau/targets)
+[![codecov](https://codecov.io/gh/wlandau/tarchetypes/branch/main/graph/badge.svg?token=3T5DlLwUVl)](https://codecov.io/gh/wlandau/targets)
 [![zenodo](https://zenodo.org/badge/282774543.svg)](https://zenodo.org/badge/latestdoi/282774543)
 
 The `tarchetypes` R package is a collection of target and pipeline
@@ -67,7 +67,7 @@ tar_pipeline(
     # Track the input and output files.
     format = "file",
     # Avoid building small reports on HPC.
-    deployment = "master"
+    deployment = "main"
   )
 )
 ```
@@ -179,6 +179,6 @@ The following examples use the `tar_render()` archetype in pipelines.
 Development is a community effort, and we welcome discussion and
 contribution. By participating in this project, you agree to abide by
 the [code of
-conduct](https://github.com/wlandau/tarchetypes/blob/master/CODE_OF_CONDUCT.md)
+conduct](https://github.com/wlandau/tarchetypes/blob/main/CODE_OF_CONDUCT.md)
 and the [contributing
-guide](https://github.com/wlandau/tarchetypes/blob/master/CONTRIBUTING.md).
+guide](https://github.com/wlandau/tarchetypes/blob/main/CONTRIBUTING.md).

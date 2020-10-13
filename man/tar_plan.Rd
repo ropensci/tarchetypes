@@ -25,7 +25,7 @@ to be written in the pipeline as \code{target = command} instead of
 target objects if they are unnamed.
 \code{tar_plan(x = 1, y = 2, tar_target(z, 3), tar_render(r, "r.Rmd"))}
 is equivalent to
-\code{tar_plan(tar_target(x, 1), tar_target(y, 2), tar_target(z, 3), tar_render(r, "r.Rmd"))}. # nolint
+\code{tar_pipeline(tar_target(x, 1), tar_target(y, 2), tar_target(z, 3), tar_render(r, "r.Rmd"))}. # nolint
 }
 \examples{
 \dontrun{

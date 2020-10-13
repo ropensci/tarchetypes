@@ -156,12 +156,15 @@ whenever another target needs the value.}
 
 \item{deployment}{Character of length 1, only relevant to
 \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}} and \code{\link[targets:tar_make_future]{tar_make_future()}}. If \code{"worker"},
-the target builds on a parallel worker. If \code{"master"},
+the target builds on a parallel worker. If \code{"main"},
 the target builds on the host machine / process managing the pipeline.}
 
 \item{priority}{Numeric of length 1 between 0 and 1. Controls which
 targets get deployed first when multiple competing targets are ready
-simultaneously. Targets with priorities closer to 1 get built earlier.}
+simultaneously. Targets with priorities closer to 1 get built earlier.
+Only applies to \code{\link[targets:tar_make_future]{tar_make_future()}} and \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}}
+(not \code{\link[targets:tar_make]{tar_make()}}). \code{\link[targets:tar_make_future]{tar_make_future()}} with no extra settings is
+a drop-in replacement for \code{\link[targets:tar_make]{tar_make()}} in this case.}
 
 \item{resources}{A named list of computing resources. Uses:
 \itemize{
@@ -182,13 +185,13 @@ of the manual for details.
 
 \item{storage}{Character of length 1, only relevant to
 \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}} and \code{\link[targets:tar_make_future]{tar_make_future()}}.
-If \code{"master"}, the target's return value is sent back to the
+If \code{"main"}, the target's return value is sent back to the
 host machine and saved locally. If \code{"worker"}, the worker
 saves the value.}
 
 \item{retrieval}{Character of length 1, only relevant to
 \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}} and \code{\link[targets:tar_make_future]{tar_make_future()}}.
-If \code{"master"}, the target's dependencies are loaded on the host machine
+If \code{"main"}, the target's dependencies are loaded on the host machine
 and sent to the worker before the target builds.
 If \code{"worker"}, the worker loads the targets dependencies.}
 

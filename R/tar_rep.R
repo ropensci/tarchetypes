@@ -228,10 +228,10 @@ tar_rep_batch <- function(
     iteration = "vector",
     error = error,
     memory = memory,
-    deployment = "master",
+    deployment = "main",
     priority = priority,
-    storage = "master",
-    retrieval = "master",
+    storage = "main",
+    retrieval = "main",
     cue = cue
   )
 }

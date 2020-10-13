@@ -148,8 +148,8 @@
       "sameAs": "https://CRAN.R-project.org/package=withr"
     }
   ],
-  "releaseNotes": "https://github.com/wlandau/tarchetypes/blob/master/NEWS.md",
-  "readme": "https://github.com/wlandau/tarchetypes/blob/master/README.md",
+  "releaseNotes": "https://github.com/wlandau/tarchetypes/blob/main/NEWS.md",
+  "readme": "https://github.com/wlandau/tarchetypes/blob/main/README.md",
   "fileSize": "42.756KB",
   "contIntegration": "https://codecov.io/gh/wlandau/targets",
   "developmentStatus": "https://www.repostatus.org/#wip"
