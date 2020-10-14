@@ -35,10 +35,21 @@
 #' @inheritParams rmarkdown::render
 #' @param path Character string, file path to the R Markdown source file.
 #'   Must have length 1.
-#' @param ... Named arguments to `rmarkdown::render()`
+#' @param ... Named arguments to `rmarkdown::render()`.
+#'   These arguments are evaluated when the target actually runs in
+#'   `tar_make()`, not when the target is defined. That means, for
+#'   example, you can use upstream targets as parameters of
+#'   parameterized R Markdown reports.
+#'   `tar_render(your_target, "your_report.Rmd", params = list(your_param = your_target))` # nolint
+#'   will run `rmarkdown::render("your_report.Rmd", params = list(your_param = your_target))`. # nolint
+#'   For parameterized reports, it is recommended to supply a distinct
+#'   `output_file` argument to each `tar_render()` call
+#'   and set useful defaults for parameters in the R Markdown source.
+#'  See the examples section for a demonstration.
 #' @examples
 #' \dontrun{
 #' targets::tar_dir({
+#' # Unparameterized R Markdown:
 #' lines <- c(
 #'   "---",
 #'   "title: report",
@@ -58,11 +69,37 @@
 #'   )
 #' })
 #' targets::tar_make()
+#' # browseURL("report.html") # View the report.
+#' # Parameterized R Markdown:
+#' lines <- c(
+#'   "---",
+#'   "title: report",
+#'   "output_format: html_document",
+#'   "params:",
+#'   "  your_param: \"default value\"",
+#'   "---",
+#'   "",
+#'   "```{r}",
+#'   "print(params$your_param)",
+#'   "```"
+#' )
+#' writeLines(lines, "report.Rmd")
+#' targets::tar_script({
+#'   library(tarchetypes)
+#'   tar_pipeline(
+#'     tar_target(data, data.frame(x = seq_len(26), y = letters)),
+#'     tar_render(report, "report.Rmd", params = list(your_param = data))
+#'   )
+#' })
+#' # targets::tar_visnetwork() # The report should be connected to the data.
+#' targets::tar_make()
+#' # browseURL("report.html") # View the report.
 #' })
 #' }
 tar_render <- function(
   name,
   path,
+  tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
   error = targets::tar_option_get("error"),
@@ -78,9 +115,11 @@ tar_render <- function(
   assert_scalar(path, "tar_render() only takes one file at a time.")
   assert_chr(path, "path argument of tar_render() must be a character.")
   assert_path(path, paste("the path", path, "for tar_render() does not exist"))
+  envir <- tar_option_get("envir")
+  args <- tidy_eval(substitute(list(...)), envir = envir, tidy_eval = tidy_eval)
   tar_target_raw(
     name = deparse_language(substitute(name)),
-    command = tar_render_command(path, list(...), quiet),
+    command = tar_render_command(path, args, quiet),
     packages = packages,
     library = library,
     format = "file",
@@ -97,10 +136,9 @@ tar_render_command <- function(path, args, quiet) {
   args$input <- path
   args$knit_root_dir <- quote(getwd())
   args$quiet <- quiet
-  expr_args <- call_list(args)
-  expr_deps <- call_list(rlang::syms(knitr_deps(path)))
-  expr_fun <- call_ns("tarchetypes", "tar_render_run")
-  exprs <- list(expr_fun, path = path, args = expr_args, deps = expr_deps)
+  deps <- call_list(rlang::syms(knitr_deps(path)))
+  fun <- call_ns("tarchetypes", "tar_render_run")
+  exprs <- list(fun, path = path, args = args, deps = deps)
   as.expression(as.call(exprs))
 }
 

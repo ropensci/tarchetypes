@@ -43,6 +43,9 @@ test_that("tar_render() works", {
 })
 
 tar_test("tar_render() on a nested report still runs from the project root", {
+  on.exit(
+    unlink(c("_targets*", "report.*", "out_tar_render"), recursive = TRUE)
+  )
   lines <- c(
     "---",
     "title: report",
@@ -53,17 +56,49 @@ tar_test("tar_render() on a nested report still runs from the project root", {
     "file.create(\"here\")",
     "```"
   )
-  dir.create("out")
-  writeLines(lines, file.path("out", "report.Rmd"))
+  dir.create("out_tar_render")
+  writeLines(lines, file.path("out_tar_render", "report.Rmd"))
   targets::tar_script({
     library(tarchetypes)
     tar_pipeline(
-      tar_render(report, file.path("out", "report.Rmd"))
+      tar_render(report, file.path("out_tar_render", "report.Rmd"))
     )
   })
   expect_false(file.exists("here"))
-  expect_false(file.exists(file.path("out", "here")))
+  expect_false(file.exists(file.path("out_tar_render", "here")))
   targets::tar_make(callr_function = NULL)
   expect_true(file.exists("here"))
-  expect_false(file.exists(file.path("out", "here")))
+  expect_false(file.exists(file.path("out_tar_render", "here")))
+})
+
+tar_test("tar_render() for parameterized reports", {
+  on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
+  lines <- c(
+    "---",
+    "title: report",
+    "output_format: html_document",
+    "params:",
+    "  param1: \"default\"",
+    "  param2: \"default\"",
+    "---",
+    "```{r}",
+    "print(params$param1)",
+    "print(params$param2)",
+    "```"
+  )
+  writeLines(lines, "report.Rmd")
+  targets::tar_script({
+    library(tarchetypes)
+    value <- "abcd1234verydistinctvalue"
+    tar_pipeline(
+      tar_target(upstream, "anotherverydistinctvalue"),
+      tar_render(
+        report,
+        "report.Rmd",
+        params = list(param1 = !!value, param2 = upstream)
+      )
+    )
+  })
+  targets::tar_make(callr_function = NULL)
+  lines <- readLines("report.html")
 })

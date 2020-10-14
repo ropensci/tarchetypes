@@ -35,7 +35,9 @@
 #' @inheritParams knitr::knit
 #' @param path Character string, file path to the `knitr` source file.
 #'   Must have length 1.
-#' @param ... Named arguments to `knitr::knit()`
+#' @param ... Named arguments to `knitr::knit()`.
+#'   These arguments are evaluated when the target actually runs in
+#'   `tar_make()`, not when the target is defined.
 #' @examples
 #' \dontrun{
 #' targets::tar_dir({
@@ -63,8 +65,9 @@
 tar_knit <- function(
   name,
   path,
-  packages = (.packages()),
-  library = NULL,
+  tidy_eval = targets::tar_option_get("tidy_eval"),
+  packages = targets::tar_option_get("packages"),
+  library = targets::tar_option_get("library"),
   error = targets::tar_option_get("error"),
   deployment = "main",
   priority = targets::tar_option_get("priority"),
@@ -78,9 +81,11 @@ tar_knit <- function(
   assert_scalar(path, "tar_knit() only takes one file at a time.")
   assert_chr(path, "path argument of tar_knit() must be a character.")
   assert_path(path, paste("the path", path, "for tar_knit() does not exist"))
+  envir <- tar_option_get("envir")
+  args <- tidy_eval(substitute(list(...)), envir = envir, tidy_eval = tidy_eval)
   tar_target_raw(
     name = deparse_language(substitute(name)),
-    command = tar_knit_command(path, list(...), quiet),
+    command = tar_knit_command(path, args, quiet),
     packages = packages,
     library = library,
     format = "file",
@@ -96,10 +101,9 @@ tar_knit <- function(
 tar_knit_command <- function(path, args, quiet) {
   args$input <- path
   args$quiet <- quiet
-  expr_args <- call_list(args)
-  expr_deps <- call_list(rlang::syms(knitr_deps(path)))
-  expr_fun <- call_ns("tarchetypes", "tar_knit_run")
-  exprs <- list(expr_fun, path = path, args = expr_args, deps = expr_deps)
+  deps <- call_list(rlang::syms(knitr_deps(path)))
+  fun <- call_ns("tarchetypes", "tar_knit_run")
+  exprs <- list(fun, path = path, args = args, deps = deps)
   as.expression(as.call(exprs))
 }
 

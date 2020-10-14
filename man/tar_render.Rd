@@ -7,6 +7,7 @@
 tar_render(
   name,
   path,
+  tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
   error = targets::tar_option_get("error"),
@@ -24,6 +25,11 @@ tar_render(
 
 \item{path}{Character string, file path to the R Markdown source file.
 Must have length 1.}
+
+\item{tidy_eval}{Logical, whether to enable tidy evaluation
+when interpreting \code{command} and \code{pattern}. If \code{TRUE}, you can use the
+"bang-bang" operator \verb{!!} to programmatically insert
+the values of global objects.}
 
 \item{packages}{Character vector of packages to load right before
 the target builds. Use \code{tar_option_set()} to set packages
@@ -77,7 +83,17 @@ rules that decide whether the target is up to date.}
 
 \item{quiet}{An option to suppress printing of the pandoc command line.}
 
-\item{...}{Named arguments to \code{rmarkdown::render()}}
+\item{...}{Named arguments to \code{rmarkdown::render()}.
+These arguments are evaluated when the target actually runs in
+\code{tar_make()}, not when the target is defined. That means, for
+example, you can use upstream targets as parameters of
+parameterized R Markdown reports.
+\code{tar_render(your_target, "your_report.Rmd", params = list(your_param = your_target))} # nolint
+will run \code{rmarkdown::render("your_report.Rmd", params = list(your_param = your_target))}. # nolint
+For parameterized reports, it is recommended to supply a distinct
+\code{output_file} argument to each \code{tar_render()} call
+and set useful defaults for parameters in the R Markdown source.
+See the examples section for a demonstration.}
 }
 \value{
 A \code{tar_target()} object with \code{format = "file"}.
@@ -119,6 +135,7 @@ in the target and \code{quiet = TRUE} in \code{rmarkdown::render()}.
 \examples{
 \dontrun{
 targets::tar_dir({
+# Unparameterized R Markdown:
 lines <- c(
   "---",
   "title: report",
@@ -138,6 +155,31 @@ targets::tar_script({
   )
 })
 targets::tar_make()
+# browseURL("report.html") # View the report.
+# Parameterized R Markdown:
+lines <- c(
+  "---",
+  "title: report",
+  "output_format: html_document",
+  "params:",
+  "  your_param: \"default value\"",
+  "---",
+  "",
+  "```{r}",
+  "print(params$your_param)",
+  "```"
+)
+writeLines(lines, "report.Rmd")
+targets::tar_script({
+  library(tarchetypes)
+  tar_pipeline(
+    tar_target(data, data.frame(x = seq_len(26), y = letters)),
+    tar_render(report, "report.Rmd", params = list(your_param = data))
+  )
+})
+# targets::tar_visnetwork() # The report should be connected to the data.
+targets::tar_make()
+# browseURL("report.html") # View the report.
 })
 }
 }

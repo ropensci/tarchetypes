@@ -7,8 +7,9 @@
 tar_knit(
   name,
   path,
-  packages = (.packages()),
-  library = NULL,
+  tidy_eval = targets::tar_option_get("tidy_eval"),
+  packages = targets::tar_option_get("packages"),
+  library = targets::tar_option_get("library"),
   error = targets::tar_option_get("error"),
   deployment = "main",
   priority = targets::tar_option_get("priority"),
@@ -24,6 +25,11 @@ tar_knit(
 
 \item{path}{Character string, file path to the \code{knitr} source file.
 Must have length 1.}
+
+\item{tidy_eval}{Logical, whether to enable tidy evaluation
+when interpreting \code{command} and \code{pattern}. If \code{TRUE}, you can use the
+"bang-bang" operator \verb{!!} to programmatically insert
+the values of global objects.}
 
 \item{packages}{Character vector of packages to load right before
 the target builds. Use \code{tar_option_set()} to set packages
@@ -77,7 +83,9 @@ rules that decide whether the target is up to date.}
 
 \item{quiet}{Boolean; suppress the progress bar and messages?}
 
-\item{...}{Named arguments to \code{knitr::knit()}}
+\item{...}{Named arguments to \code{knitr::knit()}.
+These arguments are evaluated when the target actually runs in
+\code{tar_make()}, not when the target is defined.}
 }
 \value{
 A \code{tar_target()} object with \code{format = "file"}.
