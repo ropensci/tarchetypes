@@ -155,19 +155,13 @@ install_github("wlandau/tarchetypes")
 
 ## Documentation
 
-  - [Reference](https://wlandau.github.io/tarchetypes/): package
-    website.
-  - [Functions](https://wlandau.github.io/tarchetypes/reference/index.html):
-    documentation and examples of all user-side functions.
-
-## Examples
-
-The following examples use the `tar_render()` archetype in pipelines.
-
-  - [Minimal example](https://github.com/wlandau/targets-minimal).
-  - [Machine learning with
-    Keras](https://github.com/wlandau/targets-keras).
-  - [Validating a Stan model](https://github.com/wlandau/targets-stan).
+For specific documentation on `tarchetypes`, including the help files of
+all user-side functions, please visit the [reference
+website](https://wlandau.github.io/tarchetypes/). For documentation on
+[`targets`](https://github.com/wlandau/targets) in general, please visit
+the [`targets` reference website](https://wlandau.github.io/targets).
+Many of the linked resources use `tarchetypes` functions such as
+[`tar_render()`](https://wlandau.github.io/tarchetypes/reference/tar_render.html).
 
 ## Participation
 
