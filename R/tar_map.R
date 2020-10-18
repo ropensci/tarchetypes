@@ -132,6 +132,7 @@ tar_map_iter <- function(values, target, command, pattern) {
     iteration = settings$iteration,
     error = settings$error,
     memory = settings$memory,
+    garbage_collection = settings$garbage_collection,
     deployment = settings$deployment,
     priority = settings$priority,
     resources = settings$resources,
