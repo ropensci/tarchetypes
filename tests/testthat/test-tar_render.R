@@ -1,7 +1,7 @@
 # Building in a temporary directory with tar_test() seems to break
 # fs::path_rel() on the GitHub Actions Windows check job,
 # and I am not sure why.
-test_that("tar_render() works", {
+test_that("tar_render() works", suppressMessages({
   on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
   lines <- c(
     "---",
@@ -40,7 +40,7 @@ test_that("tar_render() works", {
   # Should rerun the report.
   targets::tar_make(callr_function = NULL)
   expect_equal(sort(targets::tar_progress()$name), sort(c("data", "report")))
-})
+}))
 
 tar_test("tar_render() on a nested report still runs from the project root", {
   on.exit(

@@ -1,7 +1,7 @@
 # Building in a temporary directory with tar_test() seems to break
 # fs::path_rel() on the GitHub Actions Windows check job,
 # and I am not sure why.
-test_that("tar_knit() works", {
+test_that("tar_knit() works", suppressMessages({
   on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
   lines <- c(
     "---",
@@ -40,9 +40,9 @@ test_that("tar_knit() works", {
   # Should rerun the report.
   targets::tar_make(callr_function = NULL)
   expect_equal(sort(targets::tar_progress()$name), sort(c("data", "report")))
-})
+}))
 
-test_that("tar_knit() warns about tar_read_raw()", {
+test_that("tar_knit() warns about tar_read_raw()", suppressMessages({
   on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
   lines <- c(
     "---",
@@ -66,9 +66,9 @@ test_that("tar_knit() warns about tar_read_raw()", {
     targets::tar_make(callr_function = NULL),
     class = "condition_validate"
   )
-})
+}))
 
-test_that("tar_knit() warns about tar_load_raw()", {
+test_that("tar_knit() warns about tar_load_raw()", suppressMessages({
   on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
   lines <- c(
     "---",
@@ -93,7 +93,7 @@ test_that("tar_knit() warns about tar_load_raw()", {
     targets::tar_make(callr_function = NULL),
     class = "condition_validate"
   )
-})
+}))
 
 tar_test("tar_knit() on a nested report still runs from the project root", {
   lines <- c(

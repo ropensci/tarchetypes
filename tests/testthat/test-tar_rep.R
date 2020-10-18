@@ -50,7 +50,7 @@ tar_test("tar_rep(iteration = 'vector')", {
   expect_equal(out$tar_rep, rep(rep(seq_len(3), each = 2), times = 2))
   expect_equal(length(tar_meta(x, fields = "children")$children[[1]]), 2L)
   expect_equal(tar_read(x, branches = 1), out[seq_len(6), ])
-  expect_equivalent(tar_read(x, branches = 2), out[seq_len(6) + 6, ])
+  expect_equiv(tar_read(x, branches = 2), out[seq_len(6) + 6, ])
 })
 
 tar_test("tar_rep_raw(iteration = 'vector')", {
@@ -74,7 +74,7 @@ tar_test("tar_rep_raw(iteration = 'vector')", {
   expect_equal(out$tar_rep, rep(rep(seq_len(3), each = 2), times = 2))
   expect_equal(length(tar_meta(x, fields = "children")$children[[1]]), 2L)
   expect_equal(tar_read(x, branches = 1), out[seq_len(6), ])
-  expect_equivalent(tar_read(x, branches = 2), out[seq_len(6) + 6, ])
+  expect_equiv(tar_read(x, branches = 2), out[seq_len(6) + 6, ])
 })
 
 tar_test("tar_rep(iteration = 'group')", {
@@ -102,7 +102,7 @@ tar_test("tar_rep(iteration = 'group')", {
   expect_equal(out$tar_group, rep(1, 12))
   expect_equal(length(tar_meta(x, fields = "children")$children[[1]]), 2L)
   expect_equal(tar_read(x, branches = 1), out[seq_len(6), ])
-  expect_equivalent(tar_read(x, branches = 2), out[seq_len(6) + 6, ])
+  expect_equiv(tar_read(x, branches = 2), out[seq_len(6) + 6, ])
 })
 
 tar_test("tar_rep() with non-list output", {
