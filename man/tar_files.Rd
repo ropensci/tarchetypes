@@ -100,6 +100,8 @@ a drop-in replacement for \code{\link[targets:tar_make]{tar_make()}} in this cas
 \itemize{
 \item Template file wildcards for \code{future::future()} in \code{\link[targets:tar_make_future]{tar_make_future()}}.
 \item Template file wildcards \code{clustermq::workers()} in \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}}.
+\item Custom target-level \code{future::plan()}, e.g.
+\code{resources = list(plan = future.callr::callr)}.
 \item Custom \code{curl} handle if \code{format = "url"},
 e.g. \code{resources = list(handle = curl::new_handle())}.
 \item Custom preset for \code{qs::qsave()} if \code{format = "qs"}, e.g.
