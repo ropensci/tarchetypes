@@ -196,8 +196,9 @@ If \code{"main"}, the target's dependencies are loaded on the host machine
 and sent to the worker before the target builds.
 If \code{"worker"}, the worker loads the targets dependencies.}
 
-\item{cue}{An optional object from \code{tar_cue()} to customize the
-rules that decide whether the target is up to date.}
+\item{cue}{An optional object from \code{tar_cue()}
+to customize the rules that decide whether the target is up to date.
+Only applies to the downstream target. The upstream target always runs.}
 }
 \value{
 A list of two targets, one upstream and one downstream.

@@ -23,6 +23,9 @@
 #'   (before `tar_make()`). Applies to the `command` argument.
 #' @param format Character, either `"file"` or `"url"`. See the `format`
 #'   argument of `targets::tar_target()` for details.
+#' @param cue An optional object from `tar_cue()`
+#'   to customize the rules that decide whether the target is up to date.
+#'   Only applies to the downstream target. The upstream target always runs.
 #' @examples
 #' \dontrun{
 #' # Without loss of generality,
@@ -136,7 +139,7 @@ tar_files_raw <- function(
     resources = resources,
     storage = storage,
     retrieval = retrieval,
-    cue = cue
+    cue = targets::tar_cue(mode = "always")
   )
   name_files_sym <- rlang::sym(name_files)
   downstream <- tar_target_raw(

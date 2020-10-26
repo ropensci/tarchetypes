@@ -16,6 +16,9 @@
 #' @param tidy_eval Whether to invoke tidy evaluation
 #'   (e.g. the `!!` operator from `rlang`) as soon as the target is defined
 #'   (before `tar_make()`). Applies to arguments `command` and `change`.
+#' @param cue An optional object from `tar_cue()`
+#'   to customize the rules that decide whether the target is up to date.
+#'   Only applies to the downstream target. The upstream target always runs.
 #' @examples
 #' \dontrun{
 #' # Without loss of generality,
