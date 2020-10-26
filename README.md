@@ -1,11 +1,13 @@
 
 # tarchetypes
 
+[![ropensci](https://badges.ropensci.org/401_status.svg)](https://github.com/ropensci/software-review/issues/401)
+[![zenodo](https://zenodo.org/badge/282774543.svg)](https://zenodo.org/badge/latestdoi/282774543)
+[![cran](http://www.r-pkg.org/badges/version/tarchetypes)](https://cran.r-project.org/package=tarchetypes)
 [![status](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![check](https://github.com/wlandau/tarchetypes/workflows/check/badge.svg)](https://github.com/wlandau/tarchetypes/actions?query=workflow%3Acheck)
-[![lint](https://github.com/wlandau/tarchetypes/workflows/lint/badge.svg)](https://github.com/wlandau/tarchetypes/actions?query=workflow%3Alint)
 [![codecov](https://codecov.io/gh/wlandau/tarchetypes/branch/main/graph/badge.svg?token=3T5DlLwUVl)](https://codecov.io/gh/wlandau/targets)
-[![zenodo](https://zenodo.org/badge/282774543.svg)](https://zenodo.org/badge/latestdoi/282774543)
+[![lint](https://github.com/wlandau/tarchetypes/workflows/lint/badge.svg)](https://github.com/wlandau/tarchetypes/actions?query=workflow%3Alint)
 
 The `tarchetypes` R package is a collection of target and pipeline
 archetypes for the [`targets`](https://github.com/wlandau/targets)
