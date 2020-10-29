@@ -21,6 +21,7 @@ reference:
 - title: Literate programming
   contents:
   - '`tar_knit`'
+  - '`tar_knit_raw`'
   - '`tar_render`'
   - '`tar_render_raw`'
 - title: Branching
