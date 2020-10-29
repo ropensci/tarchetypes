@@ -22,6 +22,7 @@ reference:
   contents:
   - '`tar_knit`'
   - '`tar_render`'
+  - '`tar_render_raw`'
 - title: Branching
   contents:
   - '`tar_rep`'

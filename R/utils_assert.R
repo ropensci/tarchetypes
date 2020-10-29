@@ -47,6 +47,12 @@ assert_int <- function(x, msg = NULL) {
   }
 }
 
+assert_lang <- function(x, msg = NULL) {
+  if (!is.language(x)) {
+    throw_validate(msg %||% "x must be a language object")
+  }
+}
+
 assert_list <- function(x, msg = NULL) {
   if (!is.list(x)) {
     throw_validate(msg %||% "x must be a list.")
@@ -62,6 +68,12 @@ assert_names <- function(x, msg = NULL) {
 assert_nonempty <- function(x, msg = NULL) {
   if (length(x) < 1L) {
     throw_validate(msg %||% "x must be nonempty.")
+  }
+}
+
+assert_not_expr <- function(x, msg = NULL) {
+  if (is.expression(x)) {
+    throw_validate(msg %||% "x must not be an expression object")
   }
 }
 
