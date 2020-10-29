@@ -1,4 +1,4 @@
-#' @title Alternative to `tar_target()` for a `knitr` document.
+#' @title Target with a `knitr` document.
 #' @export
 #' @description Shorthand to include `knitr` document in a
 #'   `targets` pipeline.

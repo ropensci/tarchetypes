@@ -2,8 +2,7 @@
 % Please edit documentation in R/tar_render_raw.R
 \name{tar_render_raw}
 \alias{tar_render_raw}
-\title{Alternative to \code{tar_target()} for an R Markdown document
-(raw version).}
+\title{Target with an R Markdown document (raw version).}
 \usage{
 tar_render_raw(
   name,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/tar_knit.R
 \name{tar_knit}
 \alias{tar_knit}
-\title{Alternative to \code{tar_target()} for a \code{knitr} document.}
+\title{Target with a \code{knitr} document.}
 \usage{
 tar_knit(
   name,

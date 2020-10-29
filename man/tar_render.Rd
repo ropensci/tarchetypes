@@ -2,7 +2,7 @@
 % Please edit documentation in R/tar_render.R
 \name{tar_render}
 \alias{tar_render}
-\title{Alternative to \code{tar_target()} for an R Markdown document.}
+\title{Target with an R Markdown document.}
 \usage{
 tar_render(
   name,

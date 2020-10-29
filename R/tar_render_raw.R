@@ -1,5 +1,4 @@
-#' @title Alternative to `tar_target()` for an R Markdown document
-#'   (raw version).
+#' @title Target with an R Markdown document (raw version).
 #' @export
 #' @description Shorthand to include an R Markdown document in a
 #'   `targets` pipeline (raw version)
