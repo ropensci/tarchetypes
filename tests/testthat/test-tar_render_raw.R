@@ -1,7 +1,7 @@
 # Building in a temporary directory with tar_test() seems to break
 # fs::path_rel() on the GitHub Actions Windows check job,
 # and I am not sure why.
-test_that("tar_render() works", suppressMessages({
+test_that("tar_render_raw() works", suppressMessages({
   on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
   lines <- c(
     "---",
@@ -18,7 +18,7 @@ test_that("tar_render() works", suppressMessages({
     library(tarchetypes)
     tar_pipeline(
       tar_target(data, data.frame(x = seq_len(26L), y = letters)),
-      tar_render(report, "report.Rmd", quiet = TRUE)
+      tar_render_raw("report", "report.Rmd", quiet = TRUE)
     )
   })
   # First run.
@@ -34,7 +34,7 @@ test_that("tar_render() works", suppressMessages({
     library(tarchetypes)
     tar_pipeline(
       tar_target(data, data.frame(x = rev(seq_len(26L)), y = letters)),
-      tar_render(report, "report.Rmd")
+      tar_render_raw("report", "report.Rmd")
     )
   })
   # Should rerun the report.
@@ -42,7 +42,7 @@ test_that("tar_render() works", suppressMessages({
   expect_equal(sort(targets::tar_progress()$name), sort(c("data", "report")))
 }))
 
-tar_test("tar_render() on a nested report still runs from the project root", {
+tar_test("tar_render_raw() on a nested report still runs from project root", {
   on.exit(
     unlink(c("_targets*", "report.*", "out_tar_render"), recursive = TRUE)
   )
@@ -61,7 +61,7 @@ tar_test("tar_render() on a nested report still runs from the project root", {
   targets::tar_script({
     library(tarchetypes)
     tar_pipeline(
-      tar_render(report, file.path("out_tar_render", "report.Rmd"))
+      tar_render_raw("report", file.path("out_tar_render", "report.Rmd"))
     )
   })
   expect_false(file.exists("here"))
@@ -71,7 +71,7 @@ tar_test("tar_render() on a nested report still runs from the project root", {
   expect_false(file.exists(file.path("out_tar_render", "here")))
 })
 
-tar_test("tar_render() for parameterized reports", {
+tar_test("tar_render_raw() for parameterized reports", {
   on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
   lines <- c(
     "---",
@@ -92,10 +92,10 @@ tar_test("tar_render() for parameterized reports", {
     value <- "abcd1234verydistinctvalue"
     tar_pipeline(
       tar_target(upstream, "anotherverydistinctvalue"),
-      tar_render(
-        report,
+      tar_render_raw(
+        "report",
         "report.Rmd",
-        params = list(param1 = !!value, param2 = upstream)
+        render_arguments = quote(list(params = list(param2 = upstream)))
       )
     )
   })

@@ -30,6 +30,12 @@ tar_test("assert_int()", {
   expect_error(assert_int(letters), class = "condition_validate")
 })
 
+tar_test("assert_lang()", {
+  expect_silent(assert_lang(as.symbol("abc")))
+  expect_silent(assert_lang(quote(1 + 1)))
+  expect_error(assert_lang("abc"), class = "condition_validate")
+})
+
 tar_test("assert_list()", {
   expect_silent(assert_list(list("abc")))
   expect_error(assert_list("abc"), class = "condition_validate")
@@ -45,11 +51,15 @@ tar_test("assert_nonempty()", {
   expect_error(assert_nonempty(list()), class = "condition_validate")
 })
 
+tar_test("assert_not_expr()", {
+  expect_silent(assert_not_expr(quote(x)))
+  expect_error(assert_not_expr(expression(x)), class = "condition_validate")
+})
+
 tar_test("assert_not_in()", {
   expect_silent(assert_not_in("x", c("a", "b")))
   expect_error(assert_not_in("b", c("a", "b")), class = "condition_validate")
 })
-
 
 tar_test("assert_nzchr()", {
   expect_silent(assert_nzchr(c("a", "b")))
