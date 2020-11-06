@@ -82,7 +82,12 @@ rules that decide whether the target is up to date.}
 \item{knit_arguments}{Optional language object with a list
 of named arguments to \code{knitr::knit()}.
 Cannot be an expression object.
-(Use \code{quote()}, not \code{expression()}.)}
+(Use \code{quote()}, not \code{expression()}.)
+The reason for quoting is that these arguments may depend on
+upstream targets whose values are not available at
+the time the target is defined, and because \code{tar_knit_raw()}
+is the "raw" version of a function, we want to avoid
+all non-standard evaluation.}
 }
 \value{
 A \code{tar_target()} object with \code{format = "file"}.

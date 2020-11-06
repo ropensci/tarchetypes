@@ -20,6 +20,11 @@
 #'   of named arguments to `knitr::knit()`.
 #'   Cannot be an expression object.
 #'   (Use `quote()`, not `expression()`.)
+#'   The reason for quoting is that these arguments may depend on
+#'   upstream targets whose values are not available at
+#'   the time the target is defined, and because `tar_knit_raw()`
+#'   is the "raw" version of a function, we want to avoid
+#'   all non-standard evaluation.
 #' @examples
 #' \dontrun{
 #' targets::tar_dir({

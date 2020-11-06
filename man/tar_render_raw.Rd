@@ -82,7 +82,12 @@ rules that decide whether the target is up to date.}
 \item{render_arguments}{Optional language object with a list
 of named arguments to \code{rmarkdown::render()}.
 Cannot be an expression object.
-(Use \code{quote()}, not \code{expression()}.)}
+(Use \code{quote()}, not \code{expression()}.)
+The reason for quoting is that these arguments may depend on
+upstream targets whose values are not available at
+the time the target is defined, and because \code{tar_render_raw()}
+is the "raw" version of a function, we want to avoid
+all non-standard evaluation.}
 }
 \value{
 A \code{tar_target()} object with \code{format = "file"}.
@@ -149,7 +154,7 @@ targets::tar_script({
     tar_render_raw(
       "report",
       "report.Rmd",
-      render_arguments = quote(list(params = list(your_param = data)))
+      render_arguments = list(params = list(your_param = data))
     )
   )
 })

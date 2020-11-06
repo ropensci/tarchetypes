@@ -20,6 +20,11 @@
 #'   of named arguments to `rmarkdown::render()`.
 #'   Cannot be an expression object.
 #'   (Use `quote()`, not `expression()`.)
+#'   The reason for quoting is that these arguments may depend on
+#'   upstream targets whose values are not available at
+#'   the time the target is defined, and because `tar_render_raw()`
+#'   is the "raw" version of a function, we want to avoid
+#'   all non-standard evaluation.
 #' @examples
 #' \dontrun{
 #' targets::tar_dir({
@@ -65,7 +70,7 @@
 #'     tar_render_raw(
 #'       "report",
 #'       "report.Rmd",
-#'       render_arguments = quote(list(params = list(your_param = data)))
+#'       render_arguments = list(params = list(your_param = data))
 #'     )
 #'   )
 #' })
