@@ -173,3 +173,27 @@ the [code of
 conduct](https://github.com/wlandau/tarchetypes/blob/main/CODE_OF_CONDUCT.md)
 and the [contributing
 guide](https://github.com/wlandau/tarchetypes/blob/main/CONTRIBUTING.md).
+
+## Citation
+
+``` r
+citation("tarchetypes")
+#> Warning in citation("tarchetypes"): no date field in DESCRIPTION file of package
+#> 'tarchetypes'
+#> Warning in citation("tarchetypes"): could not determine year for 'tarchetypes'
+#> from package DESCRIPTION file
+#> 
+#> To cite package 'tarchetypes' in publications use:
+#> 
+#>   William Michael Landau (NA). tarchetypes: Archetypes for Targets.
+#>   https://wlandau.github.io/tarchetypes/,
+#>   https://github.com/wlandau/tarchetypes.
+#> 
+#> A BibTeX entry for LaTeX users is
+#> 
+#>   @Manual{,
+#>     title = {tarchetypes: Archetypes for Targets},
+#>     author = {William Michael Landau},
+#>     note = {https://wlandau.github.io/tarchetypes/, https://github.com/wlandau/tarchetypes},
+#>   }
+```

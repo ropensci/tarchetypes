@@ -148,3 +148,9 @@ For specific documentation on `tarchetypes`, including the help files of all use
 ## Participation
 
 Development is a community effort, and we welcome discussion and contribution. By participating in this project, you agree to abide by the [code of conduct](https://github.com/wlandau/tarchetypes/blob/main/CODE_OF_CONDUCT.md) and the [contributing guide](https://github.com/wlandau/tarchetypes/blob/main/CONTRIBUTING.md).
+
+## Citation
+
+```{r}
+citation("tarchetypes")
+```
