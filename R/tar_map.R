@@ -96,24 +96,12 @@ tar_map_produce_suffix <- function(values, names) {
 }
 
 tar_map_target <- function(target, values) {
-  command <- target$command$expr
-  pattern <- tar_map_pattern(target)
   lapply(
     transpose(values),
     tar_map_iter,
     target = target,
-    command = command,
-    pattern = pattern
-  )
-}
-
-tar_map_pattern <- function(target) {
-  growth <- target$settings$growth
-  dimensions <- target$settings$dimensions
-  trn(
-    growth == "none",
-    NULL,
-    as.expression(call_function(growth, rlang::syms(dimensions)))
+    command = target$command$expr,
+    pattern = target$settings$pattern
   )
 }
 

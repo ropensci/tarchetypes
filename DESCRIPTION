@@ -9,7 +9,7 @@ Description: The 'targets' package is a pipeline toolkit that brings together
   reproducible workflows concisely and compactly.
   The methods in this package were influenced by the 'drake' R package
   by Will Landau (2018) <doi:10.21105/joss.00550>.
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 License: MIT + file LICENSE
 URL: https://wlandau.github.io/tarchetypes/, https://github.com/wlandau/tarchetypes
 BugReports: https://github.com/wlandau/tarchetypes/issues
@@ -30,7 +30,7 @@ Depends:
 Imports:
   fs (>= 1.4.2),
   rlang (>= 0.4.7),
-  targets,
+  targets (>= 0.0.0.9003),
   tidyselect (>= 1.1.0),
   utils,
   vctrs (>= 0.3.4),

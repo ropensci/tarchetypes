@@ -7,7 +7,7 @@ tar_test("tar_files() writes the correct targets", {
   out <- targets::tar_manifest(x, callr_function = NULL)
   expect_equal(out$name, "x")
   expect_equal(out$command, "x_files")
-  expect_equal(out$type, "map")
+  expect_equal(out$type, "pattern")
   expect_equal(out$dimensions, list("x_files"))
   out <- targets::tar_manifest(x_files, callr_function = NULL)
   expect_equal(out$name, "x_files")
