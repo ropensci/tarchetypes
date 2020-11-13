@@ -127,7 +127,7 @@ instead of the working directory of the report.
 in the target and \code{quiet = TRUE} in \code{knitr::knit()}.
 }
 \examples{
-\dontrun{
+if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({
 lines <- c(
   "---",

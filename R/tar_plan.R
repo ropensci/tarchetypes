@@ -14,7 +14,7 @@
 #'   arguments must be explicit calls to create target objects,
 #'   e.g. `tar_target()`, target archetypes like [tar_render()], or similar.
 #' @examples
-#' \dontrun{
+#' if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({
 #' lines <- c(
 #'   "---",

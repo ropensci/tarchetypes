@@ -230,6 +230,7 @@ are aggregated with \code{list()}. If \code{"vector"},
 then \code{vctrs::vec_c()}. If \code{"group"}, then \code{vctrs::vec_rbind()}.
 }
 \examples{
+if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({
 targets::tar_script({
   targets::tar_pipeline(
@@ -244,4 +245,5 @@ targets::tar_script({
 targets::tar_make(callr_function = NULL)
 targets::tar_read(x)
 })
+}
 }

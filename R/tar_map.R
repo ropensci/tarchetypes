@@ -28,6 +28,7 @@
 #'   If `unlist = TRUE`, the return value is a flat list of targets
 #'   named by the new target names.
 #' @examples
+#' if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({
 #' targets::tar_script({
 #'   targets::tar_pipeline(
@@ -38,8 +39,9 @@
 #'     )
 #'   )
 #' })
-#' targets::tar_manifest(callr_function = NULL)
+#' targets::tar_manifest(L)
 #' })
+#' }
 tar_map <- function(
   values,
   ...,

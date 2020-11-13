@@ -218,7 +218,7 @@ an upstream auxiliary target to indicate the custom condition
 and a downstream target that responds to it and does your work.
 }
 \examples{
-\dontrun{
+if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 # Without loss of generality,
 # tar_force(your_target, run_stuff(), force = should_run())
 # is equivalent to:

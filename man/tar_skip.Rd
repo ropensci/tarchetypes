@@ -216,7 +216,7 @@ even if the target does not exist yet. This behavior differs from
 \code{tar_cue(mode = "never")}, which still runs if the target does not exist.
 }
 \examples{
-\dontrun{
+if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 # Without loss of generality,
 # tar_skip(your_target, command = run_stuff(), skip = should_skip())
 # is equivalent to:

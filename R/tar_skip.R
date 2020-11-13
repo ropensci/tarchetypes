@@ -16,7 +16,7 @@
 #'   (e.g. the `!!` operator from `rlang`) as soon as the target is defined
 #'   (before `tar_make()`). Applies to arguments `command` and `skip`.
 #' @examples
-#' \dontrun{
+#' if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 #' # Without loss of generality,
 #' # tar_skip(your_target, command = run_stuff(), skip = should_skip())
 #' # is equivalent to:

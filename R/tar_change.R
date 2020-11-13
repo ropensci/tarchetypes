@@ -20,7 +20,7 @@
 #'   to customize the rules that decide whether the target is up to date.
 #'   Only applies to the downstream target. The upstream target always runs.
 #' @examples
-#' \dontrun{
+#' if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 #' # Without loss of generality,
 #' # tar_change(your_target, command = fun(), change = aux())
 #' # is equivalent to:

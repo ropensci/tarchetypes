@@ -14,6 +14,7 @@
 #' @param use_names Logical, whether to insert the names of the targets
 #'   into the command when splicing.
 #' @examples
+#' if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({
 #' targets::tar_script({
 #'   target1 <- targets::tar_target(x, head(mtcars))
@@ -26,8 +27,9 @@
 #'   )
 #'   targets::tar_pipeline(target1, target2, target3)
 #' })
-#' targets::tar_manifest(callr_function = NULL)
+#' targets::tar_manifest()
 #' })
+#' }
 tar_combine <- function(
   name,
   ...,

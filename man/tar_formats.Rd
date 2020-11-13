@@ -289,7 +289,7 @@ For details on specialized storage formats, open the help file of the
 \code{targets::tar_target()} function and read about the \code{format} argument.
 }
 \examples{
-\dontrun{
+if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({
 targets::tar_script(
   targets::tar_pipeline(

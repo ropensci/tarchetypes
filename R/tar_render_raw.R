@@ -26,7 +26,7 @@
 #'   is the "raw" version of a function, we want to avoid
 #'   all non-standard evaluation.
 #' @examples
-#' \dontrun{
+#' if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({
 #' # Unparameterized R Markdown:
 #' lines <- c(
@@ -70,7 +70,7 @@
 #'     tar_render_raw(
 #'       "report",
 #'       "report.Rmd",
-#'       render_arguments = list(params = list(your_param = data))
+#'       render_arguments = quote(list(params = list(your_param = data)))
 #'     )
 #'   )
 #' })

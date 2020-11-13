@@ -155,7 +155,7 @@ For more information, visit
 \url{https://github.com/ropensci/drake/issues/1302}.
 }
 \examples{
-\dontrun{
+if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 # Without loss of generality,
 # tar_files(your_target, c("a.txt", "b.txt"))
 # is equivalent to:
@@ -184,7 +184,7 @@ targets::tar_make()
 targets::tar_make()
 # If we change one file, `tar_make()` will only rerun one branch.
 writeLines("a", "a.txt")
-tar_make()
+targets::tar_make()
 })
 }
 }

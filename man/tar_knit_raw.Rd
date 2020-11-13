@@ -110,7 +110,7 @@ is a character vector, and the \code{knit_arguments} argument
 is a language object.
 }
 \examples{
-\dontrun{
+if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({
 lines <- c(
   "---",

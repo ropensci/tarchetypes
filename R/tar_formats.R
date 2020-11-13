@@ -9,7 +9,7 @@
 #' @return A `tar_target()` object.
 #' @inheritParams targets::tar_target
 #' @examples
-#' \dontrun{
+#' if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({
 #' targets::tar_script(
 #'   targets::tar_pipeline(

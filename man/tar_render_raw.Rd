@@ -110,7 +110,7 @@ is a character vector, and the \code{render_arguments} argument
 is a language object.
 }
 \examples{
-\dontrun{
+if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({
 # Unparameterized R Markdown:
 lines <- c(
@@ -154,7 +154,7 @@ targets::tar_script({
     tar_render_raw(
       "report",
       "report.Rmd",
-      render_arguments = list(params = list(your_param = data))
+      render_arguments = quote(list(params = list(your_param = data)))
     )
   )
 })
