@@ -1,7 +1,4 @@
-# Building in a temporary directory with tar_test() seems to break
-# fs::path_rel() on the GitHub Actions Windows check job,
-# and I am not sure why.
-test_that("tar_knit_raw() works", suppressMessages({
+tar_test("tar_knit_raw() works", suppressMessages({
   on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
   lines <- c(
     "---",
@@ -42,7 +39,7 @@ test_that("tar_knit_raw() works", suppressMessages({
   expect_equal(sort(targets::tar_progress()$name), sort(c("data", "report")))
 }))
 
-test_that("tar_knit_raw() warns about tar_read_raw()", suppressMessages({
+tar_test("tar_knit_raw() warns about tar_read_raw()", suppressMessages({
   on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
   lines <- c(
     "---",
@@ -68,7 +65,7 @@ test_that("tar_knit_raw() warns about tar_read_raw()", suppressMessages({
   )
 }))
 
-test_that("tar_knit_raw() warns about tar_load_raw()", suppressMessages({
+tar_test("tar_knit_raw() warns about tar_load_raw()", suppressMessages({
   on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
   lines <- c(
     "---",

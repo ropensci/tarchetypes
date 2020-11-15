@@ -153,5 +153,8 @@ tar_render_command <- function(path, args, quiet) {
 #'   report, automatically created by `tar_render()`.
 tar_render_run <- function(path, args, deps) {
   assert_package("rmarkdown")
+  envir <- parent.frame()
+  args$envir <- args$envir %||% targets::tar_envir(default = envir)
+  force(args$envir)
   fs::path_rel(c(do.call(rmarkdown::render, args), path))
 }
