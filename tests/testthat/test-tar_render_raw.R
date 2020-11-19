@@ -1,4 +1,5 @@
-tar_test("tar_render_raw() works", suppressMessages({
+# Cannot use tar_test() here because of relative path issues on Windows. # nolint
+test_that("tar_render_raw() works", suppressMessages({
   on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
   lines <- c(
     "---",
@@ -39,9 +40,13 @@ tar_test("tar_render_raw() works", suppressMessages({
   expect_equal(sort(targets::tar_progress()$name), sort(c("data", "report")))
 }))
 
-tar_test("tar_render_raw() on a nested report still runs from project root", {
+# Cannot use tar_test() here because of relative path issues on Windows. # nolint
+test_that("tar_render_raw(nested) runs from project root", suppressMessages({
   on.exit(
-    unlink(c("_targets*", "report.*", "out_tar_render"), recursive = TRUE)
+    unlink(
+      c("_targets*", "report.*", "out_tar_render", "here"),
+      recursive = TRUE
+    )
   )
   lines <- c(
     "---",
@@ -66,9 +71,10 @@ tar_test("tar_render_raw() on a nested report still runs from project root", {
   targets::tar_make(callr_function = NULL)
   expect_true(file.exists("here"))
   expect_false(file.exists(file.path("out_tar_render", "here")))
-})
+}))
 
-tar_test("tar_render_raw() for parameterized reports", {
+# Cannot use tar_test() here because of relative path issues on Windows. # nolint
+test_that("tar_render_raw() for parameterized reports", suppressMessages({
   on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
   lines <- c(
     "---",
@@ -99,4 +105,4 @@ tar_test("tar_render_raw() for parameterized reports", {
   targets::tar_make(callr_function = NULL)
   lines <- readLines("report.html")
   expect_true(any(grepl("anotherverydistinctvalue", lines)))
-})
+}))

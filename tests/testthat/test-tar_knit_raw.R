@@ -1,4 +1,5 @@
-tar_test("tar_knit_raw() works", suppressMessages({
+# Cannot use tar_test() here because of relative path issues on Windows. # nolint
+test_that("tar_knit_raw() works", suppressMessages({
   on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
   lines <- c(
     "---",
@@ -39,7 +40,8 @@ tar_test("tar_knit_raw() works", suppressMessages({
   expect_equal(sort(targets::tar_progress()$name), sort(c("data", "report")))
 }))
 
-tar_test("tar_knit_raw() warns about tar_read_raw()", suppressMessages({
+# Cannot use tar_test() here because of relative path issues on Windows. # nolint
+test_that("tar_knit_raw() warns about tar_read_raw()", suppressMessages({
   on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
   lines <- c(
     "---",
@@ -65,7 +67,8 @@ tar_test("tar_knit_raw() warns about tar_read_raw()", suppressMessages({
   )
 }))
 
-tar_test("tar_knit_raw() warns about tar_load_raw()", suppressMessages({
+# Cannot use tar_test() here because of relative path issues on Windows. # nolint
+test_that("tar_knit_raw() warns about tar_load_raw()", suppressMessages({
   on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
   lines <- c(
     "---",
@@ -92,7 +95,9 @@ tar_test("tar_knit_raw() warns about tar_load_raw()", suppressMessages({
   )
 }))
 
-tar_test("tar_knit_raw() on a nested report still runs from the project root", {
+# Cannot use tar_test() here because of relative path issues on Windows. # nolint
+test_that("tar_knit_raw(nested) runs from the project root", suppressMessages({
+  on.exit(unlink(c("_targets*", "report.*", "out", "here"), recursive = TRUE))
   lines <- c(
     "---",
     "title: report",
@@ -116,4 +121,4 @@ tar_test("tar_knit_raw() on a nested report still runs from the project root", {
   targets::tar_make(callr_function = NULL)
   expect_true(file.exists("here"))
   expect_false(file.exists(file.path("out", "here")))
-})
+}))
