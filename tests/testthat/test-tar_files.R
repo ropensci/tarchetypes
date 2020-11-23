@@ -7,13 +7,11 @@ tar_test("tar_files() writes the correct targets", {
   out <- targets::tar_manifest(x, callr_function = NULL)
   expect_equal(out$name, "x")
   expect_equal(out$command, "x_files")
-  expect_equal(out$type, "pattern")
-  expect_equal(out$dimensions, list("x_files"))
+  expect_equal(out$pattern, "map(x_files)")
   out <- targets::tar_manifest(x_files, callr_function = NULL)
   expect_equal(out$name, "x_files")
   expect_equal(out$command, "c(\"a.txt\", \"b.txt\")")
-  expect_equal(out$type, "stem")
-  expect_equal(out$dimensions, list(character(0)))
+  expect_equal(out$pattern, NA_character_)
 })
 
 tar_test("tar_files() correctly responds to changes in files", {
