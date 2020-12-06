@@ -24,17 +24,20 @@ reference:
   - '`tar_knit_raw`'
   - '`tar_render`'
   - '`tar_render_raw`'
-- title: Branching
-  contents:
-  - '`tar_rep`'
-  - '`tar_rep_raw`'
-  - '`tar_map`'
-  - '`tar_combine`'
-  - '`tar_combine_raw`'
 - title: Formats
   contents:
   - '`tar_formats`'
+- title: Branching
+  contents:
+  - '`tar_combine`'
+  - '`tar_combine_raw`'
+  - '`tar_map`'
+  - '`tar_rep`'
+  - '`tar_rep_raw`'
+- title: Branching over files
+  contents:
   - '`tar_files`'
+  - '`tar_files_raw`'
 - title: Custom decision rules
   contents:
   - '`tar_change`'
