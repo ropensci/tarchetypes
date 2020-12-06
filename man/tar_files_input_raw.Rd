@@ -21,6 +21,9 @@ tar_files_input_raw(
 \arguments{
 \item{name}{Symbol, name of the target.}
 
+\item{files}{Nonempty character vector of known existing input files
+to track for changes.}
+
 \item{format}{Character, either \code{"file"} or \code{"url"}. See the \code{format}
 argument of \code{targets::tar_target()} for details.}
 
@@ -113,8 +116,8 @@ except the \code{name} argument must be a character string.
 \code{tar_files_input_raw()} creates a pair of targets, one upstream
 and one downstream. The upstream target does some work
 and returns some file paths, and the downstream
-target is a pattern that applies \code{format = "file"}
-or \code{format = "url"}.
+target is a pattern that applies \code{format = "file"},
+\code{format = "url"}, or \code{format = "aws_file"}.
 This is the correct way to dynamically
 iterate over file/url targets. It makes sure any downstream patterns
 only rerun some of their branches if the files/urls change.

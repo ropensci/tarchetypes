@@ -28,9 +28,10 @@ tar_files(
 
 \item{command}{R code to run the target.}
 
-\item{tidy_eval}{Whether to invoke tidy evaluation
-(e.g. the \verb{!!} operator from \code{rlang}) as soon as the target is defined
-(before \code{tar_make()}). Applies to the \code{command} argument.}
+\item{tidy_eval}{Logical, whether to enable tidy evaluation
+when interpreting \code{command} and \code{pattern}. If \code{TRUE}, you can use the
+"bang-bang" operator \verb{!!} to programmatically insert
+the values of global objects.}
 
 \item{packages}{Character vector of packages to load right before
 the target builds. Use \code{tar_option_set()} to set packages
@@ -39,7 +40,8 @@ globally for all subsequent targets you define.}
 \item{library}{Character vector of library paths to try
 when loading \code{packages}.}
 
-\item{format}{Character, either \code{"file"} or \code{"url"}. See the \code{format}
+\item{format}{Character of length 1.
+Must be \code{"file"}, \code{"url"}, or \code{"aws_file"}. See the \code{format}
 argument of \code{targets::tar_target()} for details.}
 
 \item{iteration}{Character of length 1, name of the iteration mode
@@ -145,8 +147,8 @@ branches over files or urls.
 \code{tar_files()} creates a pair of targets, one upstream
 and one downstream. The upstream target does some work
 and returns some file paths, and the downstream
-target is a pattern that applies \code{format = "file"}
-or \code{format = "url"}.
+target is a pattern that applies \code{format = "file"},
+\code{format = "url"}, or \code{format = "aws_file"}.
 This is the correct way to dynamically
 iterate over file/url targets. It makes sure any downstream patterns
 only rerun some of their branches if the files/urls change.

@@ -34,7 +34,8 @@ globally for all subsequent targets you define.}
 \item{library}{Character vector of library paths to try
 when loading \code{packages}.}
 
-\item{format}{Character, either \code{"file"} or \code{"url"}. See the \code{format}
+\item{format}{Character of length 1.
+Must be \code{"file"}, \code{"url"}, or \code{"aws_file"}. See the \code{format}
 argument of \code{targets::tar_target()} for details.}
 
 \item{iteration}{Character of length 1, name of the iteration mode
@@ -144,8 +145,8 @@ and \code{command} must be a language object.
 \code{tar_files_raw()} creates a pair of targets, one upstream
 and one downstream. The upstream target does some work
 and returns some file paths, and the downstream
-target is a pattern that applies \code{format = "file"}
-or \code{format = "url"}.
+target is a pattern that applies \code{format = "file"},
+\code{format = "url"}, or \code{format = "aws_file"}.
 This is the correct way to dynamically
 iterate over file/url targets. It makes sure any downstream patterns
 only rerun some of their branches if the files/urls change.

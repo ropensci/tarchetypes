@@ -4,8 +4,8 @@
 #' @details `tar_files()` creates a pair of targets, one upstream
 #'   and one downstream. The upstream target does some work
 #'   and returns some file paths, and the downstream
-#'   target is a pattern that applies `format = "file"`
-#'   or `format = "url"`.
+#'   target is a pattern that applies `format = "file"`,
+#'   `format = "url"`, or `format = "aws_file"`.
 #'   This is the correct way to dynamically
 #'   iterate over file/url targets. It makes sure any downstream patterns
 #'   only rerun some of their branches if the files/urls change.
@@ -13,19 +13,12 @@
 #'   <https://github.com/wlandau/targets/issues/136> and
 #'   <https://github.com/ropensci/drake/issues/1302>.
 #' @export
-#' @inheritParams targets::tar_target
 #' @return A list of two targets, one upstream and one downstream.
 #'   The upstream one does some work and returns some file paths,
 #'   and the downstream target is a pattern that applies `format = "file"`
 #'   or `format = "url"`.
-#' @param tidy_eval Whether to invoke tidy evaluation
-#'   (e.g. the `!!` operator from `rlang`) as soon as the target is defined
-#'   (before `tar_make()`). Applies to the `command` argument.
-#' @param format Character, either `"file"` or `"url"`. See the `format`
-#'   argument of `targets::tar_target()` for details.
-#' @param cue An optional object from `tar_cue()`
-#'   to customize the rules that decide whether the target is up to date.
-#'   Only applies to the downstream target. The upstream target always runs.
+#' @inheritParams tar_files_raw
+#' @inheritParams targets::tar_target
 #' @examples
 #' if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 #' # Without loss of generality,
@@ -114,8 +107,8 @@ tar_files <- function(
 #'   `tar_files_raw()` creates a pair of targets, one upstream
 #'   and one downstream. The upstream target does some work
 #'   and returns some file paths, and the downstream
-#'   target is a pattern that applies `format = "file"`
-#'   or `format = "url"`.
+#'   target is a pattern that applies `format = "file"`,
+#'   `format = "url"`, or `format = "aws_file"`.
 #'   This is the correct way to dynamically
 #'   iterate over file/url targets. It makes sure any downstream patterns
 #'   only rerun some of their branches if the files/urls change.
@@ -123,12 +116,13 @@ tar_files <- function(
 #'   <https://github.com/wlandau/targets/issues/136> and
 #'   <https://github.com/ropensci/drake/issues/1302>.
 #' @export
-#' @inheritParams targets::tar_target
 #' @return A list of two targets, one upstream and one downstream.
 #'   The upstream one does some work and returns some file paths,
 #'   and the downstream target is a pattern that applies `format = "file"`
 #'   or `format = "url"`.
-#' @param format Character, either `"file"` or `"url"`. See the `format`
+#' @inheritParams targets::tar_target
+#' @param format Character of length 1.
+#'   Must be `"file"`, `"url"`, or `"aws_file"`. See the `format`
 #'   argument of `targets::tar_target()` for details.
 #' @param cue An optional object from `tar_cue()`
 #'   to customize the rules that decide whether the target is up to date.
