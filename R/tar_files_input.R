@@ -2,7 +2,7 @@
 #'   input files or urls.
 #' @description Shorthand for a pattern that correctly
 #'   branches over known existing files or urls.
-#' @details `tar_files_input()` is like `tar_files()` 
+#' @details `tar_files_input()` is like `tar_files()`
 #'   but more convenient when the files in question already
 #'   exist and are known in advance. Whereas `tar_files()`
 #'   always appears outdated (e.g. with `tar_outdated()`)
