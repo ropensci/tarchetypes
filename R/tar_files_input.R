@@ -1,7 +1,16 @@
-#' @title Easy dynamic branching over files or urls.
+#' @title Easy dynamic branching over known existing
+#'   input files or urls.
 #' @description Shorthand for a pattern that correctly
-#'   branches over files or urls.
-#' @details `tar_files()` creates a pair of targets, one upstream
+#'   branches over known existing files or urls.
+#' @details `tar_files_input()` is like `tar_files()` 
+#'   but more convenient when the files in question already
+#'   exist and are known in advance. Whereas `tar_files()`
+#'   always appears outdated (e.g. with `tar_outdated()`)
+#'   because it always needs to check which files it needs to
+#'   branch over, `tar_files_input()` will appear up to date
+#'   if the files have not changed since last `tar_make()`.
+#'
+#'   `tar_files_input()` creates a pair of targets, one upstream
 #'   and one downstream. The upstream target does some work
 #'   and returns some file paths, and the downstream
 #'   target is a pattern that applies `format = "file"`
@@ -18,9 +27,8 @@
 #'   The upstream one does some work and returns some file paths,
 #'   and the downstream target is a pattern that applies `format = "file"`
 #'   or `format = "url"`.
-#' @param tidy_eval Whether to invoke tidy evaluation
-#'   (e.g. the `!!` operator from `rlang`) as soon as the target is defined
-#'   (before `tar_make()`). Applies to the `command` argument.
+#' @param files Nonempty character vector of known existing input files
+#'   to track for changes.
 #' @param format Character, either `"file"` or `"url"`. See the `format`
 #'   argument of `targets::tar_target()` for details.
 #' @param cue An optional object from `tar_cue()`
@@ -29,13 +37,15 @@
 #' @examples
 #' if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 #' # Without loss of generality,
-#' # tar_files(your_target, fn_that_returns_paths(c("a.txt", "b.txt")))
+#' # tar_files_input(your_target, c("a.txt", "b.txt"))
 #' # is equivalent to:
 #' # list(
 #' #   tar_target(
 #' #     your_target_files,
-#' #     fn_that_returns_paths(c("a.txt", "b.txt")),
-#' #     cue = tar_cue(mode = "always")
+#' #     c("a.txt", "b.txt"),
+#' #     deployment = "main",
+#' #     storage = "main",
+#' #     retrieval = "main"
 #' #   ),
 #' #   tar_target(
 #' #     your_target,
@@ -52,7 +62,7 @@
 #' file.create(c("a.txt", "b.txt"))
 #' targets::tar_script({
 #'   tar_pipeline(
-#'     tarchetypes::tar_files(x, c("a.txt", "b.txt"))
+#'     tarchetypes::tar_files_input(x, c("a.txt", "b.txt"))
 #'   )
 #' })
 #' targets::tar_make()
@@ -63,55 +73,42 @@
 #' targets::tar_make()
 #' })
 #' }
-tar_files <- function(
+tar_files_input <- function(
   name,
-  command,
-  tidy_eval = targets::tar_option_get("tidy_eval"),
-  packages = targets::tar_option_get("packages"),
-  library = targets::tar_option_get("library"),
+  files,
   format = c("file", "url", "aws_file"),
   iteration = targets::tar_option_get("iteration"),
   error = targets::tar_option_get("error"),
   memory = targets::tar_option_get("memory"),
   garbage_collection = targets::tar_option_get("garbage_collection"),
-  deployment = targets::tar_option_get("deployment"),
   priority = targets::tar_option_get("priority"),
   resources = targets::tar_option_get("resources"),
-  storage = targets::tar_option_get("storage"),
-  retrieval = targets::tar_option_get("retrieval"),
   cue = targets::tar_option_get("cue")
 ) {
   name <- deparse_language(substitute(name))
-  envir <- tar_option_get("envir")
-  command <- tidy_eval(substitute(command), envir, tidy_eval)
   format <- match.arg(format)
-  tar_files_raw(
+  tar_files_input_raw(
     name = name,
-    command = command,
-    packages = packages,
-    library = library,
+    files = files,
     format = format,
     iteration = iteration,
     error = error,
     memory = memory,
     garbage_collection = garbage_collection,
-    deployment = deployment,
     priority = priority,
     resources = resources,
-    storage = storage,
-    retrieval = retrieval,
     cue = cue
   )
 }
 
-#' @title Easy dynamic branching over files or urls (raw version).
+#' @title Easy dynamic branching over known existing
+#'   files or urls (raw version).
 #' @description Shorthand for a pattern that correctly
 #'   branches over files or urls.
-#' @details `tar_files_raw()` is similar to [tar_files()]
-#'   except the `name` argument must be a character string
-#'   and `command` must be a language object.
+#' @details `tar_files_input_raw()` is similar to [tar_files_input()]
+#'   except the `name` argument must be a character string.
 #'
-#'   `tar_files_raw()` creates a pair of targets, one upstream
+#'   `tar_files_input_raw()` creates a pair of targets, one upstream
 #'   and one downstream. The upstream target does some work
 #'   and returns some file paths, and the downstream
 #'   target is a pattern that applies `format = "file"`
@@ -136,16 +133,18 @@ tar_files <- function(
 #' @examples
 #' if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 #' # Without loss of generality,
-#' # tar_files_raw(
+#' # tar_files_input_raw(
 #' #   "your_target",
-#' #   quote(fn_that_returns_paths(c("a.txt", "b.txt")))
+#' #   c("a.txt", "b.txt")
 #' # )
 #' # is equivalent to:
 #' # list(
 #' #   tar_target(
 #' #     your_target_files,
-#' #     fn_that_returns_paths(c("a.txt", "b.txt")),
-#' #     cue = tar_cue(mode = "always")
+#' #     c("a.txt", "b.txt"),
+#' #     deployment = "main",
+#' #     storage = "main",
+#' #     retrieval = "main"
 #' #   ),
 #' #   tar_target(
 #' #     your_target,
@@ -162,7 +161,7 @@ tar_files <- function(
 #' file.create(c("a.txt", "b.txt"))
 #' targets::tar_script({
 #'   tar_pipeline(
-#'     tarchetypes::tar_files_raw("x", quote(c("a.txt", "b.txt")))
+#'     tarchetypes::tar_files_raw("x", c("a.txt", "b.txt"))
 #'   )
 #' })
 #' targets::tar_make()
@@ -173,45 +172,40 @@ tar_files <- function(
 #' targets::tar_make()
 #' })
 #' }
-tar_files_raw <- function(
+tar_files_input_raw <- function(
   name,
-  command,
-  packages = targets::tar_option_get("packages"),
-  library = targets::tar_option_get("library"),
+  files,
   format = c("file", "url", "aws_file"),
   iteration = targets::tar_option_get("iteration"),
   error = targets::tar_option_get("error"),
   memory = targets::tar_option_get("memory"),
   garbage_collection = targets::tar_option_get("garbage_collection"),
-  deployment = targets::tar_option_get("deployment"),
   priority = targets::tar_option_get("priority"),
   resources = targets::tar_option_get("resources"),
-  storage = targets::tar_option_get("storage"),
-  retrieval = targets::tar_option_get("retrieval"),
   cue = targets::tar_option_get("cue")
 ) {
   assert_chr(name, "name must be a character.")
   assert_scalar(name, "name must have length 1.")
-  assert_lang(command, "command must be a language object.")
-  name_files <- paste0(name, "_files")
+  assert_chr(files, "files must be a character vector.")
+  assert_nonempty(files, "files must have length > 0.")
   format <- match.arg(format)
+  name_files <- paste0(name, "_files")
   upstream <- tar_target_raw(
     name = name_files,
-    command = command,
+    command = parse(text = safe_deparse(files, collapse = " ")),
     pattern = NULL,
-    packages = packages,
-    library = library,
+    packages = character(0),
     format = "rds",
     iteration = "vector",
     error = error,
     memory = memory,
     garbage_collection = garbage_collection,
-    deployment = deployment,
+    deployment = "main",
     priority = priority,
     resources = resources,
-    storage = storage,
-    retrieval = retrieval,
-    cue = targets::tar_cue(mode = "always")
+    storage = "main",
+    retrieval = "main",
+    cue = cue
   )
   name_files_sym <- rlang::sym(name_files)
   downstream <- tar_target_raw(
@@ -219,7 +213,6 @@ tar_files_raw <- function(
     command = as.expression(name_files_sym),
     pattern = as.expression(call_function("map", list(name_files_sym))),
     packages = character(0),
-    library = library,
     format = format,
     iteration = iteration,
     error = error,

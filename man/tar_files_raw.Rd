@@ -2,14 +2,14 @@
 % Please edit documentation in R/tar_files.R
 \name{tar_files_raw}
 \alias{tar_files_raw}
-\title{Easy branching over dynamic files or urls (raw version).}
+\title{Easy dynamic branching over files or urls (raw version).}
 \usage{
 tar_files_raw(
   name,
   command,
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
-  format = c("file", "url"),
+  format = c("file", "url", "aws_file"),
   iteration = targets::tar_option_get("iteration"),
   error = targets::tar_option_get("error"),
   memory = targets::tar_option_get("memory"),
@@ -125,10 +125,6 @@ If \code{"worker"}, the worker loads the targets dependencies.}
 \item{cue}{An optional object from \code{tar_cue()}
 to customize the rules that decide whether the target is up to date.
 Only applies to the downstream target. The upstream target always runs.}
-
-\item{tidy_eval}{Whether to invoke tidy evaluation
-(e.g. the \verb{!!} operator from \code{rlang}) as soon as the target is defined
-(before \code{tar_make()}). Applies to the \code{command} argument.}
 }
 \value{
 A list of two targets, one upstream and one downstream.
