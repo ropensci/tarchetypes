@@ -1,4 +1,5 @@
 #' @title Easy dynamic branching over files or urls.
+#' @export
 #' @description Shorthand for a pattern that correctly
 #'   branches over files or urls.
 #' @details `tar_files()` creates a pair of targets, one upstream
@@ -12,7 +13,6 @@
 #'   For more information, visit
 #'   <https://github.com/wlandau/targets/issues/136> and
 #'   <https://github.com/ropensci/drake/issues/1302>.
-#' @export
 #' @return A list of two targets, one upstream and one downstream.
 #'   The upstream one does some work and returns some file paths,
 #'   and the downstream target is a pattern that applies `format = "file"`
@@ -98,6 +98,7 @@ tar_files <- function(
 }
 
 #' @title Easy dynamic branching over files or urls (raw version).
+#' @export
 #' @description Shorthand for a pattern that correctly
 #'   branches over files or urls.
 #' @details `tar_files_raw()` is similar to [tar_files()]
@@ -115,7 +116,6 @@ tar_files <- function(
 #'   For more information, visit
 #'   <https://github.com/wlandau/targets/issues/136> and
 #'   <https://github.com/ropensci/drake/issues/1302>.
-#' @export
 #' @return A list of two targets, one upstream and one downstream.
 #'   The upstream one does some work and returns some file paths,
 #'   and the downstream target is a pattern that applies `format = "file"`

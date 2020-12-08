@@ -97,6 +97,7 @@ tar_files_input <- function(
 
 #' @title Easy dynamic branching over known existing
 #'   files or urls (raw version).
+#' @export
 #' @description Shorthand for a pattern that correctly
 #'   branches over files or urls.
 #' @details `tar_files_input_raw()` is similar to [tar_files_input()]
