@@ -8,6 +8,12 @@ assert_correct_fields <- function(object, constructor) {
   assert_identical_chr(sort(names(object)), sort(names(formals(constructor))))
 }
 
+assert_dbl <- function(x, msg = NULL) {
+  if (!is.numeric(x)) {
+    throw_validate(msg %||% "x must be numeric.")
+  }
+}
+
 assert_equal_lengths <- function(x, msg = NULL) {
   lengths <- map_int(x, length)
   if (length(unique(lengths)) > 1L) {

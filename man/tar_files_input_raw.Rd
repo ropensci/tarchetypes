@@ -8,6 +8,7 @@ files or urls (raw version).}
 tar_files_input_raw(
   name,
   files,
+  batches = length(files),
   format = c("file", "url", "aws_file"),
   iteration = targets::tar_option_get("iteration"),
   error = targets::tar_option_get("error"),
@@ -24,24 +25,20 @@ tar_files_input_raw(
 \item{files}{Nonempty character vector of known existing input files
 to track for changes.}
 
+\item{batches}{Positive integer of length 1, number of batches
+to partition the files. The default is one file per batch
+(maximum number of batches) which is simplest to handle but
+could cause a lot of overhead and consume a lot of computing resources.
+Consider reducing the number of batches below the number of files
+for heavy workloads.}
+
 \item{format}{Character, either \code{"file"} or \code{"url"}. See the \code{format}
 argument of \code{targets::tar_target()} for details.}
 
-\item{iteration}{Character of length 1, name of the iteration mode
-of the target. Choices:
-\itemize{
-\item \code{"vector"}: branching happens with \code{vctrs::vec_slice()} and
-aggregation happens with \code{vctrs::vec_c()}.
-\item \code{"list"}, branching happens with \verb{[[]]} and aggregation happens with
-\code{list()}.
-\item \code{"group"}: \code{dplyr::group_by()}-like functionality to branch over
-subsets of a data frame. The target's return value must be a data
-frame with a special \code{tar_group} column of consecutive integers
-from 1 through the number of groups. Each integer designates a group,
-and a branch is created for each collection of rows in a group.
-See the \code{\link[targets:tar_group]{tar_group()}} function to see how you can
-create the special \code{tar_group} column with \code{dplyr::group_by()}.
-}}
+\item{iteration}{Character, iteration method. Must be a method
+supported by the \code{iteration} argument of \code{targets::tar_target()}.
+The iteration method for the upstream target is always \code{"list"}
+in order to support batching.}
 
 \item{error}{Character of length 1, what to do if the target
 runs into an error. If \code{"stop"}, the whole pipeline stops
@@ -130,13 +127,15 @@ if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 # Without loss of generality,
 # tar_files_input_raw(
 #   "your_target",
-#   c("a.txt", "b.txt")
+#   files = c("a.txt", "b.txt", "c.txt", "d.txt")),
+#   batches = 2
 # )
 # is equivalent to:
 # list(
 #   tar_target(
 #     your_target_files,
-#     c("a.txt", "b.txt"),
+#     list(c("a.txt", "b.txt"), c("c.txt", "d.txt")),
+#     iteration = "list",
 #     deployment = "main",
 #     storage = "main",
 #     retrieval = "main"
@@ -153,16 +152,20 @@ if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 # )
 # Try it out.
 targets::tar_dir({
-file.create(c("a.txt", "b.txt"))
+file.create(c("a.txt", "b.txt", "c.txt", "d.txt"))
 targets::tar_script({
   tar_pipeline(
-    tarchetypes::tar_files_raw("x", c("a.txt", "b.txt"))
+    tarchetypes::tar_files_input_raw(
+      "x",
+      c("a.txt", "b.txt", "c.txt", "d.txt"),
+      batches = 2
+    )
   )
 })
 targets::tar_make()
 # Should be up to date now.
 targets::tar_make()
-# If we change one file, `tar_make()` will only rerun one branch.
+# If we change one file, `tar_make()` will only rerun one batch.
 writeLines("a", "a.txt")
 targets::tar_make()
 })

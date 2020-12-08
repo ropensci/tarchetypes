@@ -9,6 +9,9 @@
 #'   because it always needs to check which files it needs to
 #'   branch over, `tar_files_input()` will appear up to date
 #'   if the files have not changed since last `tar_make()`.
+#'   In addition, `tar_files_input()` automatically groups
+#'   input files into batches to reduce overhead and
+#'   increase the efficiency of parallel processing.
 #'
 #'   `tar_files_input()` creates a pair of targets, one upstream
 #'   and one downstream. The upstream target does some work
@@ -31,12 +34,17 @@
 #' @examples
 #' if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 #' # Without loss of generality,
-#' # tar_files_input(your_target, c("a.txt", "b.txt"))
+#' # tar_files_input(
+#' #   your_target,
+#' #   files = c("a.txt", "b.txt", "c.txt", "d.txt")),
+#' #   batches = 2
+#' # )
 #' # is equivalent to:
 #' # list(
 #' #   tar_target(
 #' #     your_target_files,
-#' #     c("a.txt", "b.txt"),
+#' #     list(c("a.txt", "b.txt"), c("c.txt", "d.txt")),
+#' #     iteration = "list",
 #' #     deployment = "main",
 #' #     storage = "main",
 #' #     retrieval = "main"
@@ -53,16 +61,20 @@
 #' # )
 #' # Try it out.
 #' targets::tar_dir({
-#' file.create(c("a.txt", "b.txt"))
+#' file.create(c("a.txt", "b.txt", "c.txt", "d.txt"))
 #' targets::tar_script({
 #'   tar_pipeline(
-#'     tarchetypes::tar_files_input(x, c("a.txt", "b.txt"))
+#'     tarchetypes::tar_files_input(
+#'       x,
+#'       c("a.txt", "b.txt", "c.txt", "d.txt"),
+#'       batches = 2
+#'     )
 #'   )
 #' })
 #' targets::tar_make()
 #' # Should be up to date now.
 #' targets::tar_make()
-#' # If we change one file, `tar_make()` will only rerun one branch.
+#' # If we change one file, `tar_make()` will only rerun one batch.
 #' writeLines("a", "a.txt")
 #' targets::tar_make()
 #' })
@@ -70,6 +82,7 @@
 tar_files_input <- function(
   name,
   files,
+  batches = length(files),
   format = c("file", "url", "aws_file"),
   iteration = targets::tar_option_get("iteration"),
   error = targets::tar_option_get("error"),
@@ -84,6 +97,7 @@ tar_files_input <- function(
   tar_files_input_raw(
     name = name,
     files = files,
+    batches = batches,
     format = format,
     iteration = iteration,
     error = error,
