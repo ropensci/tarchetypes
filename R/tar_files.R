@@ -196,7 +196,7 @@ tar_files_raw <- function(
     packages = packages,
     library = library,
     format = "rds",
-    iteration = "vector",
+    iteration = iteration,
     error = error,
     memory = memory,
     garbage_collection = garbage_collection,
