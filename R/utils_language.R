@@ -19,25 +19,28 @@ call_substitute <- function(expr, env) {
 }
 
 deparse_language <- function(x) {
-  trn(!is.character(x) && !is.null(x), safe_deparse(x), x)
+  trn(!is.character(x) && !is.null(x), deparse_safe(x), x)
 }
 
-safe_deparse <- function(x, collapse = "\n", backtick = TRUE) {
-  out <- direct_deparse(
+deparse_safe <- function(x, collapse = "\n", backtick = TRUE) {
+  out <- deparse_direct(
     x,
     control = deparse_control_custom,
     backtick = backtick
   )
-  trn(length(out) > 1L, paste(out, collapse = collapse), out)
+  if (length(out) > 1L) {
+    out <- paste(out, collapse = collapse)
+  }
+  out
 }
 
 deparse_control_custom <- .deparseOpts(c("keepNA", "keepInteger"))
 
-direct_deparse <- function(...) {
-  produce_direct_deparse()(...)
+deparse_direct <- function(...) {
+  produce_deparse_direct()(...)
 }
 
-produce_direct_deparse <- function() {
+produce_deparse_direct <- function() {
   .deparseOpts <- identity
   environment(deparse) <- environment()
   deparse

@@ -37,7 +37,7 @@ input targets. If \code{unlist = TRUE}, the return value is a flat list of
 targets named by the new target names.
 }
 \description{
-Define collections of new targets.
+Define multiple new targets based on existing target objects.
 }
 \details{
 \code{tar_map()} creates collections of new

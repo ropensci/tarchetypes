@@ -1,6 +1,6 @@
 #' @title Static branching.
 #' @export
-#' @description Define collections of new targets.
+#' @description Define multiple new targets based on existing target objects.
 #' @details `tar_map()` creates collections of new
 #'   targets by iterating over a list of arguments
 #'   and substituting symbols into commands and pattern statements.
@@ -50,7 +50,7 @@ tar_map <- function(
 ) {
   targets <- unlist(list(...), recursive = TRUE)
   assert_targets(targets)
-  tar_map_assert_values(values)
+  assert_values_list(values)
   names_quosure <- rlang::enquo(names)
   names <- eval_tidyselect(names_quosure, base::names(values))
   values <- tar_map_extend_values(targets, values, names)
@@ -61,17 +61,6 @@ tar_map <- function(
     set_names(flat, map_chr(flat, ~.x$settings$name)),
     set_names(out, map_chr(targets, ~.x$settings$name))
   )
-}
-
-tar_map_assert_values <- function(values) {
-  assert_list(values, "values in tar_map() must be a list or data frame.")
-  assert_nonempty(names(values), "names(values) must not be empty.")
-  assert_unique(names(values), "names(values) must be unique.")
-  assert_chr(names(values), "names(values) must be a character.")
-  assert_nzchr(names(values), "names(values) must not have empty strings.")
-  assert_names(names(values), "names(values) must be legal symbol names.")
-  assert_nonempty(values, "values in tar_map() must not be empty.")
-  assert_equal_lengths(values, "values must have equal-length elements.")
 }
 
 tar_map_extend_values <- function(targets, values, names) {

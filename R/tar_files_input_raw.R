@@ -112,7 +112,7 @@ tar_files_input_raw <- function(
   files <- tar_files_input_batch_files(files, batches)
   upstream <- tar_target_raw(
     name = name_files,
-    command = parse(text = safe_deparse(files, collapse = " ")),
+    command = parse(text = deparse_safe(files, collapse = " ")),
     pattern = NULL,
     packages = character(0),
     format = "rds",

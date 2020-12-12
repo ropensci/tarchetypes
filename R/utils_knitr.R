@@ -57,7 +57,7 @@ walk_expr <- function(expr, counter) {
 }
 
 walk_call <- function(expr, counter) {
-  name <- safe_deparse(expr[[1]], backtick = FALSE)
+  name <- deparse_safe(expr[[1]], backtick = FALSE)
   if (name %in% paste0(c("", "targets::", "targets:::"), "tar_load")) {
     register_load(expr, counter)
   }
