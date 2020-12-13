@@ -114,3 +114,31 @@ tar_render_raw <- function(
     cue = cue
   )
 }
+
+
+tar_render_command <- function(path, args, quiet) {
+  args$input <- path
+  args$knit_root_dir <- quote(getwd())
+  args$quiet <- quiet
+  deps <- call_list(rlang::syms(knitr_deps(path)))
+  fun <- call_ns("tarchetypes", "tar_render_run")
+  exprs <- list(fun, path = path, args = args, deps = deps)
+  as.expression(as.call(exprs))
+}
+
+#' @title Render an R Markdown report inside a `tar_render()` target.
+#' @description Internal function needed for `tar_render()`.
+#'   Users should not invoke it directly.
+#' @export
+#' @keywords internal
+#' @param path Path to the R Markdown source file.
+#' @param args A named list of arguments to `rmarkdown::render()`.
+#' @param deps An unnamed list of target dependencies of the R Markdown
+#'   report, automatically created by `tar_render()`.
+tar_render_run <- function(path, args, deps) {
+  assert_package("rmarkdown")
+  envir <- parent.frame()
+  args$envir <- args$envir %||% targets::tar_envir(default = envir)
+  force(args$envir)
+  fs::path_rel(c(do.call(rmarkdown::render, args), path))
+}
