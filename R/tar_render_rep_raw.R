@@ -110,7 +110,7 @@ tar_render_rep_raw <- function(
   assert_dbl(batches %||% 0L, "batches must be numeric.")
   assert_scalar(batches %||% 0L, "batches must have length 1.")
   assert_list(args, "args must be a named list.")
-  assert_nonempty(names(args), "args must be a named list.")
+  assert_nonempty(names(args %|||% list(x = 1)), "args must be a named list.")
   name_params <- paste0(name, "_params")
   sym_params <- rlang::sym(name_params)
   target_params <- tar_target_raw(
@@ -127,7 +127,7 @@ tar_render_rep_raw <- function(
     retrieval = retrieval,
     cue = cue
   )
-  tar_target_raw(
+  target <- tar_target_raw(
     name = name,
     command = tar_render_rep_command(name, path, quiet, args),
     pattern = substitute(map(x), env = list(x = sym_params)),
@@ -141,6 +141,9 @@ tar_render_rep_raw <- function(
     retrieval = retrieval,
     cue = cue
   )
+  out <- list(target_params, target)
+  names(out) <- c(name_params, name)
+  out
 }
 
 tar_render_rep_params_command <- function(params, batches) {
