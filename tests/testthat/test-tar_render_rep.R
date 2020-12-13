@@ -203,12 +203,14 @@ tar_test("tar_render_rep() run with output_file specified", {
           par = c("parval1", "parval2", "parval3", "parval4"),
           output_file = c("f1.html", "f2.html", "f3.html", "f4.html"),
           stringsAsFactors = FALSE
-        ),
-        batches = 2
+        )
       )
     )
   })
   expect_false(any(file.exists(c("f1.html", "f2.html", "f3.html", "f4.html"))))
   targets::tar_make(callr_function = NULL)
   expect_true(all(file.exists(c("f1.html", "f2.html", "f3.html", "f4.html"))))
+  out <- unlist(targets::tar_meta(report, children)$children)
+  expect_equal(length(out), 4L)
+  expect_equal(length(unique(out)), 4L)
 })
