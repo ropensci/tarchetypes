@@ -1,4 +1,4 @@
-#' @title Dynamic branching over R Markdown parameters.
+#' @title Parameterized R Markdown with dynamic branching.
 #' @export
 #' @description Targets to render a parameterized R Markdown report
 #'   with multiple sets of parameters.
@@ -31,7 +31,7 @@
 #'       in the target and `quiet = TRUE` in `rmarkdown::render()`.
 #' @return A list of `tar_target()` objects to render the R Markdown
 #'   reports. Changes to the parameters, source file, dependencies, etc.
-#'   will cause the appropriate recomputations during `tar_make()`.
+#'   will cause the appropriate targets to rerun during `tar_make()`.
 #' @inheritParams targets::tar_target
 #' @inheritParams rmarkdown::render
 #' @inheritParams tar_render_rep_raw

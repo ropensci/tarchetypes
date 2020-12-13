@@ -2,7 +2,7 @@
 % Please edit documentation in R/tar_render_rep_raw.R
 \name{tar_render_rep_raw}
 \alias{tar_render_rep_raw}
-\title{Dynamic branching over R Markdown parameters (raw version).}
+\title{Parameterized R Markdown with dynamic branching (raw version).}
 \usage{
 tar_render_rep_raw(
   name,
@@ -32,7 +32,8 @@ Must have length 1.}
 \item{params}{Expression object with code to generate
 a data frame or \code{tibble} with one row per rendered report
 and one column per R Markdown parameter. You may also include an
-\code{output_file} column to specify the path of each rendered report.}
+\code{output_file} column to specify the path of each rendered report.
+R Markdown parameters must not be named \code{tar_group} or \code{output_file}.}
 
 \item{batches}{Number of batches to group the R Markdown files.
 For a large number of reports, increase the number of batches
@@ -46,24 +47,13 @@ globally for all subsequent targets you define.}
 \item{library}{Character vector of library paths to try
 when loading \code{packages}.}
 
-\item{format}{Character of length 1, format argument to \code{tar_target()}
+\item{format}{Character of length 1, \code{format} argument to \code{tar_target()}
 to store the data frame of R Markdown parameters.}
 
-\item{iteration}{Character of length 1, name of the iteration mode
-of the target. Choices:
-\itemize{
-\item \code{"vector"}: branching happens with \code{vctrs::vec_slice()} and
-aggregation happens with \code{vctrs::vec_c()}.
-\item \code{"list"}, branching happens with \verb{[[]]} and aggregation happens with
-\code{list()}.
-\item \code{"group"}: \code{dplyr::group_by()}-like functionality to branch over
-subsets of a data frame. The target's return value must be a data
-frame with a special \code{tar_group} column of consecutive integers
-from 1 through the number of groups. Each integer designates a group,
-and a branch is created for each collection of rows in a group.
-See the \code{\link[targets:tar_group]{tar_group()}} function to see how you can
-create the special \code{tar_group} column with \code{dplyr::group_by()}.
-}}
+\item{iteration}{Character of length 1, \code{iteration} argument
+to \code{tar_target()} for the R Markdown documents. Does not apply
+to the target with R Markdown parameters (whose iteration
+is always \code{"group"}).}
 
 \item{error}{Character of length 1, what to do if the target
 runs into an error. If \code{"stop"}, the whole pipeline stops
@@ -121,7 +111,7 @@ in \code{\link[=tar_render]{tar_render()}} was to handle R Markdown parameters, 
 \value{
 A list of \code{tar_target()} objects to render the R Markdown
 reports. Changes to the parameters, source file, dependencies, etc.
-will cause the appropriate recomputations during \code{tar_make()}.
+will cause the appropriate targets to rerun during \code{tar_make()}.
 }
 \description{
 Targets to render a parameterized R Markdown report

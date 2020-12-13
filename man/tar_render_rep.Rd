@@ -2,7 +2,7 @@
 % Please edit documentation in R/tar_render_rep.R
 \name{tar_render_rep}
 \alias{tar_render_rep}
-\title{Dynamic branching over R Markdown parameters.}
+\title{Parameterized R Markdown with dynamic branching.}
 \usage{
 tar_render_rep(
   name,
@@ -187,7 +187,7 @@ in \code{\link[=tar_render]{tar_render()}} was to handle R Markdown parameters, 
 \value{
 A list of \code{tar_target()} objects to render the R Markdown
 reports. Changes to the parameters, source file, dependencies, etc.
-will cause the appropriate recomputations during \code{tar_make()}.
+will cause the appropriate targets to rerun during \code{tar_make()}.
 }
 \description{
 Targets to render a parameterized R Markdown report
