@@ -167,3 +167,38 @@ tar_test("tar_render_rep() run", {
   out <- out$progress[!(out$name %in% c("report", "report_params"))]
   expect_equal(out, "built")
 })
+
+tar_test("tar_render_rep() run with output_file specified", {
+  lines <- c(
+    "---",
+    "title: report",
+    "output_format: html_document",
+    "params:",
+    "  par: \"default value\"",
+    "---",
+    "",
+    "```{r}",
+    "print(params$par)",
+    "print(tar_read(x))",
+    "```"
+  )
+  writeLines(lines, "report.Rmd")
+  targets::tar_script({
+    library(tarchetypes)
+    tar_pipeline(
+      tar_target(x, "value_of_x"),
+      tar_render_rep(
+        report,
+        "report.Rmd",
+        params = tibble::tibble(
+          par = c("parval1", "parval2", "parval3", "parval4"),
+          output_file = c("f1.html", "f2.html", "f3.html", "f4.html")
+        ),
+        batches = 2
+      )
+    )
+  })
+  expect_false(any(file.exists(c("f1.html", "f2.html", "f3.html", "f4.html"))))
+  targets::tar_make(callr_function = NULL)
+  expect_true(all(file.exists(c("f1.html", "f2.html", "f3.html", "f4.html"))))
+})
