@@ -44,12 +44,17 @@
 #'   a data frame or `tibble` with one row per rendered report
 #'   and one column per R Markdown parameter. You may also include an
 #'   `output_file` column to specify the path of each rendered report.
+#'   R Markdown parameters must not be named `tar_group` or `output_file`.
 #' @param batches Number of batches to group the R Markdown files.
 #'   For a large number of reports, increase the number of batches
 #'   to decrease target-level overhead. Defaults to the number of
 #'   reports to render (1 report per batch).
-#' @param format Character of length 1, format argument to `tar_target()`
+#' @param format Character of length 1, `format` argument to `tar_target()`
 #'   to store the data frame of R Markdown parameters.
+#' @param iteration Character of length 1, `iteration` argument
+#'   to `tar_target()` for the R Markdown documents. Does not apply
+#'   to the target with R Markdown parameters (whose iteration
+#'   is always `"group"`).
 #' @param ... Other named arguments to `rmarkdown::render()`.
 #'   Unlike [tar_render()], these arguments are evaluated when the target
 #'   is defined, not when it is run. (The only reason to delay evaluation
@@ -134,6 +139,7 @@ tar_render_rep_raw <- function(
     packages = packages,
     library = library,
     format = "file",
+    iteration = iteration,
     error = error,
     deployment = deployment,
     priority = priority,
@@ -190,20 +196,22 @@ tar_render_rep_run <- function(path, params, args, deps) {
   assert_package("rmarkdown")
   envir <- parent.frame()
   params <- split(params, f = seq_len(nrow(params)))
-  map(params, ~tar_render_rep_batch(path, .x, args, deps, envir))
+  args$envir <- args$envir %||% targets::tar_envir(default = envir)
+  force(args$envir)
+  unname(unlist(map(params, ~tar_render_rep_rep(path, .x, args))))
 }
 
-tar_render_rep_batch <- function(path, params, args, deps, envir) {
-  args$envir <- args$envir %||% targets::tar_envir(default = envir)
-  args$params <- params
+tar_render_rep_rep <- function(path, params, args) {
   default_path <- tar_render_rep_default_path(path, params)
-  args$output_path <- params$output_path %||% default_path
-  force(args$envir)
+  args$output_file <- params[["output_file"]] %||% default_path
+  args$params <- params
+  args$params[["output_file"]] <- NULL
+  args$params[["tar_group"]] <- NULL
   fs::path_rel(c(do.call(rmarkdown::render, args), path))
 }
 
 tar_render_rep_default_path <- function(path, params) {
-  out <- fs::path_ext_set(path, "")
+  out <- fs::path_ext_remove(path)
   hash <- digest::digest(params, algo = "xxhash32")
   out <- paste0(out, "_", hash)
   out
