@@ -102,11 +102,9 @@ rules that decide whether the target is up to date.}
 
 \item{quiet}{An option to suppress printing of the pandoc command line.}
 
-\item{...}{Other named arguments to \code{rmarkdown::render()}.
-Unlike \code{\link[=tar_render]{tar_render()}}, these arguments are evaluated when the target
-is defined, not when it is run. (The only reason to delay evaluation
-in \code{\link[=tar_render]{tar_render()}} was to handle R Markdown parameters, and
-\code{tar_render_rep()} handles them differently.)}
+\item{args}{Named list of other arguments to \code{rmarkdown::render()}.
+Must not include \code{params} or \code{output_file}. Evaluated when the target
+is defined.}
 }
 \value{
 A list of \code{tar_target()} objects to render the R Markdown

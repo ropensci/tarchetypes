@@ -20,7 +20,10 @@ tar_test("tar_render_rep() manifest", {
       tar_render_rep(
         report,
         "report.Rmd",
-        params = tibble(par = c("parval1", "parval2", "parval3", "parval4")),
+        params = data.frame(
+          par = c("parval1", "parval2", "parval3", "parval4"),
+          stringsAsFactors = FALSE
+        ),
         batches = 2
       )
     )
@@ -54,7 +57,10 @@ tar_test("tar_render_rep() graph", {
       tar_render_rep(
         report,
         "report.Rmd",
-        params = tibble(par = c("parval1", "parval2", "parval3", "parval4")),
+        params = data.frame(
+          par = c("parval1", "parval2", "parval3", "parval4"),
+          stringsAsFactors = FALSE
+        ),
         batches = 2
       )
     )
@@ -87,8 +93,9 @@ tar_test("tar_render_rep() run", {
       tar_render_rep(
         report,
         "report.Rmd",
-        params = tibble::tibble(
-          par = c("parval1", "parval2", "parval3", "parval4")
+        params = data.frame(
+          par = c("parval1", "parval2", "parval3", "parval4"),
+          stringsAsFactors = FALSE
         ),
         batches = 2
       )
@@ -97,9 +104,10 @@ tar_test("tar_render_rep() run", {
   targets::tar_make(callr_function = NULL)
   # results of params
   out <- targets::tar_read(report_params)
-  exp <- tibble::tibble(
+  exp <- data.frame(
     par = c("parval1", "parval2", "parval3", "parval4"),
-    tar_group = c(1L, 1L, 2L, 2L)
+    tar_group = c(1L, 1L, 2L, 2L),
+    stringsAsFactors = FALSE
   )
   expect_equal(out, exp)
   # results of branch 1
@@ -153,8 +161,9 @@ tar_test("tar_render_rep() run", {
       tar_render_rep(
         report,
         "report.Rmd",
-        params = tibble::tibble(
-          par = c("parval1", "parval2", "parval3-modified", "parval4")
+        params = data.frame(
+          par = c("parval1", "parval2", "parval3-modified", "parval4"),
+          stringsAsFactors = FALSE
         ),
         batches = 2
       )
@@ -190,9 +199,10 @@ tar_test("tar_render_rep() run with output_file specified", {
       tar_render_rep(
         report,
         "report.Rmd",
-        params = tibble::tibble(
+        params = data.frame(
           par = c("parval1", "parval2", "parval3", "parval4"),
-          output_file = c("f1.html", "f2.html", "f3.html", "f4.html")
+          output_file = c("f1.html", "f2.html", "f3.html", "f4.html"),
+          stringsAsFactors = FALSE
         ),
         batches = 2
       )

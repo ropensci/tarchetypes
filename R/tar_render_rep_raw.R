@@ -55,11 +55,9 @@
 #'   to `tar_target()` for the R Markdown documents. Does not apply
 #'   to the target with R Markdown parameters (whose iteration
 #'   is always `"group"`).
-#' @param ... Other named arguments to `rmarkdown::render()`.
-#'   Unlike [tar_render()], these arguments are evaluated when the target
-#'   is defined, not when it is run. (The only reason to delay evaluation
-#'   in [tar_render()] was to handle R Markdown parameters, and
-#'   `tar_render_rep()` handles them differently.)
+#' @param args Named list of other arguments to `rmarkdown::render()`.
+#'   Must not include `params` or `output_file`. Evaluated when the target
+#'   is defined.
 #' @examples
 #' targets::tar_dir({
 #' # Parameterized R Markdown:
