@@ -215,9 +215,10 @@ rules that decide whether the target is up to date.}
 A list of two targets, one upstream and one downstream.
 The upstream target returns a numeric index of batch ids,
 and the downstream one dynamically maps over the batch ids
-to run the command multiple times. The command must return
-a list or data frame because \code{tar_rep()} will try to append
-new elements/columns \code{tar_batch} and \code{tar_rep} to the output
+to run the command multiple times.
+If the command returns a list or data frame, then
+the targets from \code{tar_rep()} will try to append new elements/columns
+\code{tar_batch} and \code{tar_rep} to the output
 to denote the batch and rep-within-batch IDs, respectively.
 
 \code{tar_read(your_target)} (on the downstream target with the actual work)
@@ -237,9 +238,9 @@ an upstream local stem
 with an integer vector of batch ids, and a downstream pattern
 that maps over the batch ids. (Thus, each batch is a branch.)
 Each batch/branch replicates the command a certain number of times.
-The command must return
-a list or data frame because \code{tar_rep()} will try to append
-new elements/columns \code{tar_batch} and \code{tar_rep} to the output
+If the command returns a list or data frame, then
+the targets from \code{tar_rep()} will try to append new elements/columns
+\code{tar_batch} and \code{tar_rep} to the output
 to denote the batch and rep-within-batch IDs, respectively.
 
 Both batches and reps within each batch

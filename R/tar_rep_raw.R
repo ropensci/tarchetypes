@@ -97,3 +97,136 @@ tar_rep_raw <- function(
   )
   list(batch, target)
 }
+
+tar_rep_batch <- function(
+  name_batch,
+  batches,
+  error,
+  memory,
+  garbage_collection,
+  priority,
+  cue
+) {
+  targets::tar_target_raw(
+    name = name_batch,
+    command = tar_rep_command_batch(batches),
+    packages = character(0),
+    format = "rds",
+    iteration = "vector",
+    error = error,
+    memory = memory,
+    garbage_collection = garbage_collection,
+    deployment = "main",
+    priority = priority,
+    storage = "main",
+    retrieval = "main",
+    cue = cue
+  )
+}
+
+tar_rep_target <- function(
+  name,
+  name_batch,
+  command,
+  batches,
+  reps,
+  packages,
+  library,
+  format,
+  iteration,
+  error,
+  memory,
+  garbage_collection,
+  deployment,
+  priority,
+  resources,
+  storage,
+  retrieval,
+  cue
+) {
+  targets::tar_target_raw(
+    name = name,
+    command = tar_rep_command_target(command, name_batch, reps, iteration),
+    pattern = tar_rep_pattern(name_batch),
+    packages = packages,
+    library = library,
+    format = format,
+    iteration = iteration,
+    error = error,
+    memory = memory,
+    garbage_collection = garbage_collection,
+    deployment = deployment,
+    priority = priority,
+    resources = resources,
+    storage = storage,
+    retrieval = retrieval,
+    cue = cue
+  )
+}
+
+tar_rep_command_batch <- function(batches) {
+  as.expression(substitute(seq_len(x), env = list(x = batches)))
+}
+
+tar_rep_command_target <- function(command, name_batch, reps, iteration) {
+  out <- substitute(
+    tarchetypes::tar_rep_run(
+      command = command,
+      batch = batch,
+      reps = reps,
+      iteration = iteration
+    ),
+    env = list(
+      command = command,
+      batch = rlang::sym(name_batch),
+      reps = reps,
+      iteration = iteration
+    )
+  )
+  as.expression(out)
+}
+
+tar_rep_pattern <- function(name_batch) {
+  substitute(map(x), env = list(x = rlang::sym(name_batch)))
+}
+
+#' @title Run a batch in a `tar_rep()` archetype.
+#' @description Internal function needed for `tar_rep()`.
+#'   Users should not invoke it directly.
+#' @export
+#' @keywords internal
+#' @return Aggregated results of multiple executions of the command.
+#' @param command Expression object, command to replicate.
+#' @param batch Numeric, batch index.
+#' @param reps Numeric, number of reps per batch.
+#' @param iteration Character, iteration method.
+tar_rep_run <- function(command, batch, reps, iteration) {
+  expr <- substitute(command)
+  envir <- parent.frame()
+  switch(
+    iteration,
+    list = tar_rep_map(expr, envir, batch, reps),
+    vector = do.call(vctrs::vec_c, tar_rep_map(expr, envir, batch, reps)),
+    group = do.call(vctrs::vec_rbind, tar_rep_map(expr, envir, batch, reps)),
+    throw_validate("unsupported iteration method")
+  )
+}
+
+tar_rep_map <- function(expr, envir, batch, reps) {
+  lapply(
+    seq_len(reps),
+    tar_rep_rep,
+    expr = expr,
+    envir = envir,
+    batch = batch
+  )
+}
+
+tar_rep_rep <- function(expr, envir, batch, rep) {
+  out <- eval(expr, envir = envir)
+  if (is.list(out)) {
+    out[["tar_batch"]] <- as.integer(batch)
+    out[["tar_rep"]] <- as.integer(rep)
+  }
+  out
+}

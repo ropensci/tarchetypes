@@ -113,14 +113,14 @@ tar_test("tar_rep() with non-list output", {
         sample.int(1e4, 1),
         batches = 2,
         reps = 3,
-        iteration = "list"
+        iteration = "vector"
       )
     )
   })
-  expect_error(
-    targets::tar_make(callr_function = NULL),
-    class = "condition_run"
-  )
+  targets::tar_make(callr_function = NULL)
+  out <- tar_read(x)
+  expect_true(is.numeric(out))
+  expect_equal(length(out), 6L)
 })
 
 tar_test("tar_rep_run() with unsupported iteration method", {
