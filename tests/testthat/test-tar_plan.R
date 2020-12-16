@@ -1,4 +1,4 @@
-tar_test("tar_plan() works", {
+targets::tar_test("tar_plan() works", {
   targets::tar_script({
     tarchetypes::tar_plan(
       x = 1,
@@ -18,7 +18,7 @@ tar_test("tar_plan() works", {
   expect_equal(tar_read(z), 3)
 })
 
-tar_test("tar_plan() still allows tidy eval", {
+targets::tar_test("tar_plan() still allows tidy eval", {
   targets::tar_script({
     y_val <- 4
     z_val <- 5

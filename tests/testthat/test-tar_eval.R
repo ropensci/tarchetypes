@@ -1,4 +1,4 @@
-tar_test("tar_eval()", {
+targets::tar_test("tar_eval()", {
   values <- list(
     value1 = c(1L, 2L, 3L),
     value2 = c(4L, 5L, 6L)

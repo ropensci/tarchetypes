@@ -1,4 +1,4 @@
-tar_test("tar_rep(iteration = 'list')", {
+targets::tar_test("tar_rep(iteration = 'list')", {
   targets::tar_script({
     targets::tar_pipeline(
       tarchetypes::tar_rep(
@@ -29,7 +29,7 @@ tar_test("tar_rep(iteration = 'list')", {
   expect_equal(tar_read(x, branches = 2), out[2])
 })
 
-tar_test("tar_rep(iteration = 'vector')", {
+targets::tar_test("tar_rep(iteration = 'vector')", {
   targets::tar_script({
     targets::tar_pipeline(
       tarchetypes::tar_rep(
@@ -53,7 +53,7 @@ tar_test("tar_rep(iteration = 'vector')", {
   expect_equiv(tar_read(x, branches = 2), out[seq_len(6) + 6, ])
 })
 
-tar_test("tar_rep_raw(iteration = 'vector')", {
+targets::tar_test("tar_rep_raw(iteration = 'vector')", {
   targets::tar_script({
     targets::tar_pipeline(
       tarchetypes::tar_rep_raw(
@@ -77,7 +77,7 @@ tar_test("tar_rep_raw(iteration = 'vector')", {
   expect_equiv(tar_read(x, branches = 2), out[seq_len(6) + 6, ])
 })
 
-tar_test("tar_rep(iteration = 'group')", {
+targets::tar_test("tar_rep(iteration = 'group')", {
   targets::tar_script({
     targets::tar_pipeline(
       tarchetypes::tar_rep(
@@ -105,7 +105,7 @@ tar_test("tar_rep(iteration = 'group')", {
   expect_equiv(tar_read(x, branches = 2), out[seq_len(6) + 6, ])
 })
 
-tar_test("tar_rep() with non-list output", {
+targets::tar_test("tar_rep() with non-list output", {
   targets::tar_script({
     targets::tar_pipeline(
       tarchetypes::tar_rep(
@@ -123,7 +123,7 @@ tar_test("tar_rep() with non-list output", {
   expect_equal(length(out), 6L)
 })
 
-tar_test("tar_rep_run() with unsupported iteration method", {
+targets::tar_test("tar_rep_run() with unsupported iteration method", {
   expect_error(
     tar_rep_run(quote(1), 1, 1, "nope"),
     class = "condition_validate"

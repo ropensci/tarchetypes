@@ -1,4 +1,4 @@
-tar_test("tar_combine() with defaults", {
+targets::tar_test("tar_combine() with defaults", {
   target1 <- targets::tar_target(x, head(mtcars))
   target2 <- targets::tar_target(y, tail(mtcars))
   out <- tar_combine(
@@ -10,7 +10,7 @@ tar_test("tar_combine() with defaults", {
   expect_equal(out$command$string, "expression(vctrs::vec_c(x = x, y = y))")
 })
 
-tar_test("tar_combine() with no names", {
+targets::tar_test("tar_combine() with no names", {
   target1 <- targets::tar_target(x, head(mtcars))
   target2 <- targets::tar_target(y, tail(mtcars))
   out <- tar_combine(
@@ -23,7 +23,7 @@ tar_test("tar_combine() with no names", {
   expect_equal(out$command$string, "expression(vctrs::vec_c(x, y))")
 })
 
-tar_test("tar_combine() with custom command", {
+targets::tar_test("tar_combine() with custom command", {
   target1 <- targets::tar_target(x, head(mtcars))
   target2 <- targets::tar_target(y, tail(mtcars))
   target3 <- tar_combine(
@@ -35,7 +35,7 @@ tar_test("tar_combine() with custom command", {
   expect_equal(target3$command$string, "expression(bind_rows(x = x, y = y))")
 })
 
-tar_test("tar_combine() run", {
+targets::tar_test("tar_combine() run", {
   tar_script({
     target1 <- targets::tar_target(x, 1)
     target2 <- targets::tar_target(y, 2)
@@ -51,7 +51,7 @@ tar_test("tar_combine() run", {
   expect_equal(tar_read(new_target_name), seq_len(2))
 })
 
-tar_test("tar_combine_raw() with defaults", {
+targets::tar_test("tar_combine_raw() with defaults", {
   target1 <- targets::tar_target(x, head(mtcars))
   target2 <- targets::tar_target(y, tail(mtcars))
   out <- tar_combine_raw(
@@ -63,7 +63,7 @@ tar_test("tar_combine_raw() with defaults", {
   expect_equal(out$command$string, "expression(vctrs::vec_c(x = x, y = y))")
 })
 
-tar_test("tar_combine_raw() with no names", {
+targets::tar_test("tar_combine_raw() with no names", {
   target1 <- targets::tar_target(x, head(mtcars))
   target2 <- targets::tar_target(y, tail(mtcars))
   out <- tar_combine_raw(
@@ -76,7 +76,7 @@ tar_test("tar_combine_raw() with no names", {
   expect_equal(out$command$string, "expression(vctrs::vec_c(x, y))")
 })
 
-tar_test("tar_combine_raw() with custom command", {
+targets::tar_test("tar_combine_raw() with custom command", {
   target1 <- targets::tar_target(x, head(mtcars))
   target2 <- targets::tar_target(y, tail(mtcars))
   target3 <- tar_combine_raw(
@@ -88,7 +88,7 @@ tar_test("tar_combine_raw() with custom command", {
   expect_equal(target3$command$string, "expression(bind_rows(x = x, y = y))")
 })
 
-tar_test("tar_combine_raw() run", {
+targets::tar_test("tar_combine_raw() run", {
   tar_script({
     target1 <- targets::tar_target(x, 1)
     target2 <- targets::tar_target(y, 2)

@@ -1,4 +1,4 @@
-tar_test("tar_render_rep() manifest", {
+targets::tar_test("tar_render_rep() manifest", {
   lines <- c(
     "---",
     "title: report",
@@ -35,7 +35,7 @@ tar_test("tar_render_rep() manifest", {
   expect_equal(out$pattern[out$name == "report"], "map(report_params)")
 })
 
-tar_test("tar_render_rep() graph", {
+targets::tar_test("tar_render_rep() graph", {
   lines <- c(
     "---",
     "title: report",
@@ -71,7 +71,7 @@ tar_test("tar_render_rep() graph", {
   expect_true(any(out$from == "x" & out$to == "report"))
 })
 
-tar_test("tar_render_rep() run", {
+targets::tar_test("tar_render_rep() run", {
   lines <- c(
     "---",
     "title: report",
@@ -177,7 +177,7 @@ tar_test("tar_render_rep() run", {
   expect_equal(out, "built")
 })
 
-tar_test("tar_render_rep() run with output_file specified", {
+targets::tar_test("tar_render_rep() run with output_file specified", {
   lines <- c(
     "---",
     "title: report",

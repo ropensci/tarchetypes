@@ -1,4 +1,4 @@
-# Cannot use tar_test() here because of relative path issues on Windows. # nolint
+# Cannot use targets::tar_test() here because of relative path issues on Windows. # nolint
 test_that("tar_render_raw() works", suppressMessages({
   on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
   lines <- c(
@@ -40,7 +40,7 @@ test_that("tar_render_raw() works", suppressMessages({
   expect_equal(sort(targets::tar_progress()$name), sort(c("data", "report")))
 }))
 
-# Cannot use tar_test() here because of relative path issues on Windows. # nolint
+# Cannot use targets::tar_test() here because of relative path issues on Windows. # nolint
 test_that("tar_render_raw(nested) runs from project root", suppressMessages({
   on.exit(
     unlink(
@@ -73,7 +73,7 @@ test_that("tar_render_raw(nested) runs from project root", suppressMessages({
   expect_false(file.exists(file.path("out_tar_render", "here")))
 }))
 
-# Cannot use tar_test() here because of relative path issues on Windows. # nolint
+# Cannot use targets::tar_test() here because of relative path issues on Windows. # nolint
 test_that("tar_render_raw() for parameterized reports", suppressMessages({
   on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
   lines <- c(

@@ -1,4 +1,4 @@
-tar_test("tar_skip() can cancel", {
+targets::tar_test("tar_skip() can cancel", {
   tar_script({
     tar_pipeline(
       tarchetypes::tar_skip(x, command = "value", skip = 1 > 0)
@@ -8,7 +8,7 @@ tar_test("tar_skip() can cancel", {
   expect_false(file.exists(targets::tar_path(x)))
 })
 
-tar_test("tar_skip() does not always cancel", {
+targets::tar_test("tar_skip() does not always cancel", {
   tar_script({
     tar_pipeline(
       tarchetypes::tar_skip(x, command = "value", skip = 1 < 0)

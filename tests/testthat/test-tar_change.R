@@ -1,4 +1,4 @@
-tar_test("tar_change() produces the expected commands", {
+targets::tar_test("tar_change() produces the expected commands", {
   targets::tar_script({
     tar_pipeline(
       tarchetypes::tar_change(x, command = value, change = tempfile())
@@ -13,7 +13,7 @@ tar_test("tar_change() produces the expected commands", {
   expect_equal(out_change$command, "tempfile()")
 })
 
-tar_test("tar_change() creates a target that responds to change", {
+targets::tar_test("tar_change() creates a target that responds to change", {
   targets::tar_script({
     tar_pipeline(
       tarchetypes::tar_change(x, paste0("1", tempfile()), change = tempfile())
@@ -29,7 +29,7 @@ tar_test("tar_change() creates a target that responds to change", {
   expect_false(out_change == targets::tar_read(x_change))
 })
 
-tar_test("tar_change() with tidy eval", {
+targets::tar_test("tar_change() with tidy eval", {
   targets::tar_script({
     x <- "val_x"
     y <- "val_y"
@@ -45,7 +45,7 @@ tar_test("tar_change() with tidy eval", {
   expect_equal(tar_read(x_change), "val_y")
 })
 
-tar_test("tar_change() without tidy eval", {
+targets::tar_test("tar_change() without tidy eval", {
   targets::tar_script({
     x <- "val_x"
     y <- "val_y"

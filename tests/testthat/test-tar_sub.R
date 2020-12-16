@@ -1,4 +1,4 @@
-tar_test("tar_sub()", {
+targets::tar_test("tar_sub()", {
   values <- list(
     name = rlang::syms(c("name1", "name2")),
     file = list("file1.Rmd", "file2.Rmd")

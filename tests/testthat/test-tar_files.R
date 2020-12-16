@@ -1,4 +1,4 @@
-tar_test("tar_files() writes the correct targets", {
+targets::tar_test("tar_files() writes the correct targets", {
   targets::tar_script({
     tar_pipeline(
       tarchetypes::tar_files(x, c("a.txt", "b.txt"))
@@ -14,7 +14,7 @@ tar_test("tar_files() writes the correct targets", {
   expect_equal(out$pattern, NA_character_)
 })
 
-tar_test("tar_files() correctly responds to changes in files", {
+targets::tar_test("tar_files() correctly responds to changes in files", {
   file.create(c("a.txt", "b.txt"))
   targets::tar_script({
     tar_pipeline(
