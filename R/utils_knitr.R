@@ -3,7 +3,7 @@ knitr_deps <- function(path) {
   knitr_expr_warn_raw(expr)
   counter <- counter_init()
   walk_expr(expr, counter)
-  counter_get_names(counter)
+  sort(counter_get_names(counter))
 }
 
 knitr_expr <- function(path) {

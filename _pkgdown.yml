@@ -18,7 +18,7 @@ reference:
 - title: Help
   contents:
   - '`tarchetypes-package`'
-- title: Literate programming
+- title: Literate programming targets
   contents:
   - '`tar_knit`'
   - '`tar_knit_raw`'
@@ -26,6 +26,10 @@ reference:
   - '`tar_render_raw`'
   - '`tar_render_rep`'
   - '`tar_render_rep_raw`'
+- title: Literate programming utilities
+  contents:
+  - '`tar_knitr_deps`'
+  - '`tar_knitr_deps_expr`'
 - title: Formats
   contents:
   - '`tar_formats`'
