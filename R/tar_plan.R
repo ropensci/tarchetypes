@@ -8,7 +8,7 @@
 #'   is equivalent to
 #'   `list(tar_target(x, 1), tar_target(y, 2), tar_target(z, 3), tar_render(r, "r.Rmd"))`. # nolint
 #' @export
-#' @return A `list()` object.
+#' @return A list of `tar_target()` objects.
 #' @param ... Named and unnamed targets. All named targets must follow
 #'   the `drake`-plan-like `target = command` syntax, and all unnamed
 #'   arguments must be explicit calls to create target objects,
@@ -40,8 +40,7 @@
 #' }
 tar_plan <- function(...) {
   commands <- tar_plan_parse(match.call(expand.dots = FALSE)$...)
-  targets <- lapply(commands, eval, envir = targets::tar_option_get("envir"))
-  list(targets)
+  lapply(commands, eval, envir = targets::tar_option_get("envir"))
 }
 
 tar_plan_parse <- function(commands) {

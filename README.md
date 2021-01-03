@@ -98,7 +98,7 @@ processes `dataset` before `report`, and it automatically reruns
 
 ## Pipeline archetype example
 
-[`tar_commands()`](https://wlandau.github.io/tarchetypes/reference/tar_commands.html)
+[`tar_plan()`](https://wlandau.github.io/tarchetypes/reference/tar_plan.html)
 is a drop-in replacement for
 [`drake_plan()`](https://docs.ropensci.org/drake/reference/drake_plan.html)
 in the [`targets`](https://github.com/wlandau/targets) ecosystem. It
@@ -106,7 +106,7 @@ lets users write targets as name/command pairs without having to call
 [`tar_target()`](https://wlandau.github.io/tarchetypes/reference/tar_target.html).
 
 ``` r
-tar_commands(
+tar_plan(
   tar_file(raw_data_file, "data/raw_data.csv", format = "file"),
   # Simple drake-like syntax:
   raw_data = read_csv(raw_data_file, col_types = cols()),

@@ -13,7 +13,7 @@ arguments must be explicit calls to create target objects,
 e.g. \code{tar_target()}, target archetypes like \code{\link[=tar_render]{tar_render()}}, or similar.}
 }
 \value{
-A \code{list()} object.
+A list of \code{tar_target()} objects.
 }
 \description{
 Simplify target specification in pipelines.
