@@ -44,7 +44,7 @@
 #' targets::tar_dir({
 #' file.create(c("a.txt", "b.txt"))
 #' targets::tar_script({
-#'   tar_pipeline(
+#'   list(
 #'     tarchetypes::tar_files(x, c("a.txt", "b.txt"))
 #'   )
 #' })
@@ -155,7 +155,7 @@ tar_files <- function(
 #' targets::tar_dir({
 #' file.create(c("a.txt", "b.txt"))
 #' targets::tar_script({
-#'   tar_pipeline(
+#'   list(
 #'     tarchetypes::tar_files_raw("x", quote(c("a.txt", "b.txt")))
 #'   )
 #' })

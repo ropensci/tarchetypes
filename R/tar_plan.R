@@ -6,9 +6,9 @@
 #'   target objects if they are unnamed.
 #'   `tar_plan(x = 1, y = 2, tar_target(z, 3), tar_render(r, "r.Rmd"))`
 #'   is equivalent to
-#'   `tar_pipeline(tar_target(x, 1), tar_target(y, 2), tar_target(z, 3), tar_render(r, "r.Rmd"))`. # nolint
+#'   `list(tar_target(x, 1), tar_target(y, 2), tar_target(z, 3), tar_render(r, "r.Rmd"))`. # nolint
 #' @export
-#' @return A `targets::tar_pipeline()` object.
+#' @return A `list()` object.
 #' @param ... Named and unnamed targets. All named targets must follow
 #'   the `drake`-plan-like `target = command` syntax, and all unnamed
 #'   arguments must be explicit calls to create target objects,
@@ -41,7 +41,7 @@
 tar_plan <- function(...) {
   commands <- tar_plan_parse(match.call(expand.dots = FALSE)$...)
   targets <- lapply(commands, eval, envir = targets::tar_option_get("envir"))
-  targets::tar_pipeline(targets)
+  list(targets)
 }
 
 tar_plan_parse <- function(commands) {

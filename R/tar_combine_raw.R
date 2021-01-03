@@ -8,7 +8,7 @@
 #' @inheritParams targets::tar_target_raw
 #' @param name Character, name of the new target.
 #' @param ... One or more target objects or list of target objects.
-#'   Lists can be arbitrarily nested, as in `targets::tar_pipeline()`.
+#'   Lists can be arbitrarily nested, as in `list()`.
 #' @param command Expression object,
 #'   R command to aggregate the targets. Must contain
 #'   `!!!.x` where the arguments are to be inserted,
@@ -22,7 +22,7 @@
 #'   target1 <- targets::tar_target(x, head(mtcars))
 #'   target2 <- targets::tar_target(y, tail(mtcars))
 #'   target3 <- tarchetypes::tar_combine(new_target_name, target1, target2)
-#'   targets::tar_pipeline(target1, target2, target3)
+#'   list(target1, target2, target3)
 #' })
 #' targets::tar_manifest()
 #' })

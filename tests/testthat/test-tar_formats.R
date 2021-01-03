@@ -17,7 +17,7 @@ targets::tar_test("tar_rds()", {
 })
 
 targets::tar_test("tar_rds() runs", {
-  targets::tar_script(targets::tar_pipeline(tarchetypes::tar_rds(x, 0L)))
+  targets::tar_script(list(tarchetypes::tar_rds(x, 0L)))
   targets::tar_make(callr_function = NULL)
   expect_equal(targets::tar_read(x), 0L)
 })

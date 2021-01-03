@@ -240,7 +240,7 @@ lines <- c(
 writeLines(lines, "report.Rmd")
 targets::tar_script({
   library(tarchetypes)
-  tar_pipeline(
+  list(
     tar_render_rep(report, "report.Rmd", params = tibble(par = c(1, 2)))
   )
 })

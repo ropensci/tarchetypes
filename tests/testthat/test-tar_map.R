@@ -49,7 +49,7 @@ targets::tar_test("tar_map() with names misspecified", {
 
 targets::tar_test("tar_map() manifest", {
   targets::tar_script({
-    targets::tar_pipeline(
+    list(
       tarchetypes::tar_map(
         targets::tar_target(x, a + b),
         targets::tar_target(y, x + a, pattern = map(x)),
@@ -73,7 +73,7 @@ targets::tar_test("tar_map() manifest", {
 
 targets::tar_test("tar_map() values", {
   targets::tar_script({
-    targets::tar_pipeline(
+    list(
       tarchetypes::tar_map(
         targets::tar_target(x, a + b),
         targets::tar_target(y, x + a, pattern = map(x)),

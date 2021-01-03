@@ -34,7 +34,7 @@
 #' # Try it out.
 #' targets::tar_dir({
 #' targets::tar_script({
-#'   tar_pipeline(
+#'   list(
 #'     tarchetypes::tar_force(x, tempfile(), force = 1 > 0)
 #'   )
 #' })

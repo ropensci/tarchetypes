@@ -181,7 +181,7 @@ if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({
 file.create(c("a.txt", "b.txt"))
 targets::tar_script({
-  tar_pipeline(
+  list(
     tarchetypes::tar_files(x, c("a.txt", "b.txt"))
   )
 })

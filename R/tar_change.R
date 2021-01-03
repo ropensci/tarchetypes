@@ -35,7 +35,7 @@
 #' # both targets (x and x_change).
 #' targets::tar_dir({
 #' targets::tar_script({
-#'   tar_pipeline(
+#'   list(
 #'     tarchetypes::tar_change(x, command = tempfile(), change = tempfile())
 #'   )
 #' })

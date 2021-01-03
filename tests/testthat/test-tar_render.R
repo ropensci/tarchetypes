@@ -1,5 +1,5 @@
 # Cannot use targets::tar_test() here because of relative path issues on Windows. # nolint
-test_that("tar_render() works", suppressMessages({
+test_that("tar_render() works", {
   on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
   lines <- c(
     "---",
@@ -14,34 +14,34 @@ test_that("tar_render() works", suppressMessages({
   writeLines(lines, "report.Rmd")
   targets::tar_script({
     library(tarchetypes)
-    tar_pipeline(
+    list(
       tar_target(data, data.frame(x = seq_len(26L), y = letters)),
       tar_render(report, "report.Rmd", quiet = TRUE)
     )
   })
   # First run.
-  targets::tar_make(callr_function = NULL)
+  suppressMessages(targets::tar_make(callr_function = NULL))
   expect_equal(sort(targets::tar_progress()$name), sort(c("data", "report")))
   out <- targets::tar_read(report)
   # Paths must be relative.
   expect_equal(out, c("report.html", "report.Rmd"))
   # Should not rerun the report.
-  targets::tar_make(callr_function = NULL)
+  suppressMessages(targets::tar_make(callr_function = NULL))
   expect_equal(nrow(targets::tar_progress()), 0L)
   targets::tar_script({
     library(tarchetypes)
-    tar_pipeline(
+    list(
       tar_target(data, data.frame(x = rev(seq_len(26L)), y = letters)),
       tar_render(report, "report.Rmd")
     )
   })
   # Should rerun the report.
-  targets::tar_make(callr_function = NULL)
+  suppressMessages(targets::tar_make(callr_function = NULL))
   expect_equal(sort(targets::tar_progress()$name), sort(c("data", "report")))
-}))
+})
 
 # Cannot use targets::tar_test() here because of relative path issues on Windows. # nolint
-test_that("tar_render(nested) runs from the project root", suppressMessages({
+test_that("tar_render(nested) runs from the project root", {
   on.exit(
     unlink(
       c("_targets*", "report.*", "out_tar_render", "here"),
@@ -62,19 +62,19 @@ test_that("tar_render(nested) runs from the project root", suppressMessages({
   writeLines(lines, file.path("out_tar_render", "report.Rmd"))
   targets::tar_script({
     library(tarchetypes)
-    tar_pipeline(
+    list(
       tar_render(report, file.path("out_tar_render", "report.Rmd"))
     )
   })
   expect_false(file.exists("here"))
   expect_false(file.exists(file.path("out_tar_render", "here")))
-  targets::tar_make(callr_function = NULL)
+  suppressMessages(targets::tar_make(callr_function = NULL))
   expect_true(file.exists("here"))
   expect_false(file.exists(file.path("out_tar_render", "here")))
-}))
+})
 
 # Cannot use targets::tar_test() here because of relative path issues on Windows. # nolint
-test_that("tar_render() for parameterized reports", suppressMessages({
+test_that("tar_render() for parameterized reports", {
   on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
   lines <- c(
     "---",
@@ -93,7 +93,7 @@ test_that("tar_render() for parameterized reports", suppressMessages({
   targets::tar_script({
     library(tarchetypes)
     value <- "abcd1234verydistinctvalue"
-    tar_pipeline(
+    list(
       tar_target(upstream, "anotherverydistinctvalue"),
       tar_render(
         report,
@@ -102,7 +102,7 @@ test_that("tar_render() for parameterized reports", suppressMessages({
       )
     )
   })
-  targets::tar_make(callr_function = NULL)
+  suppressMessages(targets::tar_make(callr_function = NULL))
   lines <- readLines("report.html")
   expect_true(any(grepl("anotherverydistinctvalue", lines)))
-}))
+})

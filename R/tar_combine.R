@@ -7,7 +7,7 @@
 #' @inheritParams targets::tar_target
 #' @param name Symbol, name of the new target.
 #' @param ... One or more target objects or list of target objects.
-#'   Lists can be arbitrarily nested, as in `targets::tar_pipeline()`.
+#'   Lists can be arbitrarily nested, as in `list()`.
 #' @param command R command to aggregate the targets. Must contain
 #'   `!!!.x` where the arguments are to be inserted,
 #'   where `!!!` is the unquote splice operator from `rlang`.
@@ -25,7 +25,7 @@
 #'     target2,
 #'     command = bind_rows(!!!.x)
 #'   )
-#'   targets::tar_pipeline(target1, target2, target3)
+#'   list(target1, target2, target3)
 #' })
 #' targets::tar_manifest()
 #' })

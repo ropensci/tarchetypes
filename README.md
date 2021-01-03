@@ -47,7 +47,7 @@ correctly.
 ``` r
 # _targets.R
 library(targets)
-tar_pipeline(
+list(
   tar_target(dataset, data.frame(x = letters)),
   tar_target(
     report, {
@@ -83,7 +83,7 @@ archetype.
 # _targets.R
 library(targets)
 library(tarchetypes)
-tar_pipeline(
+list(
   tar_target(dataset, data.frame(x = letters)),
   tar_render(report, "report.Rmd")
 )
@@ -98,43 +98,15 @@ processes `dataset` before `report`, and it automatically reruns
 
 ## Pipeline archetype example
 
-[`tar_plan()`](https://wlandau.github.io/tarchetypes/reference/tar_plan.html)
-is a version of
-[`tar_pipeline()`](https://wlandau.github.io/targets/reference/tar_pipeline.html)
-that looks and feels like
-[`drake_plan()`](https://docs.ropensci.org/drake/reference/drake_plan.html).
-For simple targets with no configuration, you can write `target =
-command` instead of `tar_target(target, command)`. Ordinarily, pipelines
-in `_targets.R` are written like this:
+[`tar_commands()`](https://wlandau.github.io/tarchetypes/reference/tar_commands.html)
+is a drop-in replacement for
+[`drake_plan()`](https://docs.ropensci.org/drake/reference/drake_plan.html)
+in the [`targets`](https://github.com/wlandau/targets) ecosystem. It
+lets users write targets as name/command pairs without having to call
+[`tar_target()`](https://wlandau.github.io/tarchetypes/reference/tar_target.html).
 
 ``` r
-tar_pipeline(
-  tar_target(
-    raw_data_file,
-    "data/raw_data.csv",
-    format = "file"
-  ),
-  tar_target(
-    raw_data,
-    read_csv(raw_data_file, col_types = cols())
-  ),
-  tar_target(
-    data,
-    raw_data %>%
-      mutate(Ozone = replace_na(Ozone, mean(Ozone, na.rm = TRUE)))
-  ),
-  tar_target(hist, create_plot(data)),
-  tar_target(fit, biglm(Ozone ~ Wind + Temp, data)),
-  tar_render(report, "report.Rmd")
-)
-```
-
-With
-[`tar_plan()`](https://wlandau.github.io/tarchetypes/reference/tar_plan.html),
-the simplest targets become super easy to write.
-
-``` r
-tar_plan(
+tar_commands(
   tar_file(raw_data_file, "data/raw_data.csv", format = "file"),
   # Simple drake-like syntax:
   raw_data = read_csv(raw_data_file, col_types = cols()),

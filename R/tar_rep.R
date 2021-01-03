@@ -65,7 +65,7 @@
 #' if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({
 #' targets::tar_script({
-#'   targets::tar_pipeline(
+#'   list(
 #'     tarchetypes::tar_rep(
 #'       x,
 #'       data.frame(x = sample.int(1e4, 2)),

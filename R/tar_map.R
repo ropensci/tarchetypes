@@ -17,7 +17,7 @@
 #'   To create a list of symbols as a column of `values`,
 #'   use `rlang::syms()`.
 #' @param ... One or more target objects or list of target objects.
-#'   Lists can be arbitrarily nested, as in `targets::tar_pipeline()`.
+#'   Lists can be arbitrarily nested, as in `list()`.
 #' @param names Subset of `names(values)`
 #'   used to generate the suffixes in the names of the new targets.
 #'   You can supply symbols, a character vector,
@@ -31,7 +31,7 @@
 #' if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({
 #' targets::tar_script({
-#'   targets::tar_pipeline(
+#'   list(
 #'     tarchetypes::tar_map(
 #'       list(a = c(12, 34), b = c(45, 78)),
 #'       targets::tar_target(x, a + b),

@@ -126,7 +126,7 @@ lines <- c(
 writeLines(lines, "report.Rmd")
 targets::tar_script({
   library(tarchetypes)
-  tar_pipeline(
+  list(
     tar_target(data, data.frame(x = seq_len(26), y = letters)),
     tar_render_raw("report", "report.Rmd")
   )
@@ -149,7 +149,7 @@ lines <- c(
 writeLines(lines, "report.Rmd")
 targets::tar_script({
   library(tarchetypes)
-  tar_pipeline(
+  list(
     tar_target(data, data.frame(x = seq_len(26), y = letters)),
     tar_render_raw(
       "report",

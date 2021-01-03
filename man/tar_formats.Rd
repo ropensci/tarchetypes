@@ -292,7 +292,7 @@ For details on specialized storage formats, open the help file of the
 if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({
 targets::tar_script(
-  targets::tar_pipeline(
+  list(
     # equivalent to tar_target(x, 1, format = "rds"):
     tarchetypes::tar_rds(x, 1)
   )

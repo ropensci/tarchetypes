@@ -15,7 +15,7 @@ targets::tar_test("tar_render_rep() manifest", {
   writeLines(lines, "report.Rmd")
   targets::tar_script({
     library(tarchetypes)
-    tar_pipeline(
+    list(
       tar_target(x, "value_of_x"),
       tar_render_rep(
         report,
@@ -52,7 +52,7 @@ targets::tar_test("tar_render_rep() graph", {
   writeLines(lines, "report.Rmd")
   targets::tar_script({
     library(tarchetypes)
-    tar_pipeline(
+    list(
       tar_target(x, "value_of_x"),
       tar_render_rep(
         report,
@@ -88,7 +88,7 @@ targets::tar_test("tar_render_rep() run", {
   writeLines(lines, "report.Rmd")
   targets::tar_script({
     library(tarchetypes)
-    tar_pipeline(
+    list(
       tar_target(x, "value_of_x"),
       tar_render_rep(
         report,
@@ -156,7 +156,7 @@ targets::tar_test("tar_render_rep() run", {
   # change a param
   targets::tar_script({
     library(tarchetypes)
-    tar_pipeline(
+    list(
       tar_target(x, "value_of_x"),
       tar_render_rep(
         report,
@@ -194,7 +194,7 @@ targets::tar_test("tar_render_rep() run with output_file specified", {
   writeLines(lines, "report.Rmd")
   targets::tar_script({
     library(tarchetypes)
-    tar_pipeline(
+    list(
       tar_target(x, "value_of_x"),
       tar_render_rep(
         report,

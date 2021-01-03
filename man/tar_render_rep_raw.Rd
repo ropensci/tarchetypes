@@ -166,7 +166,7 @@ lines <- c(
 writeLines(lines, "report.Rmd")
 targets::tar_script({
   library(tarchetypes)
-  tar_pipeline(
+  list(
     tar_render_rep_raw(
       "report",
       "report.Rmd",

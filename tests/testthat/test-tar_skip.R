@@ -1,6 +1,6 @@
 targets::tar_test("tar_skip() can cancel", {
   tar_script({
-    tar_pipeline(
+    list(
       tarchetypes::tar_skip(x, command = "value", skip = 1 > 0)
     )
   })
@@ -10,7 +10,7 @@ targets::tar_test("tar_skip() can cancel", {
 
 targets::tar_test("tar_skip() does not always cancel", {
   tar_script({
-    tar_pipeline(
+    list(
       tarchetypes::tar_skip(x, command = "value", skip = 1 < 0)
     )
   })

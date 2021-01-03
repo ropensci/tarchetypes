@@ -227,7 +227,7 @@ if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 # Try it out.
 targets::tar_dir({
 targets::tar_script({
-  tar_pipeline(
+  list(
     tarchetypes::tar_skip(x, command = "value", skip = 1 > 0)
   )
 })

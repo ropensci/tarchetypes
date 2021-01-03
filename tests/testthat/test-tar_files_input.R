@@ -1,6 +1,6 @@
 targets::tar_test("tar_files_input() writes the correct targets", {
   targets::tar_script({
-    tar_pipeline(
+    list(
       tarchetypes::tar_files_input(x, c("a.txt", "b.txt"))
     )
   })
@@ -16,7 +16,7 @@ targets::tar_test("tar_files_input() writes the correct targets", {
 
 targets::tar_test("tar_files_input() writes the correct targets (batched)", {
   targets::tar_script({
-    tar_pipeline(
+    list(
       tarchetypes::tar_files_input(
         x,
         files = c("a.txt", "b.txt", "c.txt", "d.txt"),
@@ -40,7 +40,7 @@ targets::tar_test("tar_files_input() writes the correct targets (batched)", {
 targets::tar_test("tar_files_input() correctly responds to changes in files", {
   file.create(c("a.txt", "b.txt", "c.txt", "d.txt"))
   targets::tar_script({
-    tar_pipeline(
+    list(
       tarchetypes::tar_files_input(
         x,
         files = c("a.txt", "b.txt", "c.txt", "d.txt"),

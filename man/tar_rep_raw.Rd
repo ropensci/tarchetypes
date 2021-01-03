@@ -233,7 +233,7 @@ then \code{vctrs::vec_c()}. If \code{"group"}, then \code{vctrs::vec_rbind()}.
 if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({
 targets::tar_script({
-  targets::tar_pipeline(
+  list(
     tarchetypes::tar_rep_raw(
       "x",
       expression(data.frame(x = sample.int(1e4, 2))),

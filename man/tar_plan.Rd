@@ -13,7 +13,7 @@ arguments must be explicit calls to create target objects,
 e.g. \code{tar_target()}, target archetypes like \code{\link[=tar_render]{tar_render()}}, or similar.}
 }
 \value{
-A \code{targets::tar_pipeline()} object.
+A \code{list()} object.
 }
 \description{
 Simplify target specification in pipelines.
@@ -25,7 +25,7 @@ to be written in the pipeline as \code{target = command} instead of
 target objects if they are unnamed.
 \code{tar_plan(x = 1, y = 2, tar_target(z, 3), tar_render(r, "r.Rmd"))}
 is equivalent to
-\code{tar_pipeline(tar_target(x, 1), tar_target(y, 2), tar_target(z, 3), tar_render(r, "r.Rmd"))}. # nolint
+\code{list(tar_target(x, 1), tar_target(y, 2), tar_target(z, 3), tar_render(r, "r.Rmd"))}. # nolint
 }
 \examples{
 if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {

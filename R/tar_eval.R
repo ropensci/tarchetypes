@@ -28,7 +28,7 @@
 #'   name = rlang::syms(c("name1", "name2")),
 #'   file = c("file1.Rmd", "file2.Rmd")
 #' )
-#' targets::tar_pipeline(
+#' list(
 #'   tar_eval(tar_render(name, file), values = values)
 #' )
 #' })

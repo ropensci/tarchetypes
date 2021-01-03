@@ -17,7 +17,7 @@ To create a list of symbols as a column of \code{values},
 use \code{rlang::syms()}.}
 
 \item{...}{One or more target objects or list of target objects.
-Lists can be arbitrarily nested, as in \code{targets::tar_pipeline()}.}
+Lists can be arbitrarily nested, as in \code{list()}.}
 
 \item{names}{Subset of \code{names(values)}
 used to generate the suffixes in the names of the new targets.
@@ -48,7 +48,7 @@ and substituting symbols into commands and pattern statements.
 if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({
 targets::tar_script({
-  targets::tar_pipeline(
+  list(
     tarchetypes::tar_map(
       list(a = c(12, 34), b = c(45, 78)),
       targets::tar_target(x, a + b),

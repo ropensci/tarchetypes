@@ -1,6 +1,6 @@
 targets::tar_test("tar_rep(iteration = 'list')", {
   targets::tar_script({
-    targets::tar_pipeline(
+    list(
       tarchetypes::tar_rep(
         x,
         list(x = sample.int(1e4, 1)),
@@ -31,7 +31,7 @@ targets::tar_test("tar_rep(iteration = 'list')", {
 
 targets::tar_test("tar_rep(iteration = 'vector')", {
   targets::tar_script({
-    targets::tar_pipeline(
+    list(
       tarchetypes::tar_rep(
         x,
         data.frame(x = sample.int(1e4, 2)),
@@ -55,7 +55,7 @@ targets::tar_test("tar_rep(iteration = 'vector')", {
 
 targets::tar_test("tar_rep_raw(iteration = 'vector')", {
   targets::tar_script({
-    targets::tar_pipeline(
+    list(
       tarchetypes::tar_rep_raw(
         "x",
         expression(data.frame(x = sample.int(1e4, 2))),
@@ -79,7 +79,7 @@ targets::tar_test("tar_rep_raw(iteration = 'vector')", {
 
 targets::tar_test("tar_rep(iteration = 'group')", {
   targets::tar_script({
-    targets::tar_pipeline(
+    list(
       tarchetypes::tar_rep(
         x,
         data.frame(x = sample.int(1e4, 2), tar_group = 1),
@@ -107,7 +107,7 @@ targets::tar_test("tar_rep(iteration = 'group')", {
 
 targets::tar_test("tar_rep() with non-list output", {
   targets::tar_script({
-    targets::tar_pipeline(
+    list(
       tarchetypes::tar_rep(
         x,
         sample.int(1e4, 1),

@@ -45,7 +45,7 @@ targets::tar_test("tar_combine() run", {
       target2,
       use_names = FALSE
     )
-    tar_pipeline(target1, target2, target3)
+    list(target1, target2, target3)
   })
   tar_make(callr_function = NULL)
   expect_equal(tar_read(new_target_name), seq_len(2))
@@ -98,7 +98,7 @@ targets::tar_test("tar_combine_raw() run", {
       target2,
       use_names = FALSE
     )
-    tar_pipeline(target1, target2, target3)
+    list(target1, target2, target3)
   })
   tar_make(callr_function = NULL)
   expect_equal(tar_read(new_target_name), seq_len(2))

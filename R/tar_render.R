@@ -63,7 +63,7 @@
 #' writeLines(lines, "report.Rmd")
 #' targets::tar_script({
 #'   library(tarchetypes)
-#'   tar_pipeline(
+#'   list(
 #'     tar_target(data, data.frame(x = seq_len(26), y = letters)),
 #'     tar_render(report, "report.Rmd")
 #'   )
@@ -86,7 +86,7 @@
 #' writeLines(lines, "report.Rmd")
 #' targets::tar_script({
 #'   library(tarchetypes)
-#'   tar_pipeline(
+#'   list(
 #'     tar_target(data, data.frame(x = seq_len(26), y = letters)),
 #'     tar_render(report, "report.Rmd", params = list(your_param = data))
 #'   )

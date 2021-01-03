@@ -29,7 +29,7 @@ tar_combine(
 \item{name}{Symbol, name of the new target.}
 
 \item{...}{One or more target objects or list of target objects.
-Lists can be arbitrarily nested, as in \code{targets::tar_pipeline()}.}
+Lists can be arbitrarily nested, as in \code{list()}.}
 
 \item{command}{R command to aggregate the targets. Must contain
 \code{!!!.x} where the arguments are to be inserted,
@@ -228,7 +228,7 @@ targets::tar_script({
     target2,
     command = bind_rows(!!!.x)
   )
-  targets::tar_pipeline(target1, target2, target3)
+  list(target1, target2, target3)
 })
 targets::tar_manifest()
 })
