@@ -31,7 +31,11 @@ f <- function() {
 However, the dependencies are always detected using static code analysis, which means `tidyselect` syntax like `tar_load(starts_with("data"))` will not work. `targets` requires you to write the literal symbol name of every target you want the report to depend on.
 
 ```{r}
-tar_load()
+tar_load(names = c("string1", "string2"))
+```
+
+```{r}
+tar_read(name = "string3")
 ```
 
 ```{r}

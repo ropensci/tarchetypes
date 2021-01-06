@@ -59,22 +59,79 @@ walk_expr <- function(expr, counter) {
 walk_call <- function(expr, counter) {
   name <- deparse_safe(expr[[1]], backtick = FALSE)
   if (name %in% paste0(c("", "targets::", "targets:::"), "tar_load")) {
-    register_load(expr, counter)
+    walk_load(expr, counter)
   }
   if (name %in% paste0(c("", "targets::", "targets:::"), "tar_read")) {
-    register_read(expr, counter)
+    walk_read(expr, counter)
   }
   lapply(expr, walk_expr, counter = counter)
 }
 
-register_load <- function(expr, counter) {
+walk_load <- function(expr, counter) {
   expr <- match.call(targets::tar_load, as.call(expr))
-  names <- all.vars(expr$names, functions = FALSE, unique = TRUE)
-  counter_set_names(counter, names)
+  if (is.null(expr$names)) {
+    warn_validate(
+      "Found empty tar_load() call in a knitr / R Markdown ",
+      "code chunk. Dependencies cannot be detected statically, ",
+      "so they will be ignored."
+    )
+  }
+  walk_expr_names(expr$names, counter)
 }
 
-register_read <- function(expr, counter) {
+walk_read <- function(expr, counter) {
   expr <- match.call(targets::tar_read, as.call(expr))
-  names <- all.vars(expr$name, functions = FALSE, unique = TRUE)
-  counter_set_names(counter, names)
+  if (is.null(expr$name)) {
+    warn_validate(
+      "Found empty tar_read() call in a knitr / R Markdown ",
+      "code chunk. Dependencies cannot be detected statically, ",
+      "so they will be ignored."
+    )
+  }
+  walk_expr_names(expr$name, counter)
+}
+
+walk_expr_names <- function(expr, counter) {
+  if (!length(expr)) {
+    return()
+  } else if (is.name(expr)) {
+    counter_set_names(counter, as.character(expr))
+  } else if (is.character(expr)) {
+    counter_set_names(counter, expr)
+  } else if (is.pairlist(expr) || is.recursive(expr) || is.call(expr)) {
+    walk_expr_names_recursive(expr, counter)
+  }
+}
+
+walk_expr_names_recursive <- function(expr, counter) {
+  if (is.call(expr)) {
+    name <- deparse_safe(expr[[1]], backtick = FALSE)
+    if (name %in% tidyselect_names()) {
+      warn_validate(
+        "found ", name, "() from tidyselect in a call to tar_load() or ",
+        "tar_read() in a knitr / R Markdown code chunk. These dependencies ",
+        "cannot be detected statically, so they will be ignored."
+      )
+      return()
+    }
+    expr <- expr[-1]
+  }
+  lapply(expr, walk_expr_names, counter = counter)
+}
+
+tidyselect_names <- function() {
+  tidyselect <- c(
+    "all_of",
+    "any_of",
+    "contains",
+    "ends_with",
+    "everything",
+    "last_col",
+    "matches",
+    "num_range",
+    "one_of",
+    "starts_with"
+  )
+  out <- c(tidyselect, paste0("tidyselect::", tidyselect))
+  c(out, paste0("tidyselect:::", tidyselect))
 }
