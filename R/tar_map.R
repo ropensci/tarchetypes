@@ -39,7 +39,7 @@
 #'     )
 #'   )
 #' })
-#' targets::tar_manifest(L)
+#' targets::tar_manifest()
 #' })
 #' }
 tar_map <- function(

@@ -56,7 +56,7 @@ targets::tar_script({
     )
   )
 })
-targets::tar_manifest(L)
+targets::tar_manifest()
 })
 }
 }
