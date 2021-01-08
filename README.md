@@ -103,7 +103,7 @@ is a drop-in replacement for
 [`drake_plan()`](https://docs.ropensci.org/drake/reference/drake_plan.html)
 in the [`targets`](https://github.com/wlandau/targets) ecosystem. It
 lets users write targets as name/command pairs without having to call
-[`tar_target()`](https://wlandau.github.io/tarchetypes/reference/tar_target.html).
+[`tar_target()`](https://wlandau.github.io/targets/reference/tar_target.html).
 
 ``` r
 tar_plan(
@@ -135,7 +135,7 @@ For specific documentation on `tarchetypes`, including the help files of
 all user-side functions, please visit the [reference
 website](https://wlandau.github.io/tarchetypes/). For documentation on
 [`targets`](https://github.com/wlandau/targets) in general, please visit
-the [`targets` reference website](https://wlandau.github.io/targets).
+the [`targets` reference website](https://wlandau.github.io/targets/).
 Many of the linked resources use `tarchetypes` functions such as
 [`tar_render()`](https://wlandau.github.io/tarchetypes/reference/tar_render.html).
 
