@@ -8,7 +8,10 @@
   "description": "The 'targets' package is a pipeline toolkit that brings together\n  function-oriented programming and Make-like declarative workflows for\n  Statistics and data science in R. The 'tarchetypes' package provides\n  convenient user-side functions to make 'targets' easier to use.\n  By establishing reusable archetypes for common kinds of\n  targets and pipelines, these functions help express complicated\n  reproducible workflows concisely and compactly.\n  The methods in this package were influenced by the 'drake' R package\n  by Will Landau (2018) <doi:10.21105/joss.00550>.",
   "name": "tarchetypes: Archetypes for Targets",
   "codeRepository": "https://github.com/ropensci/tarchetypes",
-  "relatedLink": ["https://docs.ropensci.org/tarchetypes", "https://docs.ropensci.org/tarchetypes/"],
+  "relatedLink": [
+    "https://docs.ropensci.org/tarchetypes",
+    "https://docs.ropensci.org/tarchetypes/"
+  ],
   "issueTracker": "https://github.com/ropensci/tarchetypes/issues",
   "license": "https://spdx.org/licenses/MIT",
   "version": "0.0.0.9002",
@@ -198,7 +201,7 @@
   ],
   "releaseNotes": "https://github.com/ropensci/tarchetypes/blob/master/NEWS.md",
   "readme": "https://github.com/ropensci/tarchetypes/blob/main/README.md",
-  "fileSize": "433.409KB",
+  "fileSize": "431.304KB",
   "contIntegration": "https://codecov.io/gh/ropensci/targets",
   "developmentStatus": "https://www.repostatus.org/#active",
   "review": {
@@ -206,5 +209,16 @@
     "url": "https://github.com/ropensci/software-review/issues/401",
     "provider": "https://ropensci.org"
   },
-  "keywords": ["reproducibility", "high-performance-computing", "r", "data-science", "rstats", "pipeline", "r-package", "workflow", "targets", "r-targetopia"]
+  "keywords": [
+    "reproducibility",
+    "high-performance-computing",
+    "r",
+    "data-science",
+    "rstats",
+    "pipeline",
+    "r-package",
+    "workflow",
+    "targets",
+    "r-targetopia"
+  ]
 }
