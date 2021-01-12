@@ -151,7 +151,7 @@ This is the correct way to dynamically
 iterate over file/url targets. It makes sure any downstream patterns
 only rerun some of their branches if the files/urls change.
 For more information, visit
-\url{https://github.com/wlandau/targets/issues/136} and
+\url{https://github.com/ropensci/targets/issues/136} and
 \url{https://github.com/ropensci/drake/issues/1302}.
 }
 \examples{

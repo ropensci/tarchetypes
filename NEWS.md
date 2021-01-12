@@ -1,6 +1,6 @@
 # tarchetypes 0.0.0.9002
 
-* `tar_plan()` now returns a list of target objects rather than a pipeline object. Related: <https://github.com/wlandau/targets/issues/253>.
+* `tar_plan()` now returns a list of target objects rather than a pipeline object. Related: <https://github.com/ropensci/targets/issues/253>.
 
 # tarchetypes 0.0.0.9000
 

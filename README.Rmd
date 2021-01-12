@@ -18,11 +18,11 @@ knitr::opts_chunk$set(
 [![R Targetopia](https://img.shields.io/badge/R_Targetopia-member-blue?style=flat&labelColor=gray)](https://wlandau.github.io/targetopia/)
 [![cran](http://www.r-pkg.org/badges/version/tarchetypes)](https://cran.r-project.org/package=tarchetypes)
 [![status](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![check](https://github.com/wlandau/tarchetypes/workflows/check/badge.svg)](https://github.com/wlandau/tarchetypes/actions?query=workflow%3Acheck)
-[![codecov](https://codecov.io/gh/wlandau/tarchetypes/branch/main/graph/badge.svg?token=3T5DlLwUVl)](https://codecov.io/gh/wlandau/targets)
-[![lint](https://github.com/wlandau/tarchetypes/workflows/lint/badge.svg)](https://github.com/wlandau/tarchetypes/actions?query=workflow%3Alint)
+[![check](https://github.com/ropensci/tarchetypes/workflows/check/badge.svg)](https://github.com/ropensci/tarchetypes/actions?query=workflow%3Acheck)
+[![codecov](https://codecov.io/gh/ropensci/tarchetypes/branch/main/graph/badge.svg?token=3T5DlLwUVl)](https://codecov.io/gh/ropensci/targets)
+[![lint](https://github.com/ropensci/tarchetypes/workflows/lint/badge.svg)](https://github.com/ropensci/tarchetypes/actions?query=workflow%3Alint)
 
-The `tarchetypes` R package is a collection of target and pipeline archetypes for the [`targets`](https://github.com/wlandau/targets) package. These archetypes express complicated pipelines with concise syntax, which enhances readability and thus reproducibility. Archetypes are possible because of the flexible metaprogramming capabilities of [`targets`](https://github.com/wlandau/targets). In [`targets`](https://github.com/wlandau/targets), one can define a target as an object outside the central pipeline, and the [`tar_target_raw()`](https://wlandau.github.io/targets/reference/tar_target_raw.html) function completely avoids non-standard evaluation. That means anyone can write their own niche interfaces for specialized projects. `tarchetypes` aims to include the most common and versatile archetypes and usage patterns.
+The `tarchetypes` R package is a collection of target and pipeline archetypes for the [`targets`](https://github.com/ropensci/targets) package. These archetypes express complicated pipelines with concise syntax, which enhances readability and thus reproducibility. Archetypes are possible because of the flexible metaprogramming capabilities of [`targets`](https://github.com/ropensci/targets). In [`targets`](https://github.com/ropensci/targets), one can define a target as an object outside the central pipeline, and the [`tar_target_raw()`](https://docs.ropensci.org/targets/reference/tar_target_raw.html) function completely avoids non-standard evaluation. That means anyone can write their own niche interfaces for specialized projects. `tarchetypes` aims to include the most common and versatile archetypes and usage patterns.
 
 ## Target archetype example
 
@@ -93,8 +93,8 @@ Above, `tar_render()` scans code chunks for mentions of targets in `tar_load()` 
 
 ## Pipeline archetype example
 
-[`tar_plan()`](https://wlandau.github.io/tarchetypes/reference/tar_plan.html) is a drop-in replacement for [`drake_plan()`](https://docs.ropensci.org/drake/reference/drake_plan.html) in the [`targets`](https://github.com/wlandau/targets) ecosystem. 
-It lets users write targets as name/command pairs without having to call [`tar_target()`](https://wlandau.github.io/targets/reference/tar_target.html).
+[`tar_plan()`](https://docs.ropensci.org/tarchetypes/reference/tar_plan.html) is a drop-in replacement for [`drake_plan()`](https://docs.ropensci.org/drake/reference/drake_plan.html) in the [`targets`](https://github.com/ropensci/targets) ecosystem. 
+It lets users write targets as name/command pairs without having to call [`tar_target()`](https://docs.ropensci.org/targets/reference/tar_target.html).
 
 ```{r, eval = FALSE}
 tar_plan(
@@ -116,16 +116,16 @@ Install the GitHub development version to access the latest features and patches
 
 ```{r, eval = FALSE}
 library(remotes)
-install_github("wlandau/tarchetypes")
+install_github("ropensci/tarchetypes")
 ```
 
 ## Documentation
 
-For specific documentation on `tarchetypes`, including the help files of all user-side functions, please visit the [reference website](https://wlandau.github.io/tarchetypes/). For documentation on [`targets`](https://github.com/wlandau/targets) in general, please visit the [`targets` reference website](https://wlandau.github.io/targets/). Many of the linked resources use `tarchetypes` functions such as [`tar_render()`](https://wlandau.github.io/tarchetypes/reference/tar_render.html).
+For specific documentation on `tarchetypes`, including the help files of all user-side functions, please visit the [reference website](https://docs.ropensci.org/tarchetypes/). For documentation on [`targets`](https://github.com/ropensci/targets) in general, please visit the [`targets` reference website](https://docs.ropensci.org/targets/). Many of the linked resources use `tarchetypes` functions such as [`tar_render()`](https://docs.ropensci.org/tarchetypes/reference/tar_render.html).
 
 ## Participation
 
-Development is a community effort, and we welcome discussion and contribution. By participating in this project, you agree to abide by the [code of conduct](https://github.com/wlandau/tarchetypes/blob/main/CODE_OF_CONDUCT.md) and the [contributing guide](https://github.com/wlandau/tarchetypes/blob/main/CONTRIBUTING.md).
+Development is a community effort, and we welcome discussion and contribution. By participating in this project, you agree to abide by the [code of conduct](https://github.com/ropensci/tarchetypes/blob/main/CODE_OF_CONDUCT.md) and the [contributing guide](https://github.com/ropensci/tarchetypes/blob/main/CONTRIBUTING.md).
 
 ## Citation
 

@@ -8,12 +8,12 @@ navbar:
   - text: Functions
     href: reference/index.html
   - text: Targets
-    href: https://wlandau.github.io/targets
+    href: https://docs.ropensci.org/targets
   - text: News
     href: news/index.html
   right:
   - icon: fa-github fa-lg
-    href: https://github.com/wlandau/tarchetypes
+    href: https://github.com/ropensci/tarchetypes
 reference:
 - title: Help
   contents:

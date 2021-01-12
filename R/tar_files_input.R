@@ -22,7 +22,7 @@
 #'   iterate over file/url targets. It makes sure any downstream patterns
 #'   only rerun some of their branches if the files/urls change.
 #'   For more information, visit
-#'   <https://github.com/wlandau/targets/issues/136> and
+#'   <https://github.com/ropensci/targets/issues/136> and
 #'   <https://github.com/ropensci/drake/issues/1302>.
 #' @export
 #' @return A list of two targets, one upstream and one downstream.

@@ -8,7 +8,7 @@ library(targets)
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-This R Markdown report depends on targets from a [`targets`](https://github.com/wlandau/targets) pipeline. Declare these dependencies with `tar_load()` and `tar_read()`.
+This R Markdown report depends on targets from a [`targets`](https://github.com/ropensci/targets) pipeline. Declare these dependencies with `tar_load()` and `tar_read()`.
 
 ```{r}
 tar_load(data)
