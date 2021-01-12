@@ -1,4 +1,4 @@
-# tarchetypes 0.0.0.9002
+# tarchetypes 0.0.1
 
 * `tar_plan()` now returns a list of target objects rather than a pipeline object. Related: <https://github.com/ropensci/targets/issues/253>.
 
