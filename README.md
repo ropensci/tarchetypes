@@ -140,14 +140,10 @@ website](https://docs.ropensci.org/targets/). Many of the linked
 resources use `tarchetypes` functions such as
 [`tar_render()`](https://docs.ropensci.org/tarchetypes/reference/tar_render.html).
 
-## Participation
+## Code of conduct
 
-Development is a community effort, and we welcome discussion and
-contribution. By participating in this project, you agree to abide by
-the [code of
-conduct](https://github.com/ropensci/tarchetypes/blob/main/CODE_OF_CONDUCT.md)
-and the [contributing
-guide](https://github.com/ropensci/tarchetypes/blob/main/CONTRIBUTING.md).
+Please note that this package is released with a [Contributor Code of
+Conduct](https://ropensci.org/code-of-conduct/).
 
 ## Citation
 
