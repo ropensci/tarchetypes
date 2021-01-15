@@ -149,14 +149,10 @@ Conduct](https://ropensci.org/code-of-conduct/).
 
 ``` r
 citation("tarchetypes")
-#> Warning in citation("tarchetypes"): no date field in DESCRIPTION file of package
-#> 'tarchetypes'
-#> Warning in citation("tarchetypes"): could not determine year for 'tarchetypes'
-#> from package DESCRIPTION file
 #> 
-#> To cite package 'tarchetypes' in publications use:
+#> To cite tarchetypes in publications use:
 #> 
-#>   William Michael Landau (NA). tarchetypes: Archetypes for Targets.
+#>   William Michael Landau (2021). tarchetypes: Archetypes for Targets.
 #>   https://docs.ropensci.org/tarchetypes/,
 #>   https://github.com/ropensci/tarchetypes.
 #> 
@@ -165,6 +161,7 @@ citation("tarchetypes")
 #>   @Manual{,
 #>     title = {tarchetypes: Archetypes for Targets},
 #>     author = {William Michael Landau},
-#>     note = {https://docs.ropensci.org/tarchetypes/, https://github.com/ropensci/tarchetypes},
+#>     year = {2021},
+#>     note = {{https://docs.ropensci.org/tarchetypes/, https://github.com/ropensci/tarchetypes}},
 #>   }
 ```

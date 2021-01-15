@@ -1,0 +1,14 @@
+citHeader("To cite tarchetypes in publications use:")
+
+citEntry(
+  entry    = "Manual",
+  title    = "tarchetypes: Archetypes for Targets",
+  author   = "William Michael Landau",
+  year     = 2021,
+  note  = "{https://docs.ropensci.org/tarchetypes/, https://github.com/ropensci/tarchetypes}",
+  textVersion = paste(
+    "William Michael Landau (2021). tarchetypes: Archetypes for Targets.",
+    "https://docs.ropensci.org/tarchetypes/,",
+    "https://github.com/ropensci/tarchetypes."
+  )
+)
