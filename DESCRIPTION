@@ -1,8 +1,8 @@
 Package: tarchetypes
 Title: Archetypes for Targets
-Description: The 'targets' package is a pipeline toolkit that brings together
-  function-oriented programming and Make-like declarative workflows for
-  Statistics and data science in R. The 'tarchetypes' package provides
+Description: Function-oriented Make-like declarative workflows for
+  Statistics and data science are supported in the 'targets' R package.
+  As an extension to 'targets', the 'tarchetypes' package provides
   convenient user-side functions to make 'targets' easier to use.
   By establishing reusable archetypes for common kinds of
   targets and pipelines, these functions help express complicated
