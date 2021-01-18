@@ -1,6 +1,4 @@
-# Cannot use targets::tar_test() here because of relative path issues on Windows. # nolint
-test_that("tar_render() works", {
-  on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
+targets::tar_test("tar_render() works", {
   lines <- c(
     "---",
     "title: report",
@@ -40,14 +38,7 @@ test_that("tar_render() works", {
   expect_equal(sort(targets::tar_progress()$name), sort(c("data", "report")))
 })
 
-# Cannot use targets::tar_test() here because of relative path issues on Windows. # nolint
-test_that("tar_render(nested) runs from the project root", {
-  on.exit(
-    unlink(
-      c("_targets*", "report.*", "out_tar_render", "here"),
-      recursive = TRUE
-    )
-  )
+targets::tar_test("tar_render(nested) runs from the project root", {
   lines <- c(
     "---",
     "title: report",
@@ -73,9 +64,7 @@ test_that("tar_render(nested) runs from the project root", {
   expect_false(file.exists(file.path("out_tar_render", "here")))
 })
 
-# Cannot use targets::tar_test() here because of relative path issues on Windows. # nolint
-test_that("tar_render() for parameterized reports", {
-  on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
+targets::tar_test("tar_render() for parameterized reports", {
   lines <- c(
     "---",
     "title: report",

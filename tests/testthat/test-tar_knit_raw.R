@@ -63,7 +63,6 @@ targets::tar_test("tar_knit_raw() warns about tar_read_raw()", {
   )
 })
 
-# Cannot use targets::tar_test() here because of relative path issues on Windows. # nolint
 targets::tar_test("tar_knit_raw() warns about tar_load_raw()", {
   lines <- c(
     "---",
