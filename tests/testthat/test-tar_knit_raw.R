@@ -1,5 +1,4 @@
-# Cannot use targets::tar_test() here because of relative path issues on Windows. # nolint
-test_that("tar_knit_raw() works", {
+targets::tar_test("tar_knit_raw() works", {
   on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
   lines <- c(
     "---",
@@ -24,7 +23,7 @@ test_that("tar_knit_raw() works", {
   expect_equal(sort(targets::tar_progress()$name), sort(c("data", "report")))
   out <- targets::tar_read(report)
   # Paths must be relative.
-  expect_equal(out, c("report.md", "report.Rmd"))
+  expect_equal(basename(out), c("report.md", "report.Rmd"))
   # Should not rerun the report.
   suppressMessages(targets::tar_make(callr_function = NULL))
   expect_equal(nrow(targets::tar_progress()), 0L)
@@ -40,9 +39,7 @@ test_that("tar_knit_raw() works", {
   expect_equal(sort(targets::tar_progress()$name), sort(c("data", "report")))
 })
 
-# Cannot use targets::tar_test() here because of relative path issues on Windows. # nolint
-test_that("tar_knit_raw() warns about tar_read_raw()", {
-  on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
+targets::tar_test("tar_knit_raw() warns about tar_read_raw()", {
   lines <- c(
     "---",
     "title: report",
@@ -68,7 +65,7 @@ test_that("tar_knit_raw() warns about tar_read_raw()", {
 })
 
 # Cannot use targets::tar_test() here because of relative path issues on Windows. # nolint
-test_that("tar_knit_raw() warns about tar_load_raw()", {
+targets::tar_test("tar_knit_raw() warns about tar_load_raw()", {
   on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
   lines <- c(
     "---",
@@ -95,9 +92,7 @@ test_that("tar_knit_raw() warns about tar_load_raw()", {
   )
 })
 
-# Cannot use targets::tar_test() here because of relative path issues on Windows. # nolint
-test_that("tar_knit_raw(nested) runs from the project root", {
-  on.exit(unlink(c("_targets*", "report.*", "out", "here"), recursive = TRUE))
+targets::tar_test("tar_knit_raw(nested) runs from the project root", {
   lines <- c(
     "---",
     "title: report",
