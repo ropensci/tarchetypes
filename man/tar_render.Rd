@@ -155,7 +155,7 @@ targets::tar_script({
     tar_target(data, data.frame(x = seq_len(26), y = letters)),
     tar_render(report, "report.Rmd")
   )
-})
+}, ask = FALSE)
 targets::tar_make()
 # Parameterized R Markdown:
 lines <- c(
@@ -177,7 +177,7 @@ targets::tar_script({
     tar_target(data, data.frame(x = seq_len(26), y = letters)),
     tar_render(report, "report.Rmd", params = list(your_param = data))
   )
-})
+}, ask = FALSE)
 targets::tar_make()
 })
 }

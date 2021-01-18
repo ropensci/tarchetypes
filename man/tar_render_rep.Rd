@@ -242,9 +242,13 @@ writeLines(lines, "report.Rmd")
 targets::tar_script({
   library(tarchetypes)
   list(
-    tar_render_rep(report, "report.Rmd", params = tibble(par = c(1, 2)))
+    tar_render_rep(
+      report,
+      "report.Rmd",
+      params = tibble::tibble(par = c(1, 2))
+    )
   )
-})
+}, ask = FALSE)
 targets::tar_visnetwork() # nolint
 targets::tar_make() # Run the pipeline. # nolint
 })

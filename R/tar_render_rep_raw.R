@@ -81,10 +81,10 @@
 #'     tar_render_rep_raw(
 #'       "report",
 #'       "report.Rmd",
-#'       params = quote(tibble(par = c(1, 2)))
+#'       params = quote(tibble::tibble(par = c(1, 2)))
 #'     )
 #'   )
-#' })
+#' }, ask = FALSE)
 #' targets::tar_visnetwork() # nolint
 #' targets::tar_make() # Run the pipeline. # nolint
 #' })
