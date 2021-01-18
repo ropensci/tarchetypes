@@ -37,9 +37,7 @@ targets::tar_test("tar_knit() works", {
   expect_equal(sort(targets::tar_progress()$name), sort(c("data", "report")))
 })
 
-# Cannot use targets::tar_test() here because of relative path issues on Windows. # nolint
 targets::tar_test("tar_knit() warns about tar_read_raw()", {
-  on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
   lines <- c(
     "---",
     "title: report",
@@ -64,9 +62,7 @@ targets::tar_test("tar_knit() warns about tar_read_raw()", {
   )
 })
 
-# Cannot use targets::tar_test() here because of relative path issues on Windows. # nolint
 targets::tar_test("tar_knit() warns about tar_load_raw()", {
-  on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
   lines <- c(
     "---",
     "title: report",
@@ -92,9 +88,7 @@ targets::tar_test("tar_knit() warns about tar_load_raw()", {
   )
 })
 
-# Cannot use targets::tar_test() here because of relative path issues on Windows. # nolint
 targets::tar_test("tar_knit(nested) runs from project root", {
-  on.exit(unlink(c("_targets*", "report.*", "out", "here"), recursive = TRUE))
   lines <- c(
     "---",
     "title: report",
