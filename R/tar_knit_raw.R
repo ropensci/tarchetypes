@@ -26,7 +26,7 @@
 #'   is the "raw" version of a function, we want to avoid
 #'   all non-standard evaluation.
 #' @examples
-#' if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
+#' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({
 #' lines <- c(
 #'   "---",

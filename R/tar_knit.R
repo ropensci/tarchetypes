@@ -39,7 +39,7 @@
 #'   These arguments are evaluated when the target actually runs in
 #'   `tar_make()`, not when the target is defined.
 #' @examples
-#' if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
+#' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({
 #' lines <- c(
 #'   "---",

@@ -20,7 +20,7 @@
 #'   to customize the rules that decide whether the target is up to date.
 #'   Only applies to the downstream target. The upstream target always runs.
 #' @examples
-#' if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
+#' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({
 #' targets::tar_script({
 #'   list(

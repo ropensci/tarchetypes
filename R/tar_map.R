@@ -28,7 +28,7 @@
 #'   If `unlist = TRUE`, the return value is a flat list of targets
 #'   named by the new target names.
 #' @examples
-#' if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
+#' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({
 #' targets::tar_script({
 #'   list(

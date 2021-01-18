@@ -16,7 +16,7 @@
 #'   (e.g. the `!!` operator from `rlang`) as soon as the target is defined
 #'   (before `tar_make()`). Applies to arguments `command` and `skip`.
 #' @examples
-#' if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
+#' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({
 #' targets::tar_script({
 #'   list(

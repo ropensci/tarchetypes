@@ -14,7 +14,7 @@
 #' @param use_names Logical, whether to insert the names of the targets
 #'   into the command when splicing.
 #' @examples
-#' if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
+#' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({
 #' targets::tar_script({
 #'   target1 <- targets::tar_target(x, head(mtcars))

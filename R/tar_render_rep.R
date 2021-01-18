@@ -47,7 +47,7 @@
 #'   in [tar_render()] was to handle R Markdown parameters, and
 #'   `tar_render_rep()` handles them differently.)
 #' @examples
-#' if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
+#' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({
 #' # Parameterized R Markdown:
 #' lines <- c(

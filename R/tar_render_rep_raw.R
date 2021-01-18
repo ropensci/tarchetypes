@@ -59,7 +59,7 @@
 #'   Must not include `params` or `output_file`. Evaluated when the target
 #'   is defined.
 #' @examples
-#' if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
+#' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({
 #' # Parameterized R Markdown:
 #' lines <- c(

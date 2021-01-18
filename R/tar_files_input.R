@@ -32,7 +32,7 @@
 #' @inheritParams tar_files_input_raw
 #' @inheritParams targets::tar_target
 #' @examples
-#' if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
+#' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({
 #' file.create(c("a.txt", "b.txt", "c.txt", "d.txt"))
 #' targets::tar_script({

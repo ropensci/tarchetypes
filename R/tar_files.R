@@ -20,7 +20,7 @@
 #' @inheritParams tar_files_raw
 #' @inheritParams targets::tar_target
 #' @examples
-#' if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
+#' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({
 #' file.create(c("a.txt", "b.txt"))
 #' targets::tar_script({
@@ -108,7 +108,7 @@ tar_files <- function(
 #'   to customize the rules that decide whether the target is up to date.
 #'   Only applies to the downstream target. The upstream target always runs.
 #' @examples
-#' if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
+#' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' # Without loss of generality,
 #' # tar_files_raw(
 #' #   "your_target",

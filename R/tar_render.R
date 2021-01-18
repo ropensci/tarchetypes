@@ -47,7 +47,7 @@
 #'   and set useful defaults for parameters in the R Markdown source.
 #'  See the examples section for a demonstration.
 #' @examples
-#' if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
+#' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({
 #' # Unparameterized R Markdown:
 #' lines <- c(
