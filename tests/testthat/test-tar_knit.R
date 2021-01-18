@@ -1,6 +1,4 @@
-# Cannot use targets::tar_test() here because of relative path issues on Windows. # nolint
-test_that("tar_knit() works", {
-  on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
+targets::tar_test("tar_knit() works", {
   lines <- c(
     "---",
     "title: report",
@@ -41,7 +39,7 @@ test_that("tar_knit() works", {
 })
 
 # Cannot use targets::tar_test() here because of relative path issues on Windows. # nolint
-test_that("tar_knit() warns about tar_read_raw()", {
+targets::tar_test("tar_knit() warns about tar_read_raw()", {
   on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
   lines <- c(
     "---",
@@ -68,7 +66,7 @@ test_that("tar_knit() warns about tar_read_raw()", {
 })
 
 # Cannot use targets::tar_test() here because of relative path issues on Windows. # nolint
-test_that("tar_knit() warns about tar_load_raw()", {
+targets::tar_test("tar_knit() warns about tar_load_raw()", {
   on.exit(unlink(c("_targets*", "report.*"), recursive = TRUE))
   lines <- c(
     "---",
@@ -96,7 +94,7 @@ test_that("tar_knit() warns about tar_load_raw()", {
 })
 
 # Cannot use targets::tar_test() here because of relative path issues on Windows. # nolint
-test_that("tar_knit(nested) runs from project root", {
+targets::tar_test("tar_knit(nested) runs from project root", {
   on.exit(unlink(c("_targets*", "report.*", "out", "here"), recursive = TRUE))
   lines <- c(
     "---",
