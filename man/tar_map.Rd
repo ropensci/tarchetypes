@@ -45,7 +45,7 @@ targets by iterating over a list of arguments
 and substituting symbols into commands and pattern statements.
 }
 \examples{
-if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
+if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({
 targets::tar_script({
   list(

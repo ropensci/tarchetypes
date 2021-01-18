@@ -28,7 +28,7 @@ is equivalent to
 \code{list(tar_target(x, 1), tar_target(y, 2), tar_target(z, 3), tar_render(r, "r.Rmd"))}. # nolint
 }
 \examples{
-if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
+if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({
 lines <- c(
   "---",

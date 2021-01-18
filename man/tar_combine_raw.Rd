@@ -217,7 +217,7 @@ Like \code{\link[=tar_combine]{tar_combine()}} except the \code{name}, \code{com
 and \code{pattern} arguments use standard evaluation.
 }
 \examples{
-if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
+if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({
 targets::tar_script({
   target1 <- targets::tar_target(x, head(mtcars))

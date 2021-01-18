@@ -157,7 +157,7 @@ For more information, visit
 \url{https://github.com/ropensci/drake/issues/1302}.
 }
 \examples{
-if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
+if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({
 file.create(c("a.txt", "b.txt"))
 targets::tar_script({

@@ -216,7 +216,7 @@ even if the target does not exist yet. This behavior differs from
 \code{tar_cue(mode = "never")}, which still runs if the target does not exist.
 }
 \examples{
-if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
+if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({
 targets::tar_script({
   list(

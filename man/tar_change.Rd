@@ -218,7 +218,7 @@ if the auxiliary value changes. The behavior is cancelled if
 \code{cue} is \code{tar_cue(depend = FALSE)} or \code{tar_cue(mode = "never")}.
 }
 \examples{
-if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
+if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({
 targets::tar_script({
   list(

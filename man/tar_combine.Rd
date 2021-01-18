@@ -217,7 +217,7 @@ Aggregate the results of upstream targets
 into a new target.
 }
 \examples{
-if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
+if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({
 targets::tar_script({
   target1 <- targets::tar_target(x, head(mtcars))
