@@ -59,6 +59,7 @@
 #'   Must not include `params` or `output_file`. Evaluated when the target
 #'   is defined.
 #' @examples
+#' if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({
 #' # Parameterized R Markdown:
 #' lines <- c(
@@ -84,9 +85,10 @@
 #'     )
 #'   )
 #' })
-#' # targets::tar_visnetwork() # nolint
-#' # targets::tar_make() # Run the pipeline. # nolint
+#' targets::tar_visnetwork() # nolint
+#' targets::tar_make() # Run the pipeline. # nolint
 #' })
+#' }
 tar_render_rep_raw <- function(
   name,
   path,

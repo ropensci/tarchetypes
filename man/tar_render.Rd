@@ -157,7 +157,6 @@ targets::tar_script({
   )
 })
 targets::tar_make()
-# browseURL("report.html") # View the report.
 # Parameterized R Markdown:
 lines <- c(
   "---",
@@ -179,9 +178,7 @@ targets::tar_script({
     tar_render(report, "report.Rmd", params = list(your_param = data))
   )
 })
-# targets::tar_visnetwork() # The report should be connected to the data.
 targets::tar_make()
-# browseURL("report.html") # View the report.
 })
 }
 }

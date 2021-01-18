@@ -219,18 +219,6 @@ if the auxiliary value changes. The behavior is cancelled if
 }
 \examples{
 if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
-# Without loss of generality,
-# tar_change(your_target, command = fun(), change = aux())
-# is equivalent to:
-# list(
-#   tar_target(your_target_change, aux(), cue = tar_cue(mode = "always")),
-#   tar_target(your_target, {
-#     x_change
-#     fun()
-#   })
-# )
-# Try it out. The following pipeline should always run
-# both targets (x and x_change).
 targets::tar_dir({
 targets::tar_script({
   list(

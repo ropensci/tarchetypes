@@ -219,17 +219,6 @@ and a downstream target that responds to it and does your work.
 }
 \examples{
 if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
-# Without loss of generality,
-# tar_force(your_target, run_stuff(), force = should_run())
-# is equivalent to:
-# tar_change(
-#   your_target,
-#   run_stuff(),
-#   change = tarchetypes::tar_force_change(should_run)
-# )
-# tar_force_change() is an internal function that converts
-# your custom condition into a special indicator for tar_change().
-# Try it out.
 targets::tar_dir({
 targets::tar_script({
   list(

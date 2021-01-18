@@ -47,6 +47,7 @@
 #'   in [tar_render()] was to handle R Markdown parameters, and
 #'   `tar_render_rep()` handles them differently.)
 #' @examples
+#' if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({
 #' # Parameterized R Markdown:
 #' lines <- c(
@@ -68,9 +69,10 @@
 #'     tar_render_rep(report, "report.Rmd", params = tibble(par = c(1, 2)))
 #'   )
 #' })
-#' # targets::tar_visnetwork() # nolint
-#' # targets::tar_make() # Run the pipeline. # nolint
+#' targets::tar_visnetwork() # nolint
+#' targets::tar_make() # Run the pipeline. # nolint
 #' })
+#' }
 tar_render_rep <- function(
   name,
   path,

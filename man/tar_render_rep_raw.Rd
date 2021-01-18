@@ -149,6 +149,7 @@ instead of the working directory of the report.
 in the target and \code{quiet = TRUE} in \code{rmarkdown::render()}.
 }
 \examples{
+if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({
 # Parameterized R Markdown:
 lines <- c(
@@ -174,7 +175,8 @@ targets::tar_script({
     )
   )
 })
-# targets::tar_visnetwork() # nolint
-# targets::tar_make() # Run the pipeline. # nolint
+targets::tar_visnetwork() # nolint
+targets::tar_make() # Run the pipeline. # nolint
 })
+}
 }

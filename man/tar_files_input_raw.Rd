@@ -124,33 +124,6 @@ For more information, visit
 }
 \examples{
 if (identical(Sys.getenv("TARCHETYPES_LONG_EXAMPLES"), "true")) {
-# Without loss of generality,
-# tar_files_input_raw(
-#   "your_target",
-#   files = c("a.txt", "b.txt", "c.txt", "d.txt")),
-#   batches = 2
-# )
-# is equivalent to:
-# list(
-#   tar_target(
-#     your_target_files,
-#     list(c("a.txt", "b.txt"), c("c.txt", "d.txt")),
-#     iteration = "list",
-#     deployment = "main",
-#     storage = "main",
-#     retrieval = "main"
-#   ),
-#   tar_target(
-#     your_target,
-#     your_target_files,
-#     pattern = map(your_target_files),
-#     format = "file",
-#     deployment = "main",
-#     storage = "main",
-#     retrieval = "main"
-#   )
-# )
-# Try it out.
 targets::tar_dir({
 file.create(c("a.txt", "b.txt", "c.txt", "d.txt"))
 targets::tar_script({
