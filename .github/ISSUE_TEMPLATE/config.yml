@@ -1,0 +1,14 @@
+lank_issues_enabled: true
+contact_links:
+  - name: General
+    url: https://github.com/ropensci/tarchetypes/discussions/categories/general
+    about: Chat about tarchetypes.
+  - name: Help
+    url: https://github.com/ropensci/tarchetypes/discussions/categories/help
+    about: Get help using tarchetypes and troubleshooting problems.
+  - name: Ideas
+    url: https://github.com/ropensci/tarchetypes/discussions/categories/ideas
+    about: Brainstorm ideas for new features or use cases.
+  - name: Show and tell
+    url: https://github.com/ropensci/tarchetypes/discussions/categories/ideas
+    about: Show off something you have made.
