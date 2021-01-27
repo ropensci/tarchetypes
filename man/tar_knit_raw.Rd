@@ -98,6 +98,12 @@ source file is last. But unlike \code{knitr::knit()},
 all returned paths are \emph{relative} paths to ensure portability
 (so that the project can be moved from one file system to another
 without invalidating the target).
+
+Target objects represent skippable steps of the analysis pipeline
+as described at \url{https://books.ropensci.org/targets/}.
+Please see the design specification at
+\url{https://books.ropensci.org/targets-design/}
+to learn about the structure and composition of target objects.
 }
 \description{
 Shorthand to include a knitr document in a

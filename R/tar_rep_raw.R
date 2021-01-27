@@ -16,9 +16,15 @@
 #'   then `vctrs::vec_c()`. If `"group"`, then `vctrs::vec_rbind()`.
 #' @export
 #' @inheritParams targets::tar_target_raw
-#' @return A list of two targets, one upstream and one downstream.
+#' @return A list of two target objects, one upstream and one downstream.
 #'   The upstream one does some work and returns some file paths,
 #'   and the downstream target is a pattern that applies `format = "file"`.
+#'
+#'   Target objects represent skippable steps of the analysis pipeline
+#'   as described at <https://books.ropensci.org/targets/>.
+#'   Please see the design specification at
+#'   <https://books.ropensci.org/targets-design/>
+#'   to learn about the structure and composition of target objects.
 #' @param command Expression object with code to run multiple times.
 #'   Must return a list or data frame when evaluated.
 #' @param batches Number of batches. This is also the number of dynamic
@@ -195,7 +201,9 @@ tar_rep_pattern <- function(name_batch) {
 #'   Users should not invoke it directly.
 #' @export
 #' @keywords internal
-#' @return Aggregated results of multiple executions of the command.
+#' @return Aggregated results of multiple executions of the
+#'   user-defined command supplied to [tar_rep()]. Depends on what
+#'   the user specifies. Common use cases are simulated datasets.
 #' @param command Expression object, command to replicate.
 #' @param batch Numeric, batch index.
 #' @param reps Numeric, number of reps per batch.

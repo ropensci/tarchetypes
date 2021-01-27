@@ -10,6 +10,10 @@ tar_knitr_deps(path)
 \item{path}{Character vector, path to one or more R Markdown or
 \code{knitr} reports.}
 }
+\value{
+Character vector of the names of targets
+that are dependencies of the \code{knitr} report.
+}
 \description{
 List the target dependencies of one or more
 literate programming reports (R Markdown or \code{knitr}).

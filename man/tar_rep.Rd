@@ -221,6 +221,12 @@ the targets from \code{tar_rep()} will try to append new elements/columns
 \code{tar_batch} and \code{tar_rep} to the output
 to denote the batch and rep-within-batch IDs, respectively.
 
+Target objects represent skippable steps of the analysis pipeline
+as described at \url{https://books.ropensci.org/targets/}.
+Please see the design specification at
+\url{https://books.ropensci.org/targets-design/}
+to learn about the structure and composition of target objects.
+
 \code{tar_read(your_target)} (on the downstream target with the actual work)
 will return a list of lists, where the outer list has one element per
 batch and each inner list has one element per rep within batch.

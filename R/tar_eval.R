@@ -4,6 +4,12 @@
 #'   from each one, and then evaluate that expression.
 #'   Helps with general metaprogramming.
 #' @return A list of return values from the generated expression objects.
+#'   Often, these values are target objects.
+#'   Target objects represent skippable steps of the analysis pipeline
+#'   as described at <https://books.ropensci.org/targets/>.
+#'   Please see the design specification at
+#'   <https://books.ropensci.org/targets-design/>
+#'   to learn about the structure and composition of target objects.
 #' @inheritParams tar_eval_raw
 #' @param expr Starting expression. Values are iteratively substituted
 #'   in place of symbols in `expr` to create each new expression,

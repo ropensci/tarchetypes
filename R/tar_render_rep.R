@@ -29,9 +29,15 @@
 #'       instead of the working directory of the report.
 #'     5. Sets convenient default options such as `deployment = "main"`
 #'       in the target and `quiet = TRUE` in `rmarkdown::render()`.
-#' @return A list of `tar_target()` objects to render the R Markdown
+#' @return A list of target objects to render the R Markdown
 #'   reports. Changes to the parameters, source file, dependencies, etc.
 #'   will cause the appropriate targets to rerun during `tar_make()`.
+#'
+#'   Target objects represent skippable steps of the analysis pipeline
+#'   as described at <https://books.ropensci.org/targets/>.
+#'   Please see the design specification at
+#'   <https://books.ropensci.org/targets-design/>
+#'   to learn about the structure and composition of target objects.
 #' @inheritParams targets::tar_target
 #' @inheritParams rmarkdown::render
 #' @inheritParams tar_render_rep_raw

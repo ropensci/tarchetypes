@@ -11,6 +11,9 @@ tar_render_rep_run_params(params, batches)
 
 \item{batches}{Number of batches to split up the renderings.}
 }
+\value{
+A batched data frame of R Markdown parameters.
+}
 \description{
 Internal function needed for \code{tar_render_rep()}.
 Users should not invoke it directly.

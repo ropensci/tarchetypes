@@ -5,9 +5,9 @@
 \alias{tarchetypes-package}
 \title{targets: Archetypes for Targets}
 \description{
-The targets package is a pipeline toolkit that brings together
+A pipeline toolkit for R, the \code{targets} package brings together
 function-oriented programming and Make-like declarative pipelines for
-Statistics and data science in R. The tarchetypes packages provides
+Statistics and data science. The \code{tarchetypes} package provides
 convenient helper functions to create specialized targets, making
 pipelines in targets easier and cleaner to write and understand.
 }

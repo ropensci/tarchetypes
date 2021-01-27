@@ -277,6 +277,11 @@ rules that decide whether the target is up to date.}
 }
 \value{
 A \code{tar_target()} object.
+Target objects represent skippable steps of the analysis pipeline
+as described at \url{https://books.ropensci.org/targets/}.
+Please see the design specification at
+\url{https://books.ropensci.org/targets-design/}
+to learn about the structure and composition of target objects.
 }
 \description{
 Target archetypes for specialized storage formats.

@@ -1,3 +1,5 @@
+# Internal counter class described at
+# <https://books.ropensci.org/targets-design/classes.html#counter-class>.
 counter_init <- function(names = NULL) {
   count <- length(names)
   envir <- new.env(hash = TRUE, parent = emptyenv())

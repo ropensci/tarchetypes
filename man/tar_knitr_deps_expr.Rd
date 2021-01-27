@@ -10,6 +10,11 @@ tar_knitr_deps_expr(path)
 \item{path}{Character vector, path to one or more R Markdown or
 \code{knitr} reports.}
 }
+\value{
+Expression object to name the dependency targets
+of the \code{knitr} report, which will be detected in the
+static code analysis of \code{targets}.
+}
 \description{
 Construct an expression whose global variable dependencies
 are the target dependencies of one or more literate programming reports

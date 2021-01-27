@@ -6,6 +6,13 @@
 \usage{
 tar_force_change(condition)
 }
+\arguments{
+\item{condition}{Logical, whether to run the downstream target
+in \code{\link[=tar_force]{tar_force()}}.}
+}
+\value{
+A hash that changes when the downstream target is supposed to run.
+}
 \description{
 Supports \code{\link[=tar_force]{tar_force()}}. This is really an internal function
 and not meant to be called by users directly.

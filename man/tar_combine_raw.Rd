@@ -211,6 +211,11 @@ rules that decide whether the target is up to date.}
 \value{
 A new target object to combine the return values
 from the upstream targets.
+Target objects represent skippable steps of the analysis pipeline
+as described at \url{https://books.ropensci.org/targets/}.
+Please see the design specification at
+\url{https://books.ropensci.org/targets-design/}
+to learn about the structure and composition of target objects.
 }
 \description{
 Like \code{\link[=tar_combine]{tar_combine()}} except the \code{name}, \code{command},

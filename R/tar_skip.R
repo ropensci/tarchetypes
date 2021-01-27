@@ -8,8 +8,14 @@
 #'   `tar_cue(mode = "never")`, which still runs if the target does not exist.
 #' @export
 #' @inheritParams targets::tar_target
-#' @return A target with `targets::tar_cancel(your_condition)` inserted
+#' @return A target object with `targets::tar_cancel(your_condition)` inserted
 #'   into the command.
+#'
+#'   Target objects represent skippable steps of the analysis pipeline
+#'   as described at <https://books.ropensci.org/targets/>.
+#'   Please see the design specification at
+#'   <https://books.ropensci.org/targets-design/>
+#'   to learn about the structure and composition of target objects.
 #' @param skip R code for the skipping condition. If it evaluates to `TRUE`
 #'   during `tar_make()`, the target will cancel itself.
 #' @param tidy_eval Whether to invoke tidy evaluation

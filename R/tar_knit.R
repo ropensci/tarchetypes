@@ -31,6 +31,12 @@
 #'   all returned paths are *relative* paths to ensure portability
 #'   (so that the project can be moved from one file system to another
 #'   without invalidating the target).
+#'
+#'   Target objects represent skippable steps of the analysis pipeline
+#'   as described at <https://books.ropensci.org/targets/>.
+#'   Please see the design specification at
+#'   <https://books.ropensci.org/targets-design/>
+#'   to learn about the structure and composition of target objects.
 #' @inheritParams targets::tar_target
 #' @inheritParams knitr::knit
 #' @param path Character string, file path to the `knitr` source file.
@@ -112,6 +118,10 @@ tar_knit_command <- function(path, args, quiet) {
 #'   Users should not invoke it directly.
 #' @export
 #' @keywords internal
+#' @return Character with the path to the `knitr` source file
+#'   and the relative path to the output `knitr` report.
+#'   The output path depends on the input path argument,
+#'   which has no default.
 #' @param path Path to the `knitr` source file.
 #' @param args A named list of arguments to `knitr::knit()`.
 #' @param deps An unnamed list of target dependencies of the `knitr`

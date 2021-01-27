@@ -107,9 +107,15 @@ Must not include \code{params} or \code{output_file}. Evaluated when the target
 is defined.}
 }
 \value{
-A list of \code{tar_target()} objects to render the R Markdown
+A list of target objects to render the R Markdown
 reports. Changes to the parameters, source file, dependencies, etc.
 will cause the appropriate targets to rerun during \code{tar_make()}.
+
+Target objects represent skippable steps of the analysis pipeline
+as described at \url{https://books.ropensci.org/targets/}.
+Please see the design specification at
+\url{https://books.ropensci.org/targets-design/}
+to learn about the structure and composition of target objects.
 }
 \description{
 Targets to render a parameterized R Markdown report

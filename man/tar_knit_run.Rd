@@ -14,6 +14,12 @@ tar_knit_run(path, args, deps)
 \item{deps}{An unnamed list of target dependencies of the \code{knitr}
 report, automatically created by \code{tar_knit()}.}
 }
+\value{
+Character with the path to the \code{knitr} source file
+and the relative path to the output \code{knitr} report.
+The output path depends on the input path argument,
+which has no default.
+}
 \description{
 Internal function needed for \code{tar_knit()}.
 Users should not invoke it directly.

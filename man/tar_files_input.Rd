@@ -101,6 +101,11 @@ A list of two targets, one upstream and one downstream.
 The upstream one does some work and returns some file paths,
 and the downstream target is a pattern that applies \code{format = "file"}
 or \code{format = "url"}.
+Target objects represent skippable steps of the analysis pipeline
+as described at \url{https://books.ropensci.org/targets/}.
+Please see the design specification at
+\url{https://books.ropensci.org/targets-design/}
+to learn about the structure and composition of target objects.
 }
 \description{
 Shorthand for a pattern that correctly

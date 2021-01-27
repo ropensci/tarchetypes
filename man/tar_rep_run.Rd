@@ -16,7 +16,9 @@ tar_rep_run(command, batch, reps, iteration)
 \item{iteration}{Character, iteration method.}
 }
 \value{
-Aggregated results of multiple executions of the command.
+Aggregated results of multiple executions of the
+user-defined command supplied to \code{\link[=tar_rep]{tar_rep()}}. Depends on what
+the user specifies. Common use cases are simulated datasets.
 }
 \description{
 Internal function needed for \code{tar_rep()}.

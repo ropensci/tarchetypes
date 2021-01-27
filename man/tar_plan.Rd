@@ -14,6 +14,11 @@ e.g. \code{tar_target()}, target archetypes like \code{\link[=tar_render]{tar_re
 }
 \value{
 A list of \code{tar_target()} objects.
+Target objects represent skippable steps of the analysis pipeline
+as described at \url{https://books.ropensci.org/targets/}.
+Please see the design specification at
+\url{https://books.ropensci.org/targets-design/}
+to learn about the structure and composition of target objects.
 }
 \description{
 Simplify target specification in pipelines.

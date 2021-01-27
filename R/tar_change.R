@@ -9,9 +9,14 @@
 #'   `cue` is `tar_cue(depend = FALSE)` or `tar_cue(mode = "never")`.
 #' @export
 #' @inheritParams targets::tar_target
-#' @return A list of two targets, one upstream and one downstream.
+#' @return A list of two target objects, one upstream and one downstream.
 #'   The upstream one triggers the change, and the downstream one
 #'   responds to it. See the examples for details.
+#'   Target objects represent skippable steps of the analysis pipeline
+#'   as described at <https://books.ropensci.org/targets/>.
+#'   Please see the design specification at
+#'   <https://books.ropensci.org/targets-design/>
+#'   to learn about the structure and composition of target objects.
 #' @param change R code for the upstream change-inducing target.
 #' @param tidy_eval Whether to invoke tidy evaluation
 #'   (e.g. the `!!` operator from `rlang`) as soon as the target is defined

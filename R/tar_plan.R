@@ -9,6 +9,11 @@
 #'   `list(tar_target(x, 1), tar_target(y, 2), tar_target(z, 3), tar_render(r, "r.Rmd"))`. # nolint
 #' @export
 #' @return A list of `tar_target()` objects.
+#'   Target objects represent skippable steps of the analysis pipeline
+#'   as described at <https://books.ropensci.org/targets/>.
+#'   Please see the design specification at
+#'   <https://books.ropensci.org/targets-design/>
+#'   to learn about the structure and composition of target objects.
 #' @param ... Named and unnamed targets. All named targets must follow
 #'   the `drake`-plan-like `target = command` syntax, and all unnamed
 #'   arguments must be explicit calls to create target objects,

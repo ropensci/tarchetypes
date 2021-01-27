@@ -6,7 +6,7 @@
 #'   except that it uses standard evaluation. The `name` argument
 #'   is a character vector, and the `render_arguments` argument
 #'   is a language object.
-#' @return A `tar_target()` object with `format = "file"`.
+#' @return A target object with `format = "file"`.
 #'   When this target runs, it returns a character vector
 #'   of file paths. The first file paths are the output files
 #'   (returned by `rmarkdown::render()`) and the R Markdown
@@ -14,6 +14,12 @@
 #'   all returned paths are *relative* paths to ensure portability
 #'   (so that the project can be moved from one file system to another
 #'   without invalidating the target).
+#'
+#'   Target objects represent skippable steps of the analysis pipeline
+#'   as described at <https://books.ropensci.org/targets/>.
+#'   Please see the design specification at
+#'   <https://books.ropensci.org/targets-design/>
+#'   to learn about the structure and composition of target objects.
 #' @inheritParams tar_render
 #' @param name Character of length 1, name of the target.
 #' @param render_arguments Optional language object with a list
@@ -129,6 +135,9 @@ tar_render_command <- function(path, args, quiet) {
 #'   Users should not invoke it directly.
 #' @export
 #' @keywords internal
+#' @return Character vector with the path to the R Markdown source file
+#'   and the relative path to the output. These paths depend on the input
+#'   source file path and have no defaults.
 #' @param path Path to the R Markdown source file.
 #' @param args A named list of arguments to `rmarkdown::render()`.
 #' @param deps An unnamed list of target dependencies of the R Markdown

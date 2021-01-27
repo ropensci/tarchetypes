@@ -201,9 +201,14 @@ to customize the rules that decide whether the target is up to date.
 Only applies to the downstream target. The upstream target always runs.}
 }
 \value{
-A list of two targets, one upstream and one downstream.
+A list of two target objects, one upstream and one downstream.
 The upstream one triggers the change, and the downstream one
 responds to it. See the examples for details.
+Target objects represent skippable steps of the analysis pipeline
+as described at \url{https://books.ropensci.org/targets/}.
+Please see the design specification at
+\url{https://books.ropensci.org/targets-design/}
+to learn about the structure and composition of target objects.
 }
 \description{
 Create a target that responds to a change

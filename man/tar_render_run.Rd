@@ -14,6 +14,11 @@ tar_render_run(path, args, deps)
 \item{deps}{An unnamed list of target dependencies of the R Markdown
 report, automatically created by \code{tar_render()}.}
 }
+\value{
+Character vector with the path to the R Markdown source file
+and the relative path to the output. These paths depend on the input
+source file path and have no defaults.
+}
 \description{
 Internal function needed for \code{tar_render()}.
 Users should not invoke it directly.

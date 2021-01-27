@@ -17,6 +17,11 @@
 #'   The upstream one does some work and returns some file paths,
 #'   and the downstream target is a pattern that applies `format = "file"`
 #'   or `format = "url"`.
+#'   Target objects represent skippable steps of the analysis pipeline
+#'   as described at <https://books.ropensci.org/targets/>.
+#'   Please see the design specification at
+#'   <https://books.ropensci.org/targets-design/>
+#'   to learn about the structure and composition of target objects.
 #' @inheritParams tar_files_raw
 #' @inheritParams targets::tar_target
 #' @examples

@@ -33,9 +33,15 @@
 #'       instead of the working directory of the report.
 #'     5. Sets convenient default options such as `deployment = "main"`
 #'       in the target and `quiet = TRUE` in `rmarkdown::render()`.
-#' @return A list of `tar_target()` objects to render the R Markdown
+#' @return A list of target objects to render the R Markdown
 #'   reports. Changes to the parameters, source file, dependencies, etc.
 #'   will cause the appropriate targets to rerun during `tar_make()`.
+#'
+#'   Target objects represent skippable steps of the analysis pipeline
+#'   as described at <https://books.ropensci.org/targets/>.
+#'   Please see the design specification at
+#'   <https://books.ropensci.org/targets-design/>
+#'   to learn about the structure and composition of target objects.
 #' @inheritParams targets::tar_target
 #' @inheritParams rmarkdown::render
 #' @param path Character string, file path to the R Markdown source file.
@@ -163,6 +169,7 @@ tar_render_rep_params_command <- function(params, batches) {
 #'   Users should not invoke it directly.
 #' @export
 #' @keywords internal
+#' @return A batched data frame of R Markdown parameters.
 #' @param params Data frame of R Markdown parameters.
 #' @param batches Number of batches to split up the renderings.
 tar_render_rep_run_params <- function(params, batches) {
@@ -188,6 +195,9 @@ tar_render_rep_command <- function(name, path, quiet, args) {
 #'   Users should not invoke it directly.
 #' @export
 #' @keywords internal
+#' @return Character vector with the path to the R Markdown
+#'   source file and the rendered output file. Both paths
+#'   depend on the input source path, and they have no defaults.
 #' @param path Path to the R Markdown source file.
 #' @param args A named list of arguments to `rmarkdown::render()`.
 #' @param deps An unnamed list of target dependencies of the R Markdown

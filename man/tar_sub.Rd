@@ -14,7 +14,13 @@ in place of symbols in \code{expr} to create each new expression.}
 the expressions. All elements of \code{values} must have the same length.}
 }
 \value{
-A list of expression objects.
+A list of expression objects. Often, these expression objects
+evaluate to target objects (but not necessarily).
+Target objects represent skippable steps of the analysis pipeline
+as described at \url{https://books.ropensci.org/targets/}.
+Please see the design specification at
+\url{https://books.ropensci.org/targets-design/}
+to learn about the structure and composition of target objects.
 }
 \description{
 Loop over a grid of values and create an expression object

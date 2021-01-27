@@ -35,6 +35,12 @@ A list of new target objects. If \code{unlist} is \code{FALSE},
 the list is nested and sub-lists are named and grouped by the original
 input targets. If \code{unlist = TRUE}, the return value is a flat list of
 targets named by the new target names.
+
+Target objects represent skippable steps of the analysis pipeline
+as described at \url{https://books.ropensci.org/targets/}.
+Please see the design specification at
+\url{https://books.ropensci.org/targets-design/}
+to learn about the structure and composition of target objects.
 }
 \description{
 Define multiple new targets based on existing target objects.

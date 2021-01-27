@@ -7,6 +7,12 @@
 #'   which quotes the `expr` argument, `tar_sub_raw()` assumes `expr`
 #'   is an expression object.
 #' @return A list of return values from evaluating the expression objects.
+#'   Often, these values are target objects.
+#'   Target objects represent skippable steps of the analysis pipeline
+#'   as described at <https://books.ropensci.org/targets/>.
+#'   Please see the design specification at
+#'   <https://books.ropensci.org/targets-design/>
+#'   to learn about the structure and composition of target objects.
 #' @inheritParams tar_sub_raw
 #' @param expr Expression object with the starting expression.
 #'   Values are iteratively substituted

@@ -90,7 +90,7 @@ is the "raw" version of a function, we want to avoid
 all non-standard evaluation.}
 }
 \value{
-A \code{tar_target()} object with \code{format = "file"}.
+A target object with \code{format = "file"}.
 When this target runs, it returns a character vector
 of file paths. The first file paths are the output files
 (returned by \code{rmarkdown::render()}) and the R Markdown
@@ -98,6 +98,12 @@ source file is last. But unlike \code{rmarkdown::render()},
 all returned paths are \emph{relative} paths to ensure portability
 (so that the project can be moved from one file system to another
 without invalidating the target).
+
+Target objects represent skippable steps of the analysis pipeline
+as described at \url{https://books.ropensci.org/targets/}.
+Please see the design specification at
+\url{https://books.ropensci.org/targets-design/}
+to learn about the structure and composition of target objects.
 }
 \description{
 Shorthand to include an R Markdown document in a

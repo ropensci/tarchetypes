@@ -80,8 +80,11 @@ tar_force <- function(
 #' @title Convert a condition into a change.
 #' @description Supports [tar_force()]. This is really an internal function
 #'   and not meant to be called by users directly.
+#' @return A hash that changes when the downstream target is supposed to run.
 #' @export
 #' @keywords internal
+#' @param condition Logical, whether to run the downstream target
+#'   in [tar_force()].
 tar_force_change <- function(condition) {
   path <- targets::tar_path()
   new <- basename(tempfile(pattern = ""))
