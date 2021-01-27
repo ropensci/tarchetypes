@@ -1,4 +1,4 @@
-tar_test("tar_knitr_deps_expr()", {
+targets::tar_test("tar_knitr_deps_expr()", {
   lines1 <- c(
     "---",
     "title: report",
