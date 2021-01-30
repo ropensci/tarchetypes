@@ -68,6 +68,8 @@
 #'   "print(params$par)",
 #'   "```"
 #' )
+#' # tar_dir() already puts us inside a temporary directory,
+#' # so the following line writes within tempdir().
 #' writeLines(lines, "report.Rmd")
 #' targets::tar_script({
 #'   library(tarchetypes)

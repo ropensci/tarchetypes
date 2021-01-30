@@ -39,6 +39,8 @@
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({
+#' # tar_dir() already puts us inside a temporary directory,
+#' # so the following line writes within tempdir().
 #' file.create(c("a.txt", "b.txt", "c.txt", "d.txt"))
 #' targets::tar_script({
 #'   list(

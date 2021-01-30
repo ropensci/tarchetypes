@@ -156,30 +156,9 @@ For more information, visit
 }
 \examples{
 if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
-# Without loss of generality,
-# tar_files_raw(
-#   "your_target",
-#   quote(fn_that_returns_paths(c("a.txt", "b.txt")))
-# )
-# is equivalent to:
-# list(
-#   tar_target(
-#     your_target_files,
-#     fn_that_returns_paths(c("a.txt", "b.txt")),
-#     cue = tar_cue(mode = "always")
-#   ),
-#   tar_target(
-#     your_target,
-#     your_target_files,
-#     pattern = map(your_target_files),
-#     format = "file",
-#     deployment = "main",
-#     storage = "main",
-#     retrieval = "main"
-#   )
-# )
-# Try it out.
 targets::tar_dir({
+# tar_dir() already puts us inside a temporary directory,
+# so the following line writes within tempdir().
 file.create(c("a.txt", "b.txt"))
 targets::tar_script({
   list(

@@ -25,6 +25,8 @@
 #' )
 #' tar_sub(tar_render(name, file), values = values)
 #' targets::tar_dir({
+#' # tar_dir() already puts us inside a temporary directory,
+#' # so the following line writes within tempdir().
 #' file.create(c("file1.Rmd", "file2.Rmd"))
 #' str(tar_eval(tar_render(name, file), values = values))
 #' # So in your _targets.R file, you can define a pipeline like as below.
