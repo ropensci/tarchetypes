@@ -1,4 +1,5 @@
 targets::tar_test("tar_knitr_deps()", {
+  skip_on_os("solaris")
   lines1 <- c(
     "---",
     "title: report",

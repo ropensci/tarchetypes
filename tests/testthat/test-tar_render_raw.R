@@ -1,4 +1,5 @@
 targets::tar_test("tar_render_raw() works", {
+  skip_on_os("solaris")
   lines <- c(
     "---",
     "title: report",
@@ -38,6 +39,7 @@ targets::tar_test("tar_render_raw() works", {
 })
 
 targets::tar_test("tar_render_raw(nested) runs from project root", {
+  skip_on_os("solaris")
   lines <- c(
     "---",
     "title: report",
@@ -64,6 +66,7 @@ targets::tar_test("tar_render_raw(nested) runs from project root", {
 })
 
 targets::tar_test("tar_render_raw() for parameterized reports", {
+  skip_on_os("solaris")
   lines <- c(
     "---",
     "title: report",

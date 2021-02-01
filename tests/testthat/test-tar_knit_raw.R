@@ -1,4 +1,5 @@
 targets::tar_test("tar_knit_raw() works", {
+  skip_on_os("solaris")
   lines <- c(
     "---",
     "title: report",
@@ -39,6 +40,7 @@ targets::tar_test("tar_knit_raw() works", {
 })
 
 targets::tar_test("tar_knit_raw() warns about tar_read_raw()", {
+  skip_on_os("solaris")
   lines <- c(
     "---",
     "title: report",
@@ -64,6 +66,7 @@ targets::tar_test("tar_knit_raw() warns about tar_read_raw()", {
 })
 
 targets::tar_test("tar_knit_raw() warns about tar_load_raw()", {
+  skip_on_os("solaris")
   lines <- c(
     "---",
     "title: report",
@@ -90,6 +93,7 @@ targets::tar_test("tar_knit_raw() warns about tar_load_raw()", {
 })
 
 targets::tar_test("tar_knit_raw(nested) runs from the project root", {
+  skip_on_os("solaris")
   lines <- c(
     "---",
     "title: report",
