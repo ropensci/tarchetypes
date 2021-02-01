@@ -38,19 +38,4 @@ values <- list(
   file = c("file1.Rmd", "file2.Rmd")
 )
 tar_sub_raw(quote(tar_render(name, file)), values = values)
-targets::tar_dir({
-# tar_dir() already puts us inside a temporary directory,
-# so the following line writes within tempdir().
-file.create(c("file1.Rmd", "file2.Rmd"))
-# So in your _targets.R file, you can define a pipeline like as below.
-# Just make sure to set a unique name for each target
-# (which tar_map() does automatically).
-values <- list(
-  name = rlang::syms(c("name1", "name2")),
-  file = c("file1.Rmd", "file2.Rmd")
-)
-list(
-  tar_eval_raw(quote(tar_render(name, file)), values = values)
-)
-})
 }

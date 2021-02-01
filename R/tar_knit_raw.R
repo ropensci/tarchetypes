@@ -34,28 +34,28 @@
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({
-#' lines <- c(
-#'   "---",
-#'   "title: report",
-#'   "output_format: html_document",
-#'   "---",
-#'   "",
-#'   "```{r}",
-#'   "targets::tar_read(data)",
-#'   "```"
-#' )
-#' # tar_dir() already puts us inside a temporary directory,
-#' # so the following line writes within tempdir().
-#' writeLines(lines, "report.Rmd")
 #' targets::tar_script({
+#'   # Ordinarily, you should create the report outside
+#'   # tar_script() and avoid temporary files.
+#'   lines <- c(
+#'     "---",
+#'     "title: report",
+#'     "output_format: html_document",
+#'     "---",
+#'     "",
+#'     "```{r}",
+#'     "targets::tar_read(data)",
+#'     "```"
+#'   )
+#'   path <- tempfile()
+#'   writeLines(lines, path)
 #'   library(tarchetypes)
 #'   list(
 #'     tar_target(data, data.frame(x = seq_len(26), y = letters)),
-#'     tar_knit_raw("report", "report.Rmd")
+#'     tar_knit_raw("report", path)
 #'   )
 #' })
 #' targets::tar_make()
-#' # browseURL("report.html") # View the report.
 #' })
 #' }
 tar_knit_raw <- function(
