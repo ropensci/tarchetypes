@@ -1,4 +1,4 @@
-# tarchetypes 0.0.2.9000
+# tarchetypes 0.0.3
 
 * Skip all `knitr`/`rmarkdown` tests on Solaris in order to fix the problems shown on the CRAN check page.
 * Use explicit temp files in examples even when running inside `targets::tar_dir()`. (`targets::tar_dir()` and `targets::tar_test()` already run code in a temporary directory.)
