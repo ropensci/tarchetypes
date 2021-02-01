@@ -49,10 +49,9 @@
 #'   )
 #'   path <- tempfile()
 #'   writeLines(lines, path)
-#'   library(tarchetypes)
 #'   list(
-#'     tar_target(data, data.frame(x = seq_len(26), y = letters)),
-#'     tar_knit_raw("report", path)
+#'     targets::tar_target(data, data.frame(x = seq_len(26), y = letters)),
+#'     tarchetypes::tar_knit_raw("report", path)
 #'   )
 #' })
 #' targets::tar_make()

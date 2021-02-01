@@ -37,7 +37,7 @@
 #'   )
 #' })
 #' targets::tar_make()
-#' tar_read(x)
+#' targets::tar_read(x)
 #' })
 #' }
 tar_files <- function(

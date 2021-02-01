@@ -30,8 +30,8 @@ lines <- c(
   "---",
   "",
   "```{r}",
-  "tar_load(data1)",
-  "tar_read(data2)",
+  "targets::tar_load(data1)",
+  "targets::tar_read(data2)",
   "```"
 )
 report <- tempfile()

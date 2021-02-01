@@ -144,8 +144,8 @@ targets::tar_script({
   )
 })
 targets::tar_make()
-tar_read(x)
-tar_read(x, branches = 1)
+targets::tar_read(x)
+targets::tar_read(x, branches = 1)
 })
 }
 }

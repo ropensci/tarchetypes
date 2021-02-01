@@ -39,6 +39,7 @@ values <- list(
   name = rlang::syms(c("name1", "name2")),
   file = list("file1.Rmd", "file2.Rmd")
 )
+tar_sub(list(name, file), values = values)
 tar_sub(tar_render(name, file), values = values)
 path <- tempfile()
 file.create(path)

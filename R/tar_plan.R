@@ -24,7 +24,7 @@
 #' targets::tar_script({
 #'   library(tarchetypes)
 #'   tar_plan(
-#'     tar_fst_tbl(data, data.frame(x = seq_len(26), y = sample.int(26))),
+#'     tarchetypes::tar_fst_tbl(data, data.frame(x = seq_len(26))),
 #'     means = colMeans(data) # No need for tar_target() for simple cases.
 #'   )
 #' })

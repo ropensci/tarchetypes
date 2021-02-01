@@ -27,6 +27,7 @@
 #'   name = rlang::syms(c("name1", "name2")),
 #'   file = c("file1.Rmd", "file2.Rmd")
 #' )
+#' tar_sub_raw(quote(list(name, file)), values = values)
 #' tar_sub_raw(quote(tar_render(name, file)), values = values)
 #' path <- tempfile()
 #' file.create(path)
