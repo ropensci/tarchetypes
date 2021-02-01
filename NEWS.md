@@ -2,6 +2,7 @@
 
 * Use explicit temp files in examples even when running inside `targets::tar_dir()`. (`targets::tar_dir()` and `targets::tar_test()` already run code in a temporary directory.)
 * Add comments in the examples to emphasize that `targets::tar_dir()` runs code in a temporary directory, which means all ostensibly files created in the enclosed expression will actually be written to temporary storage and not the user's file space.
+* Skip all `knitr`/`rmarkdown` tests on Solaris.
 
 # tarchetypes 0.0.2
 
