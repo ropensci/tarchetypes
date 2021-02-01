@@ -164,20 +164,17 @@ For more information, visit
 \examples{
 if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({
-# tar_dir() already puts us inside a temporary directory,
-# so the following line writes within tempdir().
-file.create(c("a.txt", "b.txt"))
 targets::tar_script({
+  # Do not use temp files in real projects
+  # or else your targets will always rerun.
+  paths <- unlist(replicate(2, tempfile()))
+  file.create(paths)
   list(
-    tarchetypes::tar_files(x, c("a.txt", "b.txt"))
+    tarchetypes::tar_files(x, paths)
   )
 })
 targets::tar_make()
-# Should be up to date now.
-targets::tar_make()
-# If we change one file, `tar_make()` will only rerun one branch.
-writeLines("a", "a.txt")
-targets::tar_make()
+tar_read(x)
 })
 }
 }

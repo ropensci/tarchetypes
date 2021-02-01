@@ -298,7 +298,6 @@ if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({
 targets::tar_script(
   list(
-    # equivalent to tar_target(x, 1, format = "rds"):
     tarchetypes::tar_rds(x, 1)
   )
 )
