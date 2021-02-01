@@ -1,6 +1,6 @@
 # tarchetypes 0.0.3.9000
 
-
+* Skip R Markdown tests if pandoc is missing or has an insufficient version.
 
 # tarchetypes 0.0.3
 
