@@ -1,3 +1,7 @@
+# tarchetypes 0.0.2.9000
+
+* Use explicit temp files in examples even when running inside `targets::tar_dir()`. (`targets::tar_dir()` and `targets::tar_test()` already run code in a temporary directory.)
+
 # tarchetypes 0.0.2
 
 * Make sure every function with a help file in `man/` has Rd-tags `\value` and `\arguments`.
