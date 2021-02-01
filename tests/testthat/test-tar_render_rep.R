@@ -1,5 +1,5 @@
 targets::tar_test("tar_render_rep() manifest", {
-  skip_on_os("solaris")
+  skip_pandoc()
   lines <- c(
     "---",
     "title: report",
@@ -37,7 +37,7 @@ targets::tar_test("tar_render_rep() manifest", {
 })
 
 targets::tar_test("tar_render_rep() graph", {
-  skip_on_os("solaris")
+  skip_pandoc()
   lines <- c(
     "---",
     "title: report",
@@ -74,7 +74,7 @@ targets::tar_test("tar_render_rep() graph", {
 })
 
 targets::tar_test("tar_render_rep() run", {
-  skip_on_os("solaris")
+  skip_pandoc()
   lines <- c(
     "---",
     "title: report",
@@ -181,7 +181,7 @@ targets::tar_test("tar_render_rep() run", {
 })
 
 targets::tar_test("tar_render_rep() run with output_file specified", {
-  skip_on_os("solaris")
+  skip_pandoc()
   lines <- c(
     "---",
     "title: report",

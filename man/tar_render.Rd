@@ -162,6 +162,8 @@ targets::tar_script({
     tar_render(report, "report.Rmd")
   )
 }, ask = FALSE)
+# Then, run the targets pipeline as usual.
+
 # Parameterized R Markdown:
 lines <- c(
   "---",
@@ -184,5 +186,6 @@ targets::tar_script({
   )
 }, ask = FALSE)
 })
+# Then, run the targets pipeline as usual.
 }
 }

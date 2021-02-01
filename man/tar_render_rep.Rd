@@ -255,6 +255,7 @@ targets::tar_script({
     )
   )
 }, ask = FALSE)
+# Then, run the targets pipeline as usual.
 })
 }
 }

@@ -53,6 +53,8 @@
 #'     tar_render_raw("report", "report.Rmd")
 #'   )
 #' }, ask = FALSE)
+#' # Then, run the targets pipeline as usual.
+#'
 #' # Parameterized R Markdown:
 #' lines <- c(
 #'   "---",
@@ -78,6 +80,7 @@
 #'     )
 #'   )
 #' }, ask = FALSE)
+#' # Then, run the targets pipeline as usual.
 #' })
 #' }
 tar_render_raw <- function(

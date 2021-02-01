@@ -79,6 +79,7 @@
 #'     )
 #'   )
 #' }, ask = FALSE)
+#' # Then, run the targets pipeline as usual.
 #' })
 #' }
 tar_render_rep <- function(
