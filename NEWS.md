@@ -1,10 +1,6 @@
-# tarchetypes 0.0.3.9000
+# tarchetypes 0.0.4
 
 * Skip literate programming tests if pandoc is missing or has an insufficient version.
-
-# tarchetypes 0.0.3
-
-* Skip all `knitr`/`rmarkdown` tests on Solaris in order to fix the problems shown on the CRAN check page.
 * Use explicit temp files in examples even when running inside `targets::tar_dir()`. (`targets::tar_dir()` and `targets::tar_test()` already run code in a temporary directory.)
 * Add comments in the examples to emphasize that `targets::tar_dir()` runs code in a temporary directory, which means all ostensibly files created in the enclosed expression will actually be written to temporary storage and not the user's file space.
 
