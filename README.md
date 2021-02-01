@@ -5,7 +5,7 @@
 [![zenodo](https://zenodo.org/badge/282774543.svg)](https://zenodo.org/badge/latestdoi/282774543)
 [![R
 Targetopia](https://img.shields.io/badge/R_Targetopia-member-blue?style=flat&labelColor=gray)](https://wlandau.github.io/targetopia/)
-<!--[![cran](http://www.r-pkg.org/badges/version/tarchetypes)](https://cran.r-project.org/package=tarchetypes)-->
+[![cran](http://www.r-pkg.org/badges/version/tarchetypes)](https://cran.r-project.org/package=tarchetypes)
 [![status](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![check](https://github.com/ropensci/tarchetypes/workflows/check/badge.svg)](https://github.com/ropensci/tarchetypes/actions?query=workflow%3Acheck)
 [![codecov](https://codecov.io/gh/ropensci/tarchetypes/branch/main/graph/badge.svg?token=3T5DlLwUVl)](https://codecov.io/gh/ropensci/targets)
