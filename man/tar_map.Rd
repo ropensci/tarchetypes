@@ -52,7 +52,7 @@ and substituting symbols into commands and pattern statements.
 }
 \examples{
 if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
-targets::tar_dir({
+targets::tar_dir({ # tar_dir() runs code from a temporary directory.
 targets::tar_script({
   list(
     tarchetypes::tar_map(

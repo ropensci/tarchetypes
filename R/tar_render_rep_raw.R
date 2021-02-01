@@ -66,7 +66,7 @@
 #'   is defined.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
-#' targets::tar_dir({
+#' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
 #' # Parameterized R Markdown:
 #' lines <- c(
 #'   "---",

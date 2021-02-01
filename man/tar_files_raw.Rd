@@ -156,7 +156,7 @@ For more information, visit
 }
 \examples{
 if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
-targets::tar_dir({
+targets::tar_dir({ # tar_dir() runs code from a temporary directory.
 targets::tar_script({
   # Do not use temp files in real projects
   # or else your targets will always rerun.

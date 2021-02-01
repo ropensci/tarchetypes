@@ -134,7 +134,7 @@ in the target and \code{quiet = TRUE} in \code{knitr::knit()}.
 }
 \examples{
 if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
-targets::tar_dir({
+targets::tar_dir({ # tar_dir() runs code from a temporary directory.
 targets::tar_script({
   # Ordinarily, you should create the report outside
   # tar_script() and avoid temporary files.

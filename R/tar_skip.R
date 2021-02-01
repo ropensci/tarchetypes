@@ -23,7 +23,7 @@
 #'   (before `tar_make()`). Applies to arguments `command` and `skip`.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
-#' targets::tar_dir({
+#' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
 #' targets::tar_script({
 #'   list(
 #'     tarchetypes::tar_skip(x, command = "value", skip = 1 > 0)

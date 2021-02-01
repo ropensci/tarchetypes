@@ -33,21 +33,19 @@
 #'   all non-standard evaluation.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
-#' targets::tar_dir({
-#' # Unparameterized R Markdown:
+#' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
+#' # Unparameterized R Markdown report:
 #' lines <- c(
 #'   "---",
-#'   "title: report",
+#'   "title: 'report.Rmd source file'",
 #'   "output_format: html_document",
 #'   "---",
-#'   "",
+#'   "Assume these lines are in report.Rmd.",
 #'   "```{r}",
 #'   "targets::tar_read(data)",
 #'   "```"
 #' )
-#' # tar_dir() already puts us inside a temporary directory,
-#' # so the following line writes within tempdir().
-#' writeLines(lines, "report.Rmd")
+#' # Include the report in the pipeline as follows:
 #' targets::tar_script({
 #'   library(tarchetypes)
 #'   list(
@@ -55,22 +53,20 @@
 #'     tar_render_raw("report", "report.Rmd")
 #'   )
 #' }, ask = FALSE)
-#' targets::tar_make()
-#' # browseURL("report.html") # View the report.
 #' # Parameterized R Markdown:
 #' lines <- c(
 #'   "---",
-#'   "title: report",
+#'   "title: 'report.Rmd source file with parameters.'",
 #'   "output_format: html_document",
 #'   "params:",
 #'   "  your_param: \"default value\"",
 #'   "---",
-#'   "",
+#'   "Assume these lines are in report.Rmd.",
 #'   "```{r}",
 #'   "print(params$your_param)",
 #'   "```"
 #' )
-#' writeLines(lines, "report.Rmd")
+#' # Include this parameterized report in the pipeline as follows.
 #' targets::tar_script({
 #'   library(tarchetypes)
 #'   list(
@@ -82,7 +78,6 @@
 #'     )
 #'   )
 #' }, ask = FALSE)
-#' targets::tar_make()
 #' })
 #' }
 tar_render_raw <- function(

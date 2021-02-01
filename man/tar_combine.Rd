@@ -223,7 +223,7 @@ into a new target.
 }
 \examples{
 if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
-targets::tar_dir({
+targets::tar_dir({ # tar_dir() runs code from a temporary directory.
 targets::tar_script({
   target1 <- targets::tar_target(x, head(mtcars))
   target2 <- targets::tar_target(y, tail(mtcars))

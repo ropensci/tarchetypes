@@ -295,7 +295,7 @@ For details on specialized storage formats, open the help file of the
 }
 \examples{
 if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
-targets::tar_dir({
+targets::tar_dir({ # tar_dir() runs code from a temporary directory.
 targets::tar_script(
   list(
     tarchetypes::tar_rds(x, 1)
