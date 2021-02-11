@@ -31,7 +31,7 @@
 #' }
 #' expr <- quote({
 #'   for (i in seq_len(10)) {
-#'     for(j in seq_len(20)) {
+#'     for (j in seq_len(20)) {
 #'       if (i > 1) {
 #'         detect_this("prize")
 #'       } else {
