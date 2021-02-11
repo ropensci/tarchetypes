@@ -76,7 +76,7 @@ walk_load <- function(expr, counter) {
       "so they will be ignored."
     )
   }
-  walk_expr_names(expr$names, counter)
+  walk_expr_tidyselect(expr$names, counter)
 }
 
 walk_read <- function(expr, counter) {
@@ -88,10 +88,10 @@ walk_read <- function(expr, counter) {
       "so they will be ignored."
     )
   }
-  walk_expr_names(expr$name, counter)
+  walk_expr_tidyselect(expr$name, counter)
 }
 
-walk_expr_names <- function(expr, counter) {
+walk_expr_tidyselect <- function(expr, counter) {
   if (!length(expr)) {
     return()
   } else if (is.name(expr)) {
@@ -99,11 +99,11 @@ walk_expr_names <- function(expr, counter) {
   } else if (is.character(expr)) {
     counter_set_names(counter, expr)
   } else if (is.pairlist(expr) || is.recursive(expr) || is.call(expr)) {
-    walk_expr_names_recursive(expr, counter)
+    walk_expr_tidyselect_recursive(expr, counter)
   }
 }
 
-walk_expr_names_recursive <- function(expr, counter) {
+walk_expr_tidyselect_recursive <- function(expr, counter) {
   if (is.call(expr)) {
     name <- deparse_safe(expr[[1]], backtick = FALSE)
     if (name %in% tidyselect_names()) {
@@ -116,7 +116,7 @@ walk_expr_names_recursive <- function(expr, counter) {
     }
     expr <- expr[-1]
   }
-  lapply(expr, walk_expr_names, counter = counter)
+  lapply(expr, walk_expr_tidyselect, counter = counter)
 }
 
 tidyselect_names <- function() {
