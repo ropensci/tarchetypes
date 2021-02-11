@@ -1,5 +1,14 @@
-# Internal counter class described at
-# <https://books.ropensci.org/targets-design/classes.html#counter-class>.
+#' @title Counter constructor.
+#' @export
+#' @keywords internal
+#' @description Not a user-side function. Do not invoke directly.
+#' @details Creates a counter object as described at
+#'   <https://books.ropensci.org/targets-design/classes.html#counter-class>.
+#' @return A new counter object.
+#' @param names Character vector of names to add to the new counter.
+#' @examples
+#' counter <- counter_init()
+#' counter_set_names(counter, letters)
 counter_init <- function(names = NULL) {
   count <- length(names)
   envir <- new.env(hash = TRUE, parent = emptyenv())
@@ -27,8 +36,19 @@ counter_set_name <- function(counter, name) {
   counter$count <- counter$count + is_new
 }
 
+#' @title Add data to an existing counter object.
+#' @export
+#' @keywords internal
+#' @description Not a user-side function. Do not invoke directly.
+#' @return `NULL` (invisibly)
+#' @param counter A counter object, defined for internal purposes only.
+#' @param names Character vector of names to add to the counter.
+#' @examples
+#' counter <- counter_init()
+#' counter_set_names(counter, letters)
 counter_set_names <- function(counter, names) {
   lapply(names, counter_set_name, counter = counter)
+  invisible()
 }
 
 counter_validate <- function(counter) {

@@ -1,9 +1,7 @@
 knitr_deps <- function(path) {
   expr <- knitr_expr(path)
   knitr_expr_warn_raw(expr)
-  counter <- counter_init()
-  walk_expr(expr, counter)
-  sort(counter_get_names(counter))
+  walk_ast(expr, walk_call_knitr)
 }
 
 knitr_expr <- function(path) {
@@ -43,28 +41,37 @@ knitr_lines <- function(path) {
   textConnectionValue(connection)
 }
 
-walk_expr <- function(expr, counter) {
-  if (!length(expr)) {
-    return()
-  } else if (is.call(expr)) {
-    walk_call(expr, counter)
-  } else if (typeof(expr) == "closure") {
-    walk_expr(formals(expr), counter = counter)
-    walk_expr(body(expr), counter = counter)
-  } else if (is.pairlist(expr) || is.recursive(expr)) {
-    lapply(expr, walk_expr, counter = counter)
-  }
-}
-
-walk_call <- function(expr, counter) {
+#' @title Code analysis for knitr reports.
+#' @export
+#' @description Walk an abstract syntax tree and capture knitr dependencies.
+#' @details For internal use only. Not a user-side function.
+#'   Powers  automatic detection of `tar_load()`/`tar_read()`
+#'   dependencies in [tar_render()].
+#'   Packages `codetools` and `CodeDepends` have different (more sophisticated
+#'   and elaborate) implementations of the concepts documented at
+#'   <https://adv-r.hadley.nz/expressions.html#ast-funs>.
+#' @keywords internal
+#' @return A character vector of target names found during static code analysis.
+#' @param expr A language object or function to scan.
+#' @param counter An internal counter object that keeps track of detected
+#'   target names so far.
+#' @examples
+#' # How tar_render() really works:
+#' expr <- quote({
+#'   if (a > 1) {
+#'     tar_load(target_name)
+#'   }
+#'   process_stuff(target_name)
+#' })
+#' walk_ast(expr, walk_call_knitr)
+walk_call_knitr <- function(expr, counter) {
   name <- deparse_safe(expr[[1]], backtick = FALSE)
-  if (name %in% paste0(c("", "targets::", "targets:::"), "tar_load")) {
+  if (any(name %in% paste0(c("", "targets::", "targets:::"), "tar_load"))) {
     walk_load(expr, counter)
   }
-  if (name %in% paste0(c("", "targets::", "targets:::"), "tar_read")) {
+  if (any(name %in% paste0(c("", "targets::", "targets:::"), "tar_read"))) {
     walk_read(expr, counter)
   }
-  lapply(expr, walk_expr, counter = counter)
 }
 
 walk_load <- function(expr, counter) {
@@ -76,7 +83,7 @@ walk_load <- function(expr, counter) {
       "so they will be ignored."
     )
   }
-  walk_expr_tidyselect(expr$names, counter)
+  walk_target_name(expr$names, counter)
 }
 
 walk_read <- function(expr, counter) {
@@ -88,10 +95,10 @@ walk_read <- function(expr, counter) {
       "so they will be ignored."
     )
   }
-  walk_expr_tidyselect(expr$name, counter)
+  walk_target_name(expr$name, counter)
 }
 
-walk_expr_tidyselect <- function(expr, counter) {
+walk_target_name <- function(expr, counter) {
   if (!length(expr)) {
     return()
   } else if (is.name(expr)) {
@@ -99,11 +106,11 @@ walk_expr_tidyselect <- function(expr, counter) {
   } else if (is.character(expr)) {
     counter_set_names(counter, expr)
   } else if (is.pairlist(expr) || is.recursive(expr) || is.call(expr)) {
-    walk_expr_tidyselect_recursive(expr, counter)
+    walk_tidyselect(expr, counter)
   }
 }
 
-walk_expr_tidyselect_recursive <- function(expr, counter) {
+walk_tidyselect <- function(expr, counter) {
   if (is.call(expr)) {
     name <- deparse_safe(expr[[1]], backtick = FALSE)
     if (name %in% tidyselect_names()) {
@@ -116,7 +123,7 @@ walk_expr_tidyselect_recursive <- function(expr, counter) {
     }
     expr <- expr[-1]
   }
-  lapply(expr, walk_expr_tidyselect, counter = counter)
+  lapply(expr, walk_target_name, counter = counter)
 }
 
 tidyselect_names <- function() {
