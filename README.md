@@ -121,13 +121,11 @@ tar_plan(
 
 ## Installation
 
-Install the GitHub development version to access the latest features and
-patches.
-
-``` r
-library(remotes)
-install_github("ropensci/tarchetypes")
-```
+| Type        | Source   | Command                                                               |
+| ----------- | -------- | --------------------------------------------------------------------- |
+| Release     | CRAN     | `install.packages("tarchetypes")`                                     |
+| Development | GitHub   | `remotes::install_github("ropensci/tarchetypes")`                     |
+| Development | rOpenSci | `install.packages("tarchetypes", repos = "https://dev.ropensci.org")` |
 
 ## Documentation
 
