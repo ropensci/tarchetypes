@@ -33,6 +33,12 @@ assert_envir <- function(x, msg = NULL) {
   }
 }
 
+assert_ge <- function(x, threshold, msg = NULL) {
+  if (any(x < threshold)) {
+    throw_validate(msg %||% paste("x is less than", threshold))
+  }
+}
+
 assert_identical <- function(x, y, msg = NULL) {
   if (!identical(x, y)) {
     throw_validate(msg %||% "x and y are not identical.")

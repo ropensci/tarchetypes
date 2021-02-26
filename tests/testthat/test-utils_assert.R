@@ -30,6 +30,12 @@ tar_test("assert_df()", {
   expect_error(assert_df(TRUE), class = "condition_validate")
 })
 
+tar_test("assert_ge()", {
+  expect_silent(assert_ge(2L, 1L))
+  expect_silent(assert_ge(2L, 2L))
+  expect_error(assert_ge(1L, 2L), class = "condition_validate")
+})
+
 tar_test("assert_in()", {
   expect_silent(assert_in("x", letters))
   expect_error(assert_in("xyz", letters), class = "condition_validate")
