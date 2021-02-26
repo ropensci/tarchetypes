@@ -26,8 +26,9 @@
 #' @return A target object with `format = "file"`.
 #'   When this target runs, it returns a character vector
 #'   of file paths. The first file paths are the output files
-#'   (returned by `rmarkdown::render()`) and the R Markdown
-#'   source file is last. But unlike `rmarkdown::render()`,
+#'   (returned by `rmarkdown::render()`), including the `*_files/`
+#'   directory with supporting files if it exists, and the R Markdown
+#'   source file is last. Unlike `rmarkdown::render()`,
 #'   all returned paths are *relative* paths to ensure portability
 #'   (so that the project can be moved from one file system to another
 #'   without invalidating the target).

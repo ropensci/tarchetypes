@@ -9,8 +9,9 @@
 #' @return A target object with `format = "file"`.
 #'   When this target runs, it returns a character vector
 #'   of file paths. The first file paths are the output files
-#'   (returned by `rmarkdown::render()`) and the R Markdown
-#'   source file is last. But unlike `rmarkdown::render()`,
+#'   (returned by `rmarkdown::render()`), including
+#'   the `*_files/` directory with supporting files if it exists,
+#'   and the R Markdown source file is last. Unlike `rmarkdown::render()`,
 #'   all returned paths are *relative* paths to ensure portability
 #'   (so that the project can be moved from one file system to another
 #'   without invalidating the target).
@@ -147,5 +148,14 @@ tar_render_run <- function(path, args, deps) {
   envir <- parent.frame()
   args$envir <- args$envir %||% targets::tar_envir(default = envir)
   force(args$envir)
-  fs::path_rel(c(do.call(rmarkdown::render, args), path))
+  output <- do.call(rmarkdown::render, args)
+  tar_render_paths(output, path)
+}
+
+tar_render_paths <- function(output, source) {
+  output <- fs::path_rel(output)
+  source <- fs::path_rel(source)
+  files <- paste0(fs::path_ext_remove(output), "_files")
+  files <- trn(all(file.exists(files)), files, character(0))
+  c(output, files, source)
 }
