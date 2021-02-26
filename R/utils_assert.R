@@ -59,6 +59,12 @@ assert_lang <- function(x, msg = NULL) {
   }
 }
 
+assert_lgl <- function(x, msg = NULL) {
+  if (!is.logical(x)) {
+    throw_validate(msg %||% "x must be logical.")
+  }
+}
+
 assert_list <- function(x, msg = NULL) {
   if (!is.list(x)) {
     throw_validate(msg %||% "x must be a list.")

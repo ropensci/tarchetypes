@@ -41,6 +41,11 @@ targets::tar_test("assert_lang()", {
   expect_error(assert_lang("abc"), class = "condition_validate")
 })
 
+targets::tar_test("assert_lgl()", {
+  expect_silent(assert_lgl(TRUE))
+  expect_error(assert_lgl("abc"), class = "condition_validate")
+})
+
 targets::tar_test("assert_list()", {
   expect_silent(assert_list(list("abc")))
   expect_error(assert_list("abc"), class = "condition_validate")
