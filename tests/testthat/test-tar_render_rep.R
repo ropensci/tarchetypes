@@ -254,7 +254,7 @@ targets::tar_test("tar_render_rep() with output_file and _files", {
   })
   targets::tar_make(callr_function = NULL)
   for (branch in seq_len(4)) {
-    out <- targets::tar_read_raw("report", branches = branch)
+    out <- basename(targets::tar_read_raw("report", branches = branch))
     base <- paste0("f", branch)
     report <- fs::path_ext_set(base, "html")
     exp <- c(report, "report.Rmd", paste0(base, "_files"))
