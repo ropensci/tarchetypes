@@ -120,4 +120,3 @@ targets::tar_test("tar_render() with a _files/ directory", {
     c("report.html", "report.Rmd", "report_files")
   )
 })
-
