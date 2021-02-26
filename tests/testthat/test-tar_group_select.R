@@ -1,12 +1,12 @@
-targets::tar_test("tar_group_by() with no vars", {
+targets::tar_test("tar_group_select() with empty by", {
   skip_if_not_installed("dplyr")
   expect_error(
-    tarchetypes::tar_group_by(data, produce_data()),
+    tarchetypes::tar_group_select(data, produce_data()),
     class = "condition_validate"
   )
 })
 
-targets::tar_test("tar_group_by()", {
+targets::tar_test("tar_group_select()", {
   skip_if_not_installed("dplyr")
   targets::tar_script({
     produce_data <- function() {
@@ -18,7 +18,7 @@ targets::tar_test("tar_group_by()", {
       )
     }
     list(
-      tarchetypes::tar_group_by(data, produce_data(), var1, var2),
+      tarchetypes::tar_group_select(data, produce_data(), starts_with("var")),
       tar_target(group, data, pattern = map(data))
     )
   })

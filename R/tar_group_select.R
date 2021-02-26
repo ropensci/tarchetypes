@@ -1,8 +1,10 @@
-#' @title Group a data frame target by one or more variables.
+#' @title Group a data frame target with `tidyselect` semantics.
 #' @export
 #' @description Create a target that outputs a grouped data frame
-#'   with `dplyr::group_by()` and `targets::tar_group()`. Downstream
-#'   dynamic branching targets will iterate over the groups of rows.
+#'   with `dplyr::group_by()` and `targets::tar_group()`.
+#'   Unlike `tar_group_by()`, `tar_group_select()`
+#'   expects you to select grouping variables using `tidyselect` semantics.
+#'   Downstream dynamic branching targets will iterate over the groups of rows.
 #' @return A target object to generate a grouped data frame
 #'   to allows downstream dynamic targets to branch over the
 #'   groups of rows.
@@ -12,7 +14,8 @@
 #'   <https://books.ropensci.org/targets-design/>
 #'   to learn about the structure and composition of target objects.
 #' @inheritParams targets::tar_target
-#' @param ... Symbols, variables in the output data frame to group by.
+#' @param by Tidyselect sematics to specify variables to group over.
+#'   Alternatively, you can supply a character vector.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
@@ -21,7 +24,7 @@
 #'     expand.grid(var1 = c("a", "b"), var2 = c("c", "d"), rep = c(1, 2, 3))
 #'   }
 #'   list(
-#'     tarchetypes::tar_group_by(data, produce_data(), var1, var2),
+#'     tarchetypes::tar_group_select(data, produce_data(), starts_with("var")),
 #'     tar_target(group, data, pattern = map(data))
 #'   )
 #' })
@@ -32,10 +35,10 @@
 #' targets::tar_read(group, branches = 2)
 #' })
 #' }
-tar_group_by <- function(
+tar_group_select <- function(
   name,
   command,
-  ...,
+  by = NULL,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -53,9 +56,9 @@ tar_group_by <- function(
   assert_package("dplyr")
   name <- deparse_language(substitute(name))
   assert_lgl(tidy_eval, "tidy_eval must be logical.")
-  by <- all.vars(substitute(list(...)), functions = FALSE)
-  assert_nonempty(by, "no columns to group by.")
-  command <- tar_group_by_command(substitute(command), by, envir, tidy_eval)
+  by <- as.expression(substitute(by))
+  assert_nonempty(by[[1]], "`by` in tar_group_select() must be nonempty.")
+  command <- tar_group_select_command(substitute(command), by, envir, tidy_eval)
   targets::tar_target_raw(
     name = name,
     command = command,
@@ -75,27 +78,22 @@ tar_group_by <- function(
   )
 }
 
-tar_group_by_command <- function(command, by, envir, tidy_eval) {
+tar_group_select_command <- function(command, by, envir, tidy_eval) {
   envir <- targets::tar_option_get("envir")
   assert_envir(envir)
   command <- tidy_eval(command, envir, tidy_eval)
-  fun <- call_ns("tarchetypes", "tar_group_by_run")
+  fun <- call_ns("tarchetypes", "tar_group_select_run")
   as.call(list(fun, data = command, by = by))
 }
 
-#' @title Generate a grouped data frame within tar_group_by()
+#' @title Generate a grouped data frame within tar_group_select()
 #' @export
 #' @keywords internal
 #' @description Not a user-side function. Do not invoke directly.
 #' @param data A data frame to group.
 #' @param by Nonempty character vector of names of variables to group by.
-tar_group_by_run <- function(data, by) {
-  assert_df(data, "tar_group_by() output must be a data frame.")
-  assert_in(by, colnames(data), "tar_group_by() columns must be in data.")
-  expr <- quote(dplyr::group_by(data, !!!by_syms))
-  by_syms <- rlang::syms(by)
-  envir <- environment()
-  expr <- tidy_eval(expr, envir = envir, TRUE)
-  grouped <- eval(expr, envir = envir)
-  targets::tar_group(grouped)
+tar_group_select_run <- function(data, by) {
+  assert_df(data, "tar_group_select() output must be a data frame.")
+  by <- eval_tidyselect(by[[1]], colnames(data))
+  tar_group_by_run(data = data, by = by)
 }
