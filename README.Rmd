@@ -26,7 +26,14 @@ The `tarchetypes` R package is a collection of target and pipeline archetypes fo
 
 ## Grouped data frames
 
-If you define a target with `tar_group_by()`, all downstream dynamic targets will automatically branch over the row groups you define with `dplyr::group_by()`-like syntax.
+`tarchetypes` has functions for easy dynamic branching over subsets of data frames:
+
+* `tar_group_by()`: group by columns using `dplyr::group_by()` semantics.
+* `tar_group_select()`: group by columns using `tidyselect` semantics.
+* `tar_group_count()`: create a given number row groups.
+* `tar_group_size()`: create row groups of a given size.
+
+If you define a target with one of these functions, all downstream dynamic targets will automatically branch over the row groups.
 
 ```{r, echo = FALSE}
 targets::tar_script({
@@ -64,12 +71,6 @@ tar_read(group, branches = 1)
 # Second row group:
 tar_read(group, branches = 2)
 ```
-
-Other grouping targets have similar behavior:
-
-* `tar_group_select()`: group by columns using `tidyselect` semantics.
-* `tar_group_count()`: create a given number row groups.
-* `tar_group_size()`: create row groups of a given size.
 
 ## Literate programming
 
