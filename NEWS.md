@@ -1,6 +1,7 @@
 # tarchetypes 0.0.4.9000
 
 * Implement an external `walk_ast()` function to make it easier for other developers to extend the static code analysis of `tarchetypes` (@MilesMcBain).
+* In `tar_render()` and related functions, track the `*_files/` output directory if it exists (#30).
 
 # tarchetypes 0.0.4
 
