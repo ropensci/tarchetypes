@@ -30,11 +30,12 @@ and usage patterns.
 `tarchetypes` has functions for easy dynamic branching over subsets of
 data frames:
 
-  - `tar_group_by()`: group by columns using `dplyr::group_by()`
+  - `tar_group_by()`: define row groups using `dplyr::group_by()`
     semantics.
-  - `tar_group_select()`: group by columns using `tidyselect` semantics.
-  - `tar_group_count()`: create a given number row groups.
-  - `tar_group_size()`: create row groups of a given size.
+  - `tar_group_select()`: define row groups using `tidyselect`
+    semantics.
+  - `tar_group_count()`: define a given number row groups.
+  - `tar_group_size()`: define row groups of a given size.
 
 If you define a target with one of these functions, all downstream
 dynamic targets will automatically branch over the row groups.

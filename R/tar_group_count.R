@@ -60,7 +60,7 @@ tar_group_count <- function(
   assert_dbl(count, "count must be numeric.")
   assert_ge(count, 1L, "count must be at least 1.")
   command <- substitute(command)
-  command <- tar_group_count_command(command, count, envir, tidy_eval)
+  command <- tar_group_count_command(command, count, tidy_eval)
   targets::tar_target_raw(
     name = name,
     command = command,
@@ -80,7 +80,7 @@ tar_group_count <- function(
   )
 }
 
-tar_group_count_command <- function(command, count, envir, tidy_eval) {
+tar_group_count_command <- function(command, count, tidy_eval) {
   envir <- targets::tar_option_get("envir")
   assert_envir(envir)
   command <- tidy_eval(command, envir, tidy_eval)

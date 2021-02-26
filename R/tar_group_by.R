@@ -55,7 +55,7 @@ tar_group_by <- function(
   assert_lgl(tidy_eval, "tidy_eval must be logical.")
   by <- all.vars(substitute(list(...)), functions = FALSE)
   assert_nonempty(by, "no columns to group by.")
-  command <- tar_group_by_command(substitute(command), by, envir, tidy_eval)
+  command <- tar_group_by_command(substitute(command), by, tidy_eval)
   targets::tar_target_raw(
     name = name,
     command = command,
@@ -75,7 +75,7 @@ tar_group_by <- function(
   )
 }
 
-tar_group_by_command <- function(command, by, envir, tidy_eval) {
+tar_group_by_command <- function(command, by tidy_eval) {
   envir <- targets::tar_option_get("envir")
   assert_envir(envir)
   command <- tidy_eval(command, envir, tidy_eval)

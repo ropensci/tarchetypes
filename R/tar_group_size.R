@@ -62,7 +62,7 @@ tar_group_size <- function(
   assert_dbl(size, "size must be numeric.")
   assert_ge(size, 1L, "size must be at least 1.")
   command <- substitute(command)
-  command <- tar_group_size_command(command, size, envir, tidy_eval)
+  command <- tar_group_size_command(command, size, tidy_eval)
   targets::tar_target_raw(
     name = name,
     command = command,
@@ -82,7 +82,7 @@ tar_group_size <- function(
   )
 }
 
-tar_group_size_command <- function(command, size, envir, tidy_eval) {
+tar_group_size_command <- function(command, size, tidy_eval) {
   envir <- targets::tar_option_get("envir")
   assert_envir(envir)
   command <- tidy_eval(command, envir, tidy_eval)

@@ -58,7 +58,7 @@ tar_group_select <- function(
   assert_lgl(tidy_eval, "tidy_eval must be logical.")
   by <- as.expression(substitute(by))
   assert_nonempty(by[[1]], "`by` in tar_group_select() must be nonempty.")
-  command <- tar_group_select_command(substitute(command), by, envir, tidy_eval)
+  command <- tar_group_select_command(substitute(command), by, tidy_eval)
   targets::tar_target_raw(
     name = name,
     command = command,
@@ -78,7 +78,7 @@ tar_group_select <- function(
   )
 }
 
-tar_group_select_command <- function(command, by, envir, tidy_eval) {
+tar_group_select_command <- function(command, by, tidy_eval) {
   envir <- targets::tar_option_get("envir")
   assert_envir(envir)
   command <- tidy_eval(command, envir, tidy_eval)
