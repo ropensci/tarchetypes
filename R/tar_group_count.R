@@ -1,10 +1,9 @@
-#' @title Group a data frame target with `tidyselect` semantics.
+#' @title Group the rows of a data frame into a given number groups
 #' @export
 #' @description Create a target that outputs a grouped data frame
-#'   with `dplyr::group_by()` and `targets::tar_group()`.
-#'   Unlike `tar_group_by()`, `tar_group_select()`
-#'   expects you to select grouping variables using `tidyselect` semantics.
-#'   Downstream dynamic branching targets will iterate over the groups of rows.
+#'   for downstream dynamic branching. Set the maximum
+#'   number of groups using `count`. The number of rows per group
+#'   varies but is approximately uniform.
 #' @return A target object to generate a grouped data frame
 #'   to allows downstream dynamic targets to branch over the
 #'   groups of rows.
@@ -14,8 +13,7 @@
 #'   <https://books.ropensci.org/targets-design/>
 #'   to learn about the structure and composition of target objects.
 #' @inheritParams targets::tar_target
-#' @param by Tidyselect semantics to specify variables to group over.
-#'   Alternatively, you can supply a character vector.
+#' @param count Positive integer, maximum number of row groups
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
@@ -24,7 +22,7 @@
 #'     expand.grid(var1 = c("a", "b"), var2 = c("c", "d"), rep = c(1, 2, 3))
 #'   }
 #'   list(
-#'     tarchetypes::tar_group_select(data, produce_data(), starts_with("var")),
+#'     tarchetypes::tar_group_count(data, produce_data(), count = 2),
 #'     tar_target(group, data, pattern = map(data))
 #'   )
 #' })
@@ -35,10 +33,10 @@
 #' targets::tar_read(group, branches = 2)
 #' })
 #' }
-tar_group_select <- function(
+tar_group_count <- function(
   name,
   command,
-  by = NULL,
+  count,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -56,9 +54,13 @@ tar_group_select <- function(
   assert_package("dplyr")
   name <- deparse_language(substitute(name))
   assert_lgl(tidy_eval, "tidy_eval must be logical.")
-  by <- as.expression(substitute(by))
-  assert_nonempty(by[[1]], "`by` in tar_group_select() must be nonempty.")
-  command <- tar_group_select_command(substitute(command), by, envir, tidy_eval)
+  count <- as.integer(count)
+  assert_nonempty(count, "count must be nonempty.")
+  assert_scalar(count, "count must have length 1.")
+  assert_dbl(count, "count must be numeric.")
+  assert_ge(count, 1L, "count must be at least 1.")
+  command <- substitute(command)
+  command <- tar_group_count_command(command, count, envir, tidy_eval)
   targets::tar_target_raw(
     name = name,
     command = command,
@@ -78,22 +80,27 @@ tar_group_select <- function(
   )
 }
 
-tar_group_select_command <- function(command, by, envir, tidy_eval) {
+tar_group_count_command <- function(command, count, envir, tidy_eval) {
   envir <- targets::tar_option_get("envir")
   assert_envir(envir)
   command <- tidy_eval(command, envir, tidy_eval)
-  fun <- call_ns("tarchetypes", "tar_group_select_run")
-  as.call(list(fun, data = command, by = by))
+  fun <- call_ns("tarchetypes", "tar_group_count_run")
+  as.call(list(fun, data = command, count))
 }
 
-#' @title Generate a grouped data frame within tar_group_select()
+#' @title Generate a grouped data frame within tar_group_count()
 #' @export
 #' @keywords internal
 #' @description Not a user-side function. Do not invoke directly.
 #' @param data A data frame to group.
-#' @param by Nonempty character vector of names of variables to group by.
-tar_group_select_run <- function(data, by) {
-  assert_df(data, "tar_group_select() output must be a data frame.")
-  by <- eval_tidyselect(by[[1]], colnames(data))
-  tar_group_by_run(data = data, by = by)
+#' @param count Maximum number of rows in each group.
+tar_group_count_run <- function(data, count) {
+  assert_df(data, "tar_group_count() output must be a data frame.")
+  count <- min(count, nrow(data))
+  data$tar_group <- trn(
+    count > 1L,
+    as.integer(cut(seq_len(nrow(data)), breaks = count)),
+    rep(1L, nrow(data))
+  )
+  data
 }
