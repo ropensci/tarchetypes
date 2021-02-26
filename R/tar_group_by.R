@@ -75,7 +75,7 @@ tar_group_by <- function(
   )
 }
 
-tar_group_by_command <- function(command, by tidy_eval) {
+tar_group_by_command <- function(command, by, tidy_eval) {
   envir <- targets::tar_option_get("envir")
   assert_envir(envir)
   command <- tidy_eval(command, envir, tidy_eval)
