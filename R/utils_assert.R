@@ -14,6 +14,12 @@ assert_dbl <- function(x, msg = NULL) {
   }
 }
 
+assert_df <- function(x, msg = NULL) {
+  if (!is.data.frame(x)) {
+    throw_validate(msg %||% "x must be a data frame.")
+  }
+}
+
 assert_equal_lengths <- function(x, msg = NULL) {
   lengths <- map_int(x, length)
   if (length(unique(lengths)) > 1L) {
@@ -38,6 +44,19 @@ assert_identical_chr <- function(x, y, msg = NULL) {
     msg_x <- paste0(deparse(x), collapse = "")
     msg_y <- paste0(deparse(y), collapse = "")
     throw_validate(msg %||% paste(msg_x, " and ", msg_y, " not identical."))
+  }
+}
+
+assert_in <- function(x, choices, msg = NULL) {
+  if (!all(x %in% choices)) {
+    msg <- msg %||% paste(
+      deparse(substitute(x)),
+      "equals",
+      deparse(x),
+      "but must be in",
+      deparse(choices)
+    )
+    throw_validate(msg)
   }
 }
 

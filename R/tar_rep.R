@@ -80,7 +80,7 @@
 #'     )
 #'   )
 #' })
-#' targets::tar_make(callr_function = NULL)
+#' targets::tar_make()
 #' targets::tar_read(x)
 #' })
 #' }
