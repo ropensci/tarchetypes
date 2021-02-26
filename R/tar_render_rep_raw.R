@@ -26,8 +26,10 @@
 #'     2. Sets `format = "file"` (see `tar_target()`) so `targets`
 #'       watches the files at the returned paths and reruns the report
 #'       if those files change.
-#'     3. Configures the target's command to return both the output
-#'       report files and the input source file. All these file paths
+#'     3. Configures the target's command to return the output
+#'       report files: the rendered document, the source file,
+#'       and then the `*_files/` directory if it exists.
+#'       All these file paths
 #'       are relative paths so the project stays portable.
 #'     4. Forces the report to run in the user's current working directory
 #'       instead of the working directory of the report.
@@ -216,7 +218,8 @@ tar_render_rep_rep <- function(path, params, args) {
   args$params <- params
   args$params[["output_file"]] <- NULL
   args$params[["tar_group"]] <- NULL
-  fs::path_rel(c(do.call(rmarkdown::render, args), path))
+  output <- do.call(rmarkdown::render, args)
+  tar_render_paths(output, path)
 }
 
 tar_render_rep_default_path <- function(path, params) {

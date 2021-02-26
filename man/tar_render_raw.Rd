@@ -56,7 +56,10 @@ a drop-in replacement for \code{\link[targets:tar_make]{tar_make()}} in this cas
 \item Custom target-level \code{future::plan()}, e.g.
 \code{resources = list(plan = future.callr::callr)}.
 \item Custom \code{curl} handle if \code{format = "url"},
-e.g. \code{resources = list(handle = curl::new_handle())}.
+e.g. \code{resources = list(handle = curl::new_handle(nobody = TRUE))}.
+In custom handles, most users should manually set \code{nobody = TRUE}
+so \code{targets} does not download the entire file when it
+only needs to check the time stamp and ETag.
 \item Custom preset for \code{qs::qsave()} if \code{format = "qs"}, e.g.
 \code{resources = list(handle = "archive")}.
 \item Custom compression level for \code{fst::write_fst()} if
@@ -92,9 +95,9 @@ all non-standard evaluation.}
 \value{
 A target object with \code{format = "file"}.
 When this target runs, it returns a character vector
-of file paths. The first file paths are the output files
-(returned by \code{rmarkdown::render()}) and the R Markdown
-source file is last. But unlike \code{rmarkdown::render()},
+of file paths: the rendered document, the source file,
+and then the \verb{*_files/} directory if it exists.
+Unlike \code{rmarkdown::render()},
 all returned paths are \emph{relative} paths to ensure portability
 (so that the project can be moved from one file system to another
 without invalidating the target).

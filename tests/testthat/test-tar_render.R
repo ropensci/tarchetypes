@@ -97,3 +97,26 @@ targets::tar_test("tar_render() for parameterized reports", {
   lines <- readLines("report.html")
   expect_true(any(grepl("anotherverydistinctvalue", lines)))
 })
+
+targets::tar_test("tar_render() with a _files/ directory", {
+  skip_pandoc()
+  lines <- c(
+    "---",
+    "title: report with a plot",
+    "output_format: html_document",
+    "---",
+    "```{r}",
+    "plot(seq_len(4))",
+    "```"
+  )
+  writeLines(lines, "report.Rmd")
+  targets::tar_script({
+    library(tarchetypes)
+    list(tar_render(report, "report.Rmd", clean = FALSE))
+  })
+  suppressMessages(targets::tar_make(callr_function = NULL))
+  expect_equal(
+    basename(targets::tar_read(report)),
+    c("report.html", "report.Rmd", "report_files")
+  )
+})

@@ -10,7 +10,7 @@ targets::tar_test("tar_render_rep() manifest", {
     "",
     "```{r}",
     "print(params$par)",
-    "print(tar_read(x))",
+    "print(targets::tar_read(x))",
     "```"
   )
   writeLines(lines, "report.Rmd")
@@ -48,7 +48,7 @@ targets::tar_test("tar_render_rep() graph", {
     "",
     "```{r}",
     "print(params$par)",
-    "print(tar_read(x))",
+    "print(targets::tar_read(x))",
     "```"
   )
   writeLines(lines, "report.Rmd")
@@ -85,7 +85,7 @@ targets::tar_test("tar_render_rep() run", {
     "",
     "```{r}",
     "print(params$par)",
-    "print(tar_read(x))",
+    "print(targets::tar_read(x))",
     "```"
   )
   writeLines(lines, "report.Rmd")
@@ -192,7 +192,7 @@ targets::tar_test("tar_render_rep() run with output_file specified", {
     "",
     "```{r}",
     "print(params$par)",
-    "print(tar_read(x))",
+    "print(targets::tar_read(x))",
     "```"
   )
   writeLines(lines, "report.Rmd")
@@ -217,4 +217,47 @@ targets::tar_test("tar_render_rep() run with output_file specified", {
   out <- unlist(targets::tar_meta(report, children)$children)
   expect_equal(length(out), 4L)
   expect_equal(length(unique(out)), 4L)
+})
+
+targets::tar_test("tar_render_rep() with output_file and _files", {
+  skip_pandoc()
+  lines <- c(
+    "---",
+    "title: report",
+    "output_format: html_document",
+    "params:",
+    "  par: \"default value\"",
+    "---",
+    "",
+    "```{r}",
+    "print(params$par)",
+    "print(targets::tar_read(x))",
+    "plot(sample.int(1e9, 4))",
+    "```"
+  )
+  writeLines(lines, "report.Rmd")
+  targets::tar_script({
+    library(tarchetypes)
+    list(
+      tar_target(x, "value_of_x"),
+      tar_render_rep(
+        report,
+        "report.Rmd",
+        params = data.frame(
+          par = c("parval1", "parval2", "parval3", "parval4"),
+          output_file = c("f1.html", "f2.html", "f3.html", "f4.html"),
+          stringsAsFactors = FALSE
+        ),
+        clean = FALSE
+      )
+    )
+  })
+  targets::tar_make(callr_function = NULL)
+  for (branch in seq_len(4)) {
+    out <- basename(targets::tar_read_raw("report", branches = branch))
+    base <- paste0("f", branch)
+    report <- fs::path_ext_set(base, "html")
+    exp <- c(report, "report.Rmd", paste0(base, "_files"))
+    expect_equal(out, exp)
+  }
 })

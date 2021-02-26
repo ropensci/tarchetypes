@@ -155,7 +155,10 @@ a drop-in replacement for \code{\link[targets:tar_make]{tar_make()}} in this cas
 \item Custom target-level \code{future::plan()}, e.g.
 \code{resources = list(plan = future.callr::callr)}.
 \item Custom \code{curl} handle if \code{format = "url"},
-e.g. \code{resources = list(handle = curl::new_handle())}.
+e.g. \code{resources = list(handle = curl::new_handle(nobody = TRUE))}.
+In custom handles, most users should manually set \code{nobody = TRUE}
+so \code{targets} does not download the entire file when it
+only needs to check the time stamp and ETag.
 \item Custom preset for \code{qs::qsave()} if \code{format = "qs"}, e.g.
 \code{resources = list(handle = "archive")}.
 \item Custom compression level for \code{fst::write_fst()} if
@@ -220,8 +223,9 @@ This enforces the proper dependency relationships.
 2. Sets \code{format = "file"} (see \code{tar_target()}) so \code{targets}
 watches the files at the returned paths and reruns the report
 if those files change.
-3. Configures the target's command to return both the output
-report files and the input source file. All these file paths
+3. Configures the target's command to return the output
+report files: the rendered document, the source file,
+and then the \verb{*_files/} directory if it exists. All these file paths
 are relative paths so the project stays portable.
 4. Forces the report to run in the user's current working directory
 instead of the working directory of the report.
