@@ -27,8 +27,9 @@
 #'       watches the files at the returned paths and reruns the report
 #'       if those files change.
 #'     3. Configures the target's command to return the output
-#'       report files, the `*_files/` directories with supporting files
-#'       if they exist, and the input source file. All these file paths
+#'       report files: the rendered document, the source file,
+#'       and then the `*_files/` directory if it exists.
+#'       All these file paths
 #'       are relative paths so the project stays portable.
 #'     4. Forces the report to run in the user's current working directory
 #'       instead of the working directory of the report.

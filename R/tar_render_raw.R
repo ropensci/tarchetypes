@@ -8,10 +8,9 @@
 #'   is a language object.
 #' @return A target object with `format = "file"`.
 #'   When this target runs, it returns a character vector
-#'   of file paths. The first file paths are the output files
-#'   (returned by `rmarkdown::render()`), including
-#'   the `*_files/` directory with supporting files if it exists,
-#'   and the R Markdown source file is last. Unlike `rmarkdown::render()`,
+#'   of file paths: the rendered document, the source file,
+#'   and then the `*_files/` directory if it exists.
+#'   Unlike `rmarkdown::render()`,
 #'   all returned paths are *relative* paths to ensure portability
 #'   (so that the project can be moved from one file system to another
 #'   without invalidating the target).
@@ -157,5 +156,5 @@ tar_render_paths <- function(output, source) {
   source <- fs::path_rel(source)
   files <- paste0(fs::path_ext_remove(output), "_files")
   files <- trn(all(file.exists(files)), files, character(0))
-  c(output, files, source)
+  c(output, source, files)
 }
