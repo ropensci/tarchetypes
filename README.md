@@ -25,7 +25,67 @@ can write their own niche interfaces for specialized projects.
 `tarchetypes` aims to include the most common and versatile archetypes
 and usage patterns.
 
-## Target archetype example
+## Grouped data frames
+
+`tarchetypes` has functions for easy dynamic branching over subsets of
+data frames:
+
+  - `tar_group_by()`: define row groups using `dplyr::group_by()`
+    semantics.
+  - `tar_group_select()`: define row groups using `tidyselect`
+    semantics.
+  - `tar_group_count()`: define a given number row groups.
+  - `tar_group_size()`: define row groups of a given size.
+
+If you define a target with one of these functions, all downstream
+dynamic targets will automatically branch over the row groups.
+
+``` r
+# _targets.R file:
+library(targets)
+library(tarchetypes)
+produce_data <- function() {
+  expand.grid(var1 = c("a", "b"), var2 = c("c", "d"), rep = c(1, 2, 3))
+}
+list(
+  tar_group_by(data, produce_data(), var1, var2),
+  tar_target(group, data, pattern = map(data))
+)
+```
+
+``` r
+# R console:
+library(targets)
+tar_make()
+#> ● run target data
+#> ● run branch group_e9b1e0d0
+#> ● run branch group_8e74a2e8
+#> ● run branch group_9ea8aadc
+#> ● run branch group_5126e4df
+#> ● end pipeline
+
+# First row group:
+tar_read(group, branches = 1)
+#> # A tibble: 3 x 4
+#> # Groups:   var1, var2 [1]
+#>   var1  var2    rep tar_group
+#>   <fct> <fct> <dbl>     <int>
+#> 1 a     c         1         1
+#> 2 a     c         2         1
+#> 3 a     c         3         1
+
+# Second row group:
+tar_read(group, branches = 2)
+#> # A tibble: 3 x 4
+#> # Groups:   var1, var2 [1]
+#>   var1  var2    rep tar_group
+#>   <fct> <fct> <dbl>     <int>
+#> 1 a     d         1         2
+#> 2 a     d         2         2
+#> 3 a     d         3         2
+```
+
+## Literate programming
 
 Consider the following R Markdown report.
 
@@ -96,7 +156,7 @@ forces `report` to depend on `dataset`. That way, `tar_make()` always
 processes `dataset` before `report`, and it automatically reruns
 `report.Rmd` whenever `dataset` changes.
 
-## Pipeline archetype example
+## Alternative pipeline syntax
 
 [`tar_plan()`](https://docs.ropensci.org/tarchetypes/reference/tar_plan.html)
 is a drop-in replacement for

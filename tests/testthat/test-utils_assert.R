@@ -25,6 +25,22 @@ targets::tar_test("assert_dbl()", {
   expect_error(assert_dbl(letters), class = "condition_validate")
 })
 
+tar_test("assert_df()", {
+  expect_silent(assert_df(data.frame(x = 1)))
+  expect_error(assert_df(TRUE), class = "condition_validate")
+})
+
+tar_test("assert_ge()", {
+  expect_silent(assert_ge(2L, 1L))
+  expect_silent(assert_ge(2L, 2L))
+  expect_error(assert_ge(1L, 2L), class = "condition_validate")
+})
+
+tar_test("assert_in()", {
+  expect_silent(assert_in("x", letters))
+  expect_error(assert_in("xyz", letters), class = "condition_validate")
+})
+
 targets::tar_test("assert_inherits()", {
   expect_silent(assert_inherits(structure(list(), class = "xyz"), "xyz"))
   expect_error(assert_inherits(letters, "xyz"), class = "condition_validate")
@@ -39,6 +55,11 @@ targets::tar_test("assert_lang()", {
   expect_silent(assert_lang(as.symbol("abc")))
   expect_silent(assert_lang(quote(1 + 1)))
   expect_error(assert_lang("abc"), class = "condition_validate")
+})
+
+targets::tar_test("assert_lgl()", {
+  expect_silent(assert_lgl(TRUE))
+  expect_error(assert_lgl("abc"), class = "condition_validate")
 })
 
 targets::tar_test("assert_list()", {

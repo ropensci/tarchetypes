@@ -18,6 +18,12 @@ reference:
 - title: Help
   contents:
   - '`tarchetypes-package`'
+- title: Data frame grouping targets
+  contents:
+  - '`tar_group_by`'
+  - '`tar_group_count`'
+  - '`tar_group_select`'
+  - '`tar_group_size`'
 - title: Literate programming targets
   contents:
   - '`tar_knit`'

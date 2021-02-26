@@ -24,7 +24,55 @@ knitr::opts_chunk$set(
 
 The `tarchetypes` R package is a collection of target and pipeline archetypes for the [`targets`](https://github.com/ropensci/targets) package. These archetypes express complicated pipelines with concise syntax, which enhances readability and thus reproducibility. Archetypes are possible because of the flexible metaprogramming capabilities of [`targets`](https://github.com/ropensci/targets). In [`targets`](https://github.com/ropensci/targets), one can define a target as an object outside the central pipeline, and the [`tar_target_raw()`](https://docs.ropensci.org/targets/reference/tar_target_raw.html) function completely avoids non-standard evaluation. That means anyone can write their own niche interfaces for specialized projects. `tarchetypes` aims to include the most common and versatile archetypes and usage patterns.
 
-## Target archetype example
+## Grouped data frames
+
+`tarchetypes` has functions for easy dynamic branching over subsets of data frames:
+
+* `tar_group_by()`: define row groups using `dplyr::group_by()` semantics.
+* `tar_group_select()`: define row groups using `tidyselect` semantics.
+* `tar_group_count()`: define a given number row groups.
+* `tar_group_size()`: define row groups of a given size.
+
+If you define a target with one of these functions, all downstream dynamic targets will automatically branch over the row groups.
+
+```{r, echo = FALSE}
+targets::tar_script({
+  produce_data <- function() {
+    expand.grid(var1 = c("a", "b"), var2 = c("c", "d"), rep = c(1, 2, 3))
+  }
+  list(
+    tarchetypes::tar_group_by(data, produce_data(), var1, var2),
+    tar_target(group, data, pattern = map(data))
+  )
+})
+```
+
+```{r, eval = FALSE}
+# _targets.R file:
+library(targets)
+library(tarchetypes)
+produce_data <- function() {
+  expand.grid(var1 = c("a", "b"), var2 = c("c", "d"), rep = c(1, 2, 3))
+}
+list(
+  tar_group_by(data, produce_data(), var1, var2),
+  tar_target(group, data, pattern = map(data))
+)
+```
+
+```{r}
+# R console:
+library(targets)
+tar_make()
+
+# First row group:
+tar_read(group, branches = 1)
+
+# Second row group:
+tar_read(group, branches = 2)
+```
+
+## Literate programming
 
 Consider the following R Markdown report.
 
@@ -91,7 +139,7 @@ list(
 
 Above, `tar_render()` scans code chunks for mentions of targets in `tar_load()` and `tar_read()`, and it enforces the dependency relationships it finds. In our case, it reads `report.Rmd` and then forces `report` to depend on `dataset`. That way, `tar_make()` always processes `dataset` before `report`, and it automatically reruns `report.Rmd` whenever `dataset` changes.
 
-## Pipeline archetype example
+## Alternative pipeline syntax
 
 [`tar_plan()`](https://docs.ropensci.org/tarchetypes/reference/tar_plan.html) is a drop-in replacement for [`drake_plan()`](https://docs.ropensci.org/drake/reference/drake_plan.html) in the [`targets`](https://github.com/ropensci/targets) ecosystem. 
 It lets users write targets as name/command pairs without having to call [`tar_target()`](https://docs.ropensci.org/targets/reference/tar_target.html).
@@ -130,4 +178,9 @@ Please note that this package is released with a [Contributor Code of Conduct](h
 
 ```{r}
 citation("tarchetypes")
+```
+
+```{r, echo = FALSE}
+unlink("_targets.R")
+tar_destroy()
 ```
