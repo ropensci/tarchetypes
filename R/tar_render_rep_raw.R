@@ -213,6 +213,7 @@ tar_render_rep_run <- function(path, params, args, deps) {
 }
 
 tar_render_rep_rep <- function(path, params, args) {
+  withr::local_options(list(crayon.enabled = NULL))
   default_path <- tar_render_rep_default_path(path, params)
   args$output_file <- params[["output_file"]] %||% default_path
   args$params <- params

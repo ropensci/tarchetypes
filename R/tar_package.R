@@ -16,7 +16,7 @@
 #'   last_col matches num_range one_of starts_with
 #' @importFrom utils globalVariables
 #' @importFrom vctrs vec_c vec_rbind
-#' @importFrom withr with_options
+#' @importFrom withr local_options with_options
 NULL
 
 utils::globalVariables(".x")

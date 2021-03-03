@@ -130,6 +130,7 @@ tar_knit_command <- function(path, args, quiet) {
 #'   report, automatically created by `tar_knit()`.
 tar_knit_run <- function(path, args, deps) {
   assert_package("knitr")
+  withr::local_options(list(crayon.enabled = NULL))
   opt <- knitr::opts_knit$get("root.dir")
   knitr::opts_knit$set(root.dir = getwd())
   on.exit(knitr::opts_knit$set(root.dir = opt))
