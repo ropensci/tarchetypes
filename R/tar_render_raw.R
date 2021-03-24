@@ -146,7 +146,7 @@ tar_render_run <- function(path, args, deps) {
   assert_package("rmarkdown")
   withr::local_options(list(crayon.enabled = NULL))
   envir <- parent.frame()
-  args$envir <- args$envir %||% targets::tar_envir(default = envir)
+  args$envir <- args$envir %|||% targets::tar_envir(default = envir)
   force(args$envir)
   output <- do.call(rmarkdown::render, args)
   tar_render_paths(output, path)

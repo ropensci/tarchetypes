@@ -165,7 +165,19 @@ tar_keras(
 )
 }
 \arguments{
-\item{name}{Symbol, name of the target.}
+\item{name}{Symbol, name of the target. Subsequent targets
+can refer to this name symbolically to induce a dependency relationship:
+e.g. \code{tar_target(downstream_target, f(upstream_target))} is a
+target named \code{downstream_target} which depends on a target
+\code{upstream_target} and a function \code{f()}. In addition, a target's
+name determines its random number generator seed. In this way,
+each target runs with a reproducible seed so someone else
+running the same pipeline should get the same results,
+and no two targets in the same pipeline share the same seed.
+(Even dynamic branches have different names and thus different seeds.)
+You can recover the seed of a completed target
+with \code{tar_meta(your_target, seed)} and run \code{set.seed()} on the result
+to locally recreate the target's initial RNG state.}
 
 \item{command}{R code to run the target.}
 
@@ -236,7 +248,8 @@ the target builds on the host machine / process managing the pipeline.}
 
 \item{priority}{Numeric of length 1 between 0 and 1. Controls which
 targets get deployed first when multiple competing targets are ready
-simultaneously. Targets with priorities closer to 1 get built earlier.
+simultaneously. Targets with priorities closer to 1 get built earlier
+(and polled earlier in \code{\link[targets:tar_make_future]{tar_make_future()}}).
 Only applies to \code{\link[targets:tar_make_future]{tar_make_future()}} and \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}}
 (not \code{\link[targets:tar_make]{tar_make()}}). \code{\link[targets:tar_make_future]{tar_make_future()}} with no extra settings is
 a drop-in replacement for \code{\link[targets:tar_make]{tar_make()}} in this case.}
@@ -254,6 +267,9 @@ so \code{targets} does not download the entire file when it
 only needs to check the time stamp and ETag.
 \item Custom preset for \code{qs::qsave()} if \code{format = "qs"}, e.g.
 \code{resources = list(handle = "archive")}.
+\item Arguments \code{compression} and \code{compression_level} to
+\code{arrow::write_feather()} and \code{arrow:write_parquet()} if \code{format} is
+\code{"feather"}, \code{"parquet"}, \code{"aws_feather"}, or \code{"aws_parquet"}.
 \item Custom compression level for \code{fst::write_fst()} if
 \code{format} is \code{"fst"}, \code{"fst_dt"}, or \code{"fst_tbl"}, e.g.
 \code{resources = list(compress = 100)}.

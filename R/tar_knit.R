@@ -135,7 +135,7 @@ tar_knit_run <- function(path, args, deps) {
   knitr::opts_knit$set(root.dir = getwd())
   on.exit(knitr::opts_knit$set(root.dir = opt))
   envir <- parent.frame()
-  args$envir <- args$envir %||% targets::tar_envir(default = envir)
+  args$envir <- args$envir %|||% targets::tar_envir(default = envir)
   force(args$envir)
   fs::path_rel(c(do.call(knitr::knit, args), path))
 }

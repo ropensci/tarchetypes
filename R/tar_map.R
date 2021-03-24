@@ -84,7 +84,7 @@ tar_map_extend_values <- function(targets, values, names) {
 }
 
 tar_map_produce_suffix <- function(values, names) {
-  data <- values[names] %|||% list(id = seq_along(values[[1]]))
+  data <- values[names] %||% list(id = seq_along(values[[1]]))
   data <- map(data, ~as.character(unlist(.x)))
   out <- apply(as.data.frame(data), 1, paste, collapse = "_")
   out <- gsub("'", "", out)
@@ -106,7 +106,7 @@ tar_map_iter <- function(values, target, command, pattern) {
   settings <- target$settings
   name <- as.character(values[[settings$name]])
   command <- substitute_expr(command, values)
-  pattern <- substitute_expr(pattern, values) %|||% NULL
+  pattern <- substitute_expr(pattern, values) %||% NULL
   tar_target_raw(
     name = name,
     command = command,
