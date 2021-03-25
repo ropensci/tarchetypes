@@ -108,7 +108,11 @@ tar_combine_impl <- function(
   if (use_names) {
     names(names_sym) <- names_chr
   }
-  command <- tar_tidy_eval(command, envir = list(.x = names_sym), tidy_eval = TRUE)
+  command <- tar_tidy_eval(
+    command,
+    envir = list(.x = names_sym),
+    tidy_eval = TRUE
+  )
   tar_target_raw(
     name = name,
     command = command,

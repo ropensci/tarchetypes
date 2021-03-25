@@ -120,7 +120,11 @@ tar_render <- function(
   assert_chr(path, "path argument of tar_render() must be a character.")
   assert_path(path, paste("the path", path, "for tar_render() does not exist"))
   envir <- tar_option_get("envir")
-  args <- tar_tidy_eval(substitute(list(...)), envir = envir, tidy_eval = tidy_eval)
+  args <- tar_tidy_eval(
+    substitute(list(...)),
+    envir = envir,
+    tidy_eval = tidy_eval
+  )
   tar_target_raw(
     name = deparse_language(substitute(name)),
     command = tar_render_command(path, args, quiet),
