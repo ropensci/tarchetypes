@@ -127,9 +127,9 @@ assert_nzchr <- function(x, msg = NULL) {
 }
 
 assert_package <- function(package, msg = NULL) {
-  if (!requireNamespace(package, quietly = TRUE)) {
-    throw_validate(msg %|||% paste("package ", package, " not installed"))
-  }
+  tryCatch(rlang::check_installed(package), error = function(e) {
+    throw_validate(conditionMessage(e))
+  })
 }
 
 assert_path <- function(path, msg = NULL) {

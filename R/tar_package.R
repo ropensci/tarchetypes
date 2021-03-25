@@ -8,7 +8,7 @@
 #' @name tarchetypes-package
 #' @importFrom digest digest
 #' @importFrom fs path_ext_remove path_rel
-#' @importFrom rlang as_function enquo expr quo_squash
+#' @importFrom rlang as_function check_installed enquo expr quo_squash
 #' @importFrom targets tar_cue tar_dir tar_envir tar_group tar_load
 #'   tar_option_get tar_path tar_read tar_script tar_target tar_target_raw
 #'   tar_test
