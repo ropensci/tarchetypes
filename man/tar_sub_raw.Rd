@@ -34,7 +34,7 @@ is an expression object.
 # operates on preexisting tar_target() objects. By contrast,
 # tar_eval_raw() and tar_sub_raw() iterate over code farther upstream.
 values <- list(
-  name = rlang::syms(c("name1", "name2")),
+  name = as_symbols(c("name1", "name2")),
   file = c("file1.Rmd", "file2.Rmd")
 )
 tar_sub_raw(quote(tar_render(name, file)), values = values)

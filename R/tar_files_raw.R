@@ -85,7 +85,7 @@ tar_files_raw <- function(
     retrieval = retrieval,
     cue = targets::tar_cue(mode = "always")
   )
-  name_files_sym <- rlang::sym(name_files)
+  name_files_sym <- as.symbol(name_files)
   downstream <- tar_target_raw(
     name = name,
     command = as.expression(name_files_sym),

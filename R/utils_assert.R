@@ -133,6 +133,7 @@ assert_package <- function(package, msg = NULL) {
 }
 
 assert_path <- function(path, msg = NULL) {
+  assert_nonempty(path, "path must not be empty")
   missing <- !file.exists(path)
   if (any(missing)) {
     throw_validate(

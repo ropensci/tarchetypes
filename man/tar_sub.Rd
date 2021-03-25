@@ -31,7 +31,7 @@ from each one. Helps with general metaprogramming.
 # operates on preexisting tar_target() objects. By contrast,
 # tar_eval() and tar_sub() iterate over code farther upstream.
 values <- list(
-  name = rlang::syms(c("name1", "name2")),
+  name = as_symbols(c("name1", "name2")),
   file = list("file1.Rmd", "file2.Rmd")
 )
 tar_sub(tar_render(name, file), values = values)

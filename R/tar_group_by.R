@@ -93,7 +93,7 @@ tar_group_by_run <- function(data, by) {
   assert_df(data, "tar_group_by() output must be a data frame.")
   assert_in(by, colnames(data), "tar_group_by() columns must be in data.")
   expr <- quote(dplyr::group_by(data, !!!by_syms))
-  by_syms <- rlang::syms(by)
+  by_syms <- as_symbols(by)
   envir <- environment()
   expr <- tar_tidy_eval(expr, envir = envir, TRUE)
   grouped <- eval(expr, envir = envir)

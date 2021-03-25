@@ -1,3 +1,7 @@
+as_symbols <- function(x) {
+  lapply(x, as.symbol)
+}
+
 call_brace <- function(args) {
   call_function("{", args)
 }
@@ -7,11 +11,11 @@ call_list <- function(args) {
 }
 
 call_ns <- function(pkg, fun) {
-  call_function("::", rlang::syms(c(pkg, fun)))
+  call_function("::", as_symbols(c(pkg, fun)))
 }
 
 call_function <- function(name, args) {
-  as.call(c(rlang::sym(name), args))
+  as.call(c(as.symbol(name), args))
 }
 
 call_substitute <- function(expr, env) {

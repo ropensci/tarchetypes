@@ -21,7 +21,7 @@
 #'   should be small objects that can easily deparse to names,
 #'   such as characters, integers, and symbols.
 #'   To create a list of symbols as a column of `values`,
-#'   use `rlang::syms()`.
+#'   use `as_symbols()`.
 #' @param ... One or more target objects or list of target objects.
 #'   Lists can be arbitrarily nested, as in `list()`.
 #' @param names Subset of `names(values)`
@@ -78,7 +78,7 @@ tar_map_extend_values <- function(targets, values, names) {
       names(values),
       paste("target", name, "cannot be in names(values).")
     )
-    values[[name]] <- rlang::syms(make.names(paste(name, suffix, sep = "_")))
+    values[[name]] <- as_symbols(make.names(paste(name, suffix, sep = "_")))
   }
   values
 }

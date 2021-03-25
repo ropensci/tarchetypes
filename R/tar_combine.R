@@ -104,7 +104,7 @@ tar_combine_impl <- function(
   assert_chr(name)
   assert_targets(targets)
   names_chr <- map_chr(targets, ~.x$settings$name)
-  names_sym <- rlang::syms(names_chr)
+  names_sym <- as_symbols(names_chr)
   if (use_names) {
     names(names_sym) <- names_chr
   }

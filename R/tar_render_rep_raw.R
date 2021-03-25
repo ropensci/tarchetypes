@@ -124,7 +124,7 @@ tar_render_rep_raw <- function(
   assert_list(args, "args must be a named list.")
   assert_nonempty(names(args %||% list(x = 1)), "args must be a named list.")
   name_params <- paste0(name, "_params")
-  sym_params <- rlang::sym(name_params)
+  sym_params <- as.symbol(name_params)
   target_params <- tar_target_raw(
     name = name_params,
     command = tar_render_rep_params_command(params, batches),
@@ -183,8 +183,8 @@ tar_render_rep_command <- function(name, path, quiet, args) {
   args$input <- path
   args$knit_root_dir <- quote(getwd())
   args$quiet <- quiet
-  params <- rlang::sym(paste0(name, "_params"))
-  deps <- call_list(rlang::syms(knitr_deps(path)))
+  params <- as.symbol(paste0(name, "_params"))
+  deps <- call_list(as_symbols(knitr_deps(path)))
   fun <- call_ns("tarchetypes", "tar_render_rep_run")
   exprs <- list(fun, path = path, params = params, args = args, deps = deps)
   as.expression(as.call(exprs))

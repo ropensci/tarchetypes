@@ -48,6 +48,6 @@ tar_plan_parse_named <- function(commands) {
 }
 
 tar_plan_parse_command <- function(name, commands) {
-  env <- list(name = rlang::sym(name), command = commands[[name]])
+  env <- list(name = as.symbol(name), command = commands[[name]])
   substitute(targets::tar_target(name, command), env = env)
 }

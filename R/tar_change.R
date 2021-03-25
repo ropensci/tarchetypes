@@ -120,7 +120,7 @@ tar_change_raw <- function(
   )
   downstream <- tar_target_raw(
     name = name,
-    command = call_brace(list(rlang::sym(name_change), command)),
+    command = call_brace(list(as.symbol(name_change), command)),
     pattern = NULL,
     packages = packages,
     library = library,

@@ -36,7 +36,7 @@ Helps with general metaprogramming.
 # tar_eval() and tar_sub() iterate over the literal code
 # farther upstream.
 values <- list(
-  name = rlang::syms(c("name1", "name2")),
+  name = as_symbols(c("name1", "name2")),
   file = list("file1.Rmd", "file2.Rmd")
 )
 tar_sub(list(name, file), values = values)
@@ -48,7 +48,7 @@ str(tar_eval(tar_render(name, path), values = values))
 # Just make sure to set a unique name for each target
 # (which tar_map() does automatically).
 values <- list(
-  name = rlang::syms(c("name1", "name2")),
+  name = as_symbols(c("name1", "name2")),
   file = c(path, path)
 )
 list(

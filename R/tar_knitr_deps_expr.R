@@ -26,5 +26,5 @@
 #' writeLines(lines, report)
 #' tar_knitr_deps_expr(report)
 tar_knitr_deps_expr <- function(path) {
-  call_list(rlang::syms(tar_knitr_deps(path)))
+  call_list(as_symbols(tar_knitr_deps(path)))
 }

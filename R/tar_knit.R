@@ -109,7 +109,7 @@ tar_knit <- function(
 tar_knit_command <- function(path, args, quiet) {
   args$input <- path
   args$quiet <- quiet
-  deps <- call_list(rlang::syms(knitr_deps(path)))
+  deps <- call_list(as_symbols(knitr_deps(path)))
   fun <- call_ns("tarchetypes", "tar_knit_run")
   exprs <- list(fun, path = path, args = args, deps = deps)
   as.expression(as.call(exprs))

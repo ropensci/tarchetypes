@@ -184,7 +184,7 @@ tar_rep_command_target <- function(command, name_batch, reps, iteration) {
     ),
     env = list(
       command = command,
-      batch = rlang::sym(name_batch),
+      batch = as.symbol(name_batch),
       reps = reps,
       iteration = iteration
     )
@@ -193,7 +193,7 @@ tar_rep_command_target <- function(command, name_batch, reps, iteration) {
 }
 
 tar_rep_pattern <- function(name_batch) {
-  substitute(map(x), env = list(x = rlang::sym(name_batch)))
+  substitute(map(x), env = list(x = as.symbol(name_batch)))
 }
 
 #' @title Run a batch in a `tar_rep()` archetype.
