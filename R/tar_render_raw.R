@@ -101,6 +101,7 @@ tar_render_raw <- function(
   assert_scalar(path, "tar_render_raw() only takes one file at a time.")
   assert_chr(path, "path argument of tar_render_raw() must be a character.")
   assert_path(path, paste("path", path, "for tar_render_raw() does not exist"))
+  assert_not_dirs(path)
   assert_lang(render_arguments, "render_arguments must be a language object.")
   msg <- "render_arguments must not be an expression object."
   assert_not_expr(render_arguments, msg)

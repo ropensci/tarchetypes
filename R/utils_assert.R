@@ -114,6 +114,16 @@ assert_not_expr <- function(x, msg = NULL) {
   }
 }
 
+assert_not_dirs <- function(x, msg = NULL) {
+  lapply(x, assert_not_dir, msg = msg)
+}
+
+assert_not_dir <- function(x, msg = NULL) {
+  if (dir.exists(x)) {
+    throw_validate(msg %|||% paste(deparse(x), "should not be a directory."))
+  }
+}
+
 assert_not_in <- function(x, choices, msg = NULL) {
   if (any(x %in% choices)) {
     throw_validate(msg %|||% paste(deparse(x), " is in ", deparse(choices)))

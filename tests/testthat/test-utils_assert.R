@@ -77,6 +77,11 @@ targets::tar_test("assert_nonempty()", {
   expect_error(assert_nonempty(list()), class = "condition_validate")
 })
 
+targets::tar_test("assert_not_dirs()", {
+  expect_silent(assert_not_dirs("x"))
+  expect_error(assert_not_dirs(tempdir()), class = "condition_validate")
+})
+
 targets::tar_test("assert_not_expr()", {
   expect_silent(assert_not_expr(quote(x)))
   expect_error(assert_not_expr(expression(x)), class = "condition_validate")

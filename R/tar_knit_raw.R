@@ -75,6 +75,7 @@ tar_knit_raw <- function(
   assert_scalar(path, "tar_knit_raw() only takes one file at a time.")
   assert_chr(path, "path argument of tar_knit_raw() must be a character.")
   assert_path(path, paste("path", path, "for tar_knit_raw() does not exist"))
+  assert_not_dirs(path)
   assert_lang(knit_arguments, "knit_arguments must be a language object.")
   msg <- "knit_arguments must not be an expression object."
   assert_not_expr(knit_arguments, msg)

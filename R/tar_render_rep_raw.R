@@ -118,6 +118,7 @@ tar_render_rep_raw <- function(
   assert_scalar(path, "tar_render_raw() only takes one file at a time.")
   assert_chr(path, "path argument of tar_render_raw() must be a character.")
   assert_path(path, paste("path", path, "for tar_render_raw() does not exist"))
+  assert_not_dirs(path)
   assert_lang(params)
   assert_dbl(batches %|||% 0L, "batches must be numeric.")
   assert_scalar(batches %|||% 0L, "batches must have length 1.")
