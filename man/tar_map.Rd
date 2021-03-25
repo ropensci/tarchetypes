@@ -14,7 +14,7 @@ in place of those symbols. Elements of the \code{values} list
 should be small objects that can easily deparse to names,
 such as characters, integers, and symbols.
 To create a list of symbols as a column of \code{values},
-use \code{as_symbols()}.}
+use \code{rlang::syms()}.}
 
 \item{...}{One or more target objects or list of target objects.
 Lists can be arbitrarily nested, as in \code{list()}.}

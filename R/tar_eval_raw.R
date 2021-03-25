@@ -24,7 +24,7 @@
 #' # operates on preexisting tar_target() objects. By contrast,
 #' # tar_eval_raw() and tar_sub_raw() iterate over code farther upstream.
 #' values <- list(
-#'   name = as_symbols(c("name1", "name2")),
+#'   name = lapply(c("name1", "name2"), as.symbol),
 #'   file = c("file1.Rmd", "file2.Rmd")
 #' )
 #' tar_sub_raw(quote(list(name, file)), values = values)
@@ -36,7 +36,7 @@
 #' # Just make sure to set a unique name for each target
 #' # (which tar_map() does automatically).
 #' values <- list(
-#'   name = as_symbols(c("name1", "name2")),
+#'   name = lapply(c("name1", "name2"), as.symbol),
 #'   file = c(path, path)
 #' )
 #' list(
