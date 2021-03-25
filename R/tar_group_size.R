@@ -85,7 +85,7 @@ tar_group_size <- function(
 tar_group_size_command <- function(command, size, tidy_eval) {
   envir <- targets::tar_option_get("envir")
   assert_envir(envir)
-  command <- tidy_eval(command, envir, tidy_eval)
+  command <- tar_tidy_eval(command, envir, tidy_eval)
   fun <- call_ns("tarchetypes", "tar_group_size_run")
   as.call(list(fun, data = command, size))
 }

@@ -53,8 +53,8 @@ tar_force <- function(
   name <- deparse_language(substitute(name))
   name_change <- paste0(name, "_change")
   envir <- tar_option_get("envir")
-  command <- tidy_eval(substitute(command), envir, tidy_eval)
-  force <- tidy_eval(substitute(force), envir, tidy_eval)
+  command <- tar_tidy_eval(substitute(command), envir, tidy_eval)
+  force <- tar_tidy_eval(substitute(force), envir, tidy_eval)
   change <- as.call(list(call_ns("tarchetypes", "tar_force_change"), force))
   tar_change_raw(
     name = name,

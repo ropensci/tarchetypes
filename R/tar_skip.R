@@ -53,8 +53,8 @@ tar_skip <- function(
 ) {
   name <- deparse_language(substitute(name))
   envir <- tar_option_get("envir")
-  command <- tidy_eval(substitute(command), envir, tidy_eval)
-  skip <- tidy_eval(substitute(skip), envir, tidy_eval)
+  command <- tar_tidy_eval(substitute(command), envir, tidy_eval)
+  skip <- tar_tidy_eval(substitute(skip), envir, tidy_eval)
   skip <- as.call(list(call_ns("targets", "tar_cancel"), skip))
   command <- call_brace(list(skip, command))
   tar_target_raw(

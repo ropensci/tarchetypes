@@ -106,7 +106,7 @@ tar_rep <- function(
 ) {
   name <- deparse_language(substitute(name))
   envir <- targets::tar_option_get("envir")
-  command <- tidy_eval(substitute(command), envir, tidy_eval)
+  command <- tar_tidy_eval(substitute(command), envir, tidy_eval)
   tar_rep_raw(
     name = name,
     command = command,

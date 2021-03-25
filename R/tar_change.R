@@ -58,8 +58,8 @@ tar_change <- function(
   name <- deparse_language(substitute(name))
   name_change <- paste0(name, "_change")
   envir <- tar_option_get("envir")
-  command <- tidy_eval(substitute(command), envir, tidy_eval)
-  change <- tidy_eval(substitute(change), envir, tidy_eval)
+  command <- tar_tidy_eval(substitute(command), envir, tidy_eval)
+  change <- tar_tidy_eval(substitute(change), envir, tidy_eval)
   tar_change_raw(
     name = name,
     name_change = name_change,

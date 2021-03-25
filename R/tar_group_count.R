@@ -83,7 +83,7 @@ tar_group_count <- function(
 tar_group_count_command <- function(command, count, tidy_eval) {
   envir <- targets::tar_option_get("envir")
   assert_envir(envir)
-  command <- tidy_eval(command, envir, tidy_eval)
+  command <- tar_tidy_eval(command, envir, tidy_eval)
   fun <- call_ns("tarchetypes", "tar_group_count_run")
   as.call(list(fun, data = command, count))
 }

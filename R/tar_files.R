@@ -60,7 +60,7 @@ tar_files <- function(
 ) {
   name <- deparse_language(substitute(name))
   envir <- tar_option_get("envir")
-  command <- tidy_eval(substitute(command), envir, tidy_eval)
+  command <- tar_tidy_eval(substitute(command), envir, tidy_eval)
   format <- match.arg(format)
   tar_files_raw(
     name = name,

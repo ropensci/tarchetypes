@@ -81,7 +81,7 @@ tar_group_select <- function(
 tar_group_select_command <- function(command, by, tidy_eval) {
   envir <- targets::tar_option_get("envir")
   assert_envir(envir)
-  command <- tidy_eval(command, envir, tidy_eval)
+  command <- tar_tidy_eval(command, envir, tidy_eval)
   fun <- call_ns("tarchetypes", "tar_group_select_run")
   as.call(list(fun, data = command, by = by))
 }

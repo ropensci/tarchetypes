@@ -78,7 +78,7 @@ tar_group_by <- function(
 tar_group_by_command <- function(command, by, tidy_eval) {
   envir <- targets::tar_option_get("envir")
   assert_envir(envir)
-  command <- tidy_eval(command, envir, tidy_eval)
+  command <- tar_tidy_eval(command, envir, tidy_eval)
   fun <- call_ns("tarchetypes", "tar_group_by_run")
   as.call(list(fun, data = command, by = by))
 }
@@ -95,7 +95,7 @@ tar_group_by_run <- function(data, by) {
   expr <- quote(dplyr::group_by(data, !!!by_syms))
   by_syms <- rlang::syms(by)
   envir <- environment()
-  expr <- tidy_eval(expr, envir = envir, TRUE)
+  expr <- tar_tidy_eval(expr, envir = envir, TRUE)
   grouped <- eval(expr, envir = envir)
   targets::tar_group(grouped)
 }
