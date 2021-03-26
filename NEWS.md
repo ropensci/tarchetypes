@@ -1,4 +1,4 @@
-# tarchetypes 0.1.0.9000
+# tarchetypes 0.1.1
 
 * Unset `crayon.enabled` for literate programming.
 * Switch meaning of `%||%` and `%|||%` to conform to historical precedent.
