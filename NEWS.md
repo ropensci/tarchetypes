@@ -1,6 +1,6 @@
 # tarchetypes 0.1.1.9000
 
-
+* Prefix internal condition classes with "tar_".
 
 # tarchetypes 0.1.1
 

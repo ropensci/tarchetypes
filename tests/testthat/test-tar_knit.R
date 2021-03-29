@@ -60,7 +60,7 @@ targets::tar_test("tar_knit() warns about tar_read_raw()", {
   })
   expect_warning(
     suppressMessages(targets::tar_make(callr_function = NULL)),
-    class = "condition_validate"
+    class = "tar_condition_validate"
   )
 })
 
@@ -87,7 +87,7 @@ targets::tar_test("tar_knit() warns about tar_load_raw()", {
   })
   expect_warning(
     suppressMessages(targets::tar_make(callr_function = NULL)),
-    class = "condition_validate"
+    class = "tar_condition_validate"
   )
 })
 

@@ -2,7 +2,7 @@ targets::tar_test("tar_group_by() with no vars", {
   skip_if_not_installed("dplyr")
   expect_error(
     tarchetypes::tar_group_by(data, produce_data()),
-    class = "condition_validate"
+    class = "tar_condition_validate"
   )
 })
 

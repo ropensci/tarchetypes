@@ -126,6 +126,6 @@ targets::tar_test("tar_rep() with non-list output", {
 targets::tar_test("tar_rep_run() with unsupported iteration method", {
   expect_error(
     tar_rep_run(quote(1), 1, 1, "nope"),
-    class = "condition_validate"
+    class = "tar_condition_validate"
   )
 })
