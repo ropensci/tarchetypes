@@ -8,7 +8,7 @@
 \alias{tar_qs}
 \alias{tar_keras}
 \alias{tar_torch}
-\alias{tar_feather}
+\alias{tar_format_feather}
 \alias{tar_parquet}
 \alias{tar_fst}
 \alias{tar_fst_dt}
@@ -139,7 +139,7 @@ tar_torch(
   cue = targets::tar_option_get("cue")
 )
 
-tar_feather(
+tar_format_feather(
   name,
   command,
   pattern = NULL,

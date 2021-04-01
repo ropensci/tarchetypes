@@ -109,7 +109,7 @@ tar_torch <- tar_format("torch")
 
 #' @export
 #' @rdname tar_formats
-tar_feather <- tar_format("feather")
+tar_format_feather <- tar_format("feather")
 
 #' @export
 #' @rdname tar_formats
