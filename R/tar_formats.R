@@ -149,7 +149,7 @@ tar_aws_torch <- tar_format("aws_torch")
 
 #' @export
 #' @rdname tar_formats
-tar_aws_feather <- tar_format("aws_feather")
+tar_format_aws_feather <- tar_format("aws_feather")
 
 #' @export
 #' @rdname tar_formats

@@ -105,8 +105,8 @@ targets::tar_test("tar_aws_qs()", {
   expect_equal(x$settings$format, "aws_qs")
 })
 
-targets::tar_test("tar_aws_feather()", {
-  x <- tar_aws_feather(x, 0)
+targets::tar_test("tar_format_aws_feather()", {
+  x <- tar_format_aws_feather(x, 0)
   expect_true(inherits(x, "tar_target"))
   expect_equal(x$settings$format, "aws_feather")
 })

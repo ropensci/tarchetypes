@@ -18,7 +18,7 @@
 \alias{tar_aws_qs}
 \alias{tar_aws_keras}
 \alias{tar_aws_torch}
-\alias{tar_aws_feather}
+\alias{tar_format_aws_feather}
 \alias{tar_aws_parquet}
 \alias{tar_aws_fst}
 \alias{tar_aws_fst_dt}
@@ -329,7 +329,7 @@ tar_aws_torch(
   cue = targets::tar_option_get("cue")
 )
 
-tar_aws_feather(
+tar_format_aws_feather(
   name,
   command,
   pattern = NULL,
