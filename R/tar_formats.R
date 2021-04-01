@@ -85,11 +85,11 @@ tar_format_api <- function(
 
 #' @export
 #' @rdname tar_formats
-tar_file <- tar_format("file")
+tar_url <- tar_format("url")
 
 #' @export
 #' @rdname tar_formats
-tar_url <- tar_format("url")
+tar_file <- tar_format("file")
 
 #' @export
 #' @rdname tar_formats
@@ -98,6 +98,22 @@ tar_rds <- tar_format("rds")
 #' @export
 #' @rdname tar_formats
 tar_qs <- tar_format("qs")
+
+#' @export
+#' @rdname tar_formats
+tar_keras <- tar_format("keras")
+
+#' @export
+#' @rdname tar_formats
+tar_torch <- tar_format("torch")
+
+#' @export
+#' @rdname tar_formats
+tar_feather <- tar_format("feather")
+
+#' @export
+#' @rdname tar_formats
+tar_parquet <- tar_format("parquet")
 
 #' @export
 #' @rdname tar_formats
@@ -113,4 +129,40 @@ tar_fst_tbl <- tar_format("fst_tbl")
 
 #' @export
 #' @rdname tar_formats
-tar_keras <- tar_format("keras")
+tar_aws_file <- tar_format("aws_file")
+
+#' @export
+#' @rdname tar_formats
+tar_aws_rds <- tar_format("aws_rds")
+
+#' @export
+#' @rdname tar_formats
+tar_aws_qs <- tar_format("aws_qs")
+
+#' @export
+#' @rdname tar_formats
+tar_aws_keras <- tar_format("aws_keras")
+
+#' @export
+#' @rdname tar_formats
+tar_aws_torch <- tar_format("aws_torch")
+
+#' @export
+#' @rdname tar_formats
+tar_aws_feather <- tar_format("aws_feather")
+
+#' @export
+#' @rdname tar_formats
+tar_aws_parquet <- tar_format("aws_parquet")
+
+#' @export
+#' @rdname tar_formats
+tar_aws_fst <- tar_format("aws_fst")
+
+#' @export
+#' @rdname tar_formats
+tar_aws_fst_dt <- tar_format("aws_fst_dt")
+
+#' @export
+#' @rdname tar_formats
+tar_aws_fst_tbl <- tar_format("aws_fst_tbl")

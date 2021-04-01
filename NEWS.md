@@ -1,7 +1,7 @@
 # tarchetypes 0.1.1.9000
 
 * Prefix internal condition classes with "tar_".
-
+* Add new format helpers such as `tar_aws_rds()` and `tar_parquet()`.
 
 # tarchetypes 0.1.1
 
