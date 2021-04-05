@@ -62,7 +62,7 @@ tar_map <- function(
   values <- tar_map_extend_values(targets, values, names)
   out <- lapply(targets, tar_map_target, values = values)
   flat <- unlist(out, recursive = TRUE)
-  trn(
+  if_any(
     unlist,
     set_names(flat, map_chr(flat, ~.x$settings$name)),
     set_names(out, map_chr(targets, ~.x$settings$name))

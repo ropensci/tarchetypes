@@ -130,7 +130,7 @@ tar_files_input_raw <- function(
 
 tar_files_input_batch_files <- function(files, batches) {
   batches <- min(batches, length(files))
-  index <- trn(
+  index <- if_any(
     batches > 1L,
     as.integer(cut(seq_along(files), breaks = batches)),
     rep(1L, length(files))

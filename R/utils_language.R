@@ -23,7 +23,7 @@ call_substitute <- function(expr, env) {
 }
 
 deparse_language <- function(x) {
-  trn(!is.character(x) && !is.null(x), deparse_safe(x), x)
+  if_any(!is.character(x) && !is.null(x), deparse_safe(x), x)
 }
 
 deparse_safe <- function(x, collapse = "\n", backtick = TRUE) {

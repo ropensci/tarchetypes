@@ -19,7 +19,7 @@ targets::tar_test("%||NA%", {
   expect_equal(NULL %||NA% "y", NULL)
 })
 
-targets::tar_test("trn()", {
-  expect_equal(trn(TRUE, "x", "y"), "x")
-  expect_equal(trn(FALSE, "x", "y"), "y")
+targets::tar_test("if_any()", {
+  expect_equal(if_any(TRUE, "x", "y"), "x")
+  expect_equal(if_any(FALSE, "x", "y"), "y")
 })

@@ -97,7 +97,7 @@ tar_group_count_command <- function(command, count, tidy_eval) {
 tar_group_count_run <- function(data, count) {
   assert_df(data, "tar_group_count() output must be a data frame.")
   count <- min(count, nrow(data))
-  data$tar_group <- trn(
+  data$tar_group <- if_any(
     count > 1L,
     as.integer(cut(seq_len(nrow(data)), breaks = count)),
     rep(1L, nrow(data))

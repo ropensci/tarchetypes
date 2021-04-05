@@ -88,6 +88,6 @@ tar_force <- function(
 tar_force_change <- function(condition) {
   path <- targets::tar_path()
   new <- basename(tempfile(pattern = ""))
-  old <- trn(file.exists(path), readRDS(path), new)
-  trn(condition, new, old)
+  old <- if_any(file.exists(path), readRDS(path), new)
+  if_any(condition, new, old)
 }
