@@ -220,6 +220,7 @@ tar_render_rep_rep <- function(path, params, args) {
   args$params <- params
   args$params[["output_file"]] <- NULL
   args$params[["tar_group"]] <- NULL
+  args$intermediates_dir <- fs::dir_create(tempfile())
   output <- do.call(rmarkdown::render, args)
   tar_render_paths(output, path)
 }
