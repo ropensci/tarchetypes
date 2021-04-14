@@ -17,8 +17,7 @@
 #'   For more information, visit
 #'   <https://github.com/ropensci/targets/issues/136> and
 #'   <https://github.com/ropensci/drake/issues/1302>.
-#' @export
-#' @inheritParams targets::tar_target
+#' @family Dynamic branching over files
 #' @return A list of two targets, one upstream and one downstream.
 #'   The upstream one does some work and returns some file paths,
 #'   and the downstream target is a pattern that applies `format = "file"`
@@ -28,6 +27,7 @@
 #'   Please see the design specification at
 #'   <https://books.ropensci.org/targets-design/>
 #'   to learn about the structure and composition of target objects.
+#' @inheritParams targets::tar_target
 #' @param files Nonempty character vector of known existing input files
 #'   to track for changes.
 #' @param batches Positive integer of length 1, number of batches

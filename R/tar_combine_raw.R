@@ -2,6 +2,7 @@
 #' @export
 #' @description Like [tar_combine()] except the `name`, `command`,
 #'   and `pattern` arguments use standard evaluation.
+#' @family Branching
 #' @return A new target object to combine the return values
 #'   from the upstream targets.
 #'   Target objects represent skippable steps of the analysis pipeline

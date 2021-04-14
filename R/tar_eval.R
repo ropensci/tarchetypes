@@ -3,6 +3,7 @@
 #' @description Loop over a grid of values, create an expression object
 #'   from each one, and then evaluate that expression.
 #'   Helps with general metaprogramming.
+#' @family Metaprogramming utilities
 #' @return A list of return values from the generated expression objects.
 #'   Often, these values are target objects.
 #'   Target objects represent skippable steps of the analysis pipeline

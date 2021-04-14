@@ -13,6 +13,7 @@
 #'   For more information, visit
 #'   <https://github.com/ropensci/targets/issues/136> and
 #'   <https://github.com/ropensci/drake/issues/1302>.
+#' @family Dynamic branching over files
 #' @return A list of two targets, one upstream and one downstream.
 #'   The upstream one does some work and returns some file paths,
 #'   and the downstream target is a pattern that applies `format = "file"`

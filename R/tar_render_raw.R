@@ -6,6 +6,7 @@
 #'   except that it uses standard evaluation. The `name` argument
 #'   is a character vector, and the `render_arguments` argument
 #'   is a language object.
+#' @family Literate programming targets
 #' @return A target object with `format = "file"`.
 #'   When this target runs, it returns a character vector
 #'   of file paths: the rendered document, the source file,

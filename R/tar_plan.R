@@ -1,4 +1,5 @@
 #' @title A `drake`-plan-like pipeline archetype
+#' @export
 #' @description Simplify target specification in pipelines.
 #' @details Allows targets with just targets and commands
 #'   to be written in the pipeline as `target = command` instead of
@@ -7,7 +8,7 @@
 #'   `tar_plan(x = 1, y = 2, tar_target(z, 3), tar_render(r, "r.Rmd"))`
 #'   is equivalent to
 #'   `list(tar_target(x, 1), tar_target(y, 2), tar_target(z, 3), tar_render(r, "r.Rmd"))`. # nolint
-#' @export
+#' @family Pipeline factories
 #' @return A list of `tar_target()` objects.
 #'   Target objects represent skippable steps of the analysis pipeline
 #'   as described at <https://books.ropensci.org/targets/>.

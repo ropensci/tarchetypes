@@ -4,6 +4,7 @@
 #' @details `tar_map()` creates collections of new
 #'   targets by iterating over a list of arguments
 #'   and substituting symbols into commands and pattern statements.
+#' @family Branching
 #' @return A list of new target objects. If `unlist` is `FALSE`,
 #'   the list is nested and sub-lists are named and grouped by the original
 #'   input targets. If `unlist = TRUE`, the return value is a flat list of

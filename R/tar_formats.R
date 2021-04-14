@@ -6,6 +6,7 @@
 #'   `tar_target(name, fun(), format = "qs")`.
 #'   For details on specialized storage formats, open the help file of the
 #'   `targets::tar_target()` function and read about the `format` argument.
+#' @family Formats
 #' @return A `tar_target()` object.
 #'   Target objects represent skippable steps of the analysis pipeline
 #'   as described at <https://books.ropensci.org/targets/>.

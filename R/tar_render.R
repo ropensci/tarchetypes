@@ -23,6 +23,7 @@
 #'       instead of the working directory of the report.
 #'     5. Sets convenient default options such as `deployment = "main"`
 #'       in the target and `quiet = TRUE` in `rmarkdown::render()`.
+#' @family Literate programming targets
 #' @return A target object with `format = "file"`.
 #'   When this target runs, it returns a character vector
 #'   of file paths: the rendered document, the source file,

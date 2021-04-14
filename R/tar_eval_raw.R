@@ -6,6 +6,7 @@
 #'   Helps with general metaprogramming. Unlike [tar_sub()],
 #'   which quotes the `expr` argument, `tar_sub_raw()` assumes `expr`
 #'   is an expression object.
+#' @family Metaprogramming utilities
 #' @return A list of return values from evaluating the expression objects.
 #'   Often, these values are target objects.
 #'   Target objects represent skippable steps of the analysis pipeline

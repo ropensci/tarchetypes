@@ -36,3 +36,10 @@ values <- list(
 )
 tar_sub(tar_render(name, file), values = values)
 }
+\seealso{
+Other Metaprogramming utilities: 
+\code{\link{tar_eval_raw}()},
+\code{\link{tar_eval}()},
+\code{\link{tar_sub_raw}()}
+}
+\concept{Metaprogramming utilities}

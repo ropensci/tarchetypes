@@ -6,6 +6,7 @@
 #'   the number of rows you supply to `size` (plus the remainder
 #'   in a group of its own, if applicable.) The total number of groups
 #'   varies.
+#' @family Grouped data frame targets
 #' @return A target object to generate a grouped data frame
 #'   to allows downstream dynamic targets to branch over the
 #'   groups of rows.

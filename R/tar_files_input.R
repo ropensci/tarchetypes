@@ -1,5 +1,6 @@
 #' @title Easy dynamic branching over known existing
 #'   input files or urls.
+#' @export
 #' @description Shorthand for a pattern that correctly
 #'   branches over known existing files or urls.
 #' @details `tar_files_input()` is like `tar_files()`
@@ -24,7 +25,7 @@
 #'   For more information, visit
 #'   <https://github.com/ropensci/targets/issues/136> and
 #'   <https://github.com/ropensci/drake/issues/1302>.
-#' @export
+#' @family Dynamic branching over files
 #' @return A list of two targets, one upstream and one downstream.
 #'   The upstream one does some work and returns some file paths,
 #'   and the downstream target is a pattern that applies `format = "file"`

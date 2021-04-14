@@ -5,6 +5,7 @@
 #'   Unlike `tar_group_by()`, `tar_group_select()`
 #'   expects you to select grouping variables using `tidyselect` semantics.
 #'   Downstream dynamic branching targets will iterate over the groups of rows.
+#' @family Grouped data frame targets
 #' @return A target object to generate a grouped data frame
 #'   to allows downstream dynamic targets to branch over the
 #'   groups of rows.

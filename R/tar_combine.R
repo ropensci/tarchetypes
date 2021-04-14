@@ -2,6 +2,7 @@
 #' @export
 #' @description Aggregate the results of upstream targets
 #'   into a new target.
+#' @family Branching
 #' @return A new target object to combine the return values
 #'   from the upstream targets.
 #'   Target objects represent skippable steps of the analysis pipeline

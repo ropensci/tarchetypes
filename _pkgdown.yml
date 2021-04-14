@@ -18,7 +18,7 @@ reference:
 - title: Help
   contents:
   - '`tarchetypes-package`'
-- title: Data frame grouping targets
+- title: Grouped data frame targets
   contents:
   - '`tar_group_by`'
   - '`tar_group_count`'
@@ -57,10 +57,10 @@ reference:
   - '`tar_change`'
   - '`tar_force`'
   - '`tar_skip`'
-- title: Pipeline archetypes
+- title: Pipeline factories
   contents:
   - '`tar_plan`'
-- title: Metaprogramming helpers
+- title: Metaprogramming utilities
   contents:
   - '`tar_eval`'
   - '`tar_eval_raw`'

@@ -46,3 +46,4 @@ targets::tar_make()
 })
 }
 }
+\concept{Pipeline factories}

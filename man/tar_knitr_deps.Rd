@@ -34,3 +34,8 @@ report <- tempfile()
 writeLines(lines, report)
 tar_knitr_deps(report)
 }
+\seealso{
+Other Literate programming utilities: 
+\code{\link{tar_knitr_deps_expr}()}
+}
+\concept{Literate programming utilities}

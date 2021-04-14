@@ -3,6 +3,7 @@
 #' @description Create a target that outputs a grouped data frame
 #'   with `dplyr::group_by()` and `targets::tar_group()`. Downstream
 #'   dynamic branching targets will iterate over the groups of rows.
+#' @family Grouped data frame targets
 #' @return A target object to generate a grouped data frame
 #'   to allows downstream dynamic targets to branch over the
 #'   groups of rows.

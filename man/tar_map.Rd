@@ -66,3 +66,11 @@ targets::tar_manifest()
 })
 }
 }
+\seealso{
+Other Branching: 
+\code{\link{tar_combine_raw}()},
+\code{\link{tar_combine}()},
+\code{\link{tar_rep_raw}()},
+\code{\link{tar_rep}()}
+}
+\concept{Branching}

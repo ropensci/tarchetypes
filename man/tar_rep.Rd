@@ -123,7 +123,10 @@ to arrive over a network file system.)
 except the return value of the target is a URL that already exists
 and serves as input data for downstream targets. Optionally
 supply a custom \code{curl} handle through the \code{resources} argument, e.g.
-\code{tar_target(..., resources = list(handle = curl::new_handle()))}.
+\code{tar_target(..., resources = list(handle = curl::new_handle(nobody = TRUE)))}. # nolint
+in \code{new_handle()}, \code{nobody = TRUE} is important because it
+ensures \code{targets} just downloads the metadata instead of
+the entire data file when it checks time stamps and hashes.
 The data file at the URL needs to have an ETag or a Last-Modified
 time stamp, or else the target will throw an error because
 it cannot track the data. Also, use extreme caution when
@@ -174,7 +177,11 @@ create the special \code{tar_group} column with \code{dplyr::group_by()}.
 \item{error}{Character of length 1, what to do if the target
 runs into an error. If \code{"stop"}, the whole pipeline stops
 and throws an error. If \code{"continue"}, the error is recorded,
-but the pipeline keeps going.}
+but the pipeline keeps going. \code{error = "workspace"} is just like
+\code{error = "stop"} except \code{targets} saves a special workspace file
+to support interactive debugging outside the pipeline.
+(Visit \url{https://books.ropensci.org/targets/debugging.html}
+to learn how to debug targets using saved workspaces.)}
 
 \item{memory}{Character of length 1, memory strategy.
 If \code{"persistent"}, the target stays in memory
@@ -312,3 +319,11 @@ targets::tar_read(x)
 })
 }
 }
+\seealso{
+Other Branching: 
+\code{\link{tar_combine_raw}()},
+\code{\link{tar_combine}()},
+\code{\link{tar_map}()},
+\code{\link{tar_rep_raw}()}
+}
+\concept{Branching}

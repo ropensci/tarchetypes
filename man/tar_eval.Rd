@@ -55,3 +55,10 @@ list(
   tar_eval(tar_render(name, file), values = values)
 )
 }
+\seealso{
+Other Metaprogramming utilities: 
+\code{\link{tar_eval_raw}()},
+\code{\link{tar_sub_raw}()},
+\code{\link{tar_sub}()}
+}
+\concept{Metaprogramming utilities}

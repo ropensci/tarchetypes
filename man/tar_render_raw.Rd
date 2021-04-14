@@ -35,7 +35,11 @@ when loading \code{packages}.}
 \item{error}{Character of length 1, what to do if the target
 runs into an error. If \code{"stop"}, the whole pipeline stops
 and throws an error. If \code{"continue"}, the error is recorded,
-but the pipeline keeps going.}
+but the pipeline keeps going. \code{error = "workspace"} is just like
+\code{error = "stop"} except \code{targets} saves a special workspace file
+to support interactive debugging outside the pipeline.
+(Visit \url{https://books.ropensci.org/targets/debugging.html}
+to learn how to debug targets using saved workspaces.)}
 
 \item{deployment}{Character of length 1, only relevant to
 \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}} and \code{\link[targets:tar_make_future]{tar_make_future()}}. If \code{"worker"},
@@ -175,3 +179,12 @@ targets::tar_script({
 })
 }
 }
+\seealso{
+Other Literate programming targets: 
+\code{\link{tar_knit_raw}()},
+\code{\link{tar_knit}()},
+\code{\link{tar_render_rep_raw}()},
+\code{\link{tar_render_rep}()},
+\code{\link{tar_render}()}
+}
+\concept{Literate programming targets}

@@ -18,7 +18,7 @@
 #'   are aggregated with `list()`. If `"vector"`,
 #'   then `vctrs::vec_c()`. If `"group"`, then `vctrs::vec_rbind()`.
 #' @export
-#' @inheritParams targets::tar_target
+#' @family Branching
 #' @return A list of two targets, one upstream and one downstream.
 #'   The upstream target returns a numeric index of batch ids,
 #'   and the downstream one dynamically maps over the batch ids
@@ -39,6 +39,7 @@
 #'   batch and each inner list has one element per rep within batch.
 #'   To un-batch this nested list, call
 #'   `tar_read(your_target, recursive = FALSE)`.
+#' @inheritParams targets::tar_target
 #' @param command R code to run multiple times. Must return a list or
 #'   data frame because `tar_rep()` will try to append new elements/columns
 #'   `tar_batch` and `tar_rep` to the output to denote the batch

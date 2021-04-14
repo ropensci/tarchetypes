@@ -4,6 +4,7 @@
 #'   for downstream dynamic branching. Set the maximum
 #'   number of groups using `count`. The number of rows per group
 #'   varies but is approximately uniform.
+#' @family Grouped data frame targets
 #' @return A target object to generate a grouped data frame
 #'   to allows downstream dynamic targets to branch over the
 #'   groups of rows.
