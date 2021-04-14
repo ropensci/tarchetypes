@@ -108,6 +108,12 @@ assert_nonempty <- function(x, msg = NULL) {
   }
 }
 
+assert_nzchar <- function(x, msg = NULL) {
+  if (any(!nzchar(x))) {
+    throw_validate(msg %|||% "x has empty character strings")
+  }
+}
+
 assert_not_expr <- function(x, msg = NULL) {
   if (is.expression(x)) {
     throw_validate(msg %|||% "x must not be an expression object")

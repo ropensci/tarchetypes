@@ -1,5 +1,6 @@
 # tarchetypes 0.1.1.9000
 
+* Implement `tar_download()` (#38, @noamross, @petrbouchal)
 * Set intermediate temporary directory to remove race condition in `tar_render_rep()` (#36, @gorgitko). 
 * Prefix internal condition classes with "tar_".
 * Add new format helpers such as `tar_aws_rds()` and `tar_parquet()`.

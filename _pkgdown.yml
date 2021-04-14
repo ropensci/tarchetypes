@@ -55,6 +55,7 @@ reference:
 - title: Custom cues
   contents:
   - '`tar_change`'
+  - '`tar_download`'
   - '`tar_force`'
   - '`tar_skip`'
 - title: Pipeline factories

@@ -7,10 +7,10 @@
 #'   an upstream auxiliary target to indicate the custom condition
 #'   and a downstream target that responds to it and does your work.
 #' @export
-#' @inheritParams targets::tar_target
 #' @return A list of targets: one to indicate whether the custom
 #'   condition is met, and another to respond to it and do your
 #'   actual work.
+#' @inheritParams targets::tar_target
 #' @param force R code for the condition that forces a build.
 #'   If it evaluates to `TRUE`, then your work will run during `tar_make()`.
 #' @param tidy_eval Whether to invoke tidy evaluation

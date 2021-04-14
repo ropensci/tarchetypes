@@ -14,7 +14,7 @@
 #'   tar_test
 #' @importFrom tidyselect all_of any_of contains ends_with everything
 #'   last_col matches num_range one_of starts_with
-#' @importFrom utils globalVariables
+#' @importFrom utils download.file globalVariables
 #' @importFrom vctrs vec_c vec_rbind
 #' @importFrom withr local_options with_options
 NULL
