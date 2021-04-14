@@ -1,4 +1,6 @@
 #' @title Target with a custom cancellation condition.
+#' @export
+#' @family targets with custom invalidation rules
 #' @description Create a target that cancels itself if a user-defined
 #'   decision rule is met.
 #' @details `tar_skip()` creates a target that cancels itself
@@ -6,11 +8,9 @@
 #'   is `targets::tar_cancel(your_condition)`, which allows skipping to happen
 #'   even if the target does not exist yet. This behavior differs from
 #'   `tar_cue(mode = "never")`, which still runs if the target does not exist.
-#' @export
 #' @inheritParams targets::tar_target
 #' @return A target object with `targets::tar_cancel(your_condition)` inserted
 #'   into the command.
-#'
 #'   Target objects represent skippable steps of the analysis pipeline
 #'   as described at <https://books.ropensci.org/targets/>.
 #'   Please see the design specification at

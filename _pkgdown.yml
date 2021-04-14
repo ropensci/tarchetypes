@@ -52,7 +52,7 @@ reference:
   - '`tar_files_raw`'
   - '`tar_files_input`'
   - '`tar_files_input_raw`'
-- title: Custom cues
+- title: Targets with custom invalidation rules
   contents:
   - '`tar_change`'
   - '`tar_download`'

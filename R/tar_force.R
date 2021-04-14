@@ -1,4 +1,6 @@
 #' @title Target with a custom condition to force execution.
+#' @export
+#' @family targets with custom invalidation rules
 #' @description Create a target that always runs if a user-defined
 #'   condition rule is met.
 #' @details `tar_force()` creates a target that always runs
@@ -6,7 +8,6 @@
 #'   on top of [tar_change()]. Thus, a pair of targets is created:
 #'   an upstream auxiliary target to indicate the custom condition
 #'   and a downstream target that responds to it and does your work.
-#' @export
 #' @return A list of targets: one to indicate whether the custom
 #'   condition is met, and another to respond to it and do your
 #'   actual work.

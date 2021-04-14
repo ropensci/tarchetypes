@@ -1,4 +1,6 @@
 #' @title Target that downloads URLs.
+#' @export
+#' @family targets with custom invalidation rules
 #' @description Create a target that downloads file from one or more URLs
 #'   and automatically reruns when the remote data changes
 #'   (according to the ETags or last-modified time stamps).
@@ -9,7 +11,6 @@
 #'   or last-modified time stamps change. The downstream target
 #'   depends on the upstream one, downloads the files,
 #'   and tracks them using `format = "file"`.
-#' @export
 #' @return A list of two target objects, one upstream and one downstream.
 #'   The upstream one watches a URL for changes, and the downstream one
 #'   downloads it. See the examples for details.

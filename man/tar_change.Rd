@@ -281,3 +281,10 @@ targets::tar_make()
 })
 }
 }
+\seealso{
+Other targets with custom invalidation rules: 
+\code{\link{tar_download}()},
+\code{\link{tar_force}()},
+\code{\link{tar_skip}()}
+}
+\concept{targets with custom invalidation rules}

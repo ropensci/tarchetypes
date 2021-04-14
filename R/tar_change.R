@@ -1,4 +1,6 @@
 #' @title Target that responds to an arbitrary change.
+#' @export
+#' @family targets with custom invalidation rules
 #' @description Create a target that responds to a change
 #'   in an arbitrary value. If the value changes, the target reruns.
 #' @details `tar_change()` creates a pair of targets, one upstream
@@ -7,7 +9,6 @@
 #'   downstream target, which causes the downstream target to rerun
 #'   if the auxiliary value changes. The behavior is cancelled if
 #'   `cue` is `tar_cue(depend = FALSE)` or `tar_cue(mode = "never")`.
-#' @export
 #' @return A list of two target objects, one upstream and one downstream.
 #'   The upstream one triggers the change, and the downstream one
 #'   responds to it. See the examples for details.

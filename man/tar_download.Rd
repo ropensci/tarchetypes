@@ -216,3 +216,10 @@ targets::tar_read(x)
 })
 }
 }
+\seealso{
+Other targets with custom invalidation rules: 
+\code{\link{tar_change}()},
+\code{\link{tar_force}()},
+\code{\link{tar_skip}()}
+}
+\concept{targets with custom invalidation rules}

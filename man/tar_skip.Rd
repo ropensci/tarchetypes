@@ -249,7 +249,6 @@ rules that decide whether the target is up to date.}
 \value{
 A target object with \code{targets::tar_cancel(your_condition)} inserted
 into the command.
-
 Target objects represent skippable steps of the analysis pipeline
 as described at \url{https://books.ropensci.org/targets/}.
 Please see the design specification at
@@ -279,3 +278,10 @@ targets::tar_make()
 })
 }
 }
+\seealso{
+Other targets with custom invalidation rules: 
+\code{\link{tar_change}()},
+\code{\link{tar_download}()},
+\code{\link{tar_force}()}
+}
+\concept{targets with custom invalidation rules}
