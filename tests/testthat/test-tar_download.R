@@ -1,3 +1,14 @@
+targets::tar_test("tar_download() with unequal url/path lengths", {
+  expect_error(
+    tarchetypes::tar_download(
+      x,
+      urls = c("https://httpbin.org/etag/test", "https://r-project.org"),
+      paths = "downloaded_file_1"
+    ),
+    class = "tar_condition_validate"
+  )
+})
+
 targets::tar_test("tar_download() manifest", {
   targets::tar_script({
     list(
