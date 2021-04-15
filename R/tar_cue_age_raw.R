@@ -78,7 +78,9 @@ tar_cue_age_raw <- function(
       stringsAsFactors = FALSE
     )
   )
-  time <- meta[meta$name == name, "time", drop = FALSE]$time %||% NA_real_
+  names <- c(name, unlist(meta$children[meta$name == name]))
+  times <- as.POSIXct(meta$time[meta$name %in% names])
+  time <- max(c(times, -Inf), na.rm = TRUE)
   span <- difftime(time1 = Sys.time(), time2 = time, units = units(age))
   mode <- if_any((span > age) %||NA% FALSE, "always", "thorough")
   targets::tar_cue(
