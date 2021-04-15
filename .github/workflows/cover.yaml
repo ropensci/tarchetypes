@@ -36,6 +36,7 @@ jobs:
         run: |
           install.packages(c("remotes"))
           remotes::install_deps(dependencies = TRUE, type = ifelse(tolower(Sys.info()["sysname"]) == "linux", "source", "binary"))
+          remotes::install_github("ropensci/targets")
           remotes::install_cran("covr")
         shell: Rscript {0}
 
