@@ -264,8 +264,6 @@ downstream target, which causes the downstream target to rerun
 if the auxiliary value changes. The behavior is cancelled if
 \code{cue} is \code{tar_cue(depend = FALSE)} or \code{tar_cue(mode = "never")}.
 
-\code{tar_change()} does not actually use \code{\link[=tar_cue_change]{tar_cue_change()}}, and the
-mechanism is totally different.
 Because the upstream target always runs,
 \code{tar_outdated()} and \code{tar_visnetwork()} will always
 show both targets as outdated. However, \code{tar_make()} will still

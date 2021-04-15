@@ -58,6 +58,8 @@ reference:
   - '`tar_download`'
   - '`tar_force`'
   - '`tar_skip`'
+- title: Cues
+  - '`tar_cue_force`'
 - title: Pipeline factories
   contents:
   - '`tar_plan`'
