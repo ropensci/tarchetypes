@@ -1,0 +1,98 @@
+#' @title Create a target that runs when the last run gets old
+#' @export
+#' @family cues
+#' @description `tar_age()` creates a target that reruns
+#'   itself when it gets old enough.
+#'   In other words, the target reruns periodically at regular
+#'   intervals of time.
+#' @details `tar_age()` uses the cue from [tar_cue_age()], which
+#'   uses the time stamps from `tar_meta()$time`.
+#'   If no time stamp is recorded, the cue defaults to the ordinary
+#'   invalidation rules (i.e. `mode = "thorough"` in `targets::tar_cue()`).
+#'   That means `tar_age()` cannot help with input file targets
+#'   or URL targets (but if you are using `format = "url"`
+#'   and your URLs have either ETags or "last-modified" time stamps,
+#'   then you are better off without `tar_age()` anyway.)
+#'
+#'   In dynamic branching, cues operate on all branches at once,
+#'   so `tar_age()` reruns when *any* branch reaches the age
+#'   threshold in the `age` argument.
+#' @return A target object. See the "Target objects" section for background.
+#' @inheritSection tar_map Target objects
+#' @inheritParams tar_cue_age_raw
+#' @inheritParams targets::tar_target
+#' @param command R code to run the target and return a value.
+#' @param cue A `targets::tar_cue()` object. (See the "Cue objects"
+#'   section for background.) This cue object should contain any
+#'   optional secondary invalidation rules, anything except
+#'   the `mode` argument. `mode` will be automatically determined
+#'   by the `age` argument of `tar_age()`.
+#' @examples
+#' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
+#' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
+#' targets::tar_script({
+#'   library(tarchetypes)
+#'   list(
+#'     tarchetypes::tar_age(
+#'       data,
+#'       data.frame(x = seq_len(26)),
+#'       age = as.difftime(0.5, units = "secs")
+#'     )
+#'   )
+#' })
+#' targets::tar_make()
+#' Sys.sleep(0.6)
+#' targets::tar_make()
+#' })
+#' }
+tar_age <- function(
+  name,
+  command,
+  age,
+  pattern = NULL,
+  tidy_eval = targets::tar_option_get("tidy_eval"),
+  packages = targets::tar_option_get("packages"),
+  library = targets::tar_option_get("library"),
+  format = targets::tar_option_get("format"),
+  iteration = targets::tar_option_get("iteration"),
+  error = targets::tar_option_get("error"),
+  memory = targets::tar_option_get("memory"),
+  garbage_collection = targets::tar_option_get("garbage_collection"),
+  deployment = targets::tar_option_get("deployment"),
+  priority = targets::tar_option_get("priority"),
+  resources = targets::tar_option_get("resources"),
+  storage = targets::tar_option_get("storage"),
+  retrieval = targets::tar_option_get("retrieval"),
+  cue = targets::tar_option_get("cue")
+) {
+  name <- deparse_language(substitute(name))
+  envir <- tar_option_get("envir")
+  command <- tar_tidy_eval(substitute(command), envir, tidy_eval)
+  cue <- tar_cue_age_raw(
+    name = name,
+    age = age,
+    command = cue$command,
+    depend = cue$depend,
+    format = cue$format,
+    iteration = cue$iteration,
+    file = cue$file
+  )
+  targets::tar_target_raw(
+    name = name,
+    command = command,
+    pattern = pattern,
+    packages = packages,
+    library = library,
+    format = format,
+    iteration = iteration,
+    error = error,
+    memory = memory,
+    garbage_collection = garbage_collection,
+    deployment = deployment,
+    priority = priority,
+    resources = resources,
+    storage = storage,
+    retrieval = retrieval,
+    cue = cue
+  )
+}

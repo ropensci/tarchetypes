@@ -5,14 +5,16 @@
 #' @description `tar_cue_age_raw()` acts like `tar_cue_age()`
 #'   except the `name` argument is a character string,
 #'   not a symbol. `tar_cue_age_raw()` creates a cue object to
-#'   rerun a target if the last run becomes old enough.
-#'   In other words, the target reruns periodically at regular
+#'   rerun a target if the most recent output data becomes old enough.
+#'   In other words, if the target produces any data
+#'   (as opposed to tracking input files or URLs)
+#'   then the target will rerun periodically at regular
 #'   intervals of time.
 #' @details `tar_cue_age_raw()` uses the time stamps from `tar_meta()$time`.
 #'   If no time stamp is recorded, the cue defaults to the ordinary
 #'   invalidation rules (i.e. `mode = "thorough"` in `targets::tar_cue()`).
-#'   That means `tar_cue_age_raw()` cannot help with URL targets,
-#'   e.g. `format = "url"`. (But if you are using `format = "url"`
+#'   That means `tar_cue_age_raw()` cannot help with input file targets
+#'   or URL targets (but if you are using `format = "url"`
 #'   and your URLs have either ETags or "last-modified" time stamps,
 #'   then you are better off without `tar_cue_age_raw()` anyway.)
 #' @return A cue object. See the "Cue objects" section for background.
@@ -20,10 +22,12 @@
 #' @inheritParams targets::tar_cue
 #' @param name Character of length 1, name of the target.
 #' @param age A `difftime` object of length 1, such as
-#'   `as.difftime(3, units = "days")`. If the target
-#'   last ran more than `age` time ago, `tar_cue_age_raw()` will force the
-#'   target to rerun. On the other hand, if the target last ran
-#'   more recently than `Sys.time() - age`, then the ordinary
+#'   `as.difftime(3, units = "days")`. If the target's output data
+#'   files are older than `age` (according to the most recent
+#'   time stamp over all the target's output files)
+#'   then the target will rerun.
+#'   On the other hand, if at least one data file is
+#'   younger than `Sys.time() - age`, then the ordinary
 #'   invalidation rules apply, and the target may or not rerun.
 #'   If you want to force the target to run every 3 days,
 #'   for example, set `age = as.difftime(3, units = "days")`.

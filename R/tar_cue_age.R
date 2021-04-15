@@ -1,15 +1,17 @@
-#' @title Cue to run a target when the last run reaches a certain age
+#' @title Cue to run a target when the last output reaches a certain age
 #' @export
 #' @family cues
 #' @description `tar_cue_age()` creates a cue object to
-#'   rerun a target if the last run becomes old enough.
-#'   In other words, the target reruns periodically at regular
+#'   rerun a target if the most recent output data becomes old enough.
+#'   In other words, if the target produces any data
+#'   (as opposed to tracking input files or URLs)
+#'   then the target will rerun periodically at regular
 #'   intervals of time.
 #' @details `tar_cue_age()` uses the time stamps from `tar_meta()$time`.
 #'   If no time stamp is recorded, the cue defaults to the ordinary
 #'   invalidation rules (i.e. `mode = "thorough"` in `targets::tar_cue()`).
-#'   That means `tar_cue_age()` cannot help with URL targets,
-#'   e.g. `format = "url"`. (But if you are using `format = "url"`
+#'   That means `tar_cue_age()` cannot help with input file targets
+#'   or URL targets (but if you are using `format = "url"`
 #'   and your URLs have either ETags or "last-modified" time stamps,
 #'   then you are better off without `tar_cue_age()` anyway.)
 #' @return A cue object. See the "Cue objects" section for background.

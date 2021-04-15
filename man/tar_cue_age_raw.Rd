@@ -19,10 +19,12 @@ tar_cue_age_raw(
 \item{name}{Character of length 1, name of the target.}
 
 \item{age}{A \code{difftime} object of length 1, such as
-\code{as.difftime(3, units = "days")}. If the target
-last ran more than \code{age} time ago, \code{tar_cue_age_raw()} will force the
-target to rerun. On the other hand, if the target last ran
-more recently than \code{Sys.time() - age}, then the ordinary
+\code{as.difftime(3, units = "days")}. If the target's output data
+files are older than \code{age} (according to the most recent
+time stamp over all the target's output files)
+then the target will rerun.
+On the other hand, if at least one data file is
+younger than \code{Sys.time() - age}, then the ordinary
 invalidation rules apply, and the target may or not rerun.
 If you want to force the target to run every 3 days,
 for example, set \code{age = as.difftime(3, units = "days")}.}
@@ -51,16 +53,18 @@ A cue object. See the "Cue objects" section for background.
 \code{tar_cue_age_raw()} acts like \code{tar_cue_age()}
 except the \code{name} argument is a character string,
 not a symbol. \code{tar_cue_age_raw()} creates a cue object to
-rerun a target if the last run becomes old enough.
-In other words, the target reruns periodically at regular
+rerun a target if the most recent output data becomes old enough.
+In other words, if the target produces any data
+(as opposed to tracking input files or URLs)
+then the target will rerun periodically at regular
 intervals of time.
 }
 \details{
 \code{tar_cue_age_raw()} uses the time stamps from \code{tar_meta()$time}.
 If no time stamp is recorded, the cue defaults to the ordinary
 invalidation rules (i.e. \code{mode = "thorough"} in \code{targets::tar_cue()}).
-That means \code{tar_cue_age_raw()} cannot help with URL targets,
-e.g. \code{format = "url"}. (But if you are using \code{format = "url"}
+That means \code{tar_cue_age_raw()} cannot help with input file targets
+or URL targets (but if you are using \code{format = "url"}
 and your URLs have either ETags or "last-modified" time stamps,
 then you are better off without \code{tar_cue_age_raw()} anyway.)
 }
@@ -102,6 +106,7 @@ targets::tar_make()
 }
 \seealso{
 Other cues: 
+\code{\link{tar_age}()},
 \code{\link{tar_cue_age}()},
 \code{\link{tar_cue_force}()},
 \code{\link{tar_cue_skip}()}

@@ -54,6 +54,7 @@ reference:
   - '`tar_files_input_raw`'
 - title: Targets with custom invalidation rules
   contents:
+  - '`tar_age`'
   - '`tar_change`'
   - '`tar_download`'
   - '`tar_force`'
@@ -61,6 +62,7 @@ reference:
 - title: Cues
   contents:
   - '`tar_cue_age`'
+  - '`tar_cue_age_raw`'
   - '`tar_cue_force`'
   - '`tar_cue_skip`'
 - title: Pipeline factories
