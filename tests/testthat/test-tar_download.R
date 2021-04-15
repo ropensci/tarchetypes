@@ -59,6 +59,17 @@ targets::tar_test("tar_download()", {
   skip_on_cran()
   skip_if_offline()
   skip_if_not_installed("curl")
+  urls <- c("https://httpbin.org/etag/test", "https://r-project.org")
+  handle <- curl::new_handle(nobody = TRUE)
+  for (url in urls) {
+    exists <- tryCatch({
+      req <- curl::curl_fetch_memory(as.character(url), handle = handle)
+      identical(as.integer(req$status_code), 200L)
+    }, error = function(e) FALSE)
+    if (!exists) {
+      skip("test URL does not exist")
+    }
+  }
   targets::tar_script({
     list(
       tarchetypes::tar_download(
