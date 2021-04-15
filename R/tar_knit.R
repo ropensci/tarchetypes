@@ -1,5 +1,6 @@
 #' @title Target with a `knitr` document.
 #' @export
+#' @family Literate programming targets
 #' @description Shorthand to include `knitr` document in a
 #'   `targets` pipeline.
 #' @details `tar_knit()` is an alternative to `tar_target()` for
@@ -23,7 +24,6 @@
 #'       instead of the working directory of the report.
 #'     5. Sets convenient default options such as `deployment = "main"`
 #'       in the target and `quiet = TRUE` in `knitr::knit()`.
-#' @family Literate programming targets
 #' @return A `tar_target()` object with `format = "file"`.
 #'   When this target runs, it returns a character vector
 #'   of file paths. The first file paths are the output files
@@ -32,12 +32,8 @@
 #'   all returned paths are *relative* paths to ensure portability
 #'   (so that the project can be moved from one file system to another
 #'   without invalidating the target).
-#'
-#'   Target objects represent skippable steps of the analysis pipeline
-#'   as described at <https://books.ropensci.org/targets/>.
-#'   Please see the design specification at
-#'   <https://books.ropensci.org/targets-design/>
-#'   to learn about the structure and composition of target objects.
+#'   See the "Target objects" section for background.
+#' @inheritSection tar_map Target objects
 #' @inheritParams targets::tar_target
 #' @inheritParams knitr::knit
 #' @param path Character string, file path to the `knitr` source file.

@@ -74,6 +74,7 @@ targets::tar_test("tar_render_rep() graph", {
 })
 
 targets::tar_test("tar_render_rep() run", {
+  skip_on_cran()
   skip_pandoc()
   lines <- c(
     "---",
@@ -181,6 +182,7 @@ targets::tar_test("tar_render_rep() run", {
 })
 
 targets::tar_test("tar_render_rep() run with output_file specified", {
+  skip_on_cran()
   skip_pandoc()
   lines <- c(
     "---",
@@ -220,6 +222,7 @@ targets::tar_test("tar_render_rep() run with output_file specified", {
 })
 
 targets::tar_test("tar_render_rep() with output_file and _files", {
+  skip_on_cran()
   skip_pandoc()
   lines <- c(
     "---",

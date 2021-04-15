@@ -1,18 +1,15 @@
 #' @title Target formats
 #' @name tar_formats
+#' @family Formats
 #' @description Target archetypes for specialized storage formats.
 #' @details These functions are shorthand for targets with specialized
 #'   storage formats. For example, `tar_qs(name, fun())` is equivalent to
 #'   `tar_target(name, fun(), format = "qs")`.
 #'   For details on specialized storage formats, open the help file of the
 #'   `targets::tar_target()` function and read about the `format` argument.
-#' @family Formats
-#' @return A `tar_target()` object.
-#'   Target objects represent skippable steps of the analysis pipeline
-#'   as described at <https://books.ropensci.org/targets/>.
-#'   Please see the design specification at
-#'   <https://books.ropensci.org/targets-design/>
-#'   to learn about the structure and composition of target objects.
+#' @return A `tar_target()` object with the eponymous storage format.
+#'   See the "Target objects" section for background.
+#' @inheritSection tar_map Target objects
 #' @inheritParams targets::tar_target
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {

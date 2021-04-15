@@ -1,19 +1,17 @@
 #' @title Evaluate multiple expressions created with symbol substitution
 #'   (raw version).
 #' @export
+#' @family Metaprogramming utilities
 #' @description Loop over a grid of values, create an expression object
 #'   from each one, and then evaluate that expression.
 #'   Helps with general metaprogramming. Unlike [tar_sub()],
 #'   which quotes the `expr` argument, `tar_sub_raw()` assumes `expr`
 #'   is an expression object.
-#' @family Metaprogramming utilities
 #' @return A list of return values from evaluating the expression objects.
 #'   Often, these values are target objects.
-#'   Target objects represent skippable steps of the analysis pipeline
-#'   as described at <https://books.ropensci.org/targets/>.
-#'   Please see the design specification at
-#'   <https://books.ropensci.org/targets-design/>
-#'   to learn about the structure and composition of target objects.
+#'   See the "Target objects" section for background
+#'   on target objects specifically.
+#' @inheritSection tar_map Target objects
 #' @inheritParams tar_sub_raw
 #' @param expr Expression object with the starting expression.
 #'   Values are iteratively substituted

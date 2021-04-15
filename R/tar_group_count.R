@@ -1,18 +1,15 @@
 #' @title Group the rows of a data frame into a given number groups
 #' @export
+#' @family Grouped data frame targets
 #' @description Create a target that outputs a grouped data frame
 #'   for downstream dynamic branching. Set the maximum
 #'   number of groups using `count`. The number of rows per group
 #'   varies but is approximately uniform.
-#' @family Grouped data frame targets
 #' @return A target object to generate a grouped data frame
 #'   to allows downstream dynamic targets to branch over the
 #'   groups of rows.
-#'   Target objects represent skippable steps of the analysis pipeline
-#'   as described at <https://books.ropensci.org/targets/>.
-#'   Please see the design specification at
-#'   <https://books.ropensci.org/targets-design/>
-#'   to learn about the structure and composition of target objects.
+#'   See the "Target objects" section for background.
+#' @inheritSection tar_map Target objects
 #' @inheritParams targets::tar_target
 #' @param count Positive integer, maximum number of row groups
 #' @examples

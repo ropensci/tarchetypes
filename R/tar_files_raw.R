@@ -1,5 +1,6 @@
 #' @title Easy dynamic branching over files or urls (raw version).
 #' @export
+#' @family Dynamic branching over files
 #' @description Shorthand for a pattern that correctly
 #'   branches over files or urls.
 #' @details `tar_files_raw()` is similar to [tar_files()]
@@ -17,11 +18,12 @@
 #'   For more information, visit
 #'   <https://github.com/ropensci/targets/issues/136> and
 #'   <https://github.com/ropensci/drake/issues/1302>.
-#' @family Dynamic branching over files
 #' @return A list of two targets, one upstream and one downstream.
 #'   The upstream one does some work and returns some file paths,
 #'   and the downstream target is a pattern that applies `format = "file"`
 #'   or `format = "url"`.
+#'   See the "Target objects" section for background.
+#' @inheritSection tar_map Target objects
 #' @inheritParams targets::tar_target
 #' @param format Character of length 1.
 #'   Must be `"file"`, `"url"`, or `"aws_file"`. See the `format`

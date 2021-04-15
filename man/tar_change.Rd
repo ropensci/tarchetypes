@@ -249,12 +249,8 @@ Only applies to the downstream target. The upstream target always runs.}
 \value{
 A list of two target objects, one upstream and one downstream.
 The upstream one triggers the change, and the downstream one
-responds to it. See the examples for details.
-Target objects represent skippable steps of the analysis pipeline
-as described at \url{https://books.ropensci.org/targets/}.
-Please see the design specification at
-\url{https://books.ropensci.org/targets-design/}
-to learn about the structure and composition of target objects.
+responds to it.
+See the "Target objects" section for background.
 }
 \description{
 Create a target that responds to a change
@@ -267,7 +263,34 @@ an auxiliary value. This auxiliary value gets referenced in the
 downstream target, which causes the downstream target to rerun
 if the auxiliary value changes. The behavior is cancelled if
 \code{cue} is \code{tar_cue(depend = FALSE)} or \code{tar_cue(mode = "never")}.
+
+\code{tar_change()} does not actually use \code{\link[=tar_cue_change]{tar_cue_change()}}, and the
+mechanism is totally different.
+Because the upstream target always runs,
+\code{tar_outdated()} and \code{tar_visnetwork()} will always
+show both targets as outdated. However, \code{tar_make()} will still
+skip the downstream one if the upstream target
+did not detect a change.
 }
+\section{Target objects}{
+
+Most \code{tarchetypes} functions are target factories,
+which means they return target objects
+or lists of target objects.
+Target objects represent skippable steps of the analysis pipeline
+as described at \url{https://books.ropensci.org/targets/}.
+Please read the walkthrough at
+\url{https://books.ropensci.org/targets/walkthrough.html}
+to understand the role of target objects in analysis pipelines.
+
+For developers,
+\url{https://wlandau.github.io/targetopia/contributing.html#target-factories}
+explains target factories (functions like this one which generate targets)
+and the design specification at
+\url{https://books.ropensci.org/targets-design/}
+details the structure and composition of target objects.
+}
+
 \examples{
 if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({ # tar_dir() runs code from a temporary directory.

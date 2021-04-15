@@ -2,6 +2,7 @@
 #' @description Shorthand for a pattern that replicates a command
 #'   using batches. Batches reduce the number of targets
 #'   and thus reduce overhead.
+#' @family branching
 #' @details `tar_rep()` and `tar_rep_raw()` each create two targets:
 #'   an upstream local stem
 #'   with an integer vector of batch ids, and a downstream pattern
@@ -18,7 +19,6 @@
 #'   are aggregated with `list()`. If `"vector"`,
 #'   then `vctrs::vec_c()`. If `"group"`, then `vctrs::vec_rbind()`.
 #' @export
-#' @family Branching
 #' @return A list of two targets, one upstream and one downstream.
 #'   The upstream target returns a numeric index of batch ids,
 #'   and the downstream one dynamically maps over the batch ids
@@ -27,18 +27,14 @@
 #'   the targets from `tar_rep()` will try to append new elements/columns
 #'   `tar_batch` and `tar_rep` to the output
 #'   to denote the batch and rep-within-batch IDs, respectively.
-#'
-#'   Target objects represent skippable steps of the analysis pipeline
-#'   as described at <https://books.ropensci.org/targets/>.
-#'   Please see the design specification at
-#'   <https://books.ropensci.org/targets-design/>
-#'   to learn about the structure and composition of target objects.
+#'   See the "Target objects" section for background.
 #'
 #'   `tar_read(your_target)` (on the downstream target with the actual work)
 #'   will return a list of lists, where the outer list has one element per
 #'   batch and each inner list has one element per rep within batch.
 #'   To un-batch this nested list, call
 #'   `tar_read(your_target, recursive = FALSE)`.
+#' @inheritSection tar_map Target objects
 #' @inheritParams targets::tar_target
 #' @param command R code to run multiple times. Must return a list or
 #'   data frame because `tar_rep()` will try to append new elements/columns

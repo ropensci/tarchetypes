@@ -256,12 +256,7 @@ rules that decide whether the target is up to date.}
 A list of two target objects, one upstream and one downstream.
 The upstream one does some work and returns some file paths,
 and the downstream target is a pattern that applies \code{format = "file"}.
-
-Target objects represent skippable steps of the analysis pipeline
-as described at \url{https://books.ropensci.org/targets/}.
-Please see the design specification at
-\url{https://books.ropensci.org/targets-design/}
-to learn about the structure and composition of target objects.
+See the "Target objects" section for background.
 }
 \description{
 Shorthand for a pattern that replicates a command
@@ -281,6 +276,25 @@ in the \code{iteration} argument. If \code{"list"}, reps and batches
 are aggregated with \code{list()}. If \code{"vector"},
 then \code{vctrs::vec_c()}. If \code{"group"}, then \code{vctrs::vec_rbind()}.
 }
+\section{Target objects}{
+
+Most \code{tarchetypes} functions are target factories,
+which means they return target objects
+or lists of target objects.
+Target objects represent skippable steps of the analysis pipeline
+as described at \url{https://books.ropensci.org/targets/}.
+Please read the walkthrough at
+\url{https://books.ropensci.org/targets/walkthrough.html}
+to understand the role of target objects in analysis pipelines.
+
+For developers,
+\url{https://wlandau.github.io/targetopia/contributing.html#target-factories}
+explains target factories (functions like this one which generate targets)
+and the design specification at
+\url{https://books.ropensci.org/targets-design/}
+details the structure and composition of target objects.
+}
+
 \examples{
 if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({ # tar_dir() runs code from a temporary directory.
@@ -300,10 +314,10 @@ targets::tar_read(x)
 }
 }
 \seealso{
-Other Branching: 
+Other branching: 
 \code{\link{tar_combine_raw}()},
 \code{\link{tar_combine}()},
 \code{\link{tar_map}()},
 \code{\link{tar_rep}()}
 }
-\concept{Branching}
+\concept{branching}

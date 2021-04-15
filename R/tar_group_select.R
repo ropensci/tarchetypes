@@ -1,19 +1,16 @@
 #' @title Group a data frame target with `tidyselect` semantics.
 #' @export
+#' @family Grouped data frame targets
 #' @description Create a target that outputs a grouped data frame
 #'   with `dplyr::group_by()` and `targets::tar_group()`.
 #'   Unlike `tar_group_by()`, `tar_group_select()`
 #'   expects you to select grouping variables using `tidyselect` semantics.
 #'   Downstream dynamic branching targets will iterate over the groups of rows.
-#' @family Grouped data frame targets
 #' @return A target object to generate a grouped data frame
 #'   to allows downstream dynamic targets to branch over the
 #'   groups of rows.
-#'   Target objects represent skippable steps of the analysis pipeline
-#'   as described at <https://books.ropensci.org/targets/>.
-#'   Please see the design specification at
-#'   <https://books.ropensci.org/targets-design/>
-#'   to learn about the structure and composition of target objects.
+#'   See the "Target objects" section for background.
+#' @inheritSection tar_map Target objects
 #' @inheritParams targets::tar_target
 #' @param by Tidyselect semantics to specify variables to group over.
 #'   Alternatively, you can supply a character vector.

@@ -1,5 +1,6 @@
 #' @title Parameterized R Markdown with dynamic branching (raw version).
 #' @export
+#' @family Literate programming targets
 #' @description Targets to render a parameterized R Markdown report
 #'   with multiple sets of parameters (raw version). Same as
 #'   `tar_render_rep()` except `name` is a character string,
@@ -35,16 +36,11 @@
 #'       instead of the working directory of the report.
 #'     5. Sets convenient default options such as `deployment = "main"`
 #'       in the target and `quiet = TRUE` in `rmarkdown::render()`.
-#' @family Literate programming targets
 #' @return A list of target objects to render the R Markdown
 #'   reports. Changes to the parameters, source file, dependencies, etc.
 #'   will cause the appropriate targets to rerun during `tar_make()`.
-#'
-#'   Target objects represent skippable steps of the analysis pipeline
-#'   as described at <https://books.ropensci.org/targets/>.
-#'   Please see the design specification at
-#'   <https://books.ropensci.org/targets-design/>
-#'   to learn about the structure and composition of target objects.
+#'   See the "Target objects" section for background.
+#' @inheritSection tar_map Target objects
 #' @inheritParams targets::tar_target
 #' @inheritParams rmarkdown::render
 #' @param path Character string, file path to the R Markdown source file.

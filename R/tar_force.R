@@ -8,9 +8,18 @@
 #'   on top of [tar_change()]. Thus, a pair of targets is created:
 #'   an upstream auxiliary target to indicate the custom condition
 #'   and a downstream target that responds to it and does your work.
-#' @return A list of targets: one to indicate whether the custom
+#'
+#'   `tar_force()` does not actually use [tar_cue_force()], and the
+#'   mechanism is totally different.
+#'   Because the upstream target always runs,
+#'   `tar_outdated()` and `tar_visnetwork()` will always
+#'   show both targets as outdated. However, `tar_make()` will still
+#'   skip the downstream one if the upstream custom condition is not met.
+#' @return A list of 2 targets objects: one to indicate whether the custom
 #'   condition is met, and another to respond to it and do your
 #'   actual work.
+#'   See the "Target objects" section for background.
+#' @inheritSection tar_map Target objects
 #' @inheritParams targets::tar_target
 #' @param force R code for the condition that forces a build.
 #'   If it evaluates to `TRUE`, then your work will run during `tar_make()`.

@@ -58,6 +58,7 @@ targets::tar_test("tar_download() graph", {
 targets::tar_test("tar_download()", {
   skip_on_cran()
   skip_if_offline()
+  skip_if_not_installed("curl")
   targets::tar_script({
     list(
       tarchetypes::tar_download(

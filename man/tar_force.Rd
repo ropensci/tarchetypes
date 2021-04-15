@@ -248,9 +248,10 @@ to customize the rules that decide whether the target is up to date.
 Only applies to the downstream target. The upstream target always runs.}
 }
 \value{
-A list of targets: one to indicate whether the custom
+A list of 2 targets objects: one to indicate whether the custom
 condition is met, and another to respond to it and do your
 actual work.
+See the "Target objects" section for background.
 }
 \description{
 Create a target that always runs if a user-defined
@@ -262,7 +263,33 @@ when a custom condition is met. The implementation builds
 on top of \code{\link[=tar_change]{tar_change()}}. Thus, a pair of targets is created:
 an upstream auxiliary target to indicate the custom condition
 and a downstream target that responds to it and does your work.
+
+\code{tar_force()} does not actually use \code{\link[=tar_cue_force]{tar_cue_force()}}, and the
+mechanism is totally different.
+Because the upstream target always runs,
+\code{tar_outdated()} and \code{tar_visnetwork()} will always
+show both targets as outdated. However, \code{tar_make()} will still
+skip the downstream one if the upstream custom condition is not met.
 }
+\section{Target objects}{
+
+Most \code{tarchetypes} functions are target factories,
+which means they return target objects
+or lists of target objects.
+Target objects represent skippable steps of the analysis pipeline
+as described at \url{https://books.ropensci.org/targets/}.
+Please read the walkthrough at
+\url{https://books.ropensci.org/targets/walkthrough.html}
+to understand the role of target objects in analysis pipelines.
+
+For developers,
+\url{https://wlandau.github.io/targetopia/contributing.html#target-factories}
+explains target factories (functions like this one which generate targets)
+and the design specification at
+\url{https://books.ropensci.org/targets-design/}
+details the structure and composition of target objects.
+}
+
 \examples{
 if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({ # tar_dir() runs code from a temporary directory.

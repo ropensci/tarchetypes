@@ -1,11 +1,11 @@
 #' @title Expression with literate programming dependencies.
 #' @export
+#' @family Literate programming utilities
 #' @description Construct an expression whose global variable dependencies
 #'   are the target dependencies of one or more literate programming reports
 #'   (R Markdown or `knitr`). This helps third-party developers create their
 #'   own third-party target factories for literate programming targets
 #'   (similar to [tar_knit()] and [tar_render()]).
-#' @family Literate programming utilities
 #' @return Expression object to name the dependency targets
 #'   of the `knitr` report, which will be detected in the
 #'   static code analysis of `targets`.

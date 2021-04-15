@@ -245,16 +245,31 @@ rules that decide whether the target is up to date.}
 \value{
 A new target object to combine the return values
 from the upstream targets.
-Target objects represent skippable steps of the analysis pipeline
-as described at \url{https://books.ropensci.org/targets/}.
-Please see the design specification at
-\url{https://books.ropensci.org/targets-design/}
-to learn about the structure and composition of target objects.
+See the "Target objects" section for background.
 }
 \description{
 Like \code{\link[=tar_combine]{tar_combine()}} except the \code{name}, \code{command},
 and \code{pattern} arguments use standard evaluation.
 }
+\section{Target objects}{
+
+Most \code{tarchetypes} functions are target factories,
+which means they return target objects
+or lists of target objects.
+Target objects represent skippable steps of the analysis pipeline
+as described at \url{https://books.ropensci.org/targets/}.
+Please read the walkthrough at
+\url{https://books.ropensci.org/targets/walkthrough.html}
+to understand the role of target objects in analysis pipelines.
+
+For developers,
+\url{https://wlandau.github.io/targetopia/contributing.html#target-factories}
+explains target factories (functions like this one which generate targets)
+and the design specification at
+\url{https://books.ropensci.org/targets-design/}
+details the structure and composition of target objects.
+}
+
 \examples{
 if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({ # tar_dir() runs code from a temporary directory.
@@ -269,10 +284,10 @@ targets::tar_manifest()
 }
 }
 \seealso{
-Other Branching: 
+Other branching: 
 \code{\link{tar_combine}()},
 \code{\link{tar_map}()},
 \code{\link{tar_rep_raw}()},
 \code{\link{tar_rep}()}
 }
-\concept{Branching}
+\concept{branching}

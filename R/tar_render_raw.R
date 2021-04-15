@@ -1,12 +1,12 @@
 #' @title Target with an R Markdown document (raw version).
 #' @export
+#' @family Literate programming targets
 #' @description Shorthand to include an R Markdown document in a
 #'   `targets` pipeline (raw version)
 #' @details `tar_render_raw()` is just like `tar_render()`
 #'   except that it uses standard evaluation. The `name` argument
 #'   is a character vector, and the `render_arguments` argument
 #'   is a language object.
-#' @family Literate programming targets
 #' @return A target object with `format = "file"`.
 #'   When this target runs, it returns a character vector
 #'   of file paths: the rendered document, the source file,
@@ -15,12 +15,8 @@
 #'   all returned paths are *relative* paths to ensure portability
 #'   (so that the project can be moved from one file system to another
 #'   without invalidating the target).
-#'
-#'   Target objects represent skippable steps of the analysis pipeline
-#'   as described at <https://books.ropensci.org/targets/>.
-#'   Please see the design specification at
-#'   <https://books.ropensci.org/targets-design/>
-#'   to learn about the structure and composition of target objects.
+#'   See the "Target objects" section for background.
+#' @inheritSection tar_map Target objects
 #' @inheritParams tar_render
 #' @param name Character of length 1, name of the target.
 #' @param render_arguments Optional language object with a list

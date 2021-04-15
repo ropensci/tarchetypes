@@ -9,14 +9,17 @@
 #'   downstream target, which causes the downstream target to rerun
 #'   if the auxiliary value changes. The behavior is cancelled if
 #'   `cue` is `tar_cue(depend = FALSE)` or `tar_cue(mode = "never")`.
+#'
+#'   Because the upstream target always runs,
+#'   `tar_outdated()` and `tar_visnetwork()` will always
+#'   show both targets as outdated. However, `tar_make()` will still
+#'   skip the downstream one if the upstream target
+#'   did not detect a change.
 #' @return A list of two target objects, one upstream and one downstream.
 #'   The upstream one triggers the change, and the downstream one
-#'   responds to it. See the examples for details.
-#'   Target objects represent skippable steps of the analysis pipeline
-#'   as described at <https://books.ropensci.org/targets/>.
-#'   Please see the design specification at
-#'   <https://books.ropensci.org/targets-design/>
-#'   to learn about the structure and composition of target objects.
+#'   responds to it.
+#'   See the "Target objects" section for background.
+#' @inheritSection tar_map Target objects
 #' @inheritParams targets::tar_target
 #' @param change R code for the upstream change-inducing target.
 #' @param tidy_eval Whether to invoke tidy evaluation

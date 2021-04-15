@@ -13,12 +13,9 @@
 #'   and tracks them using `format = "file"`.
 #' @return A list of two target objects, one upstream and one downstream.
 #'   The upstream one watches a URL for changes, and the downstream one
-#'   downloads it. See the examples for details.
-#'   Target objects represent skippable steps of the analysis pipeline
-#'   as described at <https://books.ropensci.org/targets/>.
-#'   Please see the design specification at
-#'   <https://books.ropensci.org/targets-design/>
-#'   to learn about the structure and composition of target objects.
+#'   downloads it.
+#'   See the "Target objects" section for background.
+#' @inheritSection tar_map Target objects
 #' @inheritParams targets::tar_target
 #' @inheritParams tar_download_run
 #' @examples
