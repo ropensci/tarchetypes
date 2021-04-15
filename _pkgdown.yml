@@ -59,7 +59,10 @@ reference:
   - '`tar_force`'
   - '`tar_skip`'
 - title: Cues
+  contents:
+  - '`tar_cue_age`'
   - '`tar_cue_force`'
+  - '`tar_cue_skip`'
 - title: Pipeline factories
   contents:
   - '`tar_plan`'

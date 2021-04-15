@@ -1,6 +1,6 @@
 # tarchetypes 0.1.1.9000
 
-* Implement new cue factories `tar_cue_force()`, `tar_cue_skip()` (#39).
+* Implement new cue factories `tar_cue_age()`, `tar_cue_force()`, and `tar_cue_skip()` (#39).
 * Implement `tar_download()` (#38, @noamross, @petrbouchal)
 * Set intermediate temporary directory to remove race condition in `tar_render_rep()` (#36, @gorgitko). 
 * Prefix internal condition classes with "tar_".
