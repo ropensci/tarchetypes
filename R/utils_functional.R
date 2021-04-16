@@ -1,4 +1,4 @@
-fltr <- function (x, f, ...) {
+fltr <- function(x, f, ...) {
   index <- map_lgl(x, f, ...)
   x[index]
 }
@@ -15,7 +15,7 @@ map_int <- function(x, f, ...) {
   vapply(X = x, FUN = as_function(f), FUN.VALUE = integer(1), ...)
 }
 
-map_lgl <- function (x, f, ...) {
+map_lgl <- function(x, f, ...) {
   vapply(X = x, FUN = as_function(f), FUN.VALUE = logical(1), ...)
 }
 

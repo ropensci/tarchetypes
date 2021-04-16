@@ -40,7 +40,7 @@ targets::tar_test("tar_plan() still allows tidy eval", {
 })
 
 targets::tar_test("tar_plan() allows trailing commas", {
-  out <- tar_plan(a = 1,)
+  out <- tar_plan(a = 1, )
   expect_equal(length(out), 1L)
   expect_true(inherits(out[[1]], "tar_target"))
 })
