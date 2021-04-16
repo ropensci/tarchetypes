@@ -38,3 +38,9 @@ targets::tar_test("tar_plan() still allows tidy eval", {
   out <- tar_manifest(w, callr_function = NULL)
   expect_equal(out$command, "!!w_val")
 })
+
+targets::tar_test("tar_plan() allows trailing commas", {
+  out <- tar_plan(a = 1,)
+  expect_equal(length(out), 1L)
+  expect_true(inherits(out[[1]], "tar_target"))
+})

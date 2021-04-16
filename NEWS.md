@@ -1,5 +1,6 @@
 # tarchetypes 0.1.1.9000
 
+* Allow trailing commas in `tar_plan()` (#40, @kendonB).
 * Implement `tar_age()` based on `tar_cue_age()` (#39, @petrbouchal).
 * Implement new cue factories `tar_cue_age()`, `tar_cue_age_raw()`, `tar_cue_force()`, and `tar_cue_skip()` (#39).
 * Implement `tar_download()` (#38, @noamross, @petrbouchal)

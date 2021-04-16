@@ -35,6 +35,7 @@ tar_plan <- function(...) {
 }
 
 tar_plan_parse <- function(commands) {
+  commands <- fltr(commands, ~!rlang::is_missing(.x))
   names <- names(commands) %|||% rep("", length(commands))
   is_named <- !is.na(names) & nzchar(names)
   commands[is_named] <- tar_plan_parse_named(commands[is_named])
