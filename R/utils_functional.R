@@ -1,8 +1,3 @@
-fltr <- function(x, f, ...) {
-  index <- map_lgl(x, f, ...)
-  x[index]
-}
-
 map <- function(x, f, ...) {
   lapply(X = x, FUN = as_function(f), ...)
 }
