@@ -33,9 +33,45 @@ assert_envir <- function(x, msg = NULL) {
   }
 }
 
+assert_expr <- function(x, msg = NULL) {
+  if (!is.expression(x)) {
+    throw_validate(msg %|||% "x must be an expression.")
+  }
+}
+
 assert_ge <- function(x, threshold, msg = NULL) {
   if (any(x < threshold)) {
     throw_validate(msg %|||% paste("x is less than", threshold))
+  }
+}
+
+assert_hook_expr <- function(target) {
+  name <- target$settings$name
+  assert_expr(
+    target$command$expr,
+    paste("command of target", name, "is not an expression.")
+  )
+  assert_scalar(
+    target$command$expr,
+    paste0(
+      "hooks are only supported if the command of the ",
+      "target is an expression of length 1. Target ",
+      name,
+      " has a command of length ",
+      length(target$command$expr),
+      "."
+    )
+  )
+}
+
+assert_hook_placeholder <- function(x, msg = NULL) {
+  if (!(".x" %in% all.names(x))) {
+    default_msg <- paste(
+      "inner and outer hooks must contain the symbol .x",
+      "so tarchetypes knows where to substitute the original",
+      "commands/variables."
+    )
+    throw_validate(msg %|||% default_msg)
   }
 }
 
@@ -108,9 +144,9 @@ assert_nonempty <- function(x, msg = NULL) {
   }
 }
 
-assert_nzchar <- function(x, msg = NULL) {
-  if (any(!nzchar(x))) {
-    throw_validate(msg %|||% "x has empty character strings")
+assert_nonmissing <- function(x, msg = NULL) {
+  if (rlang::is_missing(x)) {
+    throw_validate(msg %|||% "value missing with no default.")
   }
 }
 
@@ -136,7 +172,7 @@ assert_not_in <- function(x, choices, msg = NULL) {
   }
 }
 
-assert_nzchr <- function(x, msg = NULL) {
+assert_nzchar <- function(x, msg = NULL) {
   if (any(!nzchar(x))) {
     throw_validate(msg %|||% "x must not have empty strings.")
   }
@@ -167,8 +203,14 @@ assert_scalar <- function(x, msg = NULL) {
   }
 }
 
-assert_targets <- function(x) {
-  map(x, assert_inherits, class = "tar_target", msg = "... must have targets")
+assert_targets <- function(x, msg = NULL) {
+  map(
+    x,
+    assert_inherits,
+    class = "tar_target",
+    msg = msg %|||% "... must have targets"
+  )
+  invisible()
 }
 
 assert_unique <- function(x, msg = NULL) {
@@ -183,7 +225,7 @@ assert_values_list <- function(values) {
   assert_nonempty(names(values), "names(values) must not be empty.")
   assert_unique(names(values), "names(values) must be unique.")
   assert_chr(names(values), "names(values) must be a character.")
-  assert_nzchr(names(values), "names(values) must not have empty strings.")
+  assert_nzchar(names(values), "names(values) must not have empty strings.")
   assert_names(names(values), "names(values) must be legal symbol names.")
   assert_nonempty(values, "values in tar_map() must not be empty.")
   assert_equal_lengths(values, "values must have equal-length elements.")

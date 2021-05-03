@@ -1,4 +1,4 @@
-tar_test("walk_ast() with walk_call_knitr()", {
+targets::tar_test("walk_ast() with walk_call_knitr()", {
   expr <- quote({
     if (a > 1) {
       tar_load(target_name)
@@ -8,7 +8,7 @@ tar_test("walk_ast() with walk_call_knitr()", {
   expect_equal(walk_ast(expr, walk_call_knitr), "target_name")
 })
 
-tar_test("walk_ast() with custom walker", {
+targets::tar_test("walk_ast() with custom walker", {
   walk_custom <- function(expr, counter) {
     name <- deparse(expr[[1]])
     if (identical(name, "detect_this")) {
