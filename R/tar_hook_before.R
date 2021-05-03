@@ -56,7 +56,8 @@ tar_hook_before <- function(targets, hook, names = NULL) {
 
 tar_hook_before_insert <- function(target, hook) {
   expr <- target$command$expr
-  assert_nonmissing(expr[[1]], paste("target", name, "has no command."))
+  msg <- paste("target", target$settings$name, "has no command.")
+  assert_nonmissing(expr[[1]], msg)
   expr[[1]] <- call_brace(list(hook, expr[[1]]))
   tar_replace_command(target = target, expr = expr)
 }
