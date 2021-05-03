@@ -55,8 +55,6 @@ tar_hook_inner <- function(targets, hook, names = NULL, names_wrap = NULL) {
     hook = hook,
     names_wrap_quosure = names_wrap_quosure
   )
-  
-  
   walk_targets(
     targets = targets,
     names_quosure = names_quosure,
