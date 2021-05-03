@@ -1,4 +1,4 @@
-# tar_test() runs code from a temporary directory
+# targets::tar_test() runs code from a temporary directory
 # to avoid writing to the user's file space.
 targets::tar_test("tar_render_raw() works", {
   skip_pandoc()

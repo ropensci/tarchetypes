@@ -25,7 +25,7 @@ targets::tar_test("assert_dbl()", {
   expect_error(assert_dbl(letters), class = "tar_condition_validate")
 })
 
-tar_test("assert_df()", {
+targets::tar_test("assert_df()", {
   expect_silent(assert_df(data.frame(x = 1)))
   expect_error(assert_df(TRUE), class = "tar_condition_validate")
 })
