@@ -21,7 +21,6 @@ targets::tar_test("tar_hook_inner() inserts code", {
       hook = f(.x, "Running hook."),
       names = NULL
     )
-    targets
   })
   out <- targets::tar_manifest(callr_function = NULL)
   expect_equal(sort(out$name), sort(c("x1", "x2", "x3", "y1")))
@@ -43,7 +42,6 @@ targets::tar_test("tar_hook_inner() with tidyselect", {
       hook = f(.x, "Running hook."),
       names = tidyselect::starts_with("x")
     )
-    targets
   })
   out <- targets::tar_manifest(callr_function = NULL)
   expect_equal(sort(out$name), sort(c("x1", "x2", "x3", "y1")))
@@ -68,7 +66,6 @@ targets::tar_test("tar_hook_inner() with tidyselect on names_wrap", {
       hook = f(.x, "Running hook."),
       names_wrap = tidyselect::all_of(c("x2", "x3"))
     )
-    targets
   })
   out <- targets::tar_manifest(callr_function = NULL)
   expect_equal(sort(out$name), sort(c("x1", "x2", "x3", "y1")))
@@ -105,17 +102,18 @@ targets::tar_test("tar_hook_inner() with no replacement", {
   }
   expect_equal(x$store$resources, y$store$resources)
   # Apply the hook.
+  z <- tar_hook_inner(y, f(.x))[[1]]
   for (field in c("packages", "library", "deps", "seed", "string", "hash")) {
-    expect_equal(x$command[[field]], y$command[[field]])
+    expect_equal(x$command[[field]], z$command[[field]])
   }
   for (field in setdiff(names(x$settings), "pattern")) {
-    expect_equal(x$settings[[field]], y$settings[[field]])
+    expect_equal(x$settings[[field]], z$settings[[field]])
   }
-  expect_equal(deparse(x$settings$pattern), deparse(y$settings$pattern))
+  expect_equal(deparse(x$settings$pattern), deparse(z$settings$pattern))
   for (field in names(x$cue)) {
-    expect_equal(x$cue[[field]], y$cue[[field]])
+    expect_equal(x$cue[[field]], z$cue[[field]])
   }
-  expect_equal(x$store$resources, y$store$resources)
+  expect_equal(x$store$resources, z$store$resources)
 })
 
 targets::tar_test("tar_hook_inner() changes internals properly", {
@@ -145,7 +143,7 @@ targets::tar_test("tar_hook_inner() changes internals properly", {
   }
   expect_equal(x$store$resources, y$store$resources)
   # Apply the hook.
-  tar_hook_inner(list(y, tar_target(b, 1)), f(.x))
+  y <- tar_hook_inner(list(y, tar_target(b, 1)), f(.x))[[1]]
   # Most elements should stay the same
   for (field in c("packages", "library", "seed")) {
     expect_equal(x$command[[field]], y$command[[field]])
@@ -175,7 +173,6 @@ targets::tar_test("inner hook runs", {
       targets::tar_target(b, a)
     )
     tar_hook_inner(x, c(.x, "x2"))
-    x
   })
   targets::tar_make(callr_function = NULL)
   expect_equal(targets::tar_read(b), c("x1", "x2"))
@@ -185,7 +182,6 @@ targets::tar_test("inner hook can work with an empty command", {
   targets::tar_script({
     x <- targets::tar_target("a", NULL)
     tar_hook_inner(x, identity(.x))
-    x
   })
   targets::tar_make(callr_function = NULL)
   expect_equal(targets::tar_read(a), NULL)
@@ -197,7 +193,6 @@ targets::tar_test("inner hook invalidates target", {
       targets::tar_target(a, "x1"),
       targets::tar_target(b, a)
     )
-    x
   })
   targets::tar_make(callr_function = NULL)
   expect_equal(targets::tar_outdated(callr_function = NULL), character(0))
@@ -207,7 +202,6 @@ targets::tar_test("inner hook invalidates target", {
       targets::tar_target(b, a)
     )
     tar_hook_inner(x, c(.x, "y2"))
-    x
   })
   expect_equal(targets::tar_outdated(callr_function = NULL), "b")
   targets::tar_make(callr_function = NULL)

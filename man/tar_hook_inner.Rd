@@ -32,7 +32,10 @@ You can supply symbols, a character vector,
 or tidyselect helpers like \code{\link[=starts_with]{starts_with()}}.}
 }
 \value{
-\code{NULL} (invisibly). The target objects are modified in place.
+A flattened list of target objects with the hooks applied.
+Even if the input target list had a nested structure,
+the return value is a simple list where each element is a target object.
+All hook functions remove the nested structure of the input target list.
 }
 \description{
 In the command of each target, wrap each mention of
@@ -76,13 +79,11 @@ targets::tar_script({
     targets::tar_target(x3, task3(x2, x1)),
     targets::tar_target(y1, task4(x3))
   )
-  # Modifies target objects in place and invisibly returns NULL:
   tarchetypes::tar_hook_inner(
     targets = targets,
     hook = fun(.x),
     names = starts_with("x")
   )
-  targets # Return the target list.
 })
 targets::tar_manifest(fields = command)
 })

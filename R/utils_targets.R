@@ -38,7 +38,8 @@ tar_replace_command <- function(target, expr) {
     name = target$settings$name,
     command = expr,
     packages = target$command$packages,
-    library = target$command$library
+    library = target$command$library,
+    pattern = target$settings$pattern
   )
   target$command <- pilot$command
   invisible()
