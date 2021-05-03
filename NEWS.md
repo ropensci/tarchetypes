@@ -7,6 +7,7 @@
 * Set intermediate temporary directory to remove race condition in `tar_render_rep()` (#36, @gorgitko). 
 * Prefix internal condition classes with "tar_".
 * Add new format helpers such as `tar_aws_rds()` and `tar_parquet()`.
+* Support hooks `tar_hook_before()`, `tar_hook_inner()`, and `tar_hook_outer()` (#44).
 
 # tarchetypes 0.1.1
 
