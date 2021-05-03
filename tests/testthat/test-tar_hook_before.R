@@ -94,3 +94,12 @@ targets::tar_test("tar_hook_before() changes internals properly", {
   expect_false("f" %in% x$command$deps)
   expect_true(all(c("b", "f") %in% y$command$deps))
 })
+
+targets::tar_test("dep removed when global turns local", {
+  x <- targets::tar_target("a", b)
+  y <- targets::tar_target("a", b)
+  tar_hook_before(y, b <- 1)
+  y$command$expr
+  expect_true("b" %in% x$command$deps)
+  expect_false("b" %in% y$command$deps)
+})
