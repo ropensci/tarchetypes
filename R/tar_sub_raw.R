@@ -30,9 +30,13 @@ tar_sub_raw <- function(expr, values) {
 }
 
 tar_sub_expr <- function(expr, values) {
-  lang <- substitute(
+  as.expression(tar_sub_lang(expr, values))
+}
+
+tar_sub_lang <- function(expr, values) {
+  out <- substitute(
     substitute(expr = expr, env = env),
     env = list(expr = expr, env = values)
   )
-  as.expression(eval(lang))
+  eval(out)
 }

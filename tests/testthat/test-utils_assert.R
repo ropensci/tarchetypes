@@ -30,13 +30,23 @@ tar_test("assert_df()", {
   expect_error(assert_df(TRUE), class = "tar_condition_validate")
 })
 
-tar_test("assert_ge()", {
+targets::tar_test("assert_envir()", {
+  expect_silent(assert_envir(emptyenv()))
+  expect_error(assert_envir(letters), class = "tar_condition_validate")
+})
+
+targets::tar_test("assert_expr", {
+  expect_silent(assert_expr(expression("x")))
+  expect_error(assert_expr(quote(x + x)), class = "tar_condition_validate")
+})
+
+targets::tar_test("assert_ge()", {
   expect_silent(assert_ge(2L, 1L))
   expect_silent(assert_ge(2L, 2L))
   expect_error(assert_ge(1L, 2L), class = "tar_condition_validate")
 })
 
-tar_test("assert_hook_placeholder", {
+targets::tar_test("assert_hook_placeholder", {
   expect_silent(assert_hook_placeholder(quote(f(.x))))
   expect_silent(assert_hook_placeholder(expression(f(.x))))
   expect_error(
@@ -45,7 +55,23 @@ tar_test("assert_hook_placeholder", {
   )
 })
 
-tar_test("assert_in()", {
+targets::tar_test("assert_hook_expr", {
+  expect_silent(assert_hook_expr(tar_target(x, f())))
+  expect_silent(assert_hook_expr(tar_target(x, NULL)))
+  x <- tar_target(y, 1)
+  x$command$expr <- 123
+  expect_error(
+    assert_hook_expr(x),
+    class = "tar_condition_validate"
+  )
+  x$command$expr <- expression(z <- 1, z)
+  expect_error(
+    assert_hook_expr(x),
+    class = "tar_condition_validate"
+  )
+})
+
+targets::tar_test("assert_in()", {
   expect_silent(assert_in("x", letters))
   expect_error(assert_in("xyz", letters), class = "tar_condition_validate")
 })
@@ -89,7 +115,7 @@ targets::tar_test("assert_nonempty()", {
   expect_error(assert_nonempty(list()), class = "tar_condition_validate")
 })
 
-tar_test("assert_nonmissing()", {
+targets::tar_test("assert_nonmissing()", {
   expect_silent(assert_nonmissing("abc"))
   expect_error(
     assert_nonmissing(substitute()),
@@ -136,11 +162,6 @@ targets::tar_test("assert_identical_chr()", {
 targets::tar_test("assert_scalar()", {
   expect_silent(assert_scalar(1))
   expect_error(assert_scalar(letters), class = "tar_condition_validate")
-})
-
-targets::tar_test("assert_envir()", {
-  expect_silent(assert_envir(emptyenv()))
-  expect_error(assert_envir(letters), class = "tar_condition_validate")
 })
 
 targets::tar_test("assert_unique()", {

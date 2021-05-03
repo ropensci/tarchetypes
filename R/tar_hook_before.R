@@ -9,6 +9,11 @@
 #'   the commands of target objects and invisibly return `NULL`.
 #'   Users are responsible for fully populating the final target list
 #'   at the end of `_targets.R`.
+#'   In addition, hooks are only supported for targets whose commands
+#'   are expressions of length 1. So if you create targets with
+#'   multi-length expressions,
+#'   e.g. `tar_target_raw(x, expression(y <- 1, y))`,
+#'   then the hook functions will throw errors.
 #' @param targets A list of target objects.
 #' @param hook R code to insert. When you supply code to this argument,
 #'   the code is quoted (not evaluated) so there is no need
@@ -56,7 +61,8 @@ tar_hook_before <- function(targets, hook, names = NULL) {
 }
 
 tar_hook_before_insert <- function(target, hook) {
-  expr <- target$command$expr
-  expr <- as.expression(call_brace(list(hook, call_brace(expr))))
+  assert_hook_expr(target)
+  lang <- target$command$expr[[1]]
+  expr <- as.expression(call_brace(list(hook, lang)))
   tar_replace_command(target = target, expr = expr)
 }

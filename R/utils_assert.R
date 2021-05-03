@@ -33,10 +33,35 @@ assert_envir <- function(x, msg = NULL) {
   }
 }
 
+assert_expr <- function(x, msg = NULL) {
+  if (!is.expression(x)) {
+    throw_validate(msg %|||% "x must be an expression.")
+  }
+}
+
 assert_ge <- function(x, threshold, msg = NULL) {
   if (any(x < threshold)) {
     throw_validate(msg %|||% paste("x is less than", threshold))
   }
+}
+
+assert_hook_expr <- function(target) {
+  name <- target$settings$name
+  assert_expr(
+    target$command$expr,
+    paste("command of target", name, "is not an expression.")
+  )
+  assert_scalar(
+    target$command$expr,
+    paste0(
+      "hooks are only supported if the command of the ",
+      "target is an expression of length 1. Target ",
+      name,
+      " has a command of length ",
+      length(target$command$expr),
+      "."
+    )
+  )
 }
 
 assert_hook_placeholder <- function(x, msg = NULL) {
