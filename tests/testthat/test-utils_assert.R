@@ -80,9 +80,12 @@ targets::tar_test("assert_nonempty()", {
   expect_error(assert_nonempty(list()), class = "tar_condition_validate")
 })
 
-targets::tar_test("assert_nzchar()", {
-  expect_silent(assert_nzchar(c("a", "b")))
-  expect_error(assert_nzchar(c("", "b")), class = "tar_condition_validate")
+tar_test("assert_nonmissing()", {
+  expect_silent(assert_nonmissing("abc"))
+  expect_error(
+    assert_nonmissing(substitute()),
+    class = "tar_condition_validate"
+  )
 })
 
 targets::tar_test("assert_not_dirs()", {

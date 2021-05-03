@@ -65,12 +65,17 @@ reference:
   - '`tar_cue_age_raw`'
   - '`tar_cue_force`'
   - '`tar_cue_skip`'
-- title: Pipeline factories
+- title: Hooks
   contents:
-  - '`tar_plan`'
+  - '`tar_hook_before`'
+  - '`tar_hook_inner`'
+  - '`tar_hook_outer`'
 - title: Metaprogramming utilities
   contents:
   - '`tar_eval`'
   - '`tar_eval_raw`'
   - '`tar_sub`'
   - '`tar_sub_raw`'
+- title: DSLs
+  contents:
+  - '`tar_plan`'

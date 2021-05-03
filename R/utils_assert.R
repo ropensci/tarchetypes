@@ -108,9 +108,9 @@ assert_nonempty <- function(x, msg = NULL) {
   }
 }
 
-assert_nzchar <- function(x, msg = NULL) {
-  if (any(!nzchar(x))) {
-    throw_validate(msg %|||% "x has empty character strings")
+assert_nonmissing <- function(x, msg = NULL) {
+  if (rlang::is_missing(x)) {
+    throw_validate(msg %|||% "value missing with no default.")
   }
 }
 
@@ -167,8 +167,14 @@ assert_scalar <- function(x, msg = NULL) {
   }
 }
 
-assert_targets <- function(x) {
-  map(x, assert_inherits, class = "tar_target", msg = "... must have targets")
+assert_targets <- function(x, msg = NULL) {
+  map(
+    x,
+    assert_inherits,
+    class = "tar_target",
+    msg = msg %|||% "... must have targets"
+  )
+  invisible()
 }
 
 assert_unique <- function(x, msg = NULL) {
