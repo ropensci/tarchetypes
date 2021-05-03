@@ -7,7 +7,11 @@
 tar_hook_inner(targets, hook, names = NULL, names_wrap = NULL)
 }
 \arguments{
-\item{targets}{A list of target objects.}
+\item{targets}{A list of target objects. The input target list
+can be arbitrarily nested, but it must consist entirely of target
+objects. In addition, the return value is a simple list
+where each element is a target object.
+All hook functions remove the nested structure of the input target list.}
 
 \item{hook}{R code to wrap each target's command.
 The hook must contain the special placeholder symbol \code{.x}

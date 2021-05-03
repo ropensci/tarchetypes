@@ -7,7 +7,11 @@
 tar_hook_outer(targets, hook, names = NULL)
 }
 \arguments{
-\item{targets}{A list of target objects.}
+\item{targets}{A list of target objects. The input target list
+can be arbitrarily nested, but it must consist entirely of target
+objects. In addition, the return value is a simple list
+where each element is a target object.
+All hook functions remove the nested structure of the input target list.}
 
 \item{hook}{R code to wrap each target's command.
 The hook must contain the special placeholder symbol \code{.x}
@@ -23,7 +27,10 @@ Targets not included in \code{names} still remain in the target list,
 but they are not modified because the hook does not apply to them.}
 }
 \value{
-\code{NULL} (invisibly). The target objects are modified in place.
+A flattened list of target objects with the hooks applied.
+Even if the input target list had a nested structure,
+the return value is a simple list where each element is a target object.
+All hook functions remove the nested structure of the input target list.
 }
 \description{
 Wrap the command of each target in an arbitrary R expression.
@@ -66,13 +73,11 @@ targets::tar_script({
     targets::tar_target(x3, task3(x2)),
     targets::tar_target(y1, task4(x3))
   )
-  # Modifies target objects in place and invisibly returns NULL:
   tarchetypes::tar_hook_outer(
     targets = targets,
     hook = postprocess(.x, arg = "value"),
     names = starts_with("x")
   )
-  targets # Return the target list.
 })
 targets::tar_manifest(fields = command)
 })

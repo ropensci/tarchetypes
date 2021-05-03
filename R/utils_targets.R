@@ -1,5 +1,7 @@
 tar_copy_targets <- function(targets) {
   targets <- unlist(list(targets), recursive = TRUE)
+  msg <- "expected a target list but found non-target objects."
+  assert_targets(targets, msg)
   lapply(targets, tar_copy_target)
 }
 

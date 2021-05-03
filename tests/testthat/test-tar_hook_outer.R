@@ -21,7 +21,6 @@ targets::tar_test("tar_hook_outer() inserts code", {
       hook = f(.x, "Running hook."),
       names = NULL
     )
-    targets
   })
   out <- targets::tar_manifest(callr_function = NULL)
   expect_equal(sort(out$name), sort(c("x1", "x2", "x3", "y1")))
@@ -43,7 +42,6 @@ targets::tar_test("tar_hook_outer() with tidyselect", {
       hook = f(.x, "Running hook."),
       names = tidyselect::starts_with("x")
     )
-    targets
   })
   out <- targets::tar_manifest(callr_function = NULL)
   expect_equal(sort(out$name), sort(c("x1", "x2", "x3", "y1")))
@@ -80,7 +78,7 @@ targets::tar_test("tar_hook_outer() changes internals properly", {
   }
   expect_equal(x$store$resources, y$store$resources)
   # Apply the hook.
-  tar_hook_outer(y, f(.x))
+  y <- tar_hook_outer(y, f(.x))[[1]]
   # Most elements should stay the same
   for (field in c("packages", "library", "seed")) {
     expect_equal(x$command[[field]], y$command[[field]])
@@ -107,7 +105,6 @@ targets::tar_test("outer hook runs", {
   targets::tar_script({
     x <- targets::tar_target("a", "x1")
     tar_hook_outer(x, c(.x, "x2"))
-    x
   })
   targets::tar_make(callr_function = NULL)
   expect_equal(targets::tar_read(a), c("x1", "x2"))
@@ -117,7 +114,6 @@ targets::tar_test("outer hook can work with an empty command", {
   targets::tar_script({
     x <- targets::tar_target("a", NULL)
     tar_hook_outer(x, identity(.x))
-    x
   })
   targets::tar_make(callr_function = NULL)
   expect_equal(targets::tar_read(a), NULL)
@@ -128,7 +124,6 @@ targets::tar_test("outer hook can work with a symbol command", {
     y <- "y123"
     x <- targets::tar_target("a", y)
     tar_hook_outer(x, identity(.x))
-    x
   })
   targets::tar_make(callr_function = NULL)
   expect_equal(targets::tar_read(a), "y123")
@@ -137,14 +132,12 @@ targets::tar_test("outer hook can work with a symbol command", {
 targets::tar_test("outer hook invalidates target", {
   targets::tar_script({
     x <- targets::tar_target("a", "y")
-    x
   })
   targets::tar_make(callr_function = NULL)
   expect_equal(targets::tar_outdated(callr_function = NULL), character(0))
   targets::tar_script({
     x <- targets::tar_target("a", "y")
     tar_hook_outer(x, c(.x, "y2"))
-    x
   })
   expect_equal(targets::tar_outdated(callr_function = NULL), "a")
   targets::tar_make(callr_function = NULL)

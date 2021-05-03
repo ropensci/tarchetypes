@@ -6,9 +6,11 @@
 #'   must contain the special placeholder symbol `.x`
 #'   so `tar_hook_outer()` knows where to insert the original command
 #'   of the target.
-#' @return `NULL` (invisibly). The target objects are modified in place.
+#' @return A flattened list of target objects with the hooks applied.
+#'   Even if the input target list had a nested structure,
+#'   the return value is a simple list where each element is a target object.
+#'   All hook functions remove the nested structure of the input target list.
 #' @inheritSection tar_map Target objects
-#' @inheritSection tar_hook_before Hooks
 #' @inheritParams tar_hook_before
 #' @param hook R code to wrap each target's command.
 #'   The hook must contain the special placeholder symbol `.x`
@@ -29,18 +31,17 @@
 #'     targets::tar_target(x3, task3(x2)),
 #'     targets::tar_target(y1, task4(x3))
 #'   )
-#'   # Modifies target objects in place and invisibly returns NULL:
 #'   tarchetypes::tar_hook_outer(
 #'     targets = targets,
 #'     hook = postprocess(.x, arg = "value"),
 #'     names = starts_with("x")
 #'   )
-#'   targets # Return the target list.
 #' })
 #' targets::tar_manifest(fields = command)
 #' })
 #' }
 tar_hook_outer <- function(targets, hook, names = NULL) {
+  targets <- tar_copy_targets(targets)
   hook <- substitute(hook)
   assert_lang(hook)
   assert_hook_placeholder(hook)
@@ -51,7 +52,7 @@ tar_hook_outer <- function(targets, hook, names = NULL) {
     fun = tar_hook_outer_insert,
     hook = hook
   )
-  invisible()
+  targets
 }
 
 tar_hook_outer_insert <- function(target, hook) {

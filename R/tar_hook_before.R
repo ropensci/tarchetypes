@@ -5,8 +5,13 @@
 #' @return A flattened list of target objects with the hooks applied.
 #'   Even if the input target list had a nested structure,
 #'   the return value is a simple list where each element is a target object.
+#'   All hook functions remove the nested structure of the input target list.
 #' @inheritSection tar_map Target objects
-#' @param targets A list of target objects.
+#' @param targets A list of target objects. The input target list
+#'   can be arbitrarily nested, but it must consist entirely of target
+#'   objects. In addition, the return value is a simple list
+#'   where each element is a target object.
+#'   All hook functions remove the nested structure of the input target list.
 #' @param hook R code to insert. When you supply code to this argument,
 #'   the code is quoted (not evaluated) so there is no need
 #'   to wrap it in `quote()`, `expression()`, or similar.
