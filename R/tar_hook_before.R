@@ -2,18 +2,10 @@
 #' @export
 #' @family hooks
 #' @description Prepend R code to the commands of multiple targets.
-#' @return `NULL` (invisibly). The target objects are modified in place.
+#' @return A flattened list of target objects with the hooks applied.
+#'   Even if the input target list had a nested structure,
+#'   the return value is a simple list where each element is a target object.
 #' @inheritSection tar_map Target objects
-#' @section Hooks:
-#'   Hook functions make in-place modifications to
-#'   the commands of target objects and invisibly return `NULL`.
-#'   Users are responsible for fully populating the final target list
-#'   at the end of `_targets.R`.
-#'   In addition, hooks are only supported for targets whose commands
-#'   are expressions of length 1. So if you create targets with
-#'   multi-length expressions,
-#'   e.g. `tar_target_raw(x, expression(y <- 1, y))`,
-#'   then the hook functions will throw errors.
 #' @param targets A list of target objects.
 #' @param hook R code to insert. When you supply code to this argument,
 #'   the code is quoted (not evaluated) so there is no need
@@ -36,18 +28,17 @@
 #'     targets::tar_target(x3, task3(x2)),
 #'     targets::tar_target(y1, task4(x3))
 #'   )
-#'   # Modifies target objects in place and invisibly returns NULL:
 #'   tarchetypes::tar_hook_before(
 #'     targets = targets,
 #'     hook = print("Running hook."),
 #'     names = starts_with("x")
 #'   )
-#'   targets # Return the target list.
 #' })
 #' targets::tar_manifest(fields = command)
 #' })
 #' }
 tar_hook_before <- function(targets, hook, names = NULL) {
+  targets <- tar_copy_targets(targets)
   hook <- substitute(hook)
   assert_lang(hook)
   names_quosure <- rlang::enquo(names)
@@ -57,7 +48,7 @@ tar_hook_before <- function(targets, hook, names = NULL) {
     fun = tar_hook_before_insert,
     hook = hook
   )
-  invisible()
+  targets
 }
 
 tar_hook_before_insert <- function(target, hook) {

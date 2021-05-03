@@ -59,19 +59,6 @@ and the design specification at
 details the structure and composition of target objects.
 }
 
-\section{Hooks}{
-
-Hook functions make in-place modifications to
-the commands of target objects and invisibly return \code{NULL}.
-Users are responsible for fully populating the final target list
-at the end of \verb{_targets.R}.
-In addition, hooks are only supported for targets whose commands
-are expressions of length 1. So if you create targets with
-multi-length expressions,
-e.g. \code{tar_target_raw(x, expression(y <- 1, y))},
-then the hook functions will throw errors.
-}
-
 \examples{
 if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({ # tar_dir() runs code from a temporary directory.

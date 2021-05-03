@@ -58,17 +58,6 @@ substitute_lang <- function(lang, env) {
   eval(call_substitute(lang, env), envir = baseenv())
 }
 
-tar_replace_command <- function(target, expr) {
-  pilot <- targets::tar_target_raw(
-    name = target$settings$name,
-    command = expr,
-    packages = target$command$packages,
-    library = target$command$library
-  )
-  target$command <- pilot$command
-  invisible()
-}
-
 tar_tidy_eval <- function(expr, envir, tidy_eval) {
   if (tidy_eval) {
     expr <- as.call(c(quote(rlang::expr), expr))
