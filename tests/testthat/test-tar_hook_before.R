@@ -33,7 +33,7 @@ targets::tar_test("tar_hook_before() with tidyselect", {
     tarchetypes::tar_hook_before(
       targets = targets,
       hook = print("Running hook."),
-      names = starts_with("x")
+      names = tidyselect::starts_with("x")
     )
     targets
   })
@@ -102,4 +102,38 @@ targets::tar_test("dep removed when global turns local", {
   y$command$expr
   expect_true("b" %in% x$command$deps)
   expect_false("b" %in% y$command$deps)
+})
+
+targets::tar_test("hook runs", {
+  targets::tar_script({
+    x <- targets::tar_target("a", b)
+    x
+  })
+  expect_error(targets::tar_make(callr_function = NULL))
+  targets::tar_script({
+    x <- targets::tar_target("a", b)
+    tar_hook_before(x, b <- "y")
+    x
+  })
+  targets::tar_make(callr_function = NULL)
+  expect_equal(targets::tar_read(a), "y")
+})
+
+targets::tar_test("hook invalidates target", {
+  targets::tar_script({
+    x <- targets::tar_target("a", "y")
+    x
+  })
+  targets::tar_make(callr_function = NULL)
+  expect_equal(targets::tar_outdated(callr_function = NULL), character(0))
+  targets::tar_script({
+    x <- targets::tar_target("a", "y")
+    tar_hook_before(x, message("hook"))
+    x
+  })
+  expect_equal(targets::tar_outdated(callr_function = NULL), "a")
+  targets::tar_make(callr_function = NULL)
+  out <- targets::tar_progress()
+  expect_equal(out$name, "a")
+  expect_equal(out$progress, "built")
 })
