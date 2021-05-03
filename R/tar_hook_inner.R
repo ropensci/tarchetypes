@@ -52,6 +52,7 @@ tar_hook_inner <- function(targets, hook, names = NULL, names_wrap = NULL) {
   names_quosure <- rlang::enquo(names)
   names_wrap_quosure <- rlang::enquo(names_wrap)
   env_wrap <- tar_hook_inner_env(
+    targets = targets,
     hook = hook,
     names_wrap_quosure = names_wrap_quosure
   )
@@ -64,7 +65,7 @@ tar_hook_inner <- function(targets, hook, names = NULL, names_wrap = NULL) {
   invisible()
 }
 
-tar_hook_inner_env <- function(hook, names_wrap_quosure) {
+tar_hook_inner_env <- function(targets, hook, names_wrap_quosure) {
   choices_wrap <- map_chr(
     unlist(list(targets), recursive = TRUE),
     ~.x$settings$name
