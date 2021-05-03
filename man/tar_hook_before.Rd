@@ -15,13 +15,21 @@ to wrap it in \code{quote()}, \code{expression()}, or similar.}
 
 \item{names}{Name of targets in the target list
 to apply the hook. You can supply symbols, a character vector,
-or tidyselect helpers like \code{\link[=starts_with]{starts_with()}}.}
+or tidyselect helpers like \code{\link[=starts_with]{starts_with()}}.
+Targets not included in \code{names} still remain in the target list,
+but they are not modified because the hook does not apply to them.}
 }
 \value{
-A list of target objects.
+\code{NULL} (invisibly). The target objects are modified in place.
 }
 \description{
-Prepend R code to the commands of multiple targets
+Prepend R code to the commands of multiple targets.
+}
+\details{
+Hook functions modify target objects in place and invisibly
+return \code{NULL}. Users are responsible for declaring the
+final target list at the bottom of \verb{_targets.R}
+so all targets make it into the pipeline.
 }
 \section{Target objects}{
 
@@ -55,11 +63,13 @@ targets::tar_script({
     targets::tar_target(x3, task3(x2)),
     targets::tar_target(y1, task4(x3))
   )
+  # Modifies target objects in place and invisibly returns NULL:
   tarchetypes::tar_hook_before(
     targets = targets,
     hook = print("Running hook."),
     names = starts_with("x")
   )
+  targets # Return the target list.
 })
 targets::tar_manifest(fields = command)
 })
