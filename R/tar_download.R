@@ -61,8 +61,8 @@ tar_download <- function(
   assert_chr(paths, "paths must be a character vector.")
   assert_nonempty(urls, "urls must be nonempty")
   assert_nonempty(paths, "paths must be nonempty.")
-  assert_nzchr(urls, "urls must all be nonempty.")
-  assert_nzchr(paths, "paths must all be nonempty.")
+  assert_nzchar(urls, "urls must all be nonempty.")
+  assert_nzchar(paths, "paths must all be nonempty.")
   if (length(urls) != length(paths)) {
     throw_validate(
       "'urls' has length ",

@@ -136,7 +136,7 @@ assert_not_in <- function(x, choices, msg = NULL) {
   }
 }
 
-assert_nzchr <- function(x, msg = NULL) {
+assert_nzchar <- function(x, msg = NULL) {
   if (any(!nzchar(x))) {
     throw_validate(msg %|||% "x must not have empty strings.")
   }
@@ -189,7 +189,7 @@ assert_values_list <- function(values) {
   assert_nonempty(names(values), "names(values) must not be empty.")
   assert_unique(names(values), "names(values) must be unique.")
   assert_chr(names(values), "names(values) must be a character.")
-  assert_nzchr(names(values), "names(values) must not have empty strings.")
+  assert_nzchar(names(values), "names(values) must not have empty strings.")
   assert_names(names(values), "names(values) must be legal symbol names.")
   assert_nonempty(values, "values in tar_map() must not be empty.")
   assert_equal_lengths(values, "values must have equal-length elements.")

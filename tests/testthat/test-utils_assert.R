@@ -109,9 +109,9 @@ targets::tar_test("assert_not_in()", {
   )
 })
 
-targets::tar_test("assert_nzchr()", {
-  expect_silent(assert_nzchr(c("a", "b")))
-  expect_error(assert_nzchr(c("a", "")), class = "tar_condition_validate")
+targets::tar_test("assert_nzchar()", {
+  expect_silent(assert_nzchar(c("a", "b")))
+  expect_error(assert_nzchar(c("a", "")), class = "tar_condition_validate")
 })
 
 targets::tar_test("assert_identical()", {
