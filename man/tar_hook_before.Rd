@@ -2,15 +2,15 @@
 % Please edit documentation in R/tar_hook_before.R
 \name{tar_hook_before}
 \alias{tar_hook_before}
-\title{First hook}
+\title{Hook to prepend code}
 \usage{
 tar_hook_before(targets, hook, names = NULL)
 }
 \arguments{
 \item{targets}{A list of target objects.}
 
-\item{hook}{R code to insert. When you supply this argument,
-this code is quoted (not evaluated) so there is no need
+\item{hook}{R code to insert. When you supply code to this argument,
+the code is quoted (not evaluated) so there is no need
 to wrap it in \code{quote()}, \code{expression()}, or similar.}
 
 \item{names}{Name of targets in the target list
@@ -25,12 +25,14 @@ but they are not modified because the hook does not apply to them.}
 \description{
 Prepend R code to the commands of multiple targets.
 }
-\details{
-Hook functions modify target objects in place and invisibly
-return \code{NULL}. Users are responsible for declaring the
-final target list at the bottom of \verb{_targets.R}
-so all targets make it into the pipeline.
+\section{Hooks}{
+
+Hook functions make in-place modifications to
+the commands of target objects and invisibly return \code{NULL}.
+Users are responsible for fully populating the final target list
+at the end of \verb{_targets.R}.
 }
+
 \section{Target objects}{
 
 Most \code{tarchetypes} functions are target factories,
@@ -74,5 +76,9 @@ targets::tar_script({
 targets::tar_manifest(fields = command)
 })
 }
+}
+\seealso{
+Other hooks: 
+\code{\link{tar_hook_outer}()}
 }
 \concept{hooks}

@@ -36,6 +36,15 @@ tar_test("assert_ge()", {
   expect_error(assert_ge(1L, 2L), class = "tar_condition_validate")
 })
 
+tar_test("assert_hook_placeholder", {
+  expect_silent(assert_hook_placeholder(quote(f(.x))))
+  expect_silent(assert_hook_placeholder(expression(f(.x))))
+  expect_error(
+    assert_hook_placeholder(quote(f())),
+    class = "tar_condition_validate"
+  )
+})
+
 tar_test("assert_in()", {
   expect_silent(assert_in("x", letters))
   expect_error(assert_in("xyz", letters), class = "tar_condition_validate")

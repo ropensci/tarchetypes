@@ -119,6 +119,27 @@ targets::tar_test("hook runs", {
   expect_equal(targets::tar_read(a), "y")
 })
 
+targets::tar_test("hook can work with an empty command", {
+  targets::tar_script({
+    x <- targets::tar_target("a", NULL)
+    tar_hook_before(x, identity("x"))
+    x
+  })
+  targets::tar_make(callr_function = NULL)
+  expect_equal(targets::tar_read(a), NULL)
+})
+
+targets::tar_test("hook can work with a symbol command", {
+  targets::tar_script({
+    y <- "y123"
+    x <- targets::tar_target("a", y)
+    tar_hook_before(x, identity("x"))
+    x
+  })
+  targets::tar_make(callr_function = NULL)
+  expect_equal(targets::tar_read(a), "y123")
+})
+
 targets::tar_test("hook invalidates target", {
   targets::tar_script({
     x <- targets::tar_target("a", "y")

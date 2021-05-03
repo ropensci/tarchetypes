@@ -39,6 +39,17 @@ assert_ge <- function(x, threshold, msg = NULL) {
   }
 }
 
+assert_hook_placeholder <- function(x, msg = NULL) {
+  if (!(".x" %in% all.names(x))) {
+    default_msg <- paste(
+      "inner and outer hooks must contain the symbol .x",
+      "so tarchetypes knows where to substitute the original",
+      "commands/variables."
+    )
+    throw_validate(msg %|||% default_msg)
+  }
+}
+
 assert_identical <- function(x, y, msg = NULL) {
   if (!identical(x, y)) {
     throw_validate(msg %|||% "x and y are not identical.")

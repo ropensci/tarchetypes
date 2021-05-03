@@ -1,16 +1,17 @@
-#' @title First hook
+#' @title Hook to prepend code
 #' @export
 #' @family hooks
 #' @description Prepend R code to the commands of multiple targets.
-#' @details Hook functions modify target objects in place and invisibly
-#'   return `NULL`. Users are responsible for declaring the
-#'   final target list at the bottom of `_targets.R`
-#'   so all targets make it into the pipeline.
 #' @return `NULL` (invisibly). The target objects are modified in place.
 #' @inheritSection tar_map Target objects
+#' @section Hooks:
+#'   Hook functions make in-place modifications to
+#'   the commands of target objects and invisibly return `NULL`.
+#'   Users are responsible for fully populating the final target list
+#'   at the end of `_targets.R`.
 #' @param targets A list of target objects.
-#' @param hook R code to insert. When you supply this argument,
-#'   this code is quoted (not evaluated) so there is no need
+#' @param hook R code to insert. When you supply code to this argument,
+#'   the code is quoted (not evaluated) so there is no need
 #'   to wrap it in `quote()`, `expression()`, or similar.
 #' @param names Name of targets in the target list
 #'   to apply the hook. You can supply symbols, a character vector,
@@ -56,8 +57,6 @@ tar_hook_before <- function(targets, hook, names = NULL) {
 
 tar_hook_before_insert <- function(target, hook) {
   expr <- target$command$expr
-  msg <- paste("target", target$settings$name, "has no command.")
-  assert_nonmissing(expr[[1]], msg)
-  expr[[1]] <- call_brace(list(hook, expr[[1]]))
+  expr <- as.expression(call_brace(list(hook, call_brace(expr))))
   tar_replace_command(target = target, expr = expr)
 }
