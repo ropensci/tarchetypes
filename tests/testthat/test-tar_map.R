@@ -1,3 +1,13 @@
+targets::tar_test("tar_map() deep-copies the targets", {
+  x <- targets::tar_target(x, a + b)
+  out <- tar_map(x, values = list(a = 12, b = 56), unlist = TRUE)
+  y <- out[[1]]
+  y$cue$command <- FALSE
+  y$settings$format <- "file"
+  expect_equal(x$cue$command, TRUE)
+  expect_equal(x$settings$format, "rds")
+})
+
 targets::tar_test("tar_map() return value with unlist = TRUE", {
   out <- tar_map(
     targets::tar_target(x, a + b),

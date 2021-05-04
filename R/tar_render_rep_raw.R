@@ -123,7 +123,7 @@ tar_render_rep_raw <- function(
   assert_nonempty(names(args %||% list(x = 1)), "args must be a named list.")
   name_params <- paste0(name, "_params")
   sym_params <- as.symbol(name_params)
-  target_params <- tar_target_raw(
+  target_params <- targets::tar_target_raw(
     name = name_params,
     command = tar_render_rep_params_command(params, batches),
     packages = packages,
@@ -137,7 +137,7 @@ tar_render_rep_raw <- function(
     retrieval = retrieval,
     cue = cue
   )
-  target <- tar_target_raw(
+  target <- targets::tar_target_raw(
     name = name,
     command = tar_render_rep_command(name, path, quiet, args),
     pattern = substitute(map(x), env = list(x = sym_params)),

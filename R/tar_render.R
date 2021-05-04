@@ -122,7 +122,7 @@ tar_render <- function(
     envir = envir,
     tidy_eval = tidy_eval
   )
-  tar_target_raw(
+  targets::tar_target_raw(
     name = deparse_language(substitute(name)),
     command = tar_render_command(path, args, quiet),
     packages = packages,

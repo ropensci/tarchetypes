@@ -111,7 +111,7 @@ tar_combine_impl <- function(
     envir = list(.x = names_sym),
     tidy_eval = TRUE
   )
-  tar_target_raw(
+  targets::tar_target_raw(
     name = name,
     command = command,
     pattern = pattern,

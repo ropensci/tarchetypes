@@ -1,3 +1,12 @@
+targets::tar_test("tar_hook_before() deep-copies the targets", {
+  x <- targets::tar_target(x1, task1())
+  y <- tar_hook_before(x, f())[[1]]
+  y$cue$command <- FALSE
+  y$settings$format <- "file"
+  expect_equal(x$cue$command, TRUE)
+  expect_equal(x$settings$format, "rds")
+})
+
 targets::tar_test("tar_hook_before() inserts code", {
   targets::tar_script({
     targets <- list(

@@ -54,7 +54,7 @@ tar_skip <- function(
   skip <- tar_tidy_eval(substitute(skip), envir, tidy_eval)
   skip <- as.call(list(call_ns("targets", "tar_cancel"), skip))
   command <- call_brace(list(skip, command))
-  tar_target_raw(
+  targets::tar_target_raw(
     name = name,
     command = command,
     pattern = NULL,

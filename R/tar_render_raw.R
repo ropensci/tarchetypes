@@ -102,7 +102,7 @@ tar_render_raw <- function(
   assert_lang(render_arguments, "render_arguments must be a language object.")
   msg <- "render_arguments must not be an expression object."
   assert_not_expr(render_arguments, msg)
-  tar_target_raw(
+  targets::tar_target_raw(
     name = name,
     command = tar_render_command(path, render_arguments, quiet),
     packages = packages,

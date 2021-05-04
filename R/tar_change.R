@@ -104,7 +104,7 @@ tar_change_raw <- function(
   retrieval,
   cue
 ) {
-  upstream <- tar_target_raw(
+  upstream <- targets::tar_target_raw(
     name = name_change,
     command = change,
     pattern = NULL,
@@ -122,7 +122,7 @@ tar_change_raw <- function(
     retrieval = retrieval,
     cue = targets::tar_cue(mode = "always")
   )
-  downstream <- tar_target_raw(
+  downstream <- targets::tar_target_raw(
     name = name,
     command = call_brace(list(as.symbol(name_change), command)),
     pattern = NULL,

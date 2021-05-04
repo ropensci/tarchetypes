@@ -85,7 +85,7 @@ tar_files_input_raw <- function(
   format <- match.arg(format)
   name_files <- paste0(name, "_files")
   files <- tar_files_input_batch_files(files, batches)
-  upstream <- tar_target_raw(
+  upstream <- targets::tar_target_raw(
     name = name_files,
     command = parse(text = deparse_safe(files, collapse = " ")),
     pattern = NULL,
@@ -103,7 +103,7 @@ tar_files_input_raw <- function(
     cue = cue
   )
   name_files_sym <- as.symbol(name_files)
-  downstream <- tar_target_raw(
+  downstream <- targets::tar_target_raw(
     name = name,
     command = as.expression(name_files_sym),
     pattern = as.expression(call_function("map", list(name_files_sym))),

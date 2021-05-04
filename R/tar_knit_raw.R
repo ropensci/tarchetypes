@@ -76,7 +76,7 @@ tar_knit_raw <- function(
   assert_lang(knit_arguments, "knit_arguments must be a language object.")
   msg <- "knit_arguments must not be an expression object."
   assert_not_expr(knit_arguments, msg)
-  tar_target_raw(
+  targets::tar_target_raw(
     name = name,
     command = tar_knit_command(path, knit_arguments, quiet),
     packages = packages,

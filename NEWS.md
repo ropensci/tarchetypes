@@ -1,4 +1,4 @@
-# tarchetypes 0.1.1.9000
+# tarchetypes 0.2.0
 
 * Allow trailing commas in `tar_plan()` (#40, @kendonB).
 * Implement `tar_age()` based on `tar_cue_age()` (#39, @petrbouchal).
@@ -8,6 +8,7 @@
 * Prefix internal condition classes with "tar_".
 * Add new format helpers such as `tar_aws_rds()` and `tar_parquet()`.
 * Support hooks `tar_hook_before()`, `tar_hook_inner()`, and `tar_hook_outer()` (#44).
+* Deep-copy the cue in `tar_map()`.
 
 # tarchetypes 0.1.1
 

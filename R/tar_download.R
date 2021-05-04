@@ -95,7 +95,7 @@ tar_download <- function(
       headers = headers
     )
   )
-  target_url <- tar_target_raw(
+  target_url <- targets::tar_target_raw(
     name = name_url,
     command = command_url,
     format = "url",
@@ -110,7 +110,7 @@ tar_download <- function(
     retrieval = retrieval,
     cue = cue
   )
-  target_download <- tar_target_raw(
+  target_download <- targets::tar_target_raw(
     name = name,
     command = command,
     format = "file",

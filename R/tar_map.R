@@ -119,7 +119,7 @@ tar_map_iter <- function(values, target, command, pattern) {
   name <- as.character(values[[settings$name]])
   command <- substitute_expr(command, values)
   pattern <- substitute_expr(pattern, values) %||% NULL
-  tar_target_raw(
+  targets::tar_target_raw(
     name = name,
     command = command,
     pattern = pattern,
@@ -135,6 +135,13 @@ tar_map_iter <- function(values, target, command, pattern) {
     resources = settings$resources,
     storage = settings$storage,
     retrieval = settings$retrieval,
-    cue = target$cue
+    cue = targets::tar_cue(
+      mode = target$cue$mode,
+      command = target$cue$command,
+      depend = target$cue$depend,
+      format = target$cue$format,
+      iteration = target$cue$iteration,
+      file = target$cue$file
+    )
   )
 }

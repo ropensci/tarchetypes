@@ -70,7 +70,7 @@ tar_files_raw <- function(
   assert_lang(command, "command must be a language object.")
   name_files <- paste0(name, "_files")
   format <- match.arg(format)
-  upstream <- tar_target_raw(
+  upstream <- targets::tar_target_raw(
     name = name_files,
     command = command,
     pattern = NULL,
@@ -89,7 +89,7 @@ tar_files_raw <- function(
     cue = targets::tar_cue(mode = "always")
   )
   name_files_sym <- as.symbol(name_files)
-  downstream <- tar_target_raw(
+  downstream <- targets::tar_target_raw(
     name = name,
     command = as.expression(name_files_sym),
     pattern = as.expression(call_function("map", list(name_files_sym))),
