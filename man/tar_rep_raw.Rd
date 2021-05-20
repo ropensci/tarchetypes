@@ -261,7 +261,7 @@ using batches. Batches reduce the number of targets
 and thus reduce overhead.
 }
 \details{
-\code{tar_rep()} and \code{tar_rep_raw} each create two targets:
+\code{tar_rep_raw()} creates two targets:
 an upstream local stem
 with an integer vector of batch ids, and a downstream pattern
 that maps over the batch ids. (Thus, each batch is a branch.)
@@ -315,6 +315,7 @@ Other branching:
 \code{\link{tar_combine_raw}()},
 \code{\link{tar_combine}()},
 \code{\link{tar_map}()},
+\code{\link{tar_rep_map_raw}()},
 \code{\link{tar_rep_map}()},
 \code{\link{tar_rep}()}
 }

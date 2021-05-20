@@ -1,6 +1,8 @@
 # tarchetypes 0.2.0.9000
 
+## Bug fixes
 
+* Make the `*_raw()` target factories process `command` the same way whether it is an expression or ordinary language object.
 
 # tarchetypes 0.2.0
 

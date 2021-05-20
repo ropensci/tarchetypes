@@ -27,23 +27,24 @@
 #' targets::tar_script({
 #'   tar_rep(data1, data.frame(value = rnorm(1)), batches = 2, reps = 3),
 #'   tar_rep(data2, data.frame(value = rnorm(2)), batches = 2, reps = 3),
-#'   tar_rep_map(
-#'     analysis,
-#'     data.frame(
-#'       mean_data1 = mean(data1$value),
-#'       mean_data2 = mean(data2$value),
-#'       n_data1 = nrow(data1),
-#'       n_data2 = nrow(data2)
+#'   tar_rep_map_raw(
+#'     "analysis",
+#'     quote(
+#'       data.frame(
+#'         mean_data1 = mean(data1$value),
+#'         mean_data2 = mean(data2$value),
+#'         n_data1 = nrow(data1),
+#'         n_data2 = nrow(data2)
+#'       )
 #'     ),
-#'     data1,
-#'     data2
+#'     targets = c("data1", "data2")
 #'   )
 #' })
 #' targets::tar_make()
 #' targets::tar_read(analysis)
 #' })
 #' }
-tar_rep_map <- function(
+tar_rep_map_raw <- function(
   name,
   command,
   targets,
@@ -62,14 +63,23 @@ tar_rep_map <- function(
   retrieval = targets::tar_option_get("retrieval"),
   cue = targets::tar_option_get("cue")
 ) {
-  name <- deparse_language(substitute(name))
-  envir <- targets::tar_option_get("envir")
-  command <- tar_tidy_eval(substitute(command), envir, tidy_eval)
-  targets <- as.character(match.call(expand.dots = FALSE)$...)
-  tar_rep_map_raw(
-    name = name,
+  assert_chr(
+    targets,
+    "targets in tar_rep_map_raw() must be a character vector."
+  )
+  assert_nonempty(targets, "targets argument must be nonempty.")
+  assert_nzchar(targets, "targets argument must not have 0-length elements.")
+  command <- tar_raw_command(command)
+  command <- tar_rep_map_command(
     command = command,
     targets = targets,
+    iteration = iteration
+  )
+  pattern <- call_function("map", lapply(targets, as.symbol))
+  tarchetypes::tar_target_raw(
+    name = name,
+    command = command,
+    pattern = pattern,
     packages = packages,
     library = library,
     format = format,
@@ -84,4 +94,25 @@ tar_rep_map <- function(
     retrieval = retrieval,
     cue = cue
   )
+}
+
+tar_rep_map_command <- function(command, targets, iteration) {
+  target_list <- lapply(targets, as.symbol)
+  names(target_list) <- targets
+  substitute(
+    tarchetypes::tar_rep_map_run(
+      command = command,
+      targets = targets,
+      iteration = iteration
+    ),
+    env = list(
+      command = command,
+      targets = target_list,
+      iteration = iteration
+    )
+  )
+}
+
+tar_rep_map_command <- function(command, targets, iteration) {
+  browser()
 }
