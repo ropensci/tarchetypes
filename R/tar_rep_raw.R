@@ -5,7 +5,7 @@
 #' @description Shorthand for a pattern that replicates a command
 #'   using batches. Batches reduce the number of targets
 #'   and thus reduce overhead.
-#' @details `tar_rep()` and `tar_rep_raw` each create two targets:
+#' @details `tar_rep_raw()` creates two targets:
 #'   an upstream local stem
 #'   with an integer vector of batch ids, and a downstream pattern
 #'   that maps over the batch ids. (Thus, each batch is a branch.)
@@ -81,7 +81,7 @@ tar_rep_raw <- function(
   target <- tar_rep_target(
     name = name,
     name_batch = name_batch,
-    command,
+    command = command,
     batches = batches,
     reps = reps,
     packages = packages,
@@ -210,24 +210,24 @@ tar_rep_run <- function(command, batch, reps, iteration) {
   envir <- parent.frame()
   switch(
     iteration,
-    list = tar_rep_map(expr, envir, batch, reps),
-    vector = do.call(vctrs::vec_c, tar_rep_map(expr, envir, batch, reps)),
-    group = do.call(vctrs::vec_rbind, tar_rep_map(expr, envir, batch, reps)),
+    list = tar_rep_run_map(expr, envir, batch, reps),
+    vector = do.call(vctrs::vec_c, tar_rep_run_map(expr, envir, batch, reps)),
+    group = do.call(vctrs::vec_rbind, tar_rep_run_map(expr, envir, batch, reps)),
     throw_validate("unsupported iteration method")
   )
 }
 
-tar_rep_map <- function(expr, envir, batch, reps) {
+tar_rep_run_map <- function(expr, envir, batch, reps) {
   lapply(
     seq_len(reps),
-    tar_rep_rep,
+    tar_rep_run_map_rep,
     expr = expr,
     envir = envir,
     batch = batch
   )
 }
 
-tar_rep_rep <- function(expr, envir, batch, rep) {
+tar_rep_run_map_rep <- function(expr, envir, batch, rep) {
   out <- eval(expr, envir = envir)
   if (is.list(out)) {
     out[["tar_batch"]] <- as.integer(batch)
