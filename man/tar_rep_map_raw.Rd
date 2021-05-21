@@ -291,25 +291,16 @@ details the structure and composition of target objects.
 if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({ # tar_dir() runs code from a temporary directory.
 targets::tar_script({
-  tar_rep(data1, data.frame(value = rnorm(1)), batches = 2, reps = 3),
-  tar_rep(
-    data2,
-    list(value = rnorm(2)),
-    iteration = "list",
-    batches = 2,
-    reps = 3
-  ),
-  tar_rep_map_raw(
-    "analysis",
-    quote(
-      data.frame(
-        mean_data1 = mean(data1$value),
-        mean_data2 = mean(data2$value),
-        n_data1 = nrow(data1),
-        n_data2 = nrow(data2)
-      )
-    ),
-    targets = c("data1", "data2")
+  list(
+    tar_target(label, "aggregate"),
+    tar_rep(data1, data.frame(value = rnorm(1)), batches = 2, reps = 3),
+    tar_rep(data2, list(value = rnorm(1)), batches = 2, reps = 3, iteration = "list"),
+    tar_rep_map(
+      aggregate,
+      data.frame(label = label, data1 = data1$value, data2 = data2$value),
+      data1,
+      data2
+    )
   )
 })
 targets::tar_make()
