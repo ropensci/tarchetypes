@@ -118,3 +118,62 @@ targets::tar_test("tar_map_reps() graph", {
   skip_if_not_installed("dplyr")
   expect_equal(dplyr::arrange(out$edges, from), dplyr::arrange(exp, from))
 })
+
+targets::tar_test("tar_map_reps() pipeline", {
+  targets::tar_script({
+    list(
+      targets::tar_target(label, "aggregate"),
+      tarchetypes::tar_rep(
+        data1,
+        data.frame(value = rnorm(2)),
+        batches = 2,
+        reps = 3
+      ),
+      tarchetypes::tar_rep(
+        data2,
+        list(value = rnorm(2)),
+        batches = 2,
+        reps = 3,
+        iteration = "list"
+      ),
+      tarchetypes::tar_map_reps(
+        aggregate1,
+        data.frame(x = label, value = data1$value + data2$value),
+        data1,
+        data2
+      ),
+      tarchetypes::tar_map_reps(
+        aggregate2,
+        list(value = data1$value + data2$value),
+        data1,
+        data2,
+        iteration = "list"
+      ),
+      tarchetypes::tar_map_reps(
+        aggregate3,
+        data.frame(value = aggregate1$value + aggregate2$value),
+        aggregate1,
+        aggregate2
+      )
+    )
+  })
+  targets::tar_make(callr_function = NULL)
+  expect_equal(targets::tar_outdated(callr_function = NULL), character(0))
+  targets::tar_load(tidyselect::everything())
+  for (batch in seq_len(2)) {
+    for (rep in seq_len(3)) {
+      out1 <- aggregate1$value[
+        aggregate1$tar_batch == batch & aggregate1$tar_rep == rep
+      ]
+      exp <- data1$value[data1$tar_batch == batch & data1$tar_rep == rep] +
+        data2[[batch]][[rep]]$value
+      expect_equal(out1, exp)
+      out2 <- aggregate2[[batch]][[rep]]$value
+      expect_equal(out2, exp)
+      out3 <- aggregate3$value[
+        aggregate3$tar_batch == batch & aggregate3$tar_rep == rep
+      ]
+      expect_equal(out1 + out2, out3)
+    }
+  }
+})

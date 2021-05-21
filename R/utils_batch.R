@@ -1,9 +1,13 @@
 assert_batches <- function(batches) {
+  names(batches) <- names(batches) %||% as.character(seq_along(batches))
   for (name in names(batches)) {
     assert_batch(batches[[name]], name)
   }
   reps <- unique(map_int(batches, batch_count_reps))
-  msg <- "batched targets for tar_map_reps() must have equal numbers of reps"
+  msg <- paste(
+    "batched targets for tar_map_reps()",
+    "must have equal numbers of reps per batch"
+  )
   assert_scalar(reps, msg)
 }
 
