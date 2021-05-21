@@ -176,6 +176,9 @@ targets::tar_test("tar_map_reps() pipeline", {
       expect_equal(out1 + out2, out3)
     }
   }
+  out <- tar_read(aggregate1, branches = 2)
+  expect_equal(out$tar_batch, rep(2L, 6L))
+  expect_equal(out$tar_rep, rep(seq_len(3L), each = 2L))
 })
 
 targets::tar_test("tar_map_reps() errors without correct list aggregation", {

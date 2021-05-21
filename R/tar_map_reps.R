@@ -1,24 +1,23 @@
-#' @title Batched replication over upstream batched targets.
+#' @title Batched computation with dynamic branching.
 #' @export
 #' @family branching
-#' @description [tar_map_reps()] performs batched replication similar
-#'   to [tar_rep()], except it iterates over previously generated
-#'   batches and reps created by upstream data frame or list
-#'   targets through [tar_rep()].
-#' @details If you supply multiple upstream [tar_rep()] targets,
-#'   those targets must all have the same
-#'   number of batches and reps per batch. Those upstream targets
-#'   must return either data frames or lists.
-#'   List targets should use
-#'   `iteration = "list"` in [tar_rep()].
-#' @return A new target object to perform batched replication.
+#' @description Batching is important for optimizing the efficiency
+#'   of heavily dynamically-branched workflows:
+#'   <https://books.ropensci.org/targets/dynamic.html#batching>.
+#'   [tar_map_reps()] uses dynamic branching to iterate
+#'   over the batches and reps of existing upstream targets.
+#' @return A new target object to perform batched computation.
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
 #' @inheritParams targets::tar_target
-#' @param ... Symbols, one or more names of upstream [tar_rep()] targets.
-#'   If you supply more than one, those targets must all have the same
-#'   number of batches and reps per batch. And they must all return either
-#'   data frames or lists.
+#' @param ... Symbols to name one or more upstream batched targets.
+#'   Each such target must be a list or data frame.
+#'   and it must have its own batching structure.
+#'   For upstream list targets, each element or dynamic branch is a batch,
+#'   and each batch element is a rep. Batches and reps must all be lists,
+#'   For upstream data frame targets, each batch is a dynamic branch
+#'   or group (e.g. from `targets::tar_group()` or [tar_group_by()]),
+#'   and rows within each branch are partitioned into reps.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({ # tar_dir() runs code from a temporary directory.

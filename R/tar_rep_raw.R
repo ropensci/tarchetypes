@@ -2,9 +2,12 @@
 #'   (raw version).
 #' @export
 #' @family branching
-#' @description Shorthand for a pattern that replicates a command
-#'   using batches. Batches reduce the number of targets
-#'   and thus reduce overhead.
+#' @description Batching is important for optimizing the efficiency
+#'   of heavily dynamically-branched workflows:
+#'   <https://books.ropensci.org/targets/dynamic.html#batching>.
+#'   [tar_rep_raw()] is just like [tar_rep()] except the
+#'   name is a character string and the command is a
+#'   language object.
 #' @details `tar_rep_raw()` creates two targets:
 #'   an upstream local stem
 #'   with an integer vector of batch ids, and a downstream pattern

@@ -160,7 +160,7 @@ of the target. Choices:
 \item \code{"vector"}: branching happens with \code{vectors::vec_slice()} and
 aggregation happens with \code{vctrs::vec_c()}.
 \item \code{"list"}, branching happens with \verb{[[]]} and aggregation happens with
-\code{list()}. In the case of \code{tar_batch()}, \code{tar_read(your_target)}
+\code{list()}. In the case of list iteration, \code{tar_read(your_target)}
 will return a list of lists, where the outer list has one element per
 batch and each inner list has one element per rep within batch.
 To un-batch this nested list, call
@@ -272,9 +272,10 @@ To un-batch this nested list, call
 \code{tar_read(your_target, recursive = FALSE)}.
 }
 \description{
-Shorthand for a pattern that replicates a command
-using batches. Batches reduce the number of targets
-and thus reduce overhead.
+Batching is important for optimizing the efficiency
+of heavily dynamically-branched workflows:
+\url{https://books.ropensci.org/targets/dynamic.html#batching}.
+\code{\link[=tar_rep]{tar_rep()}} replicates a command in strategically sized batches.
 }
 \details{
 \code{tar_rep()} and \code{tar_rep_raw()} each create two targets:

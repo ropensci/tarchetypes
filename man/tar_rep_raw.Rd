@@ -256,9 +256,12 @@ and the downstream target is a pattern that applies \code{format = "file"}.
 See the "Target objects" section for background.
 }
 \description{
-Shorthand for a pattern that replicates a command
-using batches. Batches reduce the number of targets
-and thus reduce overhead.
+Batching is important for optimizing the efficiency
+of heavily dynamically-branched workflows:
+\url{https://books.ropensci.org/targets/dynamic.html#batching}.
+\code{\link[=tar_rep_raw]{tar_rep_raw()}} is just like \code{\link[=tar_rep]{tar_rep()}} except the
+name is a character string and the command is a
+language object.
 }
 \details{
 \code{tar_rep_raw()} creates two targets:

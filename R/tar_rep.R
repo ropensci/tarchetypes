@@ -1,7 +1,8 @@
 #' @title Batched replication with dynamic branching.
-#' @description Shorthand for a pattern that replicates a command
-#'   using batches. Batches reduce the number of targets
-#'   and thus reduce overhead.
+#' @description Batching is important for optimizing the efficiency
+#'   of heavily dynamically-branched workflows:
+#'   <https://books.ropensci.org/targets/dynamic.html#batching>.
+#'   [tar_rep()] replicates a command in strategically sized batches.
 #' @family branching
 #' @details `tar_rep()` and `tar_rep_raw()` each create two targets:
 #'   an upstream local stem
@@ -52,7 +53,7 @@
 #'   * `"vector"`: branching happens with `vectors::vec_slice()` and
 #'     aggregation happens with `vctrs::vec_c()`.
 #'   * `"list"`, branching happens with `[[]]` and aggregation happens with
-#'     `list()`. In the case of `tar_batch()`, `tar_read(your_target)`
+#'     `list()`. In the case of list iteration, `tar_read(your_target)`
 #'     will return a list of lists, where the outer list has one element per
 #'     batch and each inner list has one element per rep within batch.
 #'     To un-batch this nested list, call

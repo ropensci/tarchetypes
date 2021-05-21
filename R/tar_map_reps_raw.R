@@ -1,25 +1,18 @@
-#' @title Batched replication over upstream batched targets (raw version).
+#' @title Batched computation using dynamic branching (raw version).
 #' @export
 #' @family branching
-#' @description [tar_map_reps_raw()] performs batched replication similar
-#'   to [tar_rep()], except it iterates over previously generated
-#'   batches and reps created by upstream data frame or list
-#'   targets through [tar_rep()]. List targets should use
-#'   `iteration = "list"` in [tar_rep()].
+#' @description Batching is important for optimizing the efficiency
+#'   of heavily dynamically-branched workflows:
+#'   <https://books.ropensci.org/targets/dynamic.html#batching>.
 #'   `tar_map_reps_raw()`
 #'   is just like [tar_map_reps()] except it accepts a character
 #'   of length 1 for `name`, a language object for `command`,
-#'   and a character vector of upstream [tar_rep()] targets to map over
-#'   (`targets`).
-#' @details If you supply multiple upstream [tar_rep()] targets,
-#'   those targets must all have the same
-#'   number of batches and reps per batch. Those upstream targets
-#'   must return either data frames or lists.
+#'   and a character vector of the names of the upstream batched targets.
 #' @return A new target object to perform batched replication.
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
 #' @inheritParams targets::tar_target
-#' @param targets Character vector of names of upstream [tar_rep()] targets.
+#' @param targets Character vector of names of upstream batched targets.
 #'   If you supply more than one, those targets must all have the same
 #'   number of batches and reps per batch. And they must all return either
 #'   data frames or lists.
