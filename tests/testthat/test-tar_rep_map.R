@@ -1,4 +1,4 @@
-targets::tar_test("tar_map_reps() manifest", {
+targets::tar_test("tar_rep_map() manifest", {
   targets::tar_script({
     list(
       targets::tar_target(label, "aggregate"),
@@ -15,20 +15,20 @@ targets::tar_test("tar_map_reps() manifest", {
         reps = 3,
         iteration = "list"
       ),
-      tarchetypes::tar_map_reps(
+      tarchetypes::tar_rep_map(
         aggregate1,
         data.frame(x = label, value = data1$value + data2$value),
         data1,
         data2
       ),
-      tarchetypes::tar_map_reps(
+      tarchetypes::tar_rep_map(
         aggregate2,
         list(value = data1$value + data2$value),
         data1,
         data2,
         iteration = "list"
       ),
-      tarchetypes::tar_map_reps(
+      tarchetypes::tar_rep_map(
         aggregate3,
         data.frame(value = aggregate1$value + aggregate2$value),
         aggregate1,
@@ -54,17 +54,17 @@ targets::tar_test("tar_map_reps() manifest", {
   expect_true(grepl("tar_rep_run", out$command))
   expect_false(is.na(out$pattern))
   out <- targets::tar_manifest(aggregate1, callr_function = NULL)
-  expect_true(grepl("tar_map_reps_run", out$command))
+  expect_true(grepl("tar_rep_map_run", out$command))
   expect_false(is.na(out$pattern))
   out <- targets::tar_manifest(aggregate2, callr_function = NULL)
-  expect_true(grepl("tar_map_reps_run", out$command))
+  expect_true(grepl("tar_rep_map_run", out$command))
   expect_false(is.na(out$pattern))
   out <- targets::tar_manifest(aggregate3, callr_function = NULL)
-  expect_true(grepl("tar_map_reps_run", out$command))
+  expect_true(grepl("tar_rep_map_run", out$command))
   expect_false(is.na(out$pattern))
 })
 
-targets::tar_test("tar_map_reps() graph", {
+targets::tar_test("tar_rep_map() graph", {
   targets::tar_script({
     list(
       targets::tar_target(label, "aggregate"),
@@ -81,20 +81,20 @@ targets::tar_test("tar_map_reps() graph", {
         reps = 3,
         iteration = "list"
       ),
-      tarchetypes::tar_map_reps(
+      tarchetypes::tar_rep_map(
         aggregate1,
         data.frame(x = label, value = data1$value + data2$value),
         data1,
         data2
       ),
-      tarchetypes::tar_map_reps(
+      tarchetypes::tar_rep_map(
         aggregate2,
         list(value = data1$value + data2$value),
         data1,
         data2,
         iteration = "list"
       ),
-      tarchetypes::tar_map_reps(
+      tarchetypes::tar_rep_map(
         aggregate3,
         data.frame(value = aggregate1$value + aggregate2$value),
         aggregate1,
@@ -119,7 +119,7 @@ targets::tar_test("tar_map_reps() graph", {
   expect_equal(dplyr::arrange(out$edges, from), dplyr::arrange(exp, from))
 })
 
-targets::tar_test("tar_map_reps() pipeline", {
+targets::tar_test("tar_rep_map() pipeline", {
   targets::tar_script({
     list(
       targets::tar_target(label, "aggregate"),
@@ -136,20 +136,20 @@ targets::tar_test("tar_map_reps() pipeline", {
         reps = 3,
         iteration = "list"
       ),
-      tarchetypes::tar_map_reps(
+      tarchetypes::tar_rep_map(
         aggregate1,
         data.frame(x = label, value = data1$value + data2$value),
         data1,
         data2
       ),
-      tarchetypes::tar_map_reps(
+      tarchetypes::tar_rep_map(
         aggregate2,
         list(value = data1$value + data2$value),
         data1,
         data2,
         iteration = "list"
       ),
-      tarchetypes::tar_map_reps(
+      tarchetypes::tar_rep_map(
         aggregate3,
         data.frame(value = aggregate1$value + aggregate2$value),
         aggregate1,
@@ -181,7 +181,29 @@ targets::tar_test("tar_map_reps() pipeline", {
   expect_equal(out$tar_rep, rep(seq_len(3L), each = 2L))
 })
 
-targets::tar_test("tar_map_reps() errors without correct list aggregation", {
+targets::tar_test("tar_rep_map() runs the command once per rep", {
+  targets::tar_script({
+    list(
+      tarchetypes::tar_rep(
+        x,
+        data.frame(value = rnorm(2)),
+        batches = 2,
+        reps = 3
+      ),
+      tarchetypes::tar_rep_map(
+        y,
+        data.frame(value = rnorm(1)),
+        x
+      )
+    )
+  })
+  targets::tar_make(callr_function = NULL)
+  out <- targets::tar_read(y)
+  expect_equal(nrow(out), 6L)
+  expect_false(as.logical(anyDuplicated(out$value)))
+})
+
+targets::tar_test("tar_rep_map() errors without correct list aggregation", {
   targets::tar_script({
     list(
       targets::tar_target(label, "aggregate"),
@@ -197,7 +219,7 @@ targets::tar_test("tar_map_reps() errors without correct list aggregation", {
         batches = 2,
         reps = 3
       ),
-      tarchetypes::tar_map_reps(
+      tarchetypes::tar_rep_map(
         aggregate1,
         data.frame(x = label, value = data1$value + data2$value),
         data1,

@@ -1,46 +1,51 @@
-#' @title Batched computation with dynamic branching.
+#' @title Batched computation downstream of [tar_rep()]
 #' @export
 #' @family branching
 #' @description Batching is important for optimizing the efficiency
 #'   of heavily dynamically-branched workflows:
 #'   <https://books.ropensci.org/targets/dynamic.html#batching>.
-#'   [tar_map_reps()] uses dynamic branching to iterate
+#'   [tar_rep_map()] uses dynamic branching to iterate
 #'   over the batches and reps of existing upstream targets.
 #' @return A new target object to perform batched computation.
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
 #' @inheritParams targets::tar_target
-#' @param ... Symbols to name one or more upstream batched targets.
-#'   Each such target must be a list or data frame.
-#'   and it must have its own batching structure.
-#'   For upstream list targets, each element or dynamic branch is a batch,
-#'   and each batch element is a rep. Batches and reps must all be lists,
-#'   For upstream data frame targets, each batch is a dynamic branch
-#'   or group (e.g. from `targets::tar_group()` or [tar_group_by()]),
-#'   and rows within each branch are partitioned into reps.
+#' @param ... Symbols to name one or more upstream batched targets
+#'   created by [tar_rep()].
+#'   If you supply more than one such target, all those targets must have the
+#'   same number of batches and reps per batch. And they must all return
+#'   either data frames or lists. List targets must use `iteration = "list"`
+#'   in [tar_rep()].
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
 #' targets::tar_script({
-#'   tar_rep(data1, data.frame(value = rnorm(1)), batches = 2, reps = 3),
-#'   tar_rep(data2, data.frame(value = rnorm(2)), batches = 2, reps = 3),
-#'   tar_map_reps(
-#'     analysis,
-#'     data.frame(
-#'       mean_data1 = mean(data1$value),
-#'       mean_data2 = mean(data2$value),
-#'       n_data1 = nrow(data1),
-#'       n_data2 = nrow(data2)
+#'   list(
+#'     tarchetypes::tar_rep(
+#'       data1,
+#'       data.frame(value = rnorm(1)),
+#'       batches = 2,
+#'       reps = 3
 #'     ),
-#'     data1,
-#'     data2
+#'     tarchetypes::tar_rep(
+#'       data2,
+#'       list(value = rnorm(1)),
+#'       batches = 2, reps = 3,
+#'       iteration = "list" # List iteration is important for batched lists.
+#'     ),
+#'     tarchetypes::tar_rep_map(
+#'       aggregate,
+#'       data.frame(value = data1$value + data2$value),
+#'       data1,
+#'       data2
+#'     )
 #'   )
 #' })
 #' targets::tar_make()
-#' targets::tar_read(analysis)
+#' targets::tar_read(aggregate)
 #' })
 #' }
-tar_map_reps <- function(
+tar_rep_map <- function(
   name,
   command,
   ...,
@@ -63,7 +68,7 @@ tar_map_reps <- function(
   envir <- targets::tar_option_get("envir")
   command <- tar_tidy_eval(substitute(command), envir, tidy_eval)
   targets <- as.character(match.call(expand.dots = FALSE)$...)
-  tar_map_reps_raw(
+  tar_rep_map_raw(
     name = name,
     command = command,
     targets = targets,

@@ -335,9 +335,9 @@ targets::tar_read(x)
 Other branching: 
 \code{\link{tar_combine_raw}()},
 \code{\link{tar_combine}()},
-\code{\link{tar_map_reps_raw}()},
-\code{\link{tar_map_reps}()},
 \code{\link{tar_map}()},
+\code{\link{tar_rep_map_raw}()},
+\code{\link{tar_rep_map}()},
 \code{\link{tar_rep_raw}()}
 }
 \concept{branching}
