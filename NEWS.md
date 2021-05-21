@@ -8,6 +8,7 @@
 
 * Add `tar_rep_map()` and `tar_rep_map_raw()` to perform batched computation downstream of `tar_rep()` (#50).
 
+
 # tarchetypes 0.2.0
 
 * Allow trailing commas in `tar_plan()` (#40, @kendonB).
