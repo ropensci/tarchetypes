@@ -1,7 +1,7 @@
 #' @title Batched replication over upstream batched targets.
 #' @export
 #' @family branching
-#' @description [tar_rep_map()] performs batched replication similar
+#' @description [tar_map_reps()] performs batched replication similar
 #'   to [tar_rep()], except it iterates over previously generated
 #'   batches and reps created by upstream data frame or list
 #'   targets through [tar_rep()].
@@ -25,7 +25,7 @@
 #' targets::tar_script({
 #'   tar_rep(data1, data.frame(value = rnorm(1)), batches = 2, reps = 3),
 #'   tar_rep(data2, data.frame(value = rnorm(2)), batches = 2, reps = 3),
-#'   tar_rep_map(
+#'   tar_map_reps(
 #'     analysis,
 #'     data.frame(
 #'       mean_data1 = mean(data1$value),
@@ -41,7 +41,7 @@
 #' targets::tar_read(analysis)
 #' })
 #' }
-tar_rep_map <- function(
+tar_map_reps <- function(
   name,
   command,
   ...,
@@ -64,7 +64,7 @@ tar_rep_map <- function(
   envir <- targets::tar_option_get("envir")
   command <- tar_tidy_eval(substitute(command), envir, tidy_eval)
   targets <- as.character(match.call(expand.dots = FALSE)$...)
-  tar_rep_map_raw(
+  tar_map_reps_raw(
     name = name,
     command = command,
     targets = targets,

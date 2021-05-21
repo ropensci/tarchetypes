@@ -3,7 +3,7 @@ assert_batches <- function(batches) {
     assert_batch(batches[[name]], name)
   }
   reps <- unique(map_int(batches, batch_count_reps))
-  msg <- "batched targets for tar_rep_map() must have equal numbers of reps"
+  msg <- "batched targets for tar_map_reps() must have equal numbers of reps"
   assert_scalar(reps, msg)
 }
 
@@ -28,7 +28,7 @@ assert_batch <- function(batch, name) {
 #' @export
 assert_batch.default <- function(batch, name) {
   throw_validate(
-    "Invalid tar_rep_map() batch from target ", name,
+    "Invalid tar_map_reps() batch from target ", name,
     ". Upstream batched targets must either be data frames ",
     "or lists that use iteration = \"list\"."
   )
@@ -40,7 +40,7 @@ assert_batch.list <- function(batch, name) {
     batch,
     assert_list,
     msg = paste(
-      "Invalid batched list target", name, "for tar_rep_map().",
+      "Invalid batched list target", name, "for tar_map_reps().",
       "Batched list target deps",
       "need iteration = \"list\" in the target definition."
     )
@@ -59,7 +59,7 @@ assert_reps <- function(rep, name) {
     assert_dbl(
       rep[[elt]],
       paste(
-        "in batched target ", name, " supplied to tar_rep_map(), ", elt,
+        "in batched target ", name, " supplied to tar_map_reps(), ", elt,
         ", must be an integer element of upstream batched targets"
       )
     )

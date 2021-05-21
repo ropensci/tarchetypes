@@ -46,8 +46,8 @@ reference:
   - '`tar_map`'
   - '`tar_rep`'
   - '`tar_rep_raw`'
-  - '`tar_rep_map`'
-  - '`tar_rep_map_raw`'
+  - '`tar_map_reps`'
+  - '`tar_map_reps_raw`'
 - title: Dynamic branching over files
   contents:
   - '`tar_files`'

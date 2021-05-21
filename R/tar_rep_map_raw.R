@@ -1,13 +1,13 @@
 #' @title Batched replication over upstream batched targets (raw version).
 #' @export
 #' @family branching
-#' @description [tar_rep_map_raw()] performs batched replication similar
+#' @description [tar_map_reps_raw()] performs batched replication similar
 #'   to [tar_rep()], except it iterates over previously generated
 #'   batches and reps created by upstream data frame or list
 #'   targets through [tar_rep()]. List targets should use
 #'   `iteration = "list"` in [tar_rep()].
-#'   `tar_rep_map_raw()`
-#'   is just like [tar_rep_map()] except it accepts a character
+#'   `tar_map_reps_raw()`
+#'   is just like [tar_map_reps()] except it accepts a character
 #'   of length 1 for `name`, a language object for `command`,
 #'   and a character vector of upstream [tar_rep()] targets to map over
 #'   (`targets`).
@@ -31,7 +31,7 @@
 #'     tar_target(label, "aggregate"),
 #'     tar_rep(data1, data.frame(value = rnorm(1)), batches = 2, reps = 3),
 #'     tar_rep(data2, list(value = rnorm(1)), batches = 2, reps = 3, iteration = "list"),
-#'     tar_rep_map(
+#'     tar_map_reps(
 #'       aggregate,
 #'       data.frame(label = label, data1 = data1$value, data2 = data2$value),
 #'       data1,
@@ -43,7 +43,7 @@
 #' targets::tar_read(analysis)
 #' })
 #' }
-tar_rep_map_raw <- function(
+tar_map_reps_raw <- function(
   name,
   command,
   targets,
@@ -64,12 +64,12 @@ tar_rep_map_raw <- function(
 ) {
   assert_chr(
     targets,
-    "targets in tar_rep_map_raw() must be a character vector."
+    "targets in tar_map_reps_raw() must be a character vector."
   )
   assert_nonempty(targets, "targets argument must be nonempty.")
   assert_nzchar(targets, "targets argument must not have 0-length elements.")
   command <- tar_raw_command(command)
-  command <- tar_rep_map_command(
+  command <- tar_map_reps_command(
     command = command,
     targets = targets,
     iteration = iteration
@@ -95,11 +95,11 @@ tar_rep_map_raw <- function(
   )
 }
 
-tar_rep_map_command <- function(command, targets, iteration) {
+tar_map_reps_command <- function(command, targets, iteration) {
   batches <- lapply(targets, as.symbol)
   names(batches) <- targets
   substitute(
-    tarchetypes::tar_rep_map_run(
+    tarchetypes::tar_map_reps_run(
       command = command,
       batches = batches,
       iteration = iteration
@@ -112,7 +112,7 @@ tar_rep_map_command <- function(command, targets, iteration) {
   )
 }
 
-#' @title Run [tar_rep_map()] batches.
+#' @title Run [tar_map_reps()] batches.
 #' @export
 #' @keywords internal
 #' @description Not a user-side function. Do not invoke directly.
@@ -120,20 +120,20 @@ tar_rep_map_command <- function(command, targets, iteration) {
 #' @param command R expression, the command to run on each rep.
 #' @param batches Named list of batch data to map over.
 #' @param iteration Iteration method: `"list"`, `"vector"`, or `"group"`.
-tar_rep_map_run <- function(command, batches, iteration) {
+tar_map_reps_run <- function(command, batches, iteration) {
   command <- substitute(command)
   assert_batches(batches)
   reps <- batch_count_reps(batches[[1]])
   out <- map(
     seq_len(reps),
-    tar_rep_map_run_rep,
+    tar_map_reps_run_rep,
     command = command,
     batches = batches
   )
   tar_rep_bind(out, iteration)
 }
 
-tar_rep_map_run_rep <- function(index, command, batches) {
+tar_map_reps_run_rep <- function(index, command, batches) {
   slice <- slice_batches(batches, index)
   out <- eval(command, envir = slice, enclos = targets::tar_envir())
   out$tar_batch <- slice[[1]]$tar_batch[1]
