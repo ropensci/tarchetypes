@@ -177,3 +177,37 @@ targets::tar_test("tar_map_reps() pipeline", {
     }
   }
 })
+
+targets::tar_test("tar_map_reps() errors without correct list aggregation", {
+  targets::tar_script({
+    list(
+      targets::tar_target(label, "aggregate"),
+      tarchetypes::tar_rep(
+        data1,
+        data.frame(value = rnorm(2)),
+        batches = 2,
+        reps = 3
+      ),
+      tarchetypes::tar_rep(
+        data2,
+        list(value = rnorm(2)),
+        batches = 2,
+        reps = 3
+      ),
+      tarchetypes::tar_map_reps(
+        aggregate1,
+        data.frame(x = label, value = data1$value + data2$value),
+        data1,
+        data2
+      )
+    )
+  })
+  expect_error(
+    targets::tar_make(callr_function = NULL),
+    class = "tar_condition_run"
+  )
+  out <- targets::tar_meta(starts_with("aggregate1"), error)
+  expect_false(all(is.na(out)))
+  expect_true(any(grepl("batch", out)))
+  expect_true(any(grepl("iteration", out)))
+})
