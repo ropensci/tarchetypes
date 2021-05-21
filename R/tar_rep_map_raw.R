@@ -158,5 +158,5 @@ slice_batch.list <- function(batch, index) {
 
 #' @export
 slice_batch.data.frame <- function(batch, index) {
-  batch[index,, drop = FALSE] # nolint
+  batch[batch$tar_rep == index,, drop = FALSE] # nolint
 }
