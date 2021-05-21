@@ -2,10 +2,13 @@
 #'   (raw version).
 #' @export
 #' @family branching
-#' @description Shorthand for a pattern that replicates a command
-#'   using batches. Batches reduce the number of targets
-#'   and thus reduce overhead.
-#' @details `tar_rep()` and `tar_rep_raw` each create two targets:
+#' @description Batching is important for optimizing the efficiency
+#'   of heavily dynamically-branched workflows:
+#'   <https://books.ropensci.org/targets/dynamic.html#batching>.
+#'   [tar_rep_raw()] is just like [tar_rep()] except the
+#'   name is a character string and the command is a
+#'   language object.
+#' @details `tar_rep_raw()` creates two targets:
 #'   an upstream local stem
 #'   with an integer vector of batch ids, and a downstream pattern
 #'   that maps over the batch ids. (Thus, each batch is a branch.)
@@ -68,6 +71,7 @@ tar_rep_raw <- function(
   retrieval = targets::tar_option_get("retrieval"),
   cue = targets::tar_option_get("cue")
 ) {
+  command <- tar_raw_command(name, command)
   name_batch <- paste0(name, "_batch")
   batch <- tar_rep_batch(
     name_batch = name_batch,
@@ -81,7 +85,7 @@ tar_rep_raw <- function(
   target <- tar_rep_target(
     name = name,
     name_batch = name_batch,
-    command,
+    command = command,
     batches = batches,
     reps = reps,
     packages = packages,
@@ -208,26 +212,31 @@ tar_rep_pattern <- function(name_batch) {
 tar_rep_run <- function(command, batch, reps, iteration) {
   expr <- substitute(command)
   envir <- parent.frame()
+  out <- tar_rep_run_map(expr, envir, batch, reps)
+  tar_rep_bind(out, iteration)
+}
+
+tar_rep_bind <- function(out, iteration) {
   switch(
     iteration,
-    list = tar_rep_map(expr, envir, batch, reps),
-    vector = do.call(vctrs::vec_c, tar_rep_map(expr, envir, batch, reps)),
-    group = do.call(vctrs::vec_rbind, tar_rep_map(expr, envir, batch, reps)),
+    list = out,
+    vector = do.call(vctrs::vec_c, out),
+    group = do.call(vctrs::vec_rbind, out),
     throw_validate("unsupported iteration method")
   )
 }
 
-tar_rep_map <- function(expr, envir, batch, reps) {
+tar_rep_run_map <- function(expr, envir, batch, reps) {
   lapply(
     seq_len(reps),
-    tar_rep_rep,
+    tar_rep_run_map_rep,
     expr = expr,
     envir = envir,
     batch = batch
   )
 }
 
-tar_rep_rep <- function(expr, envir, batch, rep) {
+tar_rep_run_map_rep <- function(expr, envir, batch, rep) {
   out <- eval(expr, envir = envir)
   if (is.list(out)) {
     out[["tar_batch"]] <- as.integer(batch)

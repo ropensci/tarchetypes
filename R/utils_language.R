@@ -58,6 +58,16 @@ substitute_lang <- function(lang, env) {
   eval(call_substitute(lang, env), envir = baseenv())
 }
 
+tar_raw_command <- function(name, command) {
+  assert_nonmissing(command, paste("target", name, "has no command."))
+  assert_lang(command, "command must be a language object.")
+  assert_scalar(
+    as.expression(command),
+    paste("the command of target", name, "must have length 1.")
+  )
+  command <- as.expression(command)[[1]]
+}
+
 tar_tidy_eval <- function(expr, envir, tidy_eval) {
   if (tidy_eval) {
     expr <- as.call(c(quote(rlang::expr), expr))

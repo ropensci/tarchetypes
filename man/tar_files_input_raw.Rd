@@ -85,10 +85,7 @@ just before the target runs.}
 \item{priority}{Numeric of length 1 between 0 and 1. Controls which
 targets get deployed first when multiple competing targets are ready
 simultaneously. Targets with priorities closer to 1 get built earlier
-(and polled earlier in \code{\link[targets:tar_make_future]{tar_make_future()}}).
-Only applies to \code{\link[targets:tar_make_future]{tar_make_future()}} and \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}}
-(not \code{\link[targets:tar_make]{tar_make()}}). \code{\link[targets:tar_make_future]{tar_make_future()}} with no extra settings is
-a drop-in replacement for \code{\link[targets:tar_make]{tar_make()}} in this case.}
+(and polled earlier in \code{\link[targets:tar_make_future]{tar_make_future()}}).}
 
 \item{resources}{A named list of computing resources. Uses:
 \itemize{

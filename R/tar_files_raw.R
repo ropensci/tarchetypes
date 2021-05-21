@@ -67,7 +67,7 @@ tar_files_raw <- function(
 ) {
   assert_chr(name, "name must be a character.")
   assert_scalar(name, "name must have length 1.")
-  assert_lang(command, "command must be a language object.")
+  command <- tar_raw_command(name, command)
   name_files <- paste0(name, "_files")
   format <- match.arg(format)
   upstream <- targets::tar_target_raw(
