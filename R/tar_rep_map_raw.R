@@ -135,7 +135,10 @@ tar_rep_map_run <- function(command, batches, iteration) {
 
 tar_rep_map_run_rep <- function(index, command, batches) {
   slice <- slice_batches(batches, index)
-  eval(command, envir = slice, enclos = targets::tar_envir())
+  out <- eval(command, envir = slice, enclos = targets::tar_envir())
+  out$tar_batch <- slice[[1]]$tar_batch[1]
+  out$tar_rep <- slice[[1]]$tar_rep[1]
+  out
 }
 
 slice_batches <- function(batches, index) {
