@@ -261,6 +261,8 @@ If you supply multiple upstream \code{\link[=tar_rep]{tar_rep()}} targets,
 those targets must all have the same
 number of batches and reps per batch. Those upstream targets
 must return either data frames or lists.
+List targets should use
+\code{iteration = "list"} in \code{\link[=tar_rep]{tar_rep()}}.
 }
 \section{Target objects}{
 

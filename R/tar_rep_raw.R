@@ -209,11 +209,16 @@ tar_rep_pattern <- function(name_batch) {
 tar_rep_run <- function(command, batch, reps, iteration) {
   expr <- substitute(command)
   envir <- parent.frame()
+  out <- tar_rep_run_map(expr, envir, batch, reps)
+  tar_rep_bind(out, iteration)
+}
+
+tar_rep_bind <- function(out, iteration) {
   switch(
     iteration,
-    list = tar_rep_run_map(expr, envir, batch, reps),
-    vector = do.call(vctrs::vec_c, tar_rep_run_map(expr, envir, batch, reps)),
-    group = do.call(vctrs::vec_rbind, tar_rep_run_map(expr, envir, batch, reps)),
+    list = out,
+    vector = do.call(vctrs::vec_c, out),
+    group = do.call(vctrs::vec_rbind, out),
     throw_validate("unsupported iteration method")
   )
 }

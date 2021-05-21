@@ -9,6 +9,8 @@
 #'   those targets must all have the same
 #'   number of batches and reps per batch. Those upstream targets
 #'   must return either data frames or lists.
+#'   List targets should use
+#'   `iteration = "list"` in [tar_rep()].
 #' @return A new target object to perform batched replication.
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects

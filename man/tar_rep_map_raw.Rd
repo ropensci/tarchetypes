@@ -254,7 +254,9 @@ See the "Target objects" section for background.
 \code{\link[=tar_rep_map_raw]{tar_rep_map_raw()}} performs batched replication similar
 to \code{\link[=tar_rep]{tar_rep()}}, except it iterates over previously generated
 batches and reps created by upstream data frame or list
-targets through \code{\link[=tar_rep]{tar_rep()}}. \code{tar_rep_map_raw()}
+targets through \code{\link[=tar_rep]{tar_rep()}}. List targets should use
+\code{iteration = "list"} in \code{\link[=tar_rep]{tar_rep()}}.
+\code{tar_rep_map_raw()}
 is just like \code{\link[=tar_rep_map]{tar_rep_map()}} except it accepts a character
 of length 1 for \code{name}, a language object for \code{command},
 and a character vector of upstream \code{\link[=tar_rep]{tar_rep()}} targets to map over
@@ -290,7 +292,13 @@ if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({ # tar_dir() runs code from a temporary directory.
 targets::tar_script({
   tar_rep(data1, data.frame(value = rnorm(1)), batches = 2, reps = 3),
-  tar_rep(data2, data.frame(value = rnorm(2)), batches = 2, reps = 3),
+  tar_rep(
+    data2,
+    list(value = rnorm(2)),
+    iteration = "list",
+    batches = 2,
+    reps = 3
+  ),
   tar_rep_map_raw(
     "analysis",
     quote(
