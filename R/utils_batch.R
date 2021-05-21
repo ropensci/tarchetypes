@@ -32,9 +32,9 @@ assert_batch <- function(batch, name) {
 #' @export
 assert_batch.default <- function(batch, name) {
   throw_validate(
-    "Invalid tar_rep_map() batch from target ", name,
-    ". Upstream batched targets must either be data frames ",
-    "or lists that use iteration = \"list\" in tar_rep()."
+    "invalid tar_rep_map() dependency ", name,
+    ". Upstream tar_rep() targets must be lists ",
+    "with iteration = \"list\" or data frames."
   )
 }
 

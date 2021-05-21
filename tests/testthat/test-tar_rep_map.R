@@ -236,3 +236,33 @@ targets::tar_test("tar_rep_map() errors without correct list aggregation", {
   expect_true(any(grepl("batch", out)))
   expect_true(any(grepl("iteration", out)))
 })
+
+targets::tar_test("tar_rep_map() errors if bad upstream data type", {
+  targets::tar_script({
+    list(
+      targets::tar_target(label, "aggregate"),
+      tarchetypes::tar_rep(
+        data1,
+        data.frame(value = rnorm(2)),
+        batches = 2,
+        reps = 3
+      ),
+      tarchetypes::tar_rep(
+        data2,
+        rnorm(2),
+        batches = 2,
+        reps = 3
+      ),
+      tarchetypes::tar_rep_map(
+        aggregate1,
+        data.frame(x = label, value = data1$value + data2$value),
+        data1,
+        data2
+      )
+    )
+  })
+  expect_error(
+    targets::tar_make(callr_function = NULL),
+    class = "tar_condition_run"
+  )
+})
