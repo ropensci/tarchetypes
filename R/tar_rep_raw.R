@@ -71,7 +71,7 @@ tar_rep_raw <- function(
   retrieval = targets::tar_option_get("retrieval"),
   cue = targets::tar_option_get("cue")
 ) {
-  command <- tar_raw_command(command)
+  command <- tar_raw_command(name, command)
   name_batch <- paste0(name, "_batch")
   batch <- tar_rep_batch(
     name_batch = name_batch,

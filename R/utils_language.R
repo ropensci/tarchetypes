@@ -58,7 +58,7 @@ substitute_lang <- function(lang, env) {
   eval(call_substitute(lang, env), envir = baseenv())
 }
 
-tar_raw_command <- function(command) {
+tar_raw_command <- function(name, command) {
   assert_nonmissing(command, paste("target", name, "has no command."))
   assert_lang(command, "command must be a language object.")
   assert_scalar(

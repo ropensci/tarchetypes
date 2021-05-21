@@ -72,7 +72,7 @@ tar_rep_map_raw <- function(
   )
   assert_nonempty(targets, "targets argument must be nonempty.")
   assert_nzchar(targets, "targets argument must not have 0-length elements.")
-  command <- tar_raw_command(command)
+  command <- tar_raw_command(name, command)
   command <- tar_rep_map_command(
     command = command,
     targets = targets,
