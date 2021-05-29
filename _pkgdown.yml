@@ -48,6 +48,10 @@ reference:
   - '`tar_rep_raw`'
   - '`tar_rep_map`'
   - '`tar_rep_map_raw`'
+- title: Target selection
+  contents:
+  - '`tar_select_names`'
+  - '`tar_select_targets`'
 - title: Dynamic branching over files
   contents:
   - '`tar_files`'

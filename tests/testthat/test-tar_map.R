@@ -94,8 +94,8 @@ targets::tar_test("tar_map() values", {
   targets::tar_make(callr_function = NULL)
   expect_equal(tar_read(x_12_56), 68)
   expect_equal(tar_read(x_34_78), 112)
-  expect_equal(tar_read(y_12_56), 80)
-  expect_equal(tar_read(y_34_78), 146)
+  expect_equal(unname(tar_read(y_12_56)), 80)
+  expect_equal(unname(tar_read(y_34_78)), 146)
 })
 
 targets::tar_test("tar_map(unlist = TRUE) names", {

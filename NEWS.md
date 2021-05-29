@@ -7,7 +7,7 @@
 ## New features
 
 * Add `tar_rep_map()` and `tar_rep_map_raw()` to perform batched computation downstream of `tar_rep()` (#50).
-
+* Add `tar_select_names()` and `tar_select_targets()` to make certain metaprogramming tasks easier.
 
 # tarchetypes 0.2.0
 

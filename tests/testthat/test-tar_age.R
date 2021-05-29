@@ -47,7 +47,7 @@ targets::tar_test("tar_age() with dynamic branching and short age", {
     )
   })
   targets::tar_make(callr_function = NULL)
-  expect_equal(targets::tar_read(y), seq_len(2L))
+  expect_equal(unname(targets::tar_read(y)), seq_len(2L))
   Sys.sleep(0.25)
   targets::tar_make(callr_function = NULL)
   expect_equal(nrow(targets::tar_progress()), 3L)
@@ -71,7 +71,7 @@ targets::tar_test("tar_age() with dynamic branching and long age", {
     )
   })
   targets::tar_make(callr_function = NULL)
-  expect_equal(targets::tar_read(y), seq_len(2L))
+  expect_equal(unname(targets::tar_read(y)), seq_len(2L))
   targets::tar_make(callr_function = NULL)
   expect_equal(nrow(targets::tar_progress()), 0L)
   expect_true(
