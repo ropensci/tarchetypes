@@ -34,15 +34,15 @@ targets::tar_test("tar_change() with tidy eval", {
     x <- "val_x"
     y <- "val_y"
     list(
-      tarchetypes::tar_change(x, !!x, change = !!y)
+      tarchetypes::tar_change(x_target, !!x, change = !!y)
     )
   })
   out <- targets::tar_manifest(callr_function = NULL)
   expect_true(any(grepl("val_x", out$command)))
   expect_true(any(grepl("val_y", out$command)))
   targets::tar_make(callr_function = NULL)
-  expect_equal(tar_read(x), "val_x")
-  expect_equal(tar_read(x_change), "val_y")
+  expect_equal(tar_read(x_target), "val_x")
+  expect_equal(tar_read(x_target_change), "val_y")
 })
 
 targets::tar_test("tar_change() without tidy eval", {
@@ -50,7 +50,7 @@ targets::tar_test("tar_change() without tidy eval", {
     x <- "val_x"
     y <- "val_y"
     list(
-      tarchetypes::tar_change(x, !!x, change = !!y, tidy_eval = FALSE)
+      tarchetypes::tar_change(x_target, !!x, change = !!y, tidy_eval = FALSE)
     )
   })
   out <- targets::tar_manifest(callr_function = NULL)

@@ -61,19 +61,20 @@ targets::tar_test("tar_hook_outer() with tidyselect", {
 })
 
 targets::tar_test("tar_hook_outer() changes internals properly", {
+  resources <- targets::tar_resources(qs = targets::tar_resources_qs())
   x <- targets::tar_target(
     "a",
     b,
     pattern = map(c),
     format = "file",
-    resources = list(x = 1)
+    resources = resources
   )
   y <- targets::tar_target(
     "a",
     b,
     pattern = map(c),
     format = "file",
-    resources = list(x = 1)
+    resources = resources
   )
   for (field in c("packages", "library", "deps", "seed", "string", "hash")) {
     expect_equal(x$command[[field]], y$command[[field]])

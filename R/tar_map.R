@@ -71,6 +71,7 @@ tar_map <- function(
   assert_values_list(values)
   names_quosure <- rlang::enquo(names)
   names <- eval_tidyselect(names_quosure, base::names(values))
+  values <- tar_map_prepare_values(values)
   values <- tar_map_extend_values(targets, values, names)
   out <- lapply(targets, tar_map_target, values = values)
   flat <- unlist(out, recursive = TRUE)
@@ -79,6 +80,11 @@ tar_map <- function(
     set_names(flat, map_chr(flat, ~.x$settings$name)),
     set_names(out, map_chr(targets, ~.x$settings$name))
   )
+}
+
+tar_map_prepare_values <- function(values) {
+  #map(values, ~parse(text = deparse_safe(.x))[[1]])
+  values
 }
 
 tar_map_extend_values <- function(targets, values, names) {

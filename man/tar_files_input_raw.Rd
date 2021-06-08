@@ -87,30 +87,11 @@ targets get deployed first when multiple competing targets are ready
 simultaneously. Targets with priorities closer to 1 get built earlier
 (and polled earlier in \code{\link[targets:tar_make_future]{tar_make_future()}}).}
 
-\item{resources}{A named list of computing resources. Uses:
-\itemize{
-\item Template file wildcards for \code{future::future()} in \code{\link[targets:tar_make_future]{tar_make_future()}}.
-\item Template file wildcards \code{clustermq::workers()} in \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}}.
-\item Custom target-level \code{future::plan()}, e.g.
-\code{resources = list(plan = future.callr::callr)}.
-\item Custom \code{curl} handle if \code{format = "url"},
-e.g. \code{resources = list(handle = curl::new_handle(nobody = TRUE))}.
-In custom handles, most users should manually set \code{nobody = TRUE}
-so \code{targets} does not download the entire file when it
-only needs to check the time stamp and ETag.
-\item Custom preset for \code{qs::qsave()} if \code{format = "qs"}, e.g.
-\code{resources = list(handle = "archive")}.
-\item Arguments \code{compression} and \code{compression_level} to
-\code{arrow::write_feather()} and \code{arrow:write_parquet()} if \code{format} is
-\code{"feather"}, \code{"parquet"}, \code{"aws_feather"}, or \code{"aws_parquet"}.
-\item Custom compression level for \code{fst::write_fst()} if
-\code{format} is \code{"fst"}, \code{"fst_dt"}, or \code{"fst_tbl"}, e.g.
-\code{resources = list(compress = 100)}.
-\item AWS bucket and prefix for the \code{"aws_"} formats, e.g.
-\code{resources = list(bucket = "your-bucket", prefix = "folder/name")}.
-\code{bucket} is required for AWS formats. See the cloud computing chapter
-of the manual for details.
-}}
+\item{resources}{Object returned by \code{\link[targets:tar_resources]{tar_resources()}}
+with optional settings for high-performance computing
+functionality, alternative data storage formats,
+and other optional capabilities of \code{targets}.
+See \code{\link[targets:tar_resources]{tar_resources()}} for details.}
 
 \item{cue}{An optional object from \code{tar_cue()}
 to customize the rules that decide whether the target is up to date.

@@ -85,19 +85,20 @@ targets::tar_test("tar_hook_inner() with tidyselect on names_wrap", {
 })
 
 targets::tar_test("tar_hook_inner() with no replacement", {
+  resources <- targets::tar_resources(qs = targets::tar_resources_qs())
   x <- targets::tar_target(
     "a",
     b,
     pattern = map(c),
     format = "file",
-    resources = list(x = 1)
+    resources = resources
   )
   y <- targets::tar_target(
     "a",
     b,
     pattern = map(c),
     format = "file",
-    resources = list(x = 1)
+    resources = resources
   )
   for (field in c("packages", "library", "deps", "seed", "string", "hash")) {
     expect_equal(x$command[[field]], y$command[[field]])
@@ -126,19 +127,20 @@ targets::tar_test("tar_hook_inner() with no replacement", {
 })
 
 targets::tar_test("tar_hook_inner() changes internals properly", {
+  resources <- targets::tar_resources(qs = targets::tar_resources_qs())
   x <- targets::tar_target(
     "a",
     b,
     pattern = map(c),
     format = "file",
-    resources = list(x = 1)
+    resources = resources
   )
   y <- targets::tar_target(
     "a",
     b,
     pattern = map(c),
     format = "file",
-    resources = list(x = 1)
+    resources = resources
   )
   for (field in c("packages", "library", "deps", "seed", "string", "hash")) {
     expect_equal(x$command[[field]], y$command[[field]])
