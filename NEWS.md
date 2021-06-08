@@ -8,6 +8,7 @@
 
 * Add `tar_rep_map()` and `tar_rep_map_raw()` to perform batched computation downstream of `tar_rep()` (#50).
 * Add `tar_select_names()` and `tar_select_targets()` to make certain metaprogramming tasks easier.
+* In `tar_map()`, attempt to convert the elements of `values` into lists of language objects.
 
 # tarchetypes 0.2.0
 

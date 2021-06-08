@@ -32,6 +32,11 @@
 #'   in place of those symbols. Elements of the `values` list
 #'   should be small objects that can easily deparse to names,
 #'   such as characters, integers, and symbols.
+#'   For more complicated elements of `values`, such as
+#'   lists with multiple numeric vectors,
+#'   `tar_map()` attempts to parse the elements into expressions,
+#'   but this process is not perfect, and the default
+#'   target names come out garbled.
 #'   To create a list of symbols as a column of `values`,
 #'   use `rlang::syms()`.
 #' @param ... One or more target objects or list of target objects.
@@ -71,7 +76,7 @@ tar_map <- function(
   assert_values_list(values)
   names_quosure <- rlang::enquo(names)
   names <- eval_tidyselect(names_quosure, base::names(values))
-  values <- tar_map_prepare_values(values)
+  values <- tar_map_process_values(values)
   values <- tar_map_extend_values(targets, values, names)
   out <- lapply(targets, tar_map_target, values = values)
   flat <- unlist(out, recursive = TRUE)
@@ -82,8 +87,13 @@ tar_map <- function(
   )
 }
 
-tar_map_prepare_values <- function(values) {
-  #map(values, ~parse(text = deparse_safe(.x))[[1]])
+tar_map_process_values <- function(values) {
+  for (name in names(values)) {
+    values[[name]] <- map(
+      values[[name]],
+      ~parse(text = deparse_safe(.x))[[1]]
+    )
+  }
   values
 }
 

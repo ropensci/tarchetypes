@@ -123,3 +123,17 @@ targets::tar_test("tar_map(unlist = FALSE) names", {
   expect_true(all(grepl("^x_", names_x)))
   expect_true(all(grepl("^y_", names_y)))
 })
+
+
+targets::tar_test("tar_map() and complicated values", {
+  tar_script({
+    tarchetypes::tar_map(
+      list(a = list(c(12, 34), c(45, 78))),
+      targets::tar_target(x, a),
+      names = NULL
+    )
+  })
+  targets::tar_make(callr_function = NULL)
+  expect_equal(targets::tar_read(x_1), c(12, 34))
+  expect_equal(targets::tar_read(x_2), c(45, 78))
+})
