@@ -13,9 +13,11 @@ statements, and the elements are values that get substituted
 in place of those symbols. Elements of the \code{values} list
 should be small objects that can easily deparse to names,
 such as characters, integers, and symbols.
-For each element of \code{values} that is a list,
-\code{tar_map()} attempts to parse it into an expression,
-but this process is not perfect.
+For more complicated elements of \code{values}, such as
+lists with multiple numeric vectors,
+\code{tar_map()} attempts to parse the elements into expressions,
+but this process is not perfect, and the default
+target names come out garbled.
 To create a list of symbols as a column of \code{values},
 use \code{rlang::syms()}.}
 
