@@ -30,7 +30,8 @@ targets::tar_test("tar_age() with long age", {
   targets::tar_make(callr_function = NULL)
   expect_equal(targets::tar_read(data), 0L)
   targets::tar_make(callr_function = NULL)
-  expect_equal(nrow(tar_progress()), 0L)
+  progress <- targets::tar_progress()
+  expect_equal(nrow(progress[progress$progress != "skipped", ]), 0L)
 })
 
 targets::tar_test("tar_age() with dynamic branching and short age", {
@@ -50,8 +51,10 @@ targets::tar_test("tar_age() with dynamic branching and short age", {
   expect_equal(unname(targets::tar_read(y)), seq_len(2L))
   Sys.sleep(0.25)
   targets::tar_make(callr_function = NULL)
-  expect_equal(nrow(targets::tar_progress()), 3L)
-  expect_true("y" %in% targets::tar_progress()$name)
+  progress <- targets::tar_progress()
+  progress <- progress[progress$progress != "skipped", ]
+  expect_equal(nrow(progress), 3L)
+  expect_true("y" %in% progress$name)
   expect_true(
     is.environment(tar_age(x, 1, age = as.difftime(1, units = "secs")))
   )
@@ -73,7 +76,9 @@ targets::tar_test("tar_age() with dynamic branching and long age", {
   targets::tar_make(callr_function = NULL)
   expect_equal(unname(targets::tar_read(y)), seq_len(2L))
   targets::tar_make(callr_function = NULL)
-  expect_equal(nrow(targets::tar_progress()), 0L)
+  progress <- targets::tar_progress()
+  progress <- progress[progress$progress != "skipped", ]
+  expect_equal(nrow(progress), 0L)
   expect_true(
     is.environment(tar_age(x, 1, age = as.difftime(1, units = "secs")))
   )

@@ -39,6 +39,7 @@ targets::tar_test("tar_files() correctly responds to changes in files", {
   expect_equal(length(unique(meta$data)), 2L)
   progress <- targets::tar_progress(starts_with("x_"))
   progress <- progress[progress$name != "x_files", ]
+  progress <- progress[progress$progress != "skipped", ]
   expect_equal(nrow(progress), 1L)
   expect_equal(sum(grepl("built", progress$progress)), 1L)
 })

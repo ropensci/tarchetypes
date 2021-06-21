@@ -216,7 +216,8 @@ targets::tar_test("inner hook invalidates target", {
   })
   expect_equal(targets::tar_outdated(callr_function = NULL), "b")
   targets::tar_make(callr_function = NULL)
-  out <- targets::tar_progress()
-  expect_equal(out$name, "b")
-  expect_equal(out$progress, "built")
+  progress <- targets::tar_progress()
+  progress <- progress[progress$progress != "skipped", ]
+  expect_equal(progress$name, "b")
+  expect_equal(progress$progress, "built")
 })

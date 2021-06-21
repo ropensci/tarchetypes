@@ -27,7 +27,9 @@ targets::tar_test("tar_render_raw() works", {
   expect_equal(basename(out), c("report.html", "report.Rmd"))
   # Should not rerun the report.
   suppressMessages(targets::tar_make(callr_function = NULL))
-  expect_equal(nrow(targets::tar_progress()), 0L)
+  progress <- targets::tar_progress()
+  progress <- progress[progress$progress != "skipped", ]
+  expect_equal(nrow(progress), 0L)
   targets::tar_script({
     library(tarchetypes)
     list(
@@ -37,7 +39,9 @@ targets::tar_test("tar_render_raw() works", {
   })
   # Should rerun the report.
   suppressMessages(targets::tar_make(callr_function = NULL))
-  expect_equal(sort(targets::tar_progress()$name), sort(c("data", "report")))
+  progress <- targets::tar_progress()
+  progress <- progress[progress$progress != "skipped", ]
+  expect_equal(sort(progress$name), sort(c("data", "report")))
 })
 
 targets::tar_test("tar_render_raw(nested) runs from project root", {

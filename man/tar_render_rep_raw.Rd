@@ -101,7 +101,10 @@ If \code{"worker"}, the worker loads the targets dependencies.}
 \item{cue}{An optional object from \code{tar_cue()} to customize the
 rules that decide whether the target is up to date.}
 
-\item{quiet}{An option to suppress printing of the pandoc command line.}
+\item{quiet}{An option to suppress printing during rendering from knitr,
+pandoc command line and others. To only suppress printing of the last
+"Output created: " message, you can set \code{rmarkdown.render.message} to
+\code{FALSE}}
 
 \item{args}{Named list of other arguments to \code{rmarkdown::render()}.
 Must not include \code{params} or \code{output_file}. Evaluated when the target

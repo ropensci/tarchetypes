@@ -175,6 +175,7 @@ targets::tar_test("tar_render_rep() run", {
   })
   targets::tar_make(callr_function = NULL)
   out <- targets::tar_progress()
+  out <- out[out$progress != "skipped", ]
   out <- out[grepl("^report", out$name), ]
   expect_equal(nrow(out), 3)
   out <- out$progress[!(out$name %in% c("report", "report_params"))]

@@ -25,7 +25,9 @@ targets::tar_test("tar_knit() works", {
   expect_equal(basename(out), c("report.md", "report.Rmd"))
   # Should not rerun the report.
   suppressMessages(targets::tar_make(callr_function = NULL))
-  expect_equal(nrow(targets::tar_progress()), 0L)
+  progress <- targets::tar_progress()
+  progress <- progress[progress$progress != "skipped", ]
+  expect_equal(nrow(progress), 0L)
   targets::tar_script({
     library(tarchetypes)
     list(
