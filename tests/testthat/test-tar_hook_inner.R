@@ -85,6 +85,8 @@ targets::tar_test("tar_hook_inner() with tidyselect on names_wrap", {
 })
 
 targets::tar_test("tar_hook_inner() with no replacement", {
+  skip_on_cran()
+  skip_if(!exists("tar_resources", getNamespace("targets")))
   resources <- targets::tar_resources(qs = targets::tar_resources_qs())
   x <- targets::tar_target(
     "a",
@@ -127,6 +129,8 @@ targets::tar_test("tar_hook_inner() with no replacement", {
 })
 
 targets::tar_test("tar_hook_inner() changes internals properly", {
+  skip_on_cran()
+  skip_if(!exists("tar_resources", getNamespace("targets")))
   resources <- targets::tar_resources(qs = targets::tar_resources_qs())
   x <- targets::tar_target(
     "a",
