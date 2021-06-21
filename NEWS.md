@@ -1,3 +1,7 @@
+# tarchetypes 0.2.1.9000
+
+* Migrate to utilities for error handling and metaprogramming exported from `targets`.
+
 # tarchetypes 0.2.1
 
 ## Bug fixes
