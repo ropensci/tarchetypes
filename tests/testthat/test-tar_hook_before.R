@@ -53,6 +53,7 @@ targets::tar_test("tar_hook_before() with tidyselect", {
 })
 
 targets::tar_test("tar_hook_before() changes internals properly", {
+  skip_on_cran()
   resources <- targets::tar_resources(qs = targets::tar_resources_qs())
   x <- targets::tar_target(
     "a",
