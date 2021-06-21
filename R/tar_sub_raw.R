@@ -24,7 +24,7 @@
 #' )
 #' tar_sub_raw(quote(tar_render(name, file)), values = values)
 tar_sub_raw <- function(expr, values) {
-  assert_lang(expr)
+  targets::tar_assert_lang(expr)
   assert_values_list(values)
   lapply(transpose(values), tar_sub_expr, expr = expr)
 }

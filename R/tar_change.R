@@ -59,11 +59,11 @@ tar_change <- function(
   retrieval = targets::tar_option_get("retrieval"),
   cue = targets::tar_option_get("cue")
 ) {
-  name <- deparse_language(substitute(name))
+  name <- targets::tar_deparse_language(substitute(name))
   name_change <- paste0(name, "_change")
   envir <- tar_option_get("envir")
-  command <- tar_tidy_eval(substitute(command), envir, tidy_eval)
-  change <- tar_tidy_eval(substitute(change), envir, tidy_eval)
+  command <- targets::tar_tidy_eval(substitute(command), envir, tidy_eval)
+  change <- targets::tar_tidy_eval(substitute(change), envir, tidy_eval)
   tar_change_raw(
     name = name,
     name_change = name_change,

@@ -61,10 +61,10 @@ tar_cue_age_raw <- function(
   iteration = TRUE,
   file = TRUE
 ) {
-  assert_chr(name, "name must be a character.")
-  assert_scalar(name, "name must have length 1.")
-  assert_nzchar(name, "name must be nonempty.")
-  assert_inherits(
+  targets::tar_assert_chr(name, "name must be a character.")
+  targets::tar_assert_scalar(name, "name must have length 1.")
+  targets::tar_assert_nzchar(name, "name must be nonempty.")
+  targets::tar_assert_inherits(
     age,
     "difftime",
     "age must be a difftime object, e.g. as.difftime(3, units = \"days\")."

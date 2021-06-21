@@ -72,7 +72,7 @@ tar_map <- function(
   unlist = FALSE
 ) {
   targets <- unlist(list(...), recursive = TRUE)
-  assert_targets(targets)
+  targets::tar_assert_target_list(targets)
   assert_values_list(values)
   names_quosure <- rlang::enquo(names)
   names <- eval_tidyselect(names_quosure, base::names(values))
@@ -91,7 +91,7 @@ tar_map_process_values <- function(values) {
   for (name in names(values)) {
     values[[name]] <- map(
       values[[name]],
-      ~parse(text = deparse_safe(.x))[[1]]
+      ~parse(text = targets::tar_deparse_safe(.x))[[1]]
     )
   }
   values
@@ -101,7 +101,7 @@ tar_map_extend_values <- function(targets, values, names) {
   suffix <- tar_map_produce_suffix(values, names)
   for (target in targets) {
     name <- target$settings$name
-    assert_not_in(
+    targets::tar_assert_not_in(
       name,
       names(values),
       paste("target", name, "cannot be in names(values).")

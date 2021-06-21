@@ -48,7 +48,7 @@
 tar_hook_inner <- function(targets, hook, names = NULL, names_wrap = NULL) {
   targets <- tar_copy_targets(targets)
   hook <- substitute(hook)
-  assert_lang(hook)
+  targets::tar_assert_lang(hook)
   assert_hook_placeholder(hook)
   names_quosure <- rlang::enquo(names)
   names_wrap_quosure <- rlang::enquo(names_wrap)

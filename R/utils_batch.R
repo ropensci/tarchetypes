@@ -8,7 +8,7 @@ assert_batches <- function(batches) {
     "batched tar_rep() targets for tar_rep_map()",
     "must have equal numbers of reps per batch"
   )
-  assert_scalar(reps, msg)
+  targets::tar_assert_scalar(reps, msg)
 }
 
 batch_count_reps <- function(batch) {
@@ -31,7 +31,7 @@ assert_batch <- function(batch, name) {
 
 #' @export
 assert_batch.default <- function(batch, name) {
-  throw_validate(
+  targets::tar_throw_validate(
     "invalid tar_rep_map() dependency ", name,
     ". Upstream tar_rep() targets must be lists ",
     "with iteration = \"list\" or data frames."
@@ -42,7 +42,7 @@ assert_batch.default <- function(batch, name) {
 assert_batch.list <- function(batch, name) {
   lapply(
     batch,
-    assert_list,
+    targets::tar_assert_list,
     msg = paste(
       "Invalid batched list target", name, "for tar_rep_map().",
       "Batched list target deps",
@@ -60,7 +60,7 @@ assert_batch.data.frame <- function(batch, name) {
 assert_reps <- function(rep, name) {
   elts <- names(rep)
   for (elt in c("tar_batch", "tar_rep")) {
-    assert_dbl(
+    targets::tar_assert_dbl(
       rep[[elt]],
       paste(
         "in batched target ", name, " supplied to tar_rep_map(), ", elt,

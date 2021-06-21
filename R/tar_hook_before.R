@@ -45,7 +45,7 @@
 tar_hook_before <- function(targets, hook, names = NULL) {
   targets <- tar_copy_targets(targets)
   hook <- substitute(hook)
-  assert_lang(hook)
+  targets::tar_assert_lang(hook)
   names_quosure <- rlang::enquo(names)
   walk_targets(
     targets = targets,

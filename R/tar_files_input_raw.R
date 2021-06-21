@@ -76,18 +76,18 @@ tar_files_input_raw <- function(
   resources = targets::tar_option_get("resources"),
   cue = targets::tar_option_get("cue")
 ) {
-  assert_chr(name, "name must be a character.")
-  assert_scalar(name, "name must have length 1.")
-  assert_chr(files, "files must be a character vector.")
-  assert_nonempty(files, "files must have length > 0.")
-  assert_dbl(batches, "batches must be numeric.")
-  assert_scalar(batches, "batches must have length 1.")
+  targets::tar_assert_chr(name, "name must be a character.")
+  targets::tar_assert_scalar(name, "name must have length 1.")
+  targets::tar_assert_chr(files, "files must be a character vector.")
+  targets::tar_assert_nonempty(files, "files must have length > 0.")
+  targets::tar_assert_dbl(batches, "batches must be numeric.")
+  targets::tar_assert_scalar(batches, "batches must have length 1.")
   format <- match.arg(format)
   name_files <- paste0(name, "_files")
   files <- tar_files_input_batch_files(files, batches)
   upstream <- targets::tar_target_raw(
     name = name_files,
-    command = parse(text = deparse_safe(files, collapse = " ")),
+    command = parse(text = targets::tar_deparse_safe(files, collapse = " ")),
     pattern = NULL,
     packages = character(0),
     format = "rds",

@@ -23,7 +23,7 @@
 #' writeLines(lines, report)
 #' tar_knitr_deps(report)
 tar_knitr_deps <- function(path) {
-  assert_path(path)
-  assert_not_dirs(path)
+  targets::tar_assert_path(path)
+  targets::tar_assert_not_dirs(path)
   sort(unique(unlist(map(path, knitr_deps))))
 }

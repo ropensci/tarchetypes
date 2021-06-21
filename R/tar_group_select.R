@@ -51,11 +51,14 @@ tar_group_select <- function(
   retrieval = targets::tar_option_get("retrieval"),
   cue = targets::tar_option_get("cue")
 ) {
-  assert_package("dplyr")
-  name <- deparse_language(substitute(name))
-  assert_lgl(tidy_eval, "tidy_eval must be logical.")
+  targets::tar_assert_package("dplyr")
+  name <- targets::tar_deparse_language(substitute(name))
+  targets::tar_assert_lgl(tidy_eval, "tidy_eval must be logical.")
   by <- as.expression(substitute(by))
-  assert_nonempty(by[[1]], "`by` in tar_group_select() must be nonempty.")
+  targets::tar_assert_nonempty(
+    by[[1]],
+    "`by` in tar_group_select() must be nonempty."
+  )
   command <- tar_group_select_command(substitute(command), by, tidy_eval)
   targets::tar_target_raw(
     name = name,
@@ -78,8 +81,8 @@ tar_group_select <- function(
 
 tar_group_select_command <- function(command, by, tidy_eval) {
   envir <- targets::tar_option_get("envir")
-  assert_envir(envir)
-  command <- tar_tidy_eval(command, envir, tidy_eval)
+  targets::tar_assert_envir(envir)
+  command <- targets::tar_tidy_eval(command, envir, tidy_eval)
   fun <- call_ns("tarchetypes", "tar_group_select_run")
   as.call(list(fun, data = command, by = by))
 }
@@ -91,7 +94,10 @@ tar_group_select_command <- function(command, by, tidy_eval) {
 #' @param data A data frame to group.
 #' @param by Nonempty character vector of names of variables to group by.
 tar_group_select_run <- function(data, by) {
-  assert_df(data, "tar_group_select() output must be a data frame.")
+  targets::tar_assert_df(
+    data,
+    "tar_group_select() output must be a data frame."
+  )
   by <- eval_tidyselect(by[[1]], colnames(data))
   tar_group_by_run(data = data, by = by)
 }

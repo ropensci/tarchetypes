@@ -68,14 +68,13 @@ tar_knit_raw <- function(
   quiet = TRUE,
   knit_arguments = quote(list())
 ) {
-  assert_package("knitr", "tar_knit_raw() requires knitr.")
-  assert_scalar(path, "tar_knit_raw() only takes one file at a time.")
-  assert_chr(path, "path argument of tar_knit_raw() must be a character.")
-  assert_path(path, paste("path", path, "for tar_knit_raw() does not exist"))
-  assert_not_dirs(path)
-  assert_lang(knit_arguments, "knit_arguments must be a language object.")
-  msg <- "knit_arguments must not be an expression object."
-  assert_not_expr(knit_arguments, msg)
+  targets::tar_assert_package("knitr")
+  targets::tar_assert_scalar(path)
+  targets::tar_assert_chr(path)
+  targets::tar_assert_path(path)
+  targets::tar_assert_not_dirs(path)
+  targets::tar_assert_lang(knit_arguments)
+  targets::tar_assert_not_expr(knit_arguments)
   targets::tar_target_raw(
     name = name,
     command = tar_knit_command(path, knit_arguments, quiet),

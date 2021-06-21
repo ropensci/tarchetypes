@@ -94,14 +94,13 @@ tar_render_raw <- function(
   quiet = TRUE,
   render_arguments = quote(list())
 ) {
-  assert_package("rmarkdown", "tar_render_raw() requires rmarkdown.")
-  assert_scalar(path, "tar_render_raw() only takes one file at a time.")
-  assert_chr(path, "path argument of tar_render_raw() must be a character.")
-  assert_path(path, paste("path", path, "for tar_render_raw() does not exist"))
-  assert_not_dirs(path)
-  assert_lang(render_arguments, "render_arguments must be a language object.")
-  msg <- "render_arguments must not be an expression object."
-  assert_not_expr(render_arguments, msg)
+  targets::tar_assert_package("rmarkdown")
+  targets::tar_assert_scalar(path)
+  targets::tar_assert_chr(path)
+  targets::tar_assert_path(path)
+  targets::tar_assert_not_dirs(path)
+  targets::tar_assert_lang(render_arguments)
+  targets::tar_assert_not_expr(render_arguments)
   targets::tar_target_raw(
     name = name,
     command = tar_render_command(path, render_arguments, quiet),
@@ -141,7 +140,7 @@ tar_render_command <- function(path, args, quiet) {
 #' @param deps An unnamed list of target dependencies of the R Markdown
 #'   report, automatically created by `tar_render()`.
 tar_render_run <- function(path, args, deps) {
-  assert_package("rmarkdown")
+  targets::tar_assert_package("rmarkdown")
   withr::local_options(list(crayon.enabled = NULL))
   envir <- parent.frame()
   args$envir <- args$envir %|||% targets::tar_envir(default = envir)

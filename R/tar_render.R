@@ -112,18 +112,18 @@ tar_render <- function(
   quiet = TRUE,
   ...
 ) {
-  assert_package("rmarkdown", "tar_render() requires the rmarkdown package.")
-  assert_scalar(path, "tar_render() only takes one file at a time.")
-  assert_chr(path, "path argument of tar_render() must be a character.")
-  assert_path(path, paste("the path", path, "for tar_render() does not exist"))
+  targets::tar_assert_package("rmarkdown")
+  targets::tar_assert_scalar(path)
+  targets::tar_assert_chr(path)
+  targets::tar_assert_path(path)
   envir <- tar_option_get("envir")
-  args <- tar_tidy_eval(
+  args <- targets::tar_tidy_eval(
     substitute(list(...)),
     envir = envir,
     tidy_eval = tidy_eval
   )
   targets::tar_target_raw(
-    name = deparse_language(substitute(name)),
+    name = targets::tar_deparse_language(substitute(name)),
     command = tar_render_command(path, args, quiet),
     packages = packages,
     library = library,

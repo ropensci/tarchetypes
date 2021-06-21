@@ -55,16 +55,16 @@ tar_download <- function(
   retrieval = targets::tar_option_get("retrieval"),
   cue = targets::tar_option_get("cue")
 ) {
-  name <- deparse_language(substitute(name))
+  name <- targets::tar_deparse_language(substitute(name))
   name_url <- paste0(name, "_url")
-  assert_chr(urls, "urls must be a character vector.")
-  assert_chr(paths, "paths must be a character vector.")
-  assert_nonempty(urls, "urls must be nonempty")
-  assert_nonempty(paths, "paths must be nonempty.")
-  assert_nzchar(urls, "urls must all be nonempty.")
-  assert_nzchar(paths, "paths must all be nonempty.")
+  targets::tar_assert_chr(urls, "urls must be a character vector.")
+  targets::tar_assert_chr(paths, "paths must be a character vector.")
+  targets::tar_assert_nonempty(urls, "urls must be nonempty")
+  targets::tar_assert_nonempty(paths, "paths must be nonempty.")
+  targets::tar_assert_nzchar(urls, "urls must all be nonempty.")
+  targets::tar_assert_nzchar(paths, "paths must all be nonempty.")
   if (length(urls) != length(paths)) {
-    throw_validate(
+    targets::tar_throw_validate(
       "'urls' has length ",
       length(urls),
       " but 'paths' has length ",

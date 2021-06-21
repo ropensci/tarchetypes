@@ -52,11 +52,10 @@ counter_set_names <- function(counter, names) {
 }
 
 counter_validate <- function(counter) {
-  assert_correct_fields(counter, counter_new)
-  assert_int(counter$count)
-  assert_scalar(counter$count)
-  assert_envir(counter$envir)
+  targets::tar_assert_int(counter$count)
+  targets::tar_assert_scalar(counter$count)
+  targets::tar_assert_envir(counter$envir)
   if (length(names(counter$envir)) != counter$count) {
-    throw_validate("envir does not match count.")
+    targets::tar_throw_validate("envir does not match count.")
   }
 }

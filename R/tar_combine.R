@@ -53,7 +53,7 @@ tar_combine <- function(
   retrieval = targets::tar_option_get("retrieval"),
   cue = targets::tar_option_get("cue")
 ) {
-  name <- deparse_language(substitute(name))
+  name <- targets::tar_deparse_language(substitute(name))
   targets <- unlist(list(...), recursive = TRUE)
   command <- as.expression(substitute(command))
   pattern <- as.expression(substitute(pattern))

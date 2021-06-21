@@ -27,14 +27,14 @@ NULL
 tar_format <- function(format) {
   out <- tar_format_api
   body(out) <- substitute({
-    name <- deparse_language(substitute(name))
+    name <- targets::tar_deparse_language(substitute(name))
     envir <- tar_option_get("envir")
-    command <- tar_tidy_eval(
+    command <- targets::tar_tidy_eval(
       as.expression(substitute(command)),
       envir,
       tidy_eval
     )
-    pattern <- tar_tidy_eval(
+    pattern <- targets::tar_tidy_eval(
       as.expression(substitute(pattern)),
       envir,
       tidy_eval

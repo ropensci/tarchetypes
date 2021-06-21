@@ -102,9 +102,9 @@ tar_rep <- function(
   retrieval = targets::tar_option_get("retrieval"),
   cue = targets::tar_option_get("cue")
 ) {
-  name <- deparse_language(substitute(name))
+  name <- targets::tar_deparse_language(substitute(name))
   envir <- targets::tar_option_get("envir")
-  command <- tar_tidy_eval(substitute(command), envir, tidy_eval)
+  command <- targets::tar_tidy_eval(substitute(command), envir, tidy_eval)
   tar_rep_raw(
     name = name,
     command = command,

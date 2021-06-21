@@ -68,7 +68,7 @@ tar_files_input <- function(
   resources = targets::tar_option_get("resources"),
   cue = targets::tar_option_get("cue")
 ) {
-  name <- deparse_language(substitute(name))
+  name <- targets::tar_deparse_language(substitute(name))
   format <- match.arg(format)
   tar_files_input_raw(
     name = name,

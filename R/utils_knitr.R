@@ -8,7 +8,7 @@ knitr_expr <- function(path) {
   tryCatch(
     parse(text = knitr_lines(path)),
     error = function(e) {
-      throw_validate(
+      targets::tar_throw_validate(
         "Could not parse knitr report ",
         path,
         " to detect dependencies: ",
@@ -21,7 +21,7 @@ knitr_expr <- function(path) {
 knitr_expr_warn_raw <- function(expr) {
   vars <- all.vars(expr, functions = TRUE)
   if (any(c("tar_load_raw", "tar_read_raw") %in% vars)) {
-    warn_validate(
+    targets::tar_warn_validate(
       "targets loaded with tar_load_raw() or tar_read_raw() ",
       "will not be detected as dependencies in literate programming reports. ",
       "To properly register target dependencies of reports, use tar_load() ",
@@ -65,7 +65,7 @@ knitr_lines <- function(path) {
 #' })
 #' walk_ast(expr, walk_call_knitr)
 walk_call_knitr <- function(expr, counter) {
-  name <- deparse_safe(expr[[1]], backtick = FALSE)
+  name <- targets::tar_deparse_safe(expr[[1]], backtick = FALSE)
   if (any(name %in% paste0(c("", "targets::", "targets:::"), "tar_load"))) {
     walk_load(expr, counter)
   }
@@ -77,7 +77,7 @@ walk_call_knitr <- function(expr, counter) {
 walk_load <- function(expr, counter) {
   expr <- match.call(targets::tar_load, as.call(expr))
   if (is.null(expr$names)) {
-    warn_validate(
+    targets::tar_warn_validate(
       "Found empty tar_load() call in a knitr / R Markdown ",
       "code chunk. Dependencies cannot be detected statically, ",
       "so they will be ignored."
@@ -89,7 +89,7 @@ walk_load <- function(expr, counter) {
 walk_read <- function(expr, counter) {
   expr <- match.call(targets::tar_read, as.call(expr))
   if (is.null(expr$name)) {
-    warn_validate(
+    targets::tar_warn_validate(
       "Found empty tar_read() call in a knitr / R Markdown ",
       "code chunk. Dependencies cannot be detected statically, ",
       "so they will be ignored."
@@ -112,9 +112,9 @@ walk_target_name <- function(expr, counter) {
 
 walk_tidyselect <- function(expr, counter) {
   if (is.call(expr)) {
-    name <- deparse_safe(expr[[1]], backtick = FALSE)
+    name <- targets::tar_deparse_safe(expr[[1]], backtick = FALSE)
     if (name %in% tidyselect_names()) {
-      warn_validate(
+      targets::tar_warn_validate(
         "found ", name, "() from tidyselect in a call to tar_load() or ",
         "tar_read() in a knitr / R Markdown code chunk. These dependencies ",
         "cannot be detected statically, so they will be ignored."

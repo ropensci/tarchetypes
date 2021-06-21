@@ -65,12 +65,12 @@ tar_age <- function(
   retrieval = targets::tar_option_get("retrieval"),
   cue = targets::tar_option_get("cue")
 ) {
-  name <- deparse_language(substitute(name))
+  name <- targets::tar_deparse_language(substitute(name))
   envir <- tar_option_get("envir")
   command <- as.expression(substitute(command))
   pattern <- as.expression(substitute(pattern))
-  command <- tar_tidy_eval(command, envir, tidy_eval)
-  pattern <- tar_tidy_eval(pattern, envir, tidy_eval)
+  command <- targets::tar_tidy_eval(command, envir, tidy_eval)
+  pattern <- targets::tar_tidy_eval(pattern, envir, tidy_eval)
   cue <- tar_cue_age_raw(
     name = name,
     age = age,

@@ -111,16 +111,19 @@ tar_render_rep_raw <- function(
   quiet = TRUE,
   args = list()
 ) {
-  assert_package("rmarkdown", "tar_render_raw() requires rmarkdown.")
-  assert_scalar(path, "tar_render_raw() only takes one file at a time.")
-  assert_chr(path, "path argument of tar_render_raw() must be a character.")
-  assert_path(path, paste("path", path, "for tar_render_raw() does not exist"))
-  assert_not_dirs(path)
-  assert_lang(params)
-  assert_dbl(batches %|||% 0L, "batches must be numeric.")
-  assert_scalar(batches %|||% 0L, "batches must have length 1.")
-  assert_list(args, "args must be a named list.")
-  assert_nonempty(names(args %||% list(x = 1)), "args must be a named list.")
+  targets::tar_assert_package("rmarkdown")
+  targets::tar_assert_scalar(path)
+  targets::tar_assert_chr(path)
+  targets::tar_assert_path(path)
+  targets::tar_assert_not_dirs(path)
+  targets::tar_assert_lang(params)
+  targets::tar_assert_dbl(batches %|||% 0L, "batches must be numeric.")
+  targets::tar_assert_scalar(batches %|||% 0L, "batches must have length 1.")
+  targets::tar_assert_list(args, "args must be a named list.")
+  targets::tar_assert_nonempty(
+    names(args %||% list(x = 1)),
+    "args must be a named list."
+  )
   name_params <- paste0(name, "_params")
   sym_params <- as.symbol(name_params)
   target_params <- targets::tar_target_raw(
@@ -202,7 +205,7 @@ tar_render_rep_command <- function(name, path, quiet, args) {
 #' @param deps An unnamed list of target dependencies of the R Markdown
 #'   report, automatically created by `tar_render_rep()`.
 tar_render_rep_run <- function(path, params, args, deps) {
-  assert_package("rmarkdown")
+  targets::tar_assert_package("rmarkdown")
   envir <- parent.frame()
   params <- split(params, f = seq_len(nrow(params)))
   args$envir <- args$envir %|||% targets::tar_envir(default = envir)

@@ -6,7 +6,7 @@ targets::tar_test("tar_sub()", {
   out <- tar_sub(f(name, file), values = values)
   expect_true(is.language(out[[1]]))
   expect_true(is.language(out[[2]]))
-  out <- lapply(out, deparse_language)
+  out <- lapply(out, targets::tar_deparse_language)
   expect_equal(out[[1]], "expression(f(name1, \"file1.Rmd\"))")
   expect_equal(out[[2]], "expression(f(name2, \"file2.Rmd\"))")
 })

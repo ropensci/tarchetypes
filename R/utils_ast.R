@@ -23,7 +23,7 @@
 #' walk_ast(expr, walk_call_knitr)
 #' # Custom code analysis for developers of tarchetypes internals:
 #' walk_custom <- function(expr, counter) {
-#'   # New internals should use deparse_safe(backtick = FALSE).
+#'   # New internals should use targets::tar_deparse_safe(backtick = FALSE).
 #'   name <- deparse(expr[[1]])
 #'   if (identical(name, "detect_this")) {
 #'     counter_set_names(counter, as.character(expr[[2]]))

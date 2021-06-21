@@ -82,18 +82,18 @@ tar_knit <- function(
   quiet = TRUE,
   ...
 ) {
-  assert_package("knitr", "tar_knit() requires the knitr package.")
-  assert_scalar(path, "tar_knit() only takes one file at a time.")
-  assert_chr(path, "path argument of tar_knit() must be a character.")
-  assert_path(path, paste("the path", path, "for tar_knit() does not exist"))
+  targets::tar_assert_package("knitr")
+  targets::tar_assert_scalar(path)
+  targets::tar_assert_chr(path)
+  targets::tar_assert_path(path)
   envir <- tar_option_get("envir")
-  args <- tar_tidy_eval(
+  args <- targets::tar_tidy_eval(
     substitute(list(...)),
     envir = envir,
     tidy_eval = tidy_eval
   )
   targets::tar_target_raw(
-    name = deparse_language(substitute(name)),
+    name = targets::tar_deparse_language(substitute(name)),
     command = tar_knit_command(path, args, quiet),
     packages = packages,
     library = library,
@@ -130,7 +130,7 @@ tar_knit_command <- function(path, args, quiet) {
 #' @param deps An unnamed list of target dependencies of the `knitr`
 #'   report, automatically created by `tar_knit()`.
 tar_knit_run <- function(path, args, deps) {
-  assert_package("knitr")
+  targets::tar_assert_package("knitr")
   withr::local_options(list(crayon.enabled = NULL))
   opt <- knitr::opts_knit$get("root.dir")
   knitr::opts_knit$set(root.dir = getwd())

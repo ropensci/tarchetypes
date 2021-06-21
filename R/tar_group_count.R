@@ -49,14 +49,14 @@ tar_group_count <- function(
   retrieval = targets::tar_option_get("retrieval"),
   cue = targets::tar_option_get("cue")
 ) {
-  assert_package("dplyr")
-  name <- deparse_language(substitute(name))
-  assert_lgl(tidy_eval, "tidy_eval must be logical.")
+  targets::tar_assert_package("dplyr")
+  name <- targets::tar_deparse_language(substitute(name))
+  targets::tar_assert_lgl(tidy_eval, "tidy_eval must be logical.")
   count <- as.integer(count)
-  assert_nonempty(count, "count must be nonempty.")
-  assert_scalar(count, "count must have length 1.")
-  assert_dbl(count, "count must be numeric.")
-  assert_ge(count, 1L, "count must be at least 1.")
+  targets::tar_assert_nonempty(count, "count must be nonempty.")
+  targets::tar_assert_scalar(count, "count must have length 1.")
+  targets::tar_assert_dbl(count, "count must be numeric.")
+  targets::tar_assert_ge(count, 1L, "count must be at least 1.")
   command <- substitute(command)
   command <- tar_group_count_command(command, count, tidy_eval)
   targets::tar_target_raw(
@@ -80,8 +80,8 @@ tar_group_count <- function(
 
 tar_group_count_command <- function(command, count, tidy_eval) {
   envir <- targets::tar_option_get("envir")
-  assert_envir(envir)
-  command <- tar_tidy_eval(command, envir, tidy_eval)
+  targets::tar_assert_envir(envir)
+  command <- targets::tar_tidy_eval(command, envir, tidy_eval)
   fun <- call_ns("tarchetypes", "tar_group_count_run")
   as.call(list(fun, data = command, count))
 }
@@ -93,7 +93,7 @@ tar_group_count_command <- function(command, count, tidy_eval) {
 #' @param data A data frame to group.
 #' @param count Maximum number of rows in each group.
 tar_group_count_run <- function(data, count) {
-  assert_df(data, "tar_group_count() output must be a data frame.")
+  targets::tar_assert_df(data, "tar_group_count() output must be a data frame.")
   count <- min(count, nrow(data))
   data$tar_group <- if_any(
     count > 1L,

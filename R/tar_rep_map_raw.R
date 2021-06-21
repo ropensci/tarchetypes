@@ -66,12 +66,9 @@ tar_rep_map_raw <- function(
   retrieval = targets::tar_option_get("retrieval"),
   cue = targets::tar_option_get("cue")
 ) {
-  assert_chr(
-    targets,
-    "targets in tar_rep_map_raw() must be a character vector."
-  )
-  assert_nonempty(targets, "targets argument must be nonempty.")
-  assert_nzchar(targets, "targets argument must not have 0-length elements.")
+  targets::tar_assert_chr(targets)
+  targets::tar_assert_nonempty(targets)
+  targets::tar_assert_nzchar(targets)
   command <- tar_raw_command(name, command)
   command <- tar_rep_map_command(
     command = command,

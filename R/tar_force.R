@@ -60,11 +60,11 @@ tar_force <- function(
   retrieval = targets::tar_option_get("retrieval"),
   cue = targets::tar_option_get("cue")
 ) {
-  name <- deparse_language(substitute(name))
+  name <- targets::tar_deparse_language(substitute(name))
   name_change <- paste0(name, "_change")
   envir <- tar_option_get("envir")
-  command <- tar_tidy_eval(substitute(command), envir, tidy_eval)
-  force <- tar_tidy_eval(substitute(force), envir, tidy_eval)
+  command <- targets::tar_tidy_eval(substitute(command), envir, tidy_eval)
+  force <- targets::tar_tidy_eval(substitute(force), envir, tidy_eval)
   change <- as.call(list(call_ns("tarchetypes", "tar_force_change"), force))
   tar_change_raw(
     name = name,

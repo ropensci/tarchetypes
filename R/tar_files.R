@@ -56,9 +56,9 @@ tar_files <- function(
   retrieval = targets::tar_option_get("retrieval"),
   cue = targets::tar_option_get("cue")
 ) {
-  name <- deparse_language(substitute(name))
+  name <- targets::tar_deparse_language(substitute(name))
   envir <- tar_option_get("envir")
-  command <- tar_tidy_eval(substitute(command), envir, tidy_eval)
+  command <- targets::tar_tidy_eval(substitute(command), envir, tidy_eval)
   format <- match.arg(format)
   tar_files_raw(
     name = name,

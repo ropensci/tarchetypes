@@ -5,7 +5,7 @@ eval_tidyselect <- function(names_quosure, choices) {
   names(choices) <- choices
   out <- tidyselect::eval_select(names_quosure, data = choices, strict = FALSE)
   out <- names(out)
-  assert_chr(
+  targets::tar_assert_chr(
     out %|||% character(0),
     paste(
       "the names arg of tar_make() and friends supports tidyselect syntax",

@@ -42,7 +42,7 @@
 #'   tar_eval_raw(quote(tar_render(name, file)), values = values)
 #' )
 tar_eval_raw <- function(expr, values, envir = parent.frame()) {
-  assert_lang(expr)
+  targets::tar_assert_lang(expr)
   assert_values_list(values)
   force(envir)
   exprs <- tar_sub_raw(expr = expr, values = values)

@@ -99,7 +99,7 @@ tar_render_rep <- function(
   ...
 ) {
   tar_render_rep_raw(
-    name = deparse_language(substitute(name)),
+    name = targets::tar_deparse_language(substitute(name)),
     path = path,
     params = substitute(params),
     batches = batches,

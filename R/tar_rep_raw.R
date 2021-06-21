@@ -222,7 +222,7 @@ tar_rep_bind <- function(out, iteration) {
     list = out,
     vector = do.call(vctrs::vec_c, out),
     group = do.call(vctrs::vec_rbind, out),
-    throw_validate("unsupported iteration method")
+    targets::tar_throw_validate("unsupported iteration method")
   )
 }
 

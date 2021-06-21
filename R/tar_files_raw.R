@@ -65,8 +65,8 @@ tar_files_raw <- function(
   retrieval = targets::tar_option_get("retrieval"),
   cue = targets::tar_option_get("cue")
 ) {
-  assert_chr(name, "name must be a character.")
-  assert_scalar(name, "name must have length 1.")
+  targets::tar_assert_chr(name, "name must be a character.")
+  targets::tar_assert_scalar(name, "name must have length 1.")
   command <- tar_raw_command(name, command)
   name_files <- paste0(name, "_files")
   format <- match.arg(format)

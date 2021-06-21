@@ -48,7 +48,7 @@ tar_cue_age <- function(
   iteration = TRUE,
   file = TRUE
 ) {
-  name <- deparse_language(substitute(name))
+  name <- targets::tar_deparse_language(substitute(name))
   tar_cue_age_raw(
     name = name,
     age = age,
