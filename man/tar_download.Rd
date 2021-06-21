@@ -132,11 +132,11 @@ targets get deployed first when multiple competing targets are ready
 simultaneously. Targets with priorities closer to 1 get built earlier
 (and polled earlier in \code{\link[targets:tar_make_future]{tar_make_future()}}).}
 
-\item{resources}{Object returned by \code{\link[targets:tar_resources]{tar_resources()}}
+\item{resources}{Object returned by \code{tar_resources()}
 with optional settings for high-performance computing
 functionality, alternative data storage formats,
 and other optional capabilities of \code{targets}.
-See \code{\link[targets:tar_resources]{tar_resources()}} for details.}
+See \code{tar_resources()} for details.}
 
 \item{storage}{Character of length 1, only relevant to
 \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}} and \code{\link[targets:tar_make_future]{tar_make_future()}}.
