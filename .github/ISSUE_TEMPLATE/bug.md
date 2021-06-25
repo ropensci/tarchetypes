@@ -1,6 +1,6 @@
 ---
 name: Bug
-about: Please do not submit a bug report unless your issue is a genuine bug in tarchetypes and not a known limitation, a usage error, or a bug in another package that tarchetypes depends on.
+about: Please do not submit a bug report unless your issue is a genuine bug in tarchetypes and not a known limitation, usage error, or issue from another package that tarchetypes depends on.
 title: ""
 labels: "type: bug"
 assignees: wlandau
@@ -9,7 +9,7 @@ assignees: wlandau
 ## Prework
 
 * [ ] Read and agree to the [code of conduct](https://ropensci.org/code-of-conduct/) and [contributing guidelines](https://github.com/ropensci/tarchetypes/blob/main/CONTRIBUTING.md).
-* [ ] Confirm that your issue is a genuine bug in `tarchetypes` and not a known limitation, a usage error, or a bug in another package that `tarchetypes` depends on.
+* [ ] Confirm that your issue is a genuine bug in `tarchetypes` and not a known limitation, usage error, or issue from another package that `tarchetypes` depends on. If you are unsure, please submit a discussion thread instead.
 * [ ] If there is [already a relevant issue](https://github.com/ropensci/tarchetypes/issues), whether open or closed, comment on the existing thread instead of posting a new issue.
 * [ ] Post a [minimal reproducible example](https://www.tidyverse.org/help/) like [this one](https://github.com/ropensci/targets/issues/256#issuecomment-754229683) so the maintainer can troubleshoot the problems you identify. A reproducible example is:
     * [ ] **Runnable**: post enough R code and data so any onlooker can create the error on their own computer.
