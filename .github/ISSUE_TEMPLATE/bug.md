@@ -1,6 +1,6 @@
 ---
 name: Bug
-about: Please do not submit a bug report unless your issue is a genuine bug in tarchetypes and not a known limitation, a usage error, or a bug in another package that tarchetypes depends on. If you are unsure, please open a discussion thread.
+about: Please do not submit a bug report unless your issue is a genuine bug in tarchetypes and not a known limitation, a usage error, or a bug in another package that tarchetypes depends on.
 title: ""
 labels: "type: bug"
 assignees: wlandau
