@@ -16,7 +16,7 @@
 #'   it is recommended to use `targets::tar_older()` in combine
 #'   with `targets::tar_invalidate()` right before calling `tar_make()`.
 #'   For example,
-#'   `tar_invalidate(tar_older(Sys.time - as.difftime(1, units = "weeks")))`
+#'   `tar_invalidate(all_of(tar_older(Sys.time - as.difftime(1, units = "weeks"))))` # nolint
 #'   invalidates all targets more than a week old. Then, the next `tar_make()`
 #'   will rerun those targets.
 #' @return A target object. See the "Target objects" section for background.
