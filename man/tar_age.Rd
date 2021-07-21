@@ -68,13 +68,15 @@ iteration method changed. The iteration method is user-specified through
 \code{\link[targets:tar_target]{tar_target()}} or \code{\link[targets:tar_option_set]{tar_option_set()}}.}
 
 \item{error}{Character of length 1, what to do if the target
-runs into an error. If \code{"stop"}, the whole pipeline stops
-and throws an error. If \code{"continue"}, the error is recorded,
-but the pipeline keeps going. \code{error = "workspace"} is just like
-\code{error = "stop"} except \code{targets} saves a special workspace file
-to support interactive debugging outside the pipeline.
+stops and throws an error. Options:
+\itemize{
+\item \code{"stop"}: the whole pipeline stops and throws an error.
+\item \code{"continue"}: the whole pipeline keeps going.
+\item \code{"abridge"}: any currently running targets keep running,
+but no new targets launch after that.
 (Visit \url{https://books.ropensci.org/targets/debugging.html}
-to learn how to debug targets using saved workspaces.)}
+to learn how to debug targets using saved workspaces.)
+}}
 
 \item{memory}{Character of length 1, memory strategy.
 If \code{"persistent"}, the target stays in memory
@@ -87,7 +89,7 @@ after every new target completes.
 Either way, the target gets automatically loaded into memory
 whenever another target needs the value.
 For cloud-based dynamic files such as \code{format = "aws_file"},
-this memory policy applies to
+this memory strategy applies to
 temporary local copies of the file in \verb{_targets/scratch/"}:
 \code{"persistent"} means they remain until the end of the pipeline,
 and \code{"transient"} means they get deleted from the file system
@@ -145,15 +147,20 @@ intervals of time.
 uses the time stamps from \code{tar_meta()$time}.
 If no time stamp is recorded, the cue defaults to the ordinary
 invalidation rules (i.e. \code{mode = "thorough"} in \code{targets::tar_cue()}).
-That means \code{tar_age()} cannot help with input file targets
-or URL targets (but if you are using \code{format = "url"}
-and your URLs have either ETags or "last-modified" time stamps,
-then you are better off without \code{tar_age()} anyway.)
-
-In dynamic branching, cues operate on all branches at once,
-so \code{tar_age()} reruns when \emph{any} branch reaches the age
-threshold in the \code{age} argument.
 }
+\section{Dynamic branches at regular time intervals}{
+
+Time stamps are not recorded for whole dynamic targets,
+so \code{tar_age()} is not a good fit for dynamic branching.
+To invalidate dynamic branches at regular intervals,
+it is recommended to use \code{targets::tar_older()} in combine
+with \code{targets::tar_invalidate()} right before calling \code{tar_make()}.
+For example,
+\code{tar_invalidate(tar_older(Sys.time - as.difftime(1, units = "weeks")))}
+invalidates all targets more than a week old. Then, the next \code{tar_make()}
+will rerun those targets.
+}
+
 \section{Target objects}{
 
 Most \code{tarchetypes} functions are target factories,

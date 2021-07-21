@@ -33,13 +33,15 @@ globally for all subsequent targets you define.}
 when loading \code{packages}.}
 
 \item{error}{Character of length 1, what to do if the target
-runs into an error. If \code{"stop"}, the whole pipeline stops
-and throws an error. If \code{"continue"}, the error is recorded,
-but the pipeline keeps going. \code{error = "workspace"} is just like
-\code{error = "stop"} except \code{targets} saves a special workspace file
-to support interactive debugging outside the pipeline.
+stops and throws an error. Options:
+\itemize{
+\item \code{"stop"}: the whole pipeline stops and throws an error.
+\item \code{"continue"}: the whole pipeline keeps going.
+\item \code{"abridge"}: any currently running targets keep running,
+but no new targets launch after that.
 (Visit \url{https://books.ropensci.org/targets/debugging.html}
-to learn how to debug targets using saved workspaces.)}
+to learn how to debug targets using saved workspaces.)
+}}
 
 \item{deployment}{Character of length 1, only relevant to
 \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}} and \code{\link[targets:tar_make_future]{tar_make_future()}}. If \code{"worker"},

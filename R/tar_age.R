@@ -9,14 +9,16 @@
 #'   uses the time stamps from `tar_meta()$time`.
 #'   If no time stamp is recorded, the cue defaults to the ordinary
 #'   invalidation rules (i.e. `mode = "thorough"` in `targets::tar_cue()`).
-#'   That means `tar_age()` cannot help with input file targets
-#'   or URL targets (but if you are using `format = "url"`
-#'   and your URLs have either ETags or "last-modified" time stamps,
-#'   then you are better off without `tar_age()` anyway.)
-#'
-#'   In dynamic branching, cues operate on all branches at once,
-#'   so `tar_age()` reruns when *any* branch reaches the age
-#'   threshold in the `age` argument.
+#' @section Dynamic branches at regular time intervals:
+#'   Time stamps are not recorded for whole dynamic targets,
+#'   so `tar_age()` is not a good fit for dynamic branching.
+#'   To invalidate dynamic branches at regular intervals,
+#'   it is recommended to use `targets::tar_older()` in combine
+#'   with `targets::tar_invalidate()` right before calling `tar_make()`.
+#'   For example,
+#'   `tar_invalidate(tar_older(Sys.time - as.difftime(1, units = "weeks")))`
+#'   invalidates all targets more than a week old. Then, the next `tar_make()`
+#'   will rerun those targets.
 #' @return A target object. See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
 #' @inheritParams tar_cue_age_raw

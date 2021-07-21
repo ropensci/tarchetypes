@@ -61,13 +61,15 @@ way to save and load this file. See the "Storage formats" section
 for a detailed list of possible data storage formats.}
 
 \item{error}{Character of length 1, what to do if the target
-runs into an error. If \code{"stop"}, the whole pipeline stops
-and throws an error. If \code{"continue"}, the error is recorded,
-but the pipeline keeps going. \code{error = "workspace"} is just like
-\code{error = "stop"} except \code{targets} saves a special workspace file
-to support interactive debugging outside the pipeline.
+stops and throws an error. Options:
+\itemize{
+\item \code{"stop"}: the whole pipeline stops and throws an error.
+\item \code{"continue"}: the whole pipeline keeps going.
+\item \code{"abridge"}: any currently running targets keep running,
+but no new targets launch after that.
 (Visit \url{https://books.ropensci.org/targets/debugging.html}
-to learn how to debug targets using saved workspaces.)}
+to learn how to debug targets using saved workspaces.)
+}}
 
 \item{memory}{Character of length 1, memory strategy.
 If \code{"persistent"}, the target stays in memory
@@ -80,7 +82,7 @@ after every new target completes.
 Either way, the target gets automatically loaded into memory
 whenever another target needs the value.
 For cloud-based dynamic files such as \code{format = "aws_file"},
-this memory policy applies to
+this memory strategy applies to
 temporary local copies of the file in \verb{_targets/scratch/"}:
 \code{"persistent"} means they remain until the end of the pipeline,
 and \code{"transient"} means they get deleted from the file system
