@@ -112,7 +112,7 @@ list(
   tar_target(
     report, {
       # Explicitly mention the symbol `dataset`.
-      list(data)
+      list(dataset)
       # Return relative paths to keep the project portable.
       fs::path_rel(
         # Need to return/track all input/output files.
