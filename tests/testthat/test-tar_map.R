@@ -42,7 +42,9 @@ targets::tar_test("tar_map() with names turned off", {
     unlist = TRUE
   )
   names <- unname(map_chr(out, ~.x$settings$name))
-  expect_equal(sort(names), sort(c("x_1", "x_2", "y_1", "y_2")))
+  expect_equal(length(names), 4L)
+  expect_equal(length(grep("^x_", names)), 2L)
+  expect_equal(length(grep("^y_", names)), 2L)
 })
 
 targets::tar_test("tar_map() with names misspecified", {
@@ -54,7 +56,9 @@ targets::tar_test("tar_map() with names misspecified", {
     unlist = TRUE
   )
   names <- unname(map_chr(out, ~.x$settings$name))
-  expect_equal(sort(names), sort(c("x_1", "x_2", "y_1", "y_2")))
+  expect_equal(length(names), 4L)
+  expect_equal(length(grep("^x_", names)), 2L)
+  expect_equal(length(grep("^y_", names)), 2L)
 })
 
 targets::tar_test("tar_map() manifest", {
@@ -134,6 +138,36 @@ targets::tar_test("tar_map() and complicated values", {
     )
   })
   targets::tar_make(callr_function = NULL)
-  expect_equal(targets::tar_read(x_1), c(12, 34))
-  expect_equal(targets::tar_read(x_2), c(45, 78))
+  manifest <- targets::tar_manifest(callr_function = NULL)
+  name1 <- manifest$name[grepl("12", manifest$command)]
+  name2 <- manifest$name[grepl("78", manifest$command)]
+  expect_equal(targets::tar_read_raw(name1), c(12, 34))
+  expect_equal(targets::tar_read_raw(name2), c(45, 78))
+})
+
+targets::tar_test("tar_map() is not sensitive to ordering (#67)", {
+  targets::tar_script({
+    library(tarchetypes)
+    tar_map(
+      values = list(x = c("a", "b")),
+      names = NULL,
+      tar_target(y, x)
+    )
+  })
+  manifest1 <- targets::tar_manifest(callr_function = NULL)
+  targets::tar_make(callr_function = NULL)
+  # Switch the order of the values.
+  targets::tar_script({
+    library(tarchetypes)
+    tar_map(
+      values = list(x = c("b", "a")),
+      names = NULL,
+      tar_target(y, x)
+    )
+  })
+  manifest2 <- targets::tar_manifest(callr_function = NULL)
+  expect_equal(manifest1, manifest2)
+  targets::tar_make(callr_function = NULL)
+  out <- targets::tar_progress()
+  expect_equal(unique(out$progress), "skipped")
 })

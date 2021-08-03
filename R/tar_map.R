@@ -76,6 +76,7 @@ tar_map <- function(
   assert_values_list(values)
   names_quosure <- rlang::enquo(names)
   names <- eval_tidyselect(names_quosure, base::names(values))
+  values <- tibble::as_tibble(values)
   values <- tar_map_process_values(values)
   values <- tar_map_extend_values(targets, values, names)
   out <- lapply(targets, tar_map_target, values = values)
@@ -112,12 +113,22 @@ tar_map_extend_values <- function(targets, values, names) {
 }
 
 tar_map_produce_suffix <- function(values, names) {
-  data <- values[names] %||% list(id = seq_along(values[[1]]))
+  data <- values[names] %||% tar_map_default_suffixes(values)
   data <- map(data, ~as.character(unlist(.x)))
   out <- apply(as.data.frame(data), 1, paste, collapse = "_")
   out <- gsub("'", "", out)
   out <- gsub("\"", "", out)
   make.unique(out, sep = "_")
+}
+
+tar_map_default_suffixes <- function(values) {
+  id <- apply(
+    X = values,
+    MARGIN = 1,
+    FUN = digest::digest,
+    algo = "xxhash32"
+  )
+  list(id = id)
 }
 
 tar_map_target <- function(target, values) {

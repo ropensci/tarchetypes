@@ -1,5 +1,11 @@
 # tarchetypes 0.2.1.9000
 
+## Invalidating changes
+
+* When `names = NULL` in `tar_map()`, use hashes instead of numeric indexes for generated target names (#67). That way, target names are no longer sensitive to the order of `values`, and so targets will incorrectly invalidate less often. *Unfortunately, this is an invalidating change: some pipelines will be required to rerun some targets after users install this version of `tarchetypes`.* I apologize for the inconvenience this causes. However, we need this patch in order to solve #67.
+
+## Enhancements
+
 * Migrate to utilities for error handling and metaprogramming exported from `targets` (#59).
 
 # tarchetypes 0.2.1
