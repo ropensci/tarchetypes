@@ -55,7 +55,6 @@ Suggests:
   knitr (>= 1.28),
   rmarkdown (>= 2.1),
   testthat (>= 3.0.0),
-  tibble (>= 3.0.4),
   xml2 (>= 1.3.2)
 Encoding: UTF-8
 Language: en-US
