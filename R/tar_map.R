@@ -122,25 +122,6 @@ tar_map_produce_suffix <- function(values, names) {
 }
 
 tar_map_default_suffixes <- function(values) {
-  # TODO: remove message in the next release
-  message <- paste0(
-    "INVALIDATING CHANGE: in tarchetypes version 0.3.0 and above, ",
-    "tar_map() branch names are now hashes instead of numeric indexes ",
-    "whenever the `names` argument is NULL. This helps pipelines become ",
-    "more stable in the long run because reordring rows of `values` ",
-    "no longer invalidates targets by changing the target names. However, ",
-    "if this is your first time upgrading to tarchetypes 0.3.0 or above, ",
-    "then some of your targets may be invalidated once in the next run of ",
-    "your pipeline. For details, please visit ",
-    "https://github.com/ropensci/tarchetypes/issues/67. ",
-    "Sorry for the inconvenience."
-  )
-  rlang::inform(
-    message,
-    class = "tar_condition_validate",
-    .frequency = "regularly",
-    .frequency_id = "tarchetypes_67"
-  )
   id <- apply(
     X = values,
     MARGIN = 1,
