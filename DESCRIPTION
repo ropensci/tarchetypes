@@ -9,7 +9,7 @@ Description: Function-oriented Make-like declarative workflows for
   reproducible workflows concisely and compactly.
   The methods in this package were influenced by the 'drake' R package
   by Will Landau (2018) <doi:10.21105/joss.00550>.
-Version: 0.2.1.9000
+Version: 0.3.0
 License: MIT + file LICENSE
 URL: https://docs.ropensci.org/tarchetypes/, https://github.com/ropensci/tarchetypes
 BugReports: https://github.com/ropensci/tarchetypes/issues
