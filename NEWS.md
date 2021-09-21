@@ -1,4 +1,4 @@
-# tarchetypes 0.3.0.9000
+# tarchetypes 0.3.1
 
 * Relax assertion on language objects.
 * Explain `targets` timestamps correctly in the help files of `tar_age()` and `tar_cue_age()`.
