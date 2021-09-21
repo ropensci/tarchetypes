@@ -13,7 +13,7 @@
 #'   Time stamps are not recorded for whole dynamic targets,
 #'   so `tar_age()` is not a good fit for dynamic branching.
 #'   To invalidate dynamic branches at regular intervals,
-#'   it is recommended to use `targets::tar_older()` in combine
+#'   it is recommended to use `targets::tar_older()` in combination
 #'   with `targets::tar_invalidate()` right before calling `tar_make()`.
 #'   For example,
 #'   `tar_invalidate(all_of(tar_older(Sys.time - as.difftime(1, units = "weeks"))))` # nolint

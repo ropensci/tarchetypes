@@ -117,15 +117,51 @@ See \code{tar_resources()} for details.}
 
 \item{storage}{Character of length 1, only relevant to
 \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}} and \code{\link[targets:tar_make_future]{tar_make_future()}}.
-If \code{"main"}, the target's return value is sent back to the
-host machine and saved locally. If \code{"worker"}, the worker
-saves the value.}
+Must be one of the following values:
+\itemize{
+\item \code{"main"}: the target's return value is sent back to the
+host machine and saved/uploaded locally.
+\item \code{"worker"}: the worker saves/uploads the value.
+\item \code{"none"}: almost never recommended. It is only for
+niche situations, e.g. the data needs to be loaded
+explicitly from another language. If you do use it,
+then the return value of the target is totally ignored
+when the target ends, but
+each downstream target still attempts to load the data file
+(except when \code{retrieval = "none"}).
+
+If you select \code{storage = "none"}, then
+the return value of the target's command is ignored,
+and the data is not saved automatically.
+As with dynamic files (\code{format = "file"} or \code{"aws_file"}) it is the
+responsibility of the user to write to
+\code{\link[targets:tar_path]{tar_path()}} from inside the target.
+An example target
+could look something like
+tar_target(x,
+{saveRDS("value", tar_path(create_dir = TRUE)); "ignored"},
+storage = "none")`.
+
+The distinguishing feature of \code{storage = "none"}
+(as opposed to \code{format = "file"} or \code{"aws_file"})
+is that in the general case,
+downstream targets will automatically try to load the data
+from the data store as a dependency. As a corollary, \code{storage = "none"}
+is completely unnecessary if \code{format} is \code{"file"} or \code{"aws_file"}.
+}}
 
 \item{retrieval}{Character of length 1, only relevant to
 \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}} and \code{\link[targets:tar_make_future]{tar_make_future()}}.
-If \code{"main"}, the target's dependencies are loaded on the host machine
+Must be one of the following values:
+\itemize{
+\item \code{"main"}: the target's dependencies are loaded on the host machine
 and sent to the worker before the target builds.
-If \code{"worker"}, the worker loads the targets dependencies.}
+\item \code{"worker"}: the worker loads the targets dependencies.
+\item \code{"none"}: the dependencies are not loaded at all.
+This choice is almost never recommended. It is only for
+niche situations, e.g. the data needs to be loaded
+explicitly from another language.
+}}
 
 \item{cue}{A \code{targets::tar_cue()} object. (See the "Cue objects"
 section for background.) This cue object should contain any
@@ -153,7 +189,7 @@ for an explanation of how this time stamp is calculated.
 Time stamps are not recorded for whole dynamic targets,
 so \code{tar_age()} is not a good fit for dynamic branching.
 To invalidate dynamic branches at regular intervals,
-it is recommended to use \code{targets::tar_older()} in combine
+it is recommended to use \code{targets::tar_older()} in combination
 with \code{targets::tar_invalidate()} right before calling \code{tar_make()}.
 For example,
 \code{tar_invalidate(all_of(tar_older(Sys.time - as.difftime(1, units = "weeks"))))} # nolint

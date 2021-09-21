@@ -65,7 +65,7 @@ invalidation rules (i.e. \code{mode = "thorough"} in \code{targets::tar_cue()}).
 Time stamps are not recorded for whole dynamic targets,
 so \code{tar_age()} is not a good fit for dynamic branching.
 To invalidate dynamic branches at regular intervals,
-it is recommended to use \code{targets::tar_older()} in combine
+it is recommended to use \code{targets::tar_older()} in combination
 with \code{targets::tar_invalidate()} right before calling \code{tar_make()}.
 For example,
 \code{tar_invalidate(all_of(tar_older(Sys.time - as.difftime(1, units = "weeks"))))} # nolint
