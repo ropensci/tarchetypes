@@ -35,7 +35,6 @@ tar_raw_command <- function(name, command) {
     command,
     paste("target", name, "has no command.")
   )
-  targets::tar_assert_lang(command, "command must be a language object.")
   targets::tar_assert_scalar(
     as.expression(command),
     paste("the command of target", name, "must have length 1.")
