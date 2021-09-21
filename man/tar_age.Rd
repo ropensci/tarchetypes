@@ -144,9 +144,9 @@ intervals of time.
 }
 \details{
 \code{tar_age()} uses the cue from \code{\link[=tar_cue_age]{tar_cue_age()}}, which
-uses the time stamps from \code{tar_meta()$time}.
-If no time stamp is recorded, the cue defaults to the ordinary
-invalidation rules (i.e. \code{mode = "thorough"} in \code{targets::tar_cue()}).
+uses the time stamps from \code{targets::tar_meta()$time}.
+See the help file of \code{targets::tar_timestamp()}
+for an explanation of how this time stamp is calculated.
 }
 \section{Dynamic branches at regular time intervals}{
 
