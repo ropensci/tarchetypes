@@ -71,7 +71,7 @@ tar_map <- function(
   names = tidyselect::everything(),
   unlist = FALSE
 ) {
-  targets <- unlist(list(...), recursive = TRUE)
+  targets <- unlist(list(...), recursive = TRUE) %|||% list()
   targets::tar_assert_target_list(targets)
   assert_values_list(values)
   names_quosure <- rlang::enquo(names)
