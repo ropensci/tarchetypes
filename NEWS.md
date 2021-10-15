@@ -1,6 +1,7 @@
 # tarchetypes 0.3.1.9000
 
 * Allow empty / `NULL` target list in `tar_map()` (@kkami1115).
+* Do not claim to support `"aws_file"` format in `tar_files()` or related target factories.
 
 # tarchetypes 0.3.1
 

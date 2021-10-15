@@ -18,8 +18,8 @@
 #'   `tar_files_input()` creates a pair of targets, one upstream
 #'   and one downstream. The upstream target does some work
 #'   and returns some file paths, and the downstream
-#'   target is a pattern that applies `format = "file"`,
-#'   `format = "url"`, or `format = "aws_file"`.
+#'   target is a pattern that applies `format = "file"`
+#'   or `format = "url"`.
 #'   This is the correct way to dynamically
 #'   iterate over file/url targets. It makes sure any downstream patterns
 #'   only rerun some of their branches if the files/urls change.
