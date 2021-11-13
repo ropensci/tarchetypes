@@ -1,7 +1,6 @@
 # tarchetypes 0.3.2.9000
 
 
-
 # tarchetypes 0.3.2
 
 * Allow empty / `NULL` target list in `tar_map()` (@kkami1115).
