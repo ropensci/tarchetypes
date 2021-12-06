@@ -2,7 +2,8 @@
 % Please edit documentation in R/tar_map_rep_raw.R
 \name{tar_map_rep_raw}
 \alias{tar_map_rep_raw}
-\title{Batched replication within static branches for data frames (raw version).}
+\title{Batched replication within static branches for data frames
+(raw version).}
 \usage{
 tar_map_rep_raw(
   name,
@@ -29,8 +30,38 @@ tar_map_rep_raw(
 )
 }
 \arguments{
+\item{name}{Symbol, name of the target. A target
+name must be a valid name for a symbol in R, and it
+must not start with a dot. Subsequent targets
+can refer to this name symbolically to induce a dependency relationship:
+e.g. \code{tar_target(downstream_target, f(upstream_target))} is a
+target named \code{downstream_target} which depends on a target
+\code{upstream_target} and a function \code{f()}. In addition, a target's
+name determines its random number generator seed. In this way,
+each target runs with a reproducible seed so someone else
+running the same pipeline should get the same results,
+and no two targets in the same pipeline share the same seed.
+(Even dynamic branches have different names and thus different seeds.)
+You can recover the seed of a completed target
+with \code{tar_meta(your_target, seed)} and run \code{set.seed()} on the result
+to locally recreate the target's initial RNG state.}
+
 \item{command}{Language object, R code for a single replicate. Must return
 a data frame.}
+
+\item{values}{Named list or data frame with values to iterate over.
+The names are the names of symbols in the commands and pattern
+statements, and the elements are values that get substituted
+in place of those symbols. Elements of the \code{values} list
+should be small objects that can easily deparse to names,
+such as characters, integers, and symbols.
+For more complicated elements of \code{values}, such as
+lists with multiple numeric vectors,
+\code{tar_map()} attempts to parse the elements into expressions,
+but this process is not perfect, and the default
+target names come out garbled.
+To create a list of symbols as a column of \code{values},
+use \code{rlang::syms()}.}
 
 \item{names}{Language object with a tidyselect expression
 to select which columns of \code{values} to use to construct
@@ -40,8 +71,147 @@ short names are automatically generated.}
 \item{columns}{Language object with a tidyselect expression
 to select which columns of \code{values} to append to the output.}
 
+\item{batches}{Number of batches. This is also the number of dynamic
+branches created during \code{tar_make()}.}
+
+\item{reps}{Number of replications in each batch. The total number
+of replications is \code{batches * reps}.}
+
 \item{combine}{Logical of length 1, whether to statically combine
 all the results into a single target downstream.}
+
+\item{tidy_eval}{Whether to invoke tidy evaluation
+(e.g. the \verb{!!} operator from \code{rlang}) as soon as the target is defined
+(before \code{tar_make()}). Applies to the \code{command} argument.}
+
+\item{packages}{Character vector of packages to load right before
+the target builds. Use \code{tar_option_set()} to set packages
+globally for all subsequent targets you define.}
+
+\item{library}{Character vector of library paths to try
+when loading \code{packages}.}
+
+\item{format}{Optional storage format for the target's return value.
+With the exception of \code{format = "file"}, each target
+gets a file in \verb{_targets/objects}, and each format is a different
+way to save and load this file. See the "Storage formats" section
+for a detailed list of possible data storage formats.}
+
+\item{iteration}{Character of length 1, name of the iteration mode
+of the target. Choices:
+\itemize{
+\item \code{"vector"}: branching happens with \code{vectors::vec_slice()} and
+aggregation happens with \code{vctrs::vec_c()}.
+\item \code{"list"}, branching happens with \verb{[[]]} and aggregation happens with
+\code{list()}. In the case of list iteration, \code{tar_read(your_target)}
+will return a list of lists, where the outer list has one element per
+batch and each inner list has one element per rep within batch.
+To un-batch this nested list, call
+\code{tar_read(your_target, recursive = FALSE)}.
+\item \code{"group"}: \code{dplyr::group_by()}-like functionality to branch over
+subsets of a data frame. The target's return value must be a data
+frame with a special \code{tar_group} column of consecutive integers
+from 1 through the number of groups. Each integer designates a group,
+and a branch is created for each collection of rows in a group.
+See the \code{\link[=tar_group]{tar_group()}} function to see how you can
+create the special \code{tar_group} column with \code{dplyr::group_by()}.
+}}
+
+\item{error}{Character of length 1, what to do if the target
+stops and throws an error. Options:
+\itemize{
+\item \code{"stop"}: the whole pipeline stops and throws an error.
+\item \code{"continue"}: the whole pipeline keeps going.
+\item \code{"abridge"}: any currently running targets keep running,
+but no new targets launch after that.
+(Visit \url{https://books.ropensci.org/targets/debugging.html}
+to learn how to debug targets using saved workspaces.)
+}}
+
+\item{memory}{Character of length 1, memory strategy.
+If \code{"persistent"}, the target stays in memory
+until the end of the pipeline (unless \code{storage} is \code{"worker"},
+in which case \code{targets} unloads the value from memory
+right after storing it in order to avoid sending
+copious data over a network).
+If \code{"transient"}, the target gets unloaded
+after every new target completes.
+Either way, the target gets automatically loaded into memory
+whenever another target needs the value.
+For cloud-based dynamic files such as \code{format = "aws_file"},
+this memory strategy applies to
+temporary local copies of the file in \verb{_targets/scratch/"}:
+\code{"persistent"} means they remain until the end of the pipeline,
+and \code{"transient"} means they get deleted from the file system
+as soon as possible. The former conserves bandwidth,
+and the latter conserves local storage.}
+
+\item{deployment}{Character of length 1, only relevant to
+\code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}} and \code{\link[targets:tar_make_future]{tar_make_future()}}. If \code{"worker"},
+the target builds on a parallel worker. If \code{"main"},
+the target builds on the host machine / process managing the pipeline.}
+
+\item{priority}{Numeric of length 1 between 0 and 1. Controls which
+targets get deployed first when multiple competing targets are ready
+simultaneously. Targets with priorities closer to 1 get built earlier
+(and polled earlier in \code{\link[targets:tar_make_future]{tar_make_future()}}).}
+
+\item{resources}{Object returned by \code{tar_resources()}
+with optional settings for high-performance computing
+functionality, alternative data storage formats,
+and other optional capabilities of \code{targets}.
+See \code{tar_resources()} for details.}
+
+\item{storage}{Character of length 1, only relevant to
+\code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}} and \code{\link[targets:tar_make_future]{tar_make_future()}}.
+Must be one of the following values:
+\itemize{
+\item \code{"main"}: the target's return value is sent back to the
+host machine and saved/uploaded locally.
+\item \code{"worker"}: the worker saves/uploads the value.
+\item \code{"none"}: almost never recommended. It is only for
+niche situations, e.g. the data needs to be loaded
+explicitly from another language. If you do use it,
+then the return value of the target is totally ignored
+when the target ends, but
+each downstream target still attempts to load the data file
+(except when \code{retrieval = "none"}).
+
+If you select \code{storage = "none"}, then
+the return value of the target's command is ignored,
+and the data is not saved automatically.
+As with dynamic files (\code{format = "file"} or \code{"aws_file"}) it is the
+responsibility of the user to write to
+\code{\link[targets:tar_path]{tar_path()}} from inside the target.
+An example target
+could look something like
+tar_target(x,
+{saveRDS("value", tar_path(create_dir = TRUE)); "ignored"},
+storage = "none")`.
+
+The distinguishing feature of \code{storage = "none"}
+(as opposed to \code{format = "file"} or \code{"aws_file"})
+is that in the general case,
+downstream targets will automatically try to load the data
+from the data store as a dependency. As a corollary, \code{storage = "none"}
+is completely unnecessary if \code{format} is \code{"file"} or \code{"aws_file"}.
+}}
+
+\item{retrieval}{Character of length 1, only relevant to
+\code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}} and \code{\link[targets:tar_make_future]{tar_make_future()}}.
+Must be one of the following values:
+\itemize{
+\item \code{"main"}: the target's dependencies are loaded on the host machine
+and sent to the worker before the target builds.
+\item \code{"worker"}: the worker loads the targets dependencies.
+\item \code{"none"}: the dependencies are not loaded at all.
+This choice is almost never recommended. It is only for
+niche situations, e.g. the data needs to be loaded
+explicitly from another language.
+}}
+
+\item{cue}{An optional object from \code{tar_cue()} to customize the
+rules that decide whether the target is up to date.}
 }
 \value{
 A list of new target objects.

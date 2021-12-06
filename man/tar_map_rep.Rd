@@ -17,6 +17,7 @@ tar_map_rep(
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
   format = "feather",
+  iteration = targets::tar_option_get("iteration"),
   error = targets::tar_option_get("error"),
   memory = targets::tar_option_get("memory"),
   deployment = targets::tar_option_get("deployment"),
@@ -94,6 +95,26 @@ With the exception of \code{format = "file"}, each target
 gets a file in \verb{_targets/objects}, and each format is a different
 way to save and load this file. See the "Storage formats" section
 for a detailed list of possible data storage formats.}
+
+\item{iteration}{Character of length 1, name of the iteration mode
+of the target. Choices:
+\itemize{
+\item \code{"vector"}: branching happens with \code{vectors::vec_slice()} and
+aggregation happens with \code{vctrs::vec_c()}.
+\item \code{"list"}, branching happens with \verb{[[]]} and aggregation happens with
+\code{list()}. In the case of list iteration, \code{tar_read(your_target)}
+will return a list of lists, where the outer list has one element per
+batch and each inner list has one element per rep within batch.
+To un-batch this nested list, call
+\code{tar_read(your_target, recursive = FALSE)}.
+\item \code{"group"}: \code{dplyr::group_by()}-like functionality to branch over
+subsets of a data frame. The target's return value must be a data
+frame with a special \code{tar_group} column of consecutive integers
+from 1 through the number of groups. Each integer designates a group,
+and a branch is created for each collection of rows in a group.
+See the \code{\link[=tar_group]{tar_group()}} function to see how you can
+create the special \code{tar_group} column with \code{dplyr::group_by()}.
+}}
 
 \item{error}{Character of length 1, what to do if the target
 stops and throws an error. Options:
