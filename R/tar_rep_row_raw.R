@@ -23,6 +23,39 @@
 #' @inheritSection tar_map Target objects
 #' @inheritParams tar_row_rep
 #' @examples
+#' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
+#' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
+#' targets::tar_script({
+#'   # Just a sketch of a Bayesian sensitivity analysis of hyperparameters:
+#'   assess_hyperparameters <- function(sigma1, sigma2) {
+#'     # data <- simulate_random_data() # user-defined function
+#'     # run_model(data, sigma1, sigma2) # user-defined function
+#'     # Mock output from the model:
+#'     posterior_samples <- stats::rnorm(1000, 0, sigma1 + sigma2)
+#'     tibble::tibble(
+#'       posterior_median = median(posterior_samples),
+#'       posterior_quantile_0.025 = quantile(posterior_samples, 0.025),
+#'       posterior_quantile_0.975 = quantile(posterior_samples, 0.975)
+#'     )
+#'   }
+#'   hyperparameters <- tibble::tibble(
+#'     scenario = c("tight", "medium", "diffuse"),
+#'     sigma1 = c(10, 50, 50),
+#'     sigma2 = c(10, 5, 10)
+#'   )
+#'   tarchetypes::tar_rep_row_raw(
+#'     sensitivity_analysis,
+#'     command = quote(assess_hyperparameters(sigma1, sigma2)),
+#'     values = hyperparameters,
+#'     names = quote(tidyselect::any_of("scenario")),
+#'     batches = 2,
+#'     reps = 3
+#'    )
+#' })
+#' targets::tar_make()
+#' targets::tar_read(sensitivity_analysis)
+#' })
+#' }
 tar_rep_row_raw <- function(
   name,
   command,
@@ -62,9 +95,10 @@ tar_rep_row_raw <- function(
   targets::tar_assert_scalar(combine)
   targets::tar_assert_lgl(combine)
   envir <- targets::tar_option_get("envir")
+  columns <- targets::tar_tidyselect_eval(columns, colnames(values))
   command <- tar_raw_command(name, command)
   command <- targets::tar_tidy_eval(as.expression(command), envir, tidy_eval)
-# TODO: append columns from values to output.
+  command <- tar_command_append_static_values(command, columns)
   name_batch <- paste0(name, "_batch")
   target_batch <- targets::tar_target_raw(
     name = name_batch,
@@ -129,3 +163,32 @@ tar_rep_row_combine_command <- expression({
   out <- dplyr::bind_rows(!!!.x, .id = "tar_group")
   dplyr::mutate(out, tar_group = as.integer(as.factor(tar_group)))
 })
+
+
+tar_command_append_static_values <- function(command, columns) {
+  column_syms <- rlang::syms(columns)
+  names(column_syms) <- columns
+  values <- rlang::call2("tibble", !!!column_syms, .ns = "tibble")
+  rlang::call2(
+    .fn = "tar_append_static_values",
+    object = command,
+    values = values,
+    .ns = "tarchetypes"
+  )
+}
+
+#' @title Append statically mapped values to target output.
+#' @export
+#' @keywords internal
+#' @description For internal use only. Users should not invoke
+#'   this function directly.
+#' @param object Return value of a target. Must be a data frame.
+#' @param values Tibble with the set of static values that the current target
+#'   uses.
+tar_append_static_values <- function(object, values) {
+  if (!length(values) || !nrow(values)) {
+    return(object)
+  }
+  targets::tar_assert_df(object)
+  do.call(dplyr::mutate, args = list(.data = object, values))
+}

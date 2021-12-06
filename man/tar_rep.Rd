@@ -26,7 +26,9 @@ tar_rep(
 )
 }
 \arguments{
-\item{name}{Symbol, name of the target. Subsequent targets
+\item{name}{Symbol, name of the target. A target
+name must be a valid name for a symbol in R, and it
+must not start with a dot. Subsequent targets
 can refer to this name symbolically to induce a dependency relationship:
 e.g. \code{tar_target(downstream_target, f(upstream_target))} is a
 target named \code{downstream_target} which depends on a target
@@ -271,6 +273,8 @@ Other branching:
 \code{\link{tar_map}()},
 \code{\link{tar_rep_map_raw}()},
 \code{\link{tar_rep_map}()},
-\code{\link{tar_rep_raw}()}
+\code{\link{tar_rep_raw}()},
+\code{\link{tar_rep_row_raw}()},
+\code{\link{tar_rep_row}()}
 }
 \concept{branching}

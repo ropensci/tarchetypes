@@ -92,6 +92,8 @@ Other branching:
 \code{\link{tar_rep_map_raw}()},
 \code{\link{tar_rep_map}()},
 \code{\link{tar_rep_raw}()},
+\code{\link{tar_rep_row_raw}()},
+\code{\link{tar_rep_row}()},
 \code{\link{tar_rep}()}
 }
 \concept{branching}

@@ -15,6 +15,7 @@
 #' @inheritSection tar_map Target objects
 #' @inheritParams tar_map
 #' @inheritParams tar_rep
+#' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
 #' targets::tar_script({
@@ -39,7 +40,7 @@
 #'     sensitivity_analysis,
 #'     command = assess_hyperparameters(sigma1, sigma2),
 #'     values = hyperparameters,
-#'     names = scenario,
+#'     names = tidyselect::any_of("scenario"),
 #'     batches = 2,
 #'     reps = 3
 #'    )
