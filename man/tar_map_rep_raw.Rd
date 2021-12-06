@@ -51,7 +51,7 @@ See the "Target objects" section for background.
 Define targets for batched replication
 within static branches for data frames (raw version).
 
-This funciton is like \code{\link[=tar_map_rep]{tar_map_rep()}}
+This function is like \code{\link[=tar_map_rep]{tar_map_rep()}}
 except the \code{name} argument is a character string
 and the \code{names} and \code{columns} arguments are
 language objects.

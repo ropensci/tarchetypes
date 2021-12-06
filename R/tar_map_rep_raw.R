@@ -3,7 +3,7 @@
 #' @family branching
 #' @description Define targets for batched replication
 #'   within static branches for data frames (raw version).
-#' @description This funciton is like [tar_map_rep()]
+#' @description This function is like [tar_map_rep()]
 #'   except the `name` argument is a character string
 #'   and the `names` and `columns` arguments are
 #'   language objects.
