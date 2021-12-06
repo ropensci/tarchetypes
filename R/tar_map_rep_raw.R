@@ -3,7 +3,7 @@
 #' @family branching
 #' @description Define targets for batched replication
 #'   within static branches for data frames (raw version).
-#' @description This funciton is like [tar_rep_row()]
+#' @description This funciton is like [tar_map_rep()]
 #'   except the `name` argument is a character string
 #'   and the `names` and `columns` arguments are
 #'   language objects.
@@ -43,7 +43,7 @@
 #'     sigma1 = c(10, 50, 50),
 #'     sigma2 = c(10, 5, 10)
 #'   )
-#'   tarchetypes::tar_rep_row_raw(
+#'   tarchetypes::tar_map_rep_raw(
 #'     sensitivity_analysis,
 #'     command = quote(assess_hyperparameters(sigma1, sigma2)),
 #'     values = hyperparameters,
@@ -56,7 +56,7 @@
 #' targets::tar_read(sensitivity_analysis)
 #' })
 #' }
-tar_rep_row_raw <- function(
+tar_map_rep_raw <- function(
   name,
   command,
   values = NULL,
@@ -144,7 +144,7 @@ tar_rep_row_raw <- function(
     tar_combine_raw(
       name = name,
       target_static,
-      command = tar_rep_row_combine_command,
+      command = tar_map_combine_command,
       use_names = TRUE,
       packages = character(0),
       format = format,
@@ -159,7 +159,7 @@ tar_rep_row_raw <- function(
   unlist(list(target_batch, target_static, target_combine), recursive = TRUE)
 }
 
-tar_rep_row_combine_command <- expression({
+tar_map_combine_command <- expression({
   out <- dplyr::bind_rows(!!!.x, .id = "tar_group")
   dplyr::mutate(out, tar_group = as.integer(as.factor(tar_group)))
 })

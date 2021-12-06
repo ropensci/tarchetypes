@@ -18,12 +18,6 @@ reference:
 - title: Help
   contents:
   - '`tarchetypes-package`'
-- title: Grouped data frame targets
-  contents:
-  - '`tar_group_by`'
-  - '`tar_group_count`'
-  - '`tar_group_select`'
-  - '`tar_group_size`'
 - title: Literate programming targets
   contents:
   - '`tar_knit`'
@@ -39,25 +33,38 @@ reference:
 - title: Formats
   contents:
   - '`tar_formats`'
-- title: Branching
+- title: Static branching
   contents:
   - '`tar_combine`'
   - '`tar_combine_raw`'
   - '`tar_map`'
+  - '`tar_map_rep`'
+  - '`tar_map_rep_raw`'
+  - '`tar_map2_count`'
+  - '`tar_map2_count_raw`'
+  - '`tar_map2_size`'
+  - '`tar_map2_size_raw`'
+- title: Dynamic grouped data frame targets
+  contents:
+  - '`tar_group_by`'
+  - '`tar_group_count`'
+  - '`tar_group_select`'
+  - '`tar_group_size`'
+- title: Dynamic batched replication
   - '`tar_rep`'
   - '`tar_rep_raw`'
   - '`tar_rep_map`'
   - '`tar_rep_map_raw`'
-- title: Target selection
-  contents:
-  - '`tar_select_names`'
-  - '`tar_select_targets`'
 - title: Dynamic branching over files
   contents:
   - '`tar_files`'
   - '`tar_files_raw`'
   - '`tar_files_input`'
   - '`tar_files_input_raw`'
+- title: Target selection
+  contents:
+  - '`tar_select_names`'
+  - '`tar_select_targets`'
 - title: Targets with custom invalidation rules
   contents:
   - '`tar_age`'

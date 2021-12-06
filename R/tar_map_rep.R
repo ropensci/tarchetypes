@@ -36,7 +36,7 @@
 #'     sigma1 = c(10, 50, 50),
 #'     sigma2 = c(10, 5, 10)
 #'   )
-#'   tarchetypes::tar_rep_row(
+#'   tarchetypes::tar_map_rep(
 #'     sensitivity_analysis,
 #'     command = assess_hyperparameters(sigma1, sigma2),
 #'     values = hyperparameters,
@@ -49,7 +49,7 @@
 #' targets::tar_read(sensitivity_analysis)
 #' })
 #' }
-tar_rep_row <- function(
+tar_map_rep <- function(
   name,
   command,
   values = NULL,
@@ -71,7 +71,7 @@ tar_rep_row <- function(
   retrieval = targets::tar_option_get("retrieval"),
   cue = targets::tar_option_get("cue")
 ) {
-  tar_rep_row_raw(
+  tar_map_rep_raw(
     name = deparse(substitute(name)),
     command = substitute(command),
     values = values,
