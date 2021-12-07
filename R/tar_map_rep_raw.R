@@ -27,8 +27,9 @@
 #'   you may select another format as described in the
 #'   help file of `targets::tar_target()`.
 #' @inheritSection tar_map Target objects
-#' @inheritParams tar_map_rep
 #' @inheritParams targets::tar_target
+#' @inheritParams tar_map
+#' @inheritParams tar_rep
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({ # tar_dir() runs code from a temporary directory.

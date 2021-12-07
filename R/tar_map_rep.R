@@ -15,8 +15,6 @@
 #'   all the results into a single target downstream.
 #' @inheritSection tar_map Target objects
 #' @inheritParams tar_map_rep_raw
-#' @inheritParams tar_map
-#' @inheritParams tar_rep
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({ # tar_dir() runs code from a temporary directory.

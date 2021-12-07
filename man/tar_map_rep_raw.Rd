@@ -49,6 +49,20 @@ to locally recreate the target's initial RNG state.}
 \item{command}{Language object, R code for a single replicate. Must return
 a data frame.}
 
+\item{values}{Named list or data frame with values to iterate over.
+The names are the names of symbols in the commands and pattern
+statements, and the elements are values that get substituted
+in place of those symbols. Elements of the \code{values} list
+should be small objects that can easily deparse to names,
+such as characters, integers, and symbols.
+For more complicated elements of \code{values}, such as
+lists with multiple numeric vectors,
+\code{tar_map()} attempts to parse the elements into expressions,
+but this process is not perfect, and the default
+target names come out garbled.
+To create a list of symbols as a column of \code{values},
+use \code{rlang::syms()}.}
+
 \item{names}{Language object with a tidyselect expression
 to select which columns of \code{values} to use to construct
 statically branched target names. If \code{NULL}, then
@@ -56,6 +70,12 @@ short names are automatically generated.}
 
 \item{columns}{Language object with a tidyselect expression
 to select which columns of \code{values} to append to the output.}
+
+\item{batches}{Number of batches. This is also the number of dynamic
+branches created during \code{tar_make()}.}
+
+\item{reps}{Number of replications in each batch. The total number
+of replications is \code{batches * reps}.}
 
 \item{combine}{Logical of length 1, whether to statically combine
 all the results into a single target downstream.}
