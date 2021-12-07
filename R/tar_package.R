@@ -7,6 +7,7 @@
 #'   pipelines in targets easier and cleaner to write and understand.
 #' @name tarchetypes-package
 #' @importFrom digest digest
+#' @importFrom dplyr bind_rows mutate select
 #' @importFrom fs dir_create path_ext_remove path_rel
 #' @importFrom rlang as_function call2 check_installed enquo expr
 #'   inform is_missing quo_squash

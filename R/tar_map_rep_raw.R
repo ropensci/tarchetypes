@@ -89,7 +89,9 @@ tar_map_rep_raw <- function(
     targets::tar_assert_ge(nrow(values), 1L)
   }
   targets::tar_assert_lang(names)
-  targets::tar_assert_lang(columns)
+  if (!is.null(columns)) {
+    targets::tar_assert_lang(columns)
+  }
   targets::tar_assert_scalar(batches)
   targets::tar_assert_dbl(batches)
   targets::tar_assert_scalar(reps)
@@ -163,9 +165,9 @@ tar_map_rep_raw <- function(
 
 tar_map_combine_command <- expression({
   out <- dplyr::bind_rows(!!!.x, .id = "tar_group")
-  dplyr::mutate(out, tar_group = as.integer(as.factor(tar_group)))
+  out <- dplyr::mutate(out, tar_group = as.integer(as.factor(tar_group)))
+  dplyr::select(out, -tidyselect::any_of("tar_group"), tar_group)
 })
-
 
 tar_command_append_static_values <- function(command, columns) {
   column_syms <- rlang::syms(columns)

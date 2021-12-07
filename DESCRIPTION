@@ -41,6 +41,7 @@ Depends:
   R (>= 3.5.0)
 Imports:
   digest (>= 0.6.25),
+  dplyr (>= 1.0.0),
   fs (>= 1.4.2),
   rlang (>= 0.4.7),
   targets (>= 0.6.0),
@@ -51,7 +52,6 @@ Imports:
   withr (>= 2.1.2)
 Suggests:
   curl (>= 4.3),
-  dplyr (>= 1.0.0),
   knitr (>= 1.28),
   rmarkdown (>= 2.1),
   testthat (>= 3.0.0),

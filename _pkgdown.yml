@@ -40,10 +40,6 @@ reference:
   - '`tar_map`'
   - '`tar_map_rep`'
   - '`tar_map_rep_raw`'
-  - '`tar_map2_count`'
-  - '`tar_map2_count_raw`'
-  - '`tar_map2_size`'
-  - '`tar_map2_size_raw`'
 - title: Dynamic grouped data frame targets
   contents:
   - '`tar_group_by`'
