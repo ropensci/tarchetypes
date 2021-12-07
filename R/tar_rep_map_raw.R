@@ -63,7 +63,7 @@ tar_rep_map_raw <- function(
   retrieval = targets::tar_option_get("retrieval"),
   cue = targets::tar_option_get("cue")
 ) {
-  tar_warn_deprecate(
+  targets::tar_warn_deprecate(
     "tar_rep_map() in tarchetypes is deprecated ",
     "(version 0.4.0, 2021-12-06). Please use tar_rep2() instead."
   )
