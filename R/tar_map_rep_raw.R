@@ -21,6 +21,11 @@
 #'   to select which columns of `values` to append to the output.
 #' @param combine Logical of length 1, whether to statically combine
 #'   all the results into a single target downstream.
+#' @param format Character of length 1, storage format of the output.
+#'   Defaults to `"feather"`, which requires the `arrow` package
+#'   (`install.packages("arrow")`). If you do not have `arrow`,
+#'   you may select another format as described in the
+#'   help file of `targets::tar_target()`.
 #' @inheritSection tar_map Target objects
 #' @inheritParams tar_map_rep
 #' @inheritParams targets::tar_target

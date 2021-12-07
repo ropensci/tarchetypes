@@ -63,10 +63,10 @@ target names come out garbled.
 To create a list of symbols as a column of \code{values},
 use \code{rlang::syms()}.}
 
-\item{names}{Subset of \code{names(values)}
-used to generate the suffixes in the names of the new targets.
-You can supply symbols, a character vector,
-or tidyselect helpers like \code{\link[=starts_with]{starts_with()}}.}
+\item{names}{Language object with a tidyselect expression
+to select which columns of \code{values} to use to construct
+statically branched target names. If \code{NULL}, then
+short names are automatically generated.}
 
 \item{columns}{A tidyselect expression to select which columns of \code{values}
 to append to the output.}
@@ -80,9 +80,10 @@ of replications is \code{batches * reps}.}
 \item{combine}{Logical of length 1, whether to statically combine
 all the results into a single target downstream.}
 
-\item{tidy_eval}{Whether to invoke tidy evaluation
-(e.g. the \verb{!!} operator from \code{rlang}) as soon as the target is defined
-(before \code{tar_make()}). Applies to the \code{command} argument.}
+\item{tidy_eval}{Logical, whether to enable tidy evaluation
+when interpreting \code{command} and \code{pattern}. If \code{TRUE}, you can use the
+"bang-bang" operator \verb{!!} to programmatically insert
+the values of global objects.}
 
 \item{packages}{Character vector of packages to load right before
 the target builds. Use \code{tar_option_set()} to set packages
@@ -91,29 +92,25 @@ globally for all subsequent targets you define.}
 \item{library}{Character vector of library paths to try
 when loading \code{packages}.}
 
-\item{format}{Optional storage format for the target's return value.
-With the exception of \code{format = "file"}, each target
-gets a file in \verb{_targets/objects}, and each format is a different
-way to save and load this file. See the "Storage formats" section
-for a detailed list of possible data storage formats.}
+\item{format}{Character of length 1, storage format of the output.
+Defaults to \code{"feather"}, which requires the \code{arrow} package
+(\code{install.packages("arrow")}). If you do not have \code{arrow},
+you may select another format as described in the
+help file of \code{targets::tar_target()}.}
 
 \item{iteration}{Character of length 1, name of the iteration mode
 of the target. Choices:
 \itemize{
-\item \code{"vector"}: branching happens with \code{vectors::vec_slice()} and
+\item \code{"vector"}: branching happens with \code{vctrs::vec_slice()} and
 aggregation happens with \code{vctrs::vec_c()}.
 \item \code{"list"}, branching happens with \verb{[[]]} and aggregation happens with
-\code{list()}. In the case of list iteration, \code{tar_read(your_target)}
-will return a list of lists, where the outer list has one element per
-batch and each inner list has one element per rep within batch.
-To un-batch this nested list, call
-\code{tar_read(your_target, recursive = FALSE)}.
+\code{list()}.
 \item \code{"group"}: \code{dplyr::group_by()}-like functionality to branch over
 subsets of a data frame. The target's return value must be a data
 frame with a special \code{tar_group} column of consecutive integers
 from 1 through the number of groups. Each integer designates a group,
 and a branch is created for each collection of rows in a group.
-See the \code{\link[=tar_group]{tar_group()}} function to see how you can
+See the \code{\link[targets:tar_group]{tar_group()}} function to see how you can
 create the special \code{tar_group} column with \code{dplyr::group_by()}.
 }}
 

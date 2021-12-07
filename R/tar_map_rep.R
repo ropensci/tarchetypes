@@ -14,6 +14,7 @@
 #' @param combine Logical of length 1, whether to statically combine
 #'   all the results into a single target downstream.
 #' @inheritSection tar_map Target objects
+#' @inheritParams tar_map_rep_raw
 #' @inheritParams tar_map
 #' @inheritParams tar_rep
 #' @examples
