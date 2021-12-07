@@ -1,4 +1,4 @@
-#' @title Batched computation downstream of [tar_rep()] (raw version).
+#' @title Dynamic batched computation downstream of [tar_rep()] (raw version).
 #' @export
 #' @family branching
 #' @keywords internal

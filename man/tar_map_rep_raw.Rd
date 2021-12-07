@@ -2,8 +2,8 @@
 % Please edit documentation in R/tar_map_rep_raw.R
 \name{tar_map_rep_raw}
 \alias{tar_map_rep_raw}
-\title{Batched replication within static branches for data frames
-(raw version).}
+\title{Dynamic batched replication within static branches
+for data frames (raw version).}
 \usage{
 tar_map_rep_raw(
   name,

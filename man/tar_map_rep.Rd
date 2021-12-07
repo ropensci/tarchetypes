@@ -2,7 +2,8 @@
 % Please edit documentation in R/tar_map_rep.R
 \name{tar_map_rep}
 \alias{tar_map_rep}
-\title{Batched replication within static branches for data frames.}
+\title{Dynamic batched replication within static branches
+for data frames.}
 \usage{
 tar_map_rep(
   name,

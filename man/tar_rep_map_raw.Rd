@@ -2,7 +2,8 @@
 % Please edit documentation in R/tar_rep_map_raw.R
 \name{tar_rep_map_raw}
 \alias{tar_rep_map_raw}
-\title{Batched computation downstream of \code{\link[=tar_rep]{tar_rep()}} (raw; deprecated).}
+\title{Dynamic batched computation downstream of \code{\link[=tar_rep]{tar_rep()}}
+(raw; deprecated).}
 \usage{
 tar_rep_map_raw(
   name,

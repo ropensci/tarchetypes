@@ -1,5 +1,5 @@
-#' @title Batched replication within static branches for data frames
-#'   (raw version).
+#' @title Dynamic batched replication within static branches
+#'   for data frames (raw version).
 #' @export
 #' @family branching
 #' @description Define targets for batched replication

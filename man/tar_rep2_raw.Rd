@@ -2,7 +2,7 @@
 % Please edit documentation in R/tar_rep2_raw.R
 \name{tar_rep2_raw}
 \alias{tar_rep2_raw}
-\title{Batched computation downstream of \code{\link[=tar_rep]{tar_rep()}} (raw version).}
+\title{Dynamic batched computation downstream of \code{\link[=tar_rep]{tar_rep()}} (raw version).}
 \usage{
 tar_rep2_raw(
   name,

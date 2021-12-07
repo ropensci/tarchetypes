@@ -1,4 +1,4 @@
-#' @title Batched computation downstream of [tar_rep()] (deprecated).
+#' @title Dynamic batched computation downstream of [tar_rep()] (deprecated).
 #' @export
 #' @keywords internal
 #' @family branching

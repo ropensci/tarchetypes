@@ -1,6 +1,7 @@
 # tarchetypes 0.3.2.9000
 
-
+* Implement `tar_map_rep()` for dynamic batched replication within static branching for data frames (#78).
+* Deprecate `tar_rep_map()` in favor of `tar_rep2()` to avoid name confusion. Likewise with `tar_rep_map_raw()` to `tar_rep2_raw()` (#78).
 
 # tarchetypes 0.3.2
 

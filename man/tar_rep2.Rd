@@ -2,7 +2,7 @@
 % Please edit documentation in R/tar_rep2.R
 \name{tar_rep2}
 \alias{tar_rep2}
-\title{Batched computation downstream of \code{\link[=tar_rep]{tar_rep()}}}
+\title{Dynamic batched computation downstream of \code{\link[=tar_rep]{tar_rep()}}}
 \usage{
 tar_rep2(
   name,

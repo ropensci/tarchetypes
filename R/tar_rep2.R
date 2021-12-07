@@ -1,4 +1,4 @@
-#' @title Batched computation downstream of [tar_rep()]
+#' @title Dynamic batched computation downstream of [tar_rep()]
 #' @export
 #' @family branching
 #' @description Batching is important for optimizing the efficiency
