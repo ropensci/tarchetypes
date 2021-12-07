@@ -1,15 +1,16 @@
-#' @title Batched computation downstream of [tar_rep()] (raw; deprecated).
+#' @title Batched computation downstream of [tar_rep()]
 #' @export
 #' @family branching
-#' @keywords internal
-#' @description Deprecated. Use [tar_rep2_raw()] instead.
-#' @details Deprecated in version 0.4.0, 2021-12-06.
-#' @return A new target object to perform batched computation
-#'   downstream of [tar_rep()].
+#' @description Batching is important for optimizing the efficiency
+#'   of heavily dynamically-branched workflows:
+#'   <https://books.ropensci.org/targets/dynamic.html#batching>.
+#'   [tar_rep2()] uses dynamic branching to iterate
+#'   over the batches and reps of existing upstream targets.
+#' @return A new target object to perform batched computation.
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
 #' @inheritParams targets::tar_target
-#' @param targets Character vector of names of upstream batched targets
+#' @param ... Symbols to name one or more upstream batched targets
 #'   created by [tar_rep()].
 #'   If you supply more than one such target, all those targets must have the
 #'   same number of batches and reps per batch. And they must all return
@@ -32,10 +33,11 @@
 #'       batches = 2, reps = 3,
 #'       iteration = "list" # List iteration is important for batched lists.
 #'     ),
-#'     tarchetypes::tar_rep2_raw( # Use instead of tar_rep_map_raw().
-#'       "aggregate",
-#'       quote(data.frame(value = data1$value + data2$value)),
-#'       targets = c("data1", "data2")
+#'     tarchetypes::tar_rep2(
+#'       aggregate,
+#'       data.frame(value = data1$value + data2$value),
+#'       data1,
+#'       data2
 #'     )
 #'   )
 #' })
@@ -43,10 +45,10 @@
 #' targets::tar_read(aggregate)
 #' })
 #' }
-tar_rep_map_raw <- function(
+tar_rep2 <- function(
   name,
   command,
-  targets,
+  ...,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -62,9 +64,26 @@ tar_rep_map_raw <- function(
   retrieval = targets::tar_option_get("retrieval"),
   cue = targets::tar_option_get("cue")
 ) {
-  tar_warn_deprecate(
-    "tar_rep_map() in tarchetypes is deprecated ",
-    "(version 0.4.0, 2021-12-06). Please use tar_rep2() instead."
+  name <- targets::tar_deparse_language(substitute(name))
+  envir <- targets::tar_option_get("envir")
+  command <- targets::tar_tidy_eval(substitute(command), envir, tidy_eval)
+  targets <- as.character(match.call(expand.dots = FALSE)$...)
+  tar_rep2_raw(
+    name = name,
+    command = command,
+    targets = targets,
+    packages = packages,
+    library = library,
+    format = format,
+    iteration = iteration,
+    error = error,
+    memory = memory,
+    garbage_collection = garbage_collection,
+    deployment = deployment,
+    priority = priority,
+    resources = resources,
+    storage = storage,
+    retrieval = retrieval,
+    cue = cue
   )
-  do.call(tar_rep2_raw, rlang::call_args(match.call()))
 }

@@ -1,11 +1,9 @@
-#' @title Batched computation downstream of [tar_rep()]
+#' @title Batched computation downstream of [tar_rep()] (deprecated).
 #' @export
+#' @keywords internal
 #' @family branching
-#' @description Batching is important for optimizing the efficiency
-#'   of heavily dynamically-branched workflows:
-#'   <https://books.ropensci.org/targets/dynamic.html#batching>.
-#'   [tar_rep_map()] uses dynamic branching to iterate
-#'   over the batches and reps of existing upstream targets.
+#' @description Use [tar_rep2()] instead.
+#' @details Deprecated in version 0.4.0, 2021-12-06.
 #' @return A new target object to perform batched computation.
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
@@ -33,7 +31,7 @@
 #'       batches = 2, reps = 3,
 #'       iteration = "list" # List iteration is important for batched lists.
 #'     ),
-#'     tarchetypes::tar_rep_map(
+#'     tarchetypes::tar_rep2( # Use instead of tar_rep_map().
 #'       aggregate,
 #'       data.frame(value = data1$value + data2$value),
 #'       data1,
@@ -64,26 +62,9 @@ tar_rep_map <- function(
   retrieval = targets::tar_option_get("retrieval"),
   cue = targets::tar_option_get("cue")
 ) {
-  name <- targets::tar_deparse_language(substitute(name))
-  envir <- targets::tar_option_get("envir")
-  command <- targets::tar_tidy_eval(substitute(command), envir, tidy_eval)
-  targets <- as.character(match.call(expand.dots = FALSE)$...)
-  tar_rep_map_raw(
-    name = name,
-    command = command,
-    targets = targets,
-    packages = packages,
-    library = library,
-    format = format,
-    iteration = iteration,
-    error = error,
-    memory = memory,
-    garbage_collection = garbage_collection,
-    deployment = deployment,
-    priority = priority,
-    resources = resources,
-    storage = storage,
-    retrieval = retrieval,
-    cue = cue
+  tar_warn_deprecate(
+    "tar_rep_map() in tarchetypes is deprecated ",
+    "(version 0.4.0, 2021-12-06). Please use tar_rep2() instead."
   )
+  do.call(tar_rep2, rlang::call_args(match.call()))
 }

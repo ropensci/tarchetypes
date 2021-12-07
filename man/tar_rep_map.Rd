@@ -2,7 +2,7 @@
 % Please edit documentation in R/tar_rep_map.R
 \name{tar_rep_map}
 \alias{tar_rep_map}
-\title{Batched computation downstream of \code{\link[=tar_rep]{tar_rep()}}}
+\title{Batched computation downstream of \code{\link[=tar_rep]{tar_rep()}} (deprecated).}
 \usage{
 tar_rep_map(
   name,
@@ -188,11 +188,10 @@ A new target object to perform batched computation.
 See the "Target objects" section for background.
 }
 \description{
-Batching is important for optimizing the efficiency
-of heavily dynamically-branched workflows:
-\url{https://books.ropensci.org/targets/dynamic.html#batching}.
-\code{\link[=tar_rep_map]{tar_rep_map()}} uses dynamic branching to iterate
-over the batches and reps of existing upstream targets.
+Use \code{\link[=tar_rep2]{tar_rep2()}} instead.
+}
+\details{
+Deprecated in version 0.4.0, 2021-12-06.
 }
 \section{Target objects}{
 
@@ -230,7 +229,7 @@ targets::tar_script({
       batches = 2, reps = 3,
       iteration = "list" # List iteration is important for batched lists.
     ),
-    tarchetypes::tar_rep_map(
+    tarchetypes::tar_rep2( # Use instead of tar_rep_map().
       aggregate,
       data.frame(value = data1$value + data2$value),
       data1,
@@ -250,8 +249,11 @@ Other branching:
 \code{\link{tar_map_rep_raw}()},
 \code{\link{tar_map_rep}()},
 \code{\link{tar_map}()},
+\code{\link{tar_rep2_raw}()},
+\code{\link{tar_rep2}()},
 \code{\link{tar_rep_map_raw}()},
 \code{\link{tar_rep_raw}()},
 \code{\link{tar_rep}()}
 }
 \concept{branching}
+\keyword{internal}

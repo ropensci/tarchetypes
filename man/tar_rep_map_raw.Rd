@@ -2,7 +2,7 @@
 % Please edit documentation in R/tar_rep_map_raw.R
 \name{tar_rep_map_raw}
 \alias{tar_rep_map_raw}
-\title{Batched computation downstream of \code{\link[=tar_rep]{tar_rep()}} (raw version)}
+\title{Batched computation downstream of \code{\link[=tar_rep]{tar_rep()}} (raw; deprecated).}
 \usage{
 tar_rep_map_raw(
   name,
@@ -189,13 +189,10 @@ downstream of \code{\link[=tar_rep]{tar_rep()}}.
 See the "Target objects" section for background.
 }
 \description{
-Batching is important for optimizing the efficiency
-of heavily dynamically-branched workflows:
-\url{https://books.ropensci.org/targets/dynamic.html#batching}.
-\code{tar_rep_map_raw()}
-is just like \code{\link[=tar_rep_map]{tar_rep_map()}} except it accepts a character
-of length 1 for \code{name}, a language object for \code{command},
-and a character vector of the names of the upstream batched targets.
+Deprecated. Use \code{\link[=tar_rep2_raw]{tar_rep2_raw()}} instead.
+}
+\details{
+Deprecated in version 0.4.0, 2021-12-06.
 }
 \section{Target objects}{
 
@@ -233,7 +230,7 @@ targets::tar_script({
       batches = 2, reps = 3,
       iteration = "list" # List iteration is important for batched lists.
     ),
-    tarchetypes::tar_rep_map_raw(
+    tarchetypes::tar_rep2_raw( # Use instead of tar_rep_map_raw().
       "aggregate",
       quote(data.frame(value = data1$value + data2$value)),
       targets = c("data1", "data2")
@@ -252,8 +249,11 @@ Other branching:
 \code{\link{tar_map_rep_raw}()},
 \code{\link{tar_map_rep}()},
 \code{\link{tar_map}()},
+\code{\link{tar_rep2_raw}()},
+\code{\link{tar_rep2}()},
 \code{\link{tar_rep_map}()},
 \code{\link{tar_rep_raw}()},
 \code{\link{tar_rep}()}
 }
 \concept{branching}
+\keyword{internal}

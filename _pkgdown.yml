@@ -49,8 +49,8 @@ reference:
 - title: Dynamic batched replication
   - '`tar_rep`'
   - '`tar_rep_raw`'
-  - '`tar_rep_map`'
-  - '`tar_rep_map_raw`'
+  - '`tar_rep2`'
+  - '`tar_rep2_raw`'
 - title: Dynamic branching over files
   contents:
   - '`tar_files`'
