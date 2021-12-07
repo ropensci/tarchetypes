@@ -40,6 +40,11 @@ jobs:
           remotes::install_cran("covr")
         shell: Rscript {0}
 
+      - name: Mac arrow
+        if: runner.os == 'macOS'
+        run: install.packages("arrow", type = "source")
+        shell: Rscript {0}
+
       - name: Test coverage
         run: covr::codecov(quiet = FALSE)
         shell: Rscript {0}
