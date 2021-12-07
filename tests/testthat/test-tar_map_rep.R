@@ -1,5 +1,4 @@
 targets::tar_test("tar_map_rep(): combine, columns, static branches", {
-  skip_if_not_installed("arrow")
   skip_if_not_installed("dplyr")
   targets::tar_script({
     f <- function(sigma1, sigma2) {
@@ -76,7 +75,6 @@ targets::tar_test("tar_map_rep(): combine, columns, static branches", {
 })
 
 targets::tar_test("tar_map_rep(): no combine, 1 col, static branches", {
-  skip_if_not_installed("arrow")
   skip_if_not_installed("dplyr")
   targets::tar_script({
     f <- function(sigma1, sigma2) {
@@ -153,7 +151,6 @@ targets::tar_test("tar_map_rep(): no combine, 1 col, static branches", {
 })
 
 targets::tar_test("tar_map_rep(): combine, no cols, static branches", {
-  skip_if_not_installed("arrow")
   skip_if_not_installed("dplyr")
   targets::tar_script({
     f <- function(sigma1, sigma2) {
@@ -231,7 +228,6 @@ targets::tar_test("tar_map_rep(): combine, no cols, static branches", {
 })
 
 targets::tar_test("tar_map_rep(): no static branches", {
-  skip_if_not_installed("arrow")
   skip_if_not_installed("dplyr")
   targets::tar_script({
     f <- function(sigma1, sigma2) {

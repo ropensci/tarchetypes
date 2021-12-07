@@ -17,8 +17,7 @@ tar_map_rep_raw(
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
-  format = "feather",
-  iteration = targets::tar_option_get("iteration"),
+  format = targets::tar_option_get("format"),
   error = targets::tar_option_get("error"),
   memory = targets::tar_option_get("memory"),
   deployment = targets::tar_option_get("deployment"),
@@ -93,26 +92,10 @@ globally for all subsequent targets you define.}
 when loading \code{packages}.}
 
 \item{format}{Character of length 1, storage format of the output.
-Defaults to \code{"feather"}, which requires the \code{arrow} package
-(\code{install.packages("arrow")}). If you do not have \code{arrow},
-you may select another format as described in the
-help file of \code{targets::tar_target()}.}
-
-\item{iteration}{Character of length 1, name of the iteration mode
-of the target. Choices:
-\itemize{
-\item \code{"vector"}: branching happens with \code{vctrs::vec_slice()} and
-aggregation happens with \code{vctrs::vec_c()}.
-\item \code{"list"}, branching happens with \verb{[[]]} and aggregation happens with
-\code{list()}.
-\item \code{"group"}: \code{dplyr::group_by()}-like functionality to branch over
-subsets of a data frame. The target's return value must be a data
-frame with a special \code{tar_group} column of consecutive integers
-from 1 through the number of groups. Each integer designates a group,
-and a branch is created for each collection of rows in a group.
-See the \code{\link[targets:tar_group]{tar_group()}} function to see how you can
-create the special \code{tar_group} column with \code{dplyr::group_by()}.
-}}
+An efficient data frame format like \code{"feather"} is recommended,
+but the default is \code{"rds"} to avoid incurring extra package
+dependencies. See the help file of \code{targets::tar_target()}
+for details on storage formats.}
 
 \item{error}{Character of length 1, what to do if the target
 stops and throws an error. Options:

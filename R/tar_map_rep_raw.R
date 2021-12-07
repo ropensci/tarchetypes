@@ -22,10 +22,10 @@
 #' @param combine Logical of length 1, whether to statically combine
 #'   all the results into a single target downstream.
 #' @param format Character of length 1, storage format of the output.
-#'   Defaults to `"feather"`, which requires the `arrow` package
-#'   (`install.packages("arrow")`). If you do not have `arrow`,
-#'   you may select another format as described in the
-#'   help file of `targets::tar_target()`.
+#'   An efficient data frame format like `"feather"` is recommended,
+#'   but the default is `"rds"` to avoid incurring extra package
+#'   dependencies. See the help file of `targets::tar_target()`
+#'   for details on storage formats.
 #' @inheritSection tar_map Target objects
 #' @inheritParams targets::tar_target
 #' @inheritParams tar_map
@@ -76,8 +76,7 @@ tar_map_rep_raw <- function(
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
-  format = "feather",
-  iteration = targets::tar_option_get("iteration"),
+  format = targets::tar_option_get("format"),
   error = targets::tar_option_get("error"),
   memory = targets::tar_option_get("memory"),
   deployment = targets::tar_option_get("deployment"),
