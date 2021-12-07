@@ -8,7 +8,7 @@
 #' @name tarchetypes-package
 #' @importFrom digest digest
 #' @importFrom fs dir_create path_ext_remove path_rel
-#' @importFrom rlang as_function check_installed enquo expr
+#' @importFrom rlang as_function call2 check_installed enquo expr
 #'   inform is_missing quo_squash
 #' @importFrom targets tar_assert_chr tar_assert_dbl tar_assert_df
 #'   tar_assert_envir tar_assert_equal_lengths tar_assert_expr tar_assert_flag
