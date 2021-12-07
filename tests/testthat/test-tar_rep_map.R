@@ -1,4 +1,5 @@
 targets::tar_test("tar_rep_map() manifest", {
+  skip_on_cran()
   targets::tar_script({
     list(
       targets::tar_target(label, "aggregate"),
@@ -72,6 +73,7 @@ targets::tar_test("tar_rep_map() manifest", {
 })
 
 targets::tar_test("tar_rep_map() graph", {
+  skip_on_cran()
   targets::tar_script({
     list(
       targets::tar_target(label, "aggregate"),
@@ -129,6 +131,7 @@ targets::tar_test("tar_rep_map() graph", {
 })
 
 targets::tar_test("tar_rep_map() pipeline", {
+  skip_on_cran()
   targets::tar_script({
     list(
       targets::tar_target(label, "aggregate"),
@@ -195,6 +198,7 @@ targets::tar_test("tar_rep_map() pipeline", {
 })
 
 targets::tar_test("tar_rep_map() runs the command once per rep", {
+  skip_on_cran()
   targets::tar_script({
     list(
       tarchetypes::tar_rep(
@@ -219,6 +223,7 @@ targets::tar_test("tar_rep_map() runs the command once per rep", {
 })
 
 targets::tar_test("tar_rep_map_raw() runs the command once per rep", {
+  skip_on_cran()
   targets::tar_script({
     list(
       tarchetypes::tar_rep(
@@ -244,6 +249,7 @@ targets::tar_test("tar_rep_map_raw() runs the command once per rep", {
 })
 
 targets::tar_test("tar_rep_map() errors without correct list aggregation", {
+  skip_on_cran()
   targets::tar_script({
     list(
       targets::tar_target(label, "aggregate"),
@@ -282,6 +288,7 @@ targets::tar_test("tar_rep_map() errors without correct list aggregation", {
 })
 
 targets::tar_test("tar_rep_map() errors if bad upstream data type", {
+  skip_on_cran()
   targets::tar_script({
     list(
       targets::tar_target(label, "aggregate"),
