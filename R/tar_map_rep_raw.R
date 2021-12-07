@@ -141,7 +141,7 @@ tar_map_rep_raw <- function(
     )
   )
   target_combine <- if_any(
-    is.null(values) && combine,
+    is.null(values) || !combine,
     NULL,
     tar_combine_raw(
       name = name,
