@@ -3,7 +3,9 @@ targets::tar_test("tar_map_rep(): combine, columns, static branches", {
   targets::tar_script({
     f <- function(sigma1, sigma2) {
       tibble::tibble(
-        out = sigma1 + 1000 * sigma2
+        out = sigma1 + 1000 * sigma2,
+        length1 = length(sigma1),
+        length2 = length(sigma2)
       )
     }
     hyperparameters <- tibble::tibble(
@@ -69,6 +71,8 @@ targets::tar_test("tar_map_rep(): combine, columns, static branches", {
   expect_equal(out$sigma2, rep(c(10, 5, 10), times = 6))
   scenarios <- sort(unique(out$scenario))
   expect_equal(out$scenario, rep(scenarios, times = 6))
+  expect_true(all(out$length1 == 1L))
+  expect_true(all(out$length2 == 1L))
   # metadata
   meta <- tar_meta(x_diffuse)
   expect_equal(length(unlist(meta$children)), 2L)

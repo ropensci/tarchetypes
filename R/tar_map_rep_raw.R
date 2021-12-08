@@ -124,7 +124,7 @@ tar_map_rep_raw <- function(
   )
   target_dynamic <- targets::tar_target_raw(
     name = name,
-    command = tar_rep_command_target(command, name_batch, reps, iteration),
+    command = tar_rep_command_target(command, name_batch, reps, "vector"),
     pattern = tar_rep_pattern(name_batch),
     packages = packages,
     library = library,
