@@ -211,8 +211,7 @@ tar_rep_pattern <- function(name_batch) {
 #' @param iteration Character, iteration method.
 tar_rep_run <- function(command, batch, reps, iteration) {
   expr <- substitute(command)
-  envir <- parent.frame()
-  out <- tar_rep_run_map(expr, envir, batch, reps)
+  out <- tar_rep_run_map(expr, batch, reps)
   tar_rep_bind(out, iteration)
 }
 
@@ -226,18 +225,17 @@ tar_rep_bind <- function(out, iteration) {
   )
 }
 
-tar_rep_run_map <- function(expr, envir, batch, reps) {
+tar_rep_run_map <- function(expr, batch, reps) {
   lapply(
     seq_len(reps),
     tar_rep_run_map_rep,
     expr = expr,
-    envir = envir,
     batch = batch
   )
 }
 
-tar_rep_run_map_rep <- function(expr, envir, batch, rep) {
-  out <- eval(expr, envir = envir)
+tar_rep_run_map_rep <- function(expr, batch, rep) {
+  out <- eval(expr, envir = targets::tar_envir())
   if (is.list(out)) {
     out[["tar_batch"]] <- as.integer(batch)
     out[["tar_rep"]] <- as.integer(rep)

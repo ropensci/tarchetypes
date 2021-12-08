@@ -281,6 +281,8 @@ targets::tar_read(sensitivity_analysis)
 Other branching: 
 \code{\link{tar_combine_raw}()},
 \code{\link{tar_combine}()},
+\code{\link{tar_map2_raw}()},
+\code{\link{tar_map2}()},
 \code{\link{tar_map_rep}()},
 \code{\link{tar_map}()},
 \code{\link{tar_rep2_raw}()},

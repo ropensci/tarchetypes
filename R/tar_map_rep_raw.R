@@ -93,7 +93,9 @@ tar_map_rep_raw <- function(
   if (!is.null(values)) {
     targets::tar_assert_ge(nrow(values), 1L)
   }
-  targets::tar_assert_lang(names)
+  if (!is.null(names)) {
+    targets::tar_assert_lang(names)
+  }
   if (!is.null(columns)) {
     targets::tar_assert_lang(columns)
   }
@@ -104,10 +106,12 @@ tar_map_rep_raw <- function(
   targets::tar_assert_scalar(combine)
   targets::tar_assert_lgl(combine)
   envir <- targets::tar_option_get("envir")
-  columns <- targets::tar_tidyselect_eval(columns, colnames(values))
   command <- tar_raw_command(name, command)
   command <- targets::tar_tidy_eval(as.expression(command), envir, tidy_eval)
-  command <- tar_command_append_static_values(command, columns)
+  if (!is.null(values)) {
+    columns <- targets::tar_tidyselect_eval(columns, colnames(values))
+    command <- tar_command_append_static_values(command, columns)
+  }
   name_batch <- paste0(name, "_batch")
   target_batch <- targets::tar_target_raw(
     name = name_batch,

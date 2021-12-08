@@ -5,7 +5,8 @@ targets::tar_test("tar_map_rep(): combine, columns, static branches", {
       tibble::tibble(
         out = sigma1 + 1000 * sigma2,
         length1 = length(sigma1),
-        length2 = length(sigma2)
+        length2 = length(sigma2),
+        random = sample.int(1e6, size = 1)
       )
     }
     hyperparameters <- tibble::tibble(
@@ -73,6 +74,7 @@ targets::tar_test("tar_map_rep(): combine, columns, static branches", {
   expect_equal(out$scenario, rep(scenarios, times = 6))
   expect_true(all(out$length1 == 1L))
   expect_true(all(out$length2 == 1L))
+  expect_equal(length(unique(out$random)), nrow(out))
   # metadata
   meta <- tar_meta(x_diffuse)
   expect_equal(length(unlist(meta$children)), 2L)

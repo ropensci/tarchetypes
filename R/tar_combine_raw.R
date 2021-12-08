@@ -49,10 +49,9 @@ tar_combine_raw <- function(
   retrieval = targets::tar_option_get("retrieval"),
   cue = targets::tar_option_get("cue")
 ) {
-  targets <- unlist(list(...), recursive = TRUE)
   tar_combine_impl(
     name = name,
-    targets = targets,
+    targets = unlist(list(...), recursive = TRUE),
     command = command,
     use_names = use_names,
     pattern = pattern,

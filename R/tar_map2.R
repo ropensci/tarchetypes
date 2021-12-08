@@ -1,4 +1,5 @@
 #' @title Batched dynamic-within-static branching for data frames.
+#' @keywords internal
 #' @family branching
 #' @description Define targets for batched
 #'   dynamic-within-static branching for data frames.
@@ -28,34 +29,22 @@
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
 #' targets::tar_script({
-#'   # Just a sketch of a Bayesian sensitivity analysis of hyperparameters:
-#'   assess_hyperparameters <- function(sigma1, sigma2) {
-#'     # data <- simulate_random_data() # user-defined function
-#'     # run_model(data, sigma1, sigma2) # user-defined function
-#'     # Mock output from the model:
-#'     posterior_samples <- stats::rnorm(1000, 0, sigma1 + sigma2)
-#'     tibble::tibble(
-#'       posterior_median = median(posterior_samples),
-#'       posterior_quantile_0.025 = quantile(posterior_samples, 0.025),
-#'       posterior_quantile_0.975 = quantile(posterior_samples, 0.975)
-#'     )
-#'   }
-#'   hyperparameters <- tibble::tibble(
-#'     scenario = c("tight", "medium", "diffuse"),
-#'     sigma1 = c(10, 50, 50),
-#'     sigma2 = c(10, 5, 10)
-#'   )
-#'   tarchetypes::tar_map2_count(
-#'     sensitivity_analysis,
-#'     command = assess_hyperparameters(sigma1, sigma2),
-#'     values = hyperparameters,
-#'     names = tidyselect::any_of("scenario"),
-#'     batches = 2,
-#'     reps = 3
+#'   tarchetypes::tar_map2(
+#'     x,
+#'     command1 = tibble::tibble(
+#'       arg1 = arg1,
+#'       arg2 = sample.int(12)
+#'      ),
+#'     command2 = tibble::tibble(
+#'       result = paste(arg1, arg2),
+#'       length_input = length(arg1)
+#'     ),
+#'     values = tibble::tibble(arg1 = letters[seq_len(12)]),
+#'     group = rep(LETTERS[seq_len(2)], each = nrow(.x) / 2)
 #'    )
 #' })
 #' targets::tar_make()
-#' targets::tar_read(sensitivity_analysis)
+#' targets::tar_read(x)
 #' })
 #' }
 tar_map2 <- function(
@@ -67,7 +56,7 @@ tar_map2 <- function(
   columns1 = tidyselect::everything(),
   columns2 = tidyselect::everything(),
   combine = TRUE,
-  group = function(x) rep(1L, nrow(x)),
+  group = rep(1L, nrow(.x)),
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -90,7 +79,7 @@ tar_map2 <- function(
     columns1 = substitute(columns1),
     columns2 = substitute(columns2),
     combine = combine,
-    group = group,
+    group = substitute(group),
     tidy_eval = tidy_eval,
     packages = packages,
     library = library,
