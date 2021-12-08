@@ -12,6 +12,7 @@
 #' @return A list of new target objects.
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
+#' @param name Character of length 1, base name of the targets.
 #' @param command1 Language object to create named arguments to `command2`.
 #'   Must return a data frame with one row per call to `command2`.
 #' @param command2 Language object  to map over the data frame of arguments
@@ -27,7 +28,7 @@
 #'   `tar_group` column that determines the batching structure for the
 #'   `command2` targets.
 #' @inheritSection tar_map Target objects
-#' @inheritParams tar_map2_raw
+#' @inheritParams tar_map_rep_raw
 #' @inheritParams tar_rep2
 #' @inheritParams tar_map
 #' @examples
@@ -249,10 +250,13 @@ tar_map2_run_rep <- function(command, values) {
   names <- names(values)
   lapply(
     X = seq_len(ncol(values)),
-    FUN = assign,
-    x = names[i],
-    value = values[[i]],
-    envir = envir
+    FUN = function(index) {
+      assign(
+        x = names[index],
+        value = values[[index]],
+        envir = envir
+      )
+    }
   )
   out <- eval(command, envir = targets::tar_envir())
   columns <- targets::tar_tidyselect_eval(columns, colnames(values))

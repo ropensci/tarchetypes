@@ -29,21 +29,7 @@ tar_map2(
 )
 }
 \arguments{
-\item{name}{Symbol, name of the target. A target
-name must be a valid name for a symbol in R, and it
-must not start with a dot. Subsequent targets
-can refer to this name symbolically to induce a dependency relationship:
-e.g. \code{tar_target(downstream_target, f(upstream_target))} is a
-target named \code{downstream_target} which depends on a target
-\code{upstream_target} and a function \code{f()}. In addition, a target's
-name determines its random number generator seed. In this way,
-each target runs with a reproducible seed so someone else
-running the same pipeline should get the same results,
-and no two targets in the same pipeline share the same seed.
-(Even dynamic branches have different names and thus different seeds.)
-You can recover the seed of a completed target
-with \code{tar_meta(your_target, seed)} and run \code{set.seed()} on the result
-to locally recreate the target's initial RNG state.}
+\item{name}{Symbol, base name of the targets.}
 
 \item{command1}{R code to create named arguments to \code{command2}.
 Must return a data frame with one row per call to \code{command2}.}
@@ -65,16 +51,19 @@ target names come out garbled.
 To create a list of symbols as a column of \code{values},
 use \code{rlang::syms()}.}
 
-\item{names}{Subset of \code{names(values)}
-used to generate the suffixes in the names of the new targets.
-You can supply symbols, a character vector,
-or tidyselect helpers like \code{\link[=starts_with]{starts_with()}}.}
+\item{names}{Language object with a tidyselect expression
+to select which columns of \code{values} to use to construct
+statically branched target names. If \code{NULL}, then
+short names are automatically generated.}
 
 \item{columns1}{A tidyselect expression to select which columns of \code{values}
 to append to the output of all targets.}
 
 \item{columns2}{A tidyselect expression to select which columns of \code{command1}
 output to append to \code{command2} output.}
+
+\item{combine}{Logical of length 1, whether to statically combine
+all the results into a single target downstream.}
 
 \item{group}{Function on the data produced by \code{command1} to create the
 \code{tar_group} column that determines the batching structure for the
@@ -92,11 +81,11 @@ globally for all subsequent targets you define.}
 \item{library}{Character vector of library paths to try
 when loading \code{packages}.}
 
-\item{format}{Optional storage format for the target's return value.
-With the exception of \code{format = "file"}, each target
-gets a file in \verb{_targets/objects}, and each format is a different
-way to save and load this file. See the "Storage formats" section
-for a detailed list of possible data storage formats.}
+\item{format}{Character of length 1, storage format of the output.
+An efficient data frame format like \code{"feather"} is recommended,
+but the default is \code{"rds"} to avoid incurring extra package
+dependencies. See the help file of \code{targets::tar_target()}
+for details on storage formats.}
 
 \item{error}{Character of length 1, what to do if the target
 stops and throws an error. Options:

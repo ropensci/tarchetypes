@@ -13,6 +13,7 @@
 #' @return A list of new target objects.
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
+#' @param name Symbol, base name of the targets.
 #' @param command1 R code to create named arguments to `command2`.
 #'   Must return a data frame with one row per call to `command2`.
 #' @param command2 R code to map over the data frame of arguments
@@ -23,8 +24,6 @@
 #'   output to append to `command2` output.
 #' @inheritSection tar_map Target objects
 #' @inheritParams tar_map2_raw
-#' @inheritParams tar_rep2
-#' @inheritParams tar_map
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
