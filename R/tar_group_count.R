@@ -90,8 +90,7 @@ tar_group_count_command <- function(command, count, tidy_eval) {
 #' @export
 #' @keywords internal
 #' @description Not a user-side function. Do not invoke directly.
-#' @param data A data frame to group.
-#' @param count Maximum number of rows in each group.
+#' @inheritParams tar_group_count_index
 tar_group_count_run <- function(data, count) {
   data$tar_group <- tar_group_count_index(data = data, count = count)
   data
@@ -102,7 +101,7 @@ tar_group_count_run <- function(data, count) {
 #' @keywords internal
 #' @description Not a user-side function. Do not invoke directly.
 #' @param data A data frame to group.
-#' @param count Maximum number of rows in each group.
+#' @param count Maximum number of groups.
 tar_group_count_index <- function(data, count) {
   targets::tar_assert_df(data, "tar_group_count() output must be a data frame.")
   count <- min(count, nrow(data))

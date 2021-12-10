@@ -62,7 +62,7 @@ short names are automatically generated.}
 \item{batches}{Positive integer of length 1,
 maximum number of batches (dynamic branches within static branches)
 of the downstream (\code{command2}) targets. Batches
-are formed from row groups of the \code{command1} targets.}
+are formed from row groups of the \code{command1} target output.}
 
 \item{combine}{Logical of length 1, whether to statically combine
 all the results into a single target downstream.}
@@ -262,6 +262,8 @@ Other branching:
 \code{\link{tar_combine}()},
 \code{\link{tar_map2_count_raw}()},
 \code{\link{tar_map2_raw}()},
+\code{\link{tar_map2_size_raw}()},
+\code{\link{tar_map2_size}()},
 \code{\link{tar_map2}()},
 \code{\link{tar_map_rep_raw}()},
 \code{\link{tar_map_rep}()},

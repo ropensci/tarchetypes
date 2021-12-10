@@ -279,6 +279,8 @@ Other branching:
 \code{\link{tar_map2_count_raw}()},
 \code{\link{tar_map2_count}()},
 \code{\link{tar_map2_raw}()},
+\code{\link{tar_map2_size_raw}()},
+\code{\link{tar_map2_size}()},
 \code{\link{tar_map2}()},
 \code{\link{tar_map_rep_raw}()},
 \code{\link{tar_map}()},

@@ -92,11 +92,21 @@ tar_group_size_command <- function(command, size, tidy_eval) {
 #' @export
 #' @keywords internal
 #' @description Not a user-side function. Do not invoke directly.
+#' @inheritParams tar_group_count_index
+tar_group_size_run <- function(data, size) {
+  data$tar_group <- tar_group_size_index(data = data, size = size)
+  data
+}
+
+
+#' @title Generate the tar_group column for `tar_group_size()`.
+#' @export
+#' @keywords internal
+#' @description Not a user-side function. Do not invoke directly.
 #' @param data A data frame to group.
 #' @param size Maximum number of rows in each group.
-tar_group_size_run <- function(data, size) {
+tar_group_size_index <- function(data, size) {
   targets::tar_assert_df(data, "tar_group_size() output must be a data frame.")
   max <- as.integer(nrow(data) / size) + 1L
-  data$tar_group <- rep(seq_len(max), each = size)[seq_len(nrow(data))]
-  data
+  rep(seq_len(max), each = size)[seq_len(nrow(data))]
 }

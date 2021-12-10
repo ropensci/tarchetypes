@@ -8,8 +8,6 @@ tar_group_size_run(data, size)
 }
 \arguments{
 \item{data}{A data frame to group.}
-
-\item{size}{Maximum number of rows in each group.}
 }
 \description{
 Not a user-side function. Do not invoke directly.

@@ -21,7 +21,7 @@
 #' @param batches Positive integer of length 1,
 #'   maximum number of batches (dynamic branches within static branches)
 #'   of the downstream (`command2`) targets. Batches
-#'   are formed from row groups of the `command1` targets.
+#'   are formed from row groups of the `command1` target output.
 #' @inheritParams tar_map2_raw
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
@@ -32,17 +32,18 @@
 #'     command1 = quote(
 #'       tibble::tibble(
 #'         arg1 = arg1,
-#'         arg2 = sample.int(12)
+#'         arg2 = seq_len(6)
 #'        )
 #'     ),
 #'     command2 = quote(
 #'       tibble::tibble(
 #'         result = paste(arg1, arg2),
+#'         random = sample.int(1e6, size = 1),
 #'         length_input = length(arg1)
 #'       )
 #'     ),
-#'     values = tibble::tibble(arg1 = letters[seq_len(12)]),
-#'     batches = 2
+#'     values = tibble::tibble(arg1 = letters[seq_len(2)]),
+#'     batches = 3
 #'    )
 #' })
 #' targets::tar_make()

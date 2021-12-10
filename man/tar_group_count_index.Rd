@@ -9,7 +9,7 @@ tar_group_count_index(data, count)
 \arguments{
 \item{data}{A data frame to group.}
 
-\item{count}{Maximum number of rows in each group.}
+\item{count}{Maximum number of groups.}
 }
 \description{
 Not a user-side function. Do not invoke directly.
