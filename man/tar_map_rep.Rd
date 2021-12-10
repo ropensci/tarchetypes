@@ -68,7 +68,8 @@ statically branched target names. If \code{NULL}, then
 short names are automatically generated.}
 
 \item{columns}{A tidyselect expression to select which columns of \code{values}
-to append to the output.}
+to append to the output. Columns already in the target output
+are not appended.}
 
 \item{batches}{Number of batches. This is also the number of dynamic
 branches created during \code{tar_make()}.}

@@ -288,3 +288,25 @@ targets::tar_test("tar_map_rep(): no static branches", {
   meta <- tar_meta(x)
   expect_equal(length(unlist(meta$children)), 2L)
 })
+
+targets::tar_test("tar_map_rep() column precedence", {
+  skip_if_not_installed("dplyr")
+  targets::tar_script({
+    f <- function(theta) {
+      tibble::tibble(
+        theta = theta + 1L
+      )
+    }
+    hyperparameters <- tibble::tibble(theta = 1L)
+    tarchetypes::tar_map_rep(
+      x,
+      command = f(theta),
+      values = hyperparameters,
+      names = tidyselect::any_of("scenario"),
+      batches = 2,
+      reps = 3
+    )
+  })
+  tar_make(callr_function = NULL)
+  expect_equal(unique(tar_read(x)$theta), 2L)
+})

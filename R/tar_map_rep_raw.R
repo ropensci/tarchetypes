@@ -19,6 +19,7 @@
 #'   short names are automatically generated.
 #' @param columns Language object with a tidyselect expression
 #'   to select which columns of `values` to append to the output.
+#'   Columns already in the target output are not appended.
 #' @param combine Logical of length 1, whether to statically combine
 #'   all the results into a single target downstream.
 #' @param format Character of length 1, storage format of the output.
@@ -52,7 +53,7 @@
 #'     sigma2 = c(10, 5, 10)
 #'   )
 #'   tarchetypes::tar_map_rep_raw(
-#'     sensitivity_analysis,
+#'     "sensitivity_analysis",
 #'     command = quote(assess_hyperparameters(sigma1, sigma2)),
 #'     values = hyperparameters,
 #'     names = quote(tidyselect::any_of("scenario")),
@@ -203,5 +204,13 @@ tar_append_static_values <- function(object, values) {
     return(object)
   }
   targets::tar_assert_df(object)
-  do.call(dplyr::mutate, args = list(.data = object, values))
+  args <- list(.data = object)
+  for (name in setdiff(colnames(values), colnames(object))) {
+    args[[name]] <- if_any(
+      length(values[[name]]) == 1L,
+      values[[name]],
+      list(values[[name]])
+    )
+  }
+  do.call(dplyr::mutate, args = args)
 }

@@ -40,7 +40,7 @@ tar_map2_raw <- function(
   command2,
   values = NULL,
   names = NULL,
-  group = quote(rep(1L, nrow(!!.x))),
+  group = quote(rep(1L, nrow(as.data.frame(!!.x)))),
   combine = TRUE,
   columns1 = quote(tidyselect::everything()),
   columns2 = quote(tidyselect::everything()),
@@ -246,6 +246,5 @@ tar_map2_run_rep <- function(command, values, columns) {
   )
   out <- eval(command, envir = targets::tar_envir())
   columns <- targets::tar_tidyselect_eval(columns, colnames(values))
-  columns <- setdiff(columns, colnames(out))
   tar_append_static_values(out, values[, columns])
 }

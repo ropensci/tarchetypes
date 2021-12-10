@@ -68,7 +68,8 @@ statically branched target names. If \code{NULL}, then
 short names are automatically generated.}
 
 \item{columns}{Language object with a tidyselect expression
-to select which columns of \code{values} to append to the output.}
+to select which columns of \code{values} to append to the output.
+Columns already in the target output are not appended.}
 
 \item{batches}{Number of batches. This is also the number of dynamic
 branches created during \code{tar_make()}.}
@@ -264,7 +265,7 @@ targets::tar_script({
     sigma2 = c(10, 5, 10)
   )
   tarchetypes::tar_map_rep_raw(
-    sensitivity_analysis,
+    "sensitivity_analysis",
     command = quote(assess_hyperparameters(sigma1, sigma2)),
     values = hyperparameters,
     names = quote(tidyselect::any_of("scenario")),

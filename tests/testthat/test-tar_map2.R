@@ -417,3 +417,135 @@ targets::tar_test("tar_map2(): no static branches", {
   # metadata
   expect_equal(length(unlist(tar_meta(x_ii)$children)), 2L)
 })
+
+targets::tar_test("tar_map2() column precedence", {
+  skip_if_not_installed("dplyr")
+  targets::tar_script({
+    f1 <- function() {
+      tibble::tibble(
+        fun1 = TRUE,
+        fun2 = FALSE
+      )
+    }
+    f2 <- function() {
+      tibble::tibble(
+        fun1 = FALSE,
+        fun2 = TRUE
+      )
+    }
+    tar_map2(
+      x,
+      command1 = f1(),
+      command2 = f2(),
+      values = tibble::tibble(
+        fun1 = FALSE,
+        fun2 = FALSE
+      ),
+      columns1 = tidyselect::everything(),
+      columns2 = tidyselect::everything(),
+      group = quote(1)
+    )
+  })
+  tar_make(callr_function = NULL)
+  tar_load(x)
+  expect_equal(x$fun1, FALSE)
+  expect_equal(x$fun2, TRUE)
+})
+
+targets::tar_test("tar_map2() column precedence 2", {
+  skip_if_not_installed("dplyr")
+  targets::tar_script({
+    f1 <- function() {
+      tibble::tibble(
+        fun1 = TRUE,
+        fun2 = FALSE
+      )
+    }
+    f2 <- function() {
+      tibble::tibble(
+        fun2 = TRUE
+      )
+    }
+    tar_map2(
+      x,
+      command1 = f1(),
+      command2 = f2(),
+      values = tibble::tibble(
+        fun1 = FALSE,
+        scenario = 1
+      ),
+      columns1 = tidyselect::everything(),
+      columns2 = tidyselect::everything(),
+      group = quote(1)
+    )
+  })
+  tar_make(callr_function = NULL)
+  tar_load(x)
+  expect_equal(x$fun1, FALSE)
+  expect_equal(x$fun2, TRUE)
+})
+
+targets::tar_test("tar_map2() column precedence 3", {
+  skip_if_not_installed("dplyr")
+  targets::tar_script({
+    f1 <- function() {
+      tibble::tibble(
+        fun1 = TRUE,
+        fun2 = FALSE
+      )
+    }
+    f2 <- function() {
+      tibble::tibble(
+        fun2 = TRUE
+      )
+    }
+    tar_map2(
+      x,
+      command1 = f1(),
+      command2 = f2(),
+      values = tibble::tibble(
+        scenario = 1
+      ),
+      columns1 = tidyselect::everything(),
+      columns2 = tidyselect::everything(),
+      group = quote(1)
+    )
+  })
+  tar_make(callr_function = NULL)
+  tar_load(x)
+  expect_equal(x$fun1, TRUE)
+  expect_equal(x$fun2, TRUE)
+})
+
+targets::tar_test("tar_map2() list columns from values", {
+  skip_if_not_installed("dplyr")
+  targets::tar_script({
+    f1 <- function() {
+      tibble::tibble(
+        fun1 = TRUE,
+        fun2 = FALSE
+      )
+    }
+    f2 <- function() {
+      tibble::tibble(
+        fun2 = TRUE
+      )
+    }
+    tar_map2(
+      x,
+      command1 = f1(),
+      command2 = f2(),
+      values = tibble::tibble(
+        list = list(c("a", "b"), c("c", "d"))
+      ),
+      columns1 = tidyselect::everything(),
+      columns2 = tidyselect::everything(),
+      group = quote(1)
+    )
+  })
+  tar_make(callr_function = NULL)
+  tar_load(x)
+  expect_equal(x$fun1, rep(TRUE, 2))
+  expect_equal(x$fun2, rep(TRUE, 2))
+  expect_equal(x$list, list(c("a", "b"), c("c", "d")))
+})

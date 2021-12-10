@@ -10,7 +10,7 @@ tar_map2(
   command2,
   values = NULL,
   names = NULL,
-  group = rep(1L, nrow(!!.x)),
+  group = rep(1L, nrow(as.data.frame(!!.x))),
   combine = TRUE,
   suffix1 = "1",
   suffix2 = "2",
@@ -74,10 +74,13 @@ suffix to apply to the \code{command2} targets to distinguish
 them from the \code{command1} targets.}
 
 \item{columns1}{A tidyselect expression to select which columns of \code{values}
-to append to the output of all targets.}
+to append to the output of all targets.
+Columns already in the target output are not appended.}
 
 \item{columns2}{A tidyselect expression to select which columns of \code{command1}
-output to append to \code{command2} output.}
+output to append to \code{command2} output.
+Columns already in the target output are not appended.
+\code{columns1} takes precedence over \code{columns2}.}
 
 \item{tidy_eval}{Logical, whether to enable tidy evaluation
 when interpreting \code{command} and \code{pattern}. If \code{TRUE}, you can use the

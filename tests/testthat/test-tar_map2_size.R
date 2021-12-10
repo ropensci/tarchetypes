@@ -109,3 +109,35 @@ targets::tar_test("tar_map2_size()", {
   expect_equal(length(unlist(tar_meta(x_ii_a)$children)), 3L)
   expect_equal(length(unlist(tar_meta(x_ii_b)$children)), 3L)
 })
+
+targets::tar_test("tar_map2_size() works with one-row output", {
+  skip_if_not_installed("dplyr")
+  targets::tar_script({
+    f1 <- function(arg1) {
+      tibble::tibble(
+        arg1 = arg1,
+        arg2 = 1
+      )
+    }
+    f2 <- function(arg1, arg2) {
+      tibble::tibble(
+        result = paste(arg1, arg2),
+        length_arg1 = length(arg1),
+        length_arg2 = length(arg2),
+        random = sample.int(1e6, size = 1L)
+      )
+    }
+    tar_map2_size(
+      x,
+      command1 = f1(arg1),
+      command2 = f2(arg1, arg2),
+      values = tibble::tibble(arg1 = letters[seq_len(2)]),
+      names = arg1,
+      suffix1 = "i",
+      suffix2 = "ii",
+      size = 3
+    )
+  })
+  tar_make(callr_function = NULL)
+  expect_equal(nrow(tar_read(x)), 2L)
+})

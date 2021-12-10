@@ -10,7 +10,7 @@ tar_map2_raw(
   command2,
   values = NULL,
   names = NULL,
-  group = quote(rep(1L, nrow(!!.x))),
+  group = quote(rep(1L, nrow(as.data.frame(!!.x)))),
   combine = TRUE,
   columns1 = quote(tidyselect::everything()),
   columns2 = quote(tidyselect::everything()),

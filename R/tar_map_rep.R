@@ -10,7 +10,8 @@
 #' @param command R code for a single replicate. Must return
 #'   a data frame.
 #' @param columns A tidyselect expression to select which columns of `values`
-#'   to append to the output.
+#'   to append to the output. Columns already in the target output
+#'   are not appended.
 #' @param combine Logical of length 1, whether to statically combine
 #'   all the results into a single target downstream.
 #' @inheritSection tar_map Target objects

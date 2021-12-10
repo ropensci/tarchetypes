@@ -29,15 +29,18 @@
 #'   produced by `command1`. Must return a data frame.
 #' @param columns1 A tidyselect expression to select which columns of `values`
 #'   to append to the output of all targets.
+#'   Columns already in the target output are not appended.
 #' @param columns2 A tidyselect expression to select which columns of `command1`
 #'   output to append to `command2` output.
+#'   Columns already in the target output are not appended.
+#'   `columns1` takes precedence over `columns2`.
 tar_map2 <- function(
   name,
   command1,
   command2,
   values = NULL,
   names = NULL,
-  group = rep(1L, nrow(!!.x)),
+  group = rep(1L, nrow(as.data.frame(!!.x))),
   combine = TRUE,
   suffix1 = "1",
   suffix2 = "2",
