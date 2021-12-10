@@ -549,3 +549,58 @@ targets::tar_test("tar_map2() list columns from values", {
   expect_equal(x$index, c(1L, 2L))
   expect_equal(x$example, list(c("a", "b"), c("c", "d")))
 })
+
+targets::tar_test("list column elements from values are selected", {
+  skip_if_not_installed("dplyr")
+  targets::tar_script({
+    f1 <- function(example) {
+      tibble::tibble(length1 = length(example))
+    }
+    f2 <- function(example) {
+      tibble::tibble(length2 = length(example))
+    }
+    tar_map2(
+      x,
+      command1 = f1(example),
+      command2 = f2(example),
+      values = tibble::tibble(
+        index = c(1L, 2L),
+        example = list(c("a", "b"), c("c", "d"))
+      ),
+      columns1 = tidyselect::everything(),
+      columns2 = tidyselect::everything(),
+      group = quote(1)
+    )
+  })
+  targets::tar_make(callr_function = NULL)
+  targets::tar_load(x)
+  expect_equal(x$length1, c(2L, 2L))
+  expect_equal(x$length2, c(2L, 2L))
+})
+
+targets::tar_test("list column elements from command1 are selected", {
+  skip_if_not_installed("dplyr")
+  targets::tar_script({
+    f1 <- function(example) {
+      tibble::tibble(example2 = list(example))
+    }
+    f2 <- function(example2) {
+      tibble::tibble(length2 = length(example2))
+    }
+    tar_map2(
+      x,
+      command1 = f1(example),
+      command2 = f2(example2),
+      values = tibble::tibble(
+        index = c(1L, 2L),
+        example = list(c("a", "b"), c("c", "d"))
+      ),
+      columns1 = tidyselect::everything(),
+      columns2 = tidyselect::everything(),
+      group = quote(1)
+    )
+  })
+  targets::tar_make(callr_function = NULL)
+  targets::tar_load(x)
+  expect_equal(x$length2, c(2L, 2L))
+})
