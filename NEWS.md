@@ -1,4 +1,4 @@
-# tarchetypes 0.3.2.9000
+# tarchetypes 0.4.0
 
 * Implement `tar_map_rep()` and `tar_map_rep_raw()` for dynamic batched replication within static branching for data frames (#78).
 * Implement `tar_map2_count()`, `tar_map2_count_raw()`, `tar_map2_size()`, and `tar_map2_size_raw()` for batched dynamic-within-static branching for data frames (#78).
