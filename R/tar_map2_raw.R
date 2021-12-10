@@ -1,4 +1,5 @@
 #' @title Batched dynamic-within-static branching for data frames (raw version).
+#' @keywords internal
 #' @family branching
 #' @description Define targets for batched
 #'   dynamic-within-static branching for data frames.
@@ -20,6 +21,9 @@
 #' @param columns1 Language object, a tidyselect expression
 #'   to select which columns of `values`
 #'   to append to the output of all targets.
+#' @param group Function on the data produced by `command1` to create the
+#'   `tar_group` column that determines the batching structure for the
+#'   `command2` targets.
 #' @param columns2 Language object, a tidyselect expression
 #'   to select which columns of `command1`
 #'   output to append to `command2` output.
@@ -30,9 +34,6 @@
 #' @param suffix2 Character of length 1,
 #'   suffix to apply to the `command2` targets to distinguish
 #'   them from the `command1` targets.
-#' @param group Function on the data produced by `command1` to create the
-#'   `tar_group` column that determines the batching structure for the
-#'   `command2` targets.
 #' @inheritSection tar_map Target objects
 #' @inheritParams tar_map_rep_raw
 #' @inheritParams tar_rep2
@@ -69,12 +70,12 @@ tar_map2_raw <- function(
   command2,
   values = NULL,
   names = NULL,
+  group = quote(rep(1L, nrow(!!.x))),
+  combine = TRUE,
   columns1 = quote(tidyselect::everything()),
   columns2 = quote(tidyselect::everything()),
   suffix1 = "1",
   suffix2 = "2",
-  combine = TRUE,
-  group = quote(rep(1L, nrow(!!.x))),
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),

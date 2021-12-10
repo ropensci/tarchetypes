@@ -10,12 +10,12 @@ tar_map2(
   command2,
   values = NULL,
   names = NULL,
+  group = rep(1L, nrow(!!.x)),
+  combine = TRUE,
   suffix1 = "1",
   suffix2 = "2",
   columns1 = tidyselect::everything(),
   columns2 = tidyselect::everything(),
-  combine = TRUE,
-  group = rep(1L, nrow(!!.x)),
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -58,6 +58,13 @@ to select which columns of \code{values} to use to construct
 statically branched target names. If \code{NULL}, then
 short names are automatically generated.}
 
+\item{group}{Function on the data produced by \code{command1} to create the
+\code{tar_group} column that determines the batching structure for the
+\code{command2} targets.}
+
+\item{combine}{Logical of length 1, whether to statically combine
+all the results into a single target downstream.}
+
 \item{suffix1}{Character of length 1,
 suffix to apply to the \code{command1} targets to distinguish
 them from the \code{command2} targets.}
@@ -71,13 +78,6 @@ to append to the output of all targets.}
 
 \item{columns2}{A tidyselect expression to select which columns of \code{command1}
 output to append to \code{command2} output.}
-
-\item{combine}{Logical of length 1, whether to statically combine
-all the results into a single target downstream.}
-
-\item{group}{Function on the data produced by \code{command1} to create the
-\code{tar_group} column that determines the batching structure for the
-\code{command2} targets.}
 
 \item{tidy_eval}{Logical, whether to enable tidy evaluation
 when interpreting \code{command} and \code{pattern}. If \code{TRUE}, you can use the
@@ -273,6 +273,7 @@ targets::tar_read(x)
 Other branching: 
 \code{\link{tar_combine_raw}()},
 \code{\link{tar_combine}()},
+\code{\link{tar_map2_count}()},
 \code{\link{tar_map2_raw}()},
 \code{\link{tar_map_rep_raw}()},
 \code{\link{tar_map_rep}()},

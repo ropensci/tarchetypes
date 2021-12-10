@@ -86,19 +86,29 @@ tar_group_count_command <- function(command, count, tidy_eval) {
   as.call(list(fun, data = command, count))
 }
 
-#' @title Generate a grouped data frame within tar_group_count()
+#' @title Generate a grouped data frame within `tar_group_count()`.
 #' @export
 #' @keywords internal
 #' @description Not a user-side function. Do not invoke directly.
 #' @param data A data frame to group.
 #' @param count Maximum number of rows in each group.
 tar_group_count_run <- function(data, count) {
+  data$tar_group <- tar_group_count_index(data = data, count = count)
+  data
+}
+
+#' @title Generate the tar_group column for `tar_group_count()`.
+#' @export
+#' @keywords internal
+#' @description Not a user-side function. Do not invoke directly.
+#' @param data A data frame to group.
+#' @param count Maximum number of rows in each group.
+tar_group_count_index <- function(data, count) {
   targets::tar_assert_df(data, "tar_group_count() output must be a data frame.")
   count <- min(count, nrow(data))
-  data$tar_group <- if_any(
+  if_any(
     count > 1L,
     as.integer(cut(seq_len(nrow(data)), breaks = count)),
     rep(1L, nrow(data))
   )
-  data
 }
