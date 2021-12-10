@@ -76,7 +76,7 @@ targets::tar_test("tar_map_rep(): combine, columns, static branches", {
   expect_true(all(out$length2 == 1L))
   expect_equal(length(unique(out$random)), nrow(out))
   # metadata
-  meta <- tar_meta(x_diffuse)
+  meta <- targets::tar_meta(x_diffuse)
   expect_equal(length(unlist(meta$children)), 2L)
 })
 
@@ -152,7 +152,7 @@ targets::tar_test("tar_map_rep(): no combine, 1 col, static branches", {
   scenarios <- sort(unique(out$scenario))
   expect_equal(out$scenario, rep(scenarios, times = 6))
   # metadata
-  meta <- tar_meta(x_diffuse)
+  meta <- targets::tar_meta(x_diffuse)
   expect_equal(length(unlist(meta$children)), 2L)
 })
 
@@ -229,7 +229,7 @@ targets::tar_test("tar_map_rep(): combine, no cols, static branches", {
     sort(c("tar_group", "out", "tar_batch", "tar_rep"))
   )
   # metadata
-  meta <- tar_meta(x_diffuse)
+  meta <- targets::tar_meta(x_diffuse)
   expect_equal(length(unlist(meta$children)), 2L)
 })
 
@@ -285,7 +285,7 @@ targets::tar_test("tar_map_rep(): no static branches", {
   expect_equal(out$out, rep(2001, times = 6))
   expect_equal(sort(colnames(out)), sort(c("out", "tar_batch", "tar_rep")))
   # metadata
-  meta <- tar_meta(x)
+  meta <- targets::tar_meta(x)
   expect_equal(length(unlist(meta$children)), 2L)
 })
 
@@ -307,6 +307,37 @@ targets::tar_test("tar_map_rep() column precedence", {
       reps = 3
     )
   })
-  tar_make(callr_function = NULL)
-  expect_equal(unique(tar_read(x)$theta), 2L)
+  targets::tar_make(callr_function = NULL)
+  expect_equal(unique(targets::tar_read(x)$theta), 2L)
+})
+
+targets::tar_test("tar_map_rep() list column support", {
+  skip_if_not_installed("dplyr")
+  targets::tar_script({
+    f <- function(theta) {
+      tibble::tibble(
+        value = 1
+      )
+    }
+    hyperparameters <- tibble::tibble(
+      index = c(1L, 2L),
+      theta = list(c(1L, 2L), c(3L, 4L))
+    )
+    tarchetypes::tar_map_rep(
+      x,
+      command = f(theta),
+      values = hyperparameters,
+      columns = tidyselect::everything(),
+      batches = 1,
+      reps = 2
+    )
+  })
+  targets::tar_make(callr_function = NULL)
+  x <- targets::tar_read(x)
+  x <- dplyr::arrange(x, index, tar_rep)
+  expect_equal(x$index, c(1L, 1L, 2L, 2L))
+  expect_equal(
+    tar_read(x)$theta,
+    list(c(1L, 2L), c(1L, 2L), c(3L, 4L), c(3L, 4L))
+  )
 })

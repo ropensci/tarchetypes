@@ -182,7 +182,7 @@ tar_map_combine_command <- expression({
 tar_command_append_static_values <- function(command, columns) {
   column_syms <- rlang::syms(columns)
   names(column_syms) <- columns
-  values <- rlang::call2("tibble", !!!column_syms, .ns = "tibble")
+  values <- rlang::call2("list", !!!column_syms)
   rlang::call2(
     .fn = "tar_append_static_values",
     object = command,
@@ -200,12 +200,12 @@ tar_command_append_static_values <- function(command, columns) {
 #' @param values Tibble with the set of static values that the current target
 #'   uses.
 tar_append_static_values <- function(object, values) {
-  if (!length(values) || !nrow(values)) {
+  if (!length(values)) {
     return(object)
   }
   targets::tar_assert_df(object)
   args <- list(.data = object)
-  for (name in setdiff(colnames(values), colnames(object))) {
+  for (name in setdiff(names(values), names(object))) {
     args[[name]] <- if_any(
       length(values[[name]]) == 1L,
       values[[name]],

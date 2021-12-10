@@ -536,7 +536,8 @@ targets::tar_test("tar_map2() list columns from values", {
       command1 = f1(),
       command2 = f2(),
       values = tibble::tibble(
-        list = list(c("a", "b"), c("c", "d"))
+        index = c(1L, 2L),
+        example = list(c("a", "b"), c("c", "d"))
       ),
       columns1 = tidyselect::everything(),
       columns2 = tidyselect::everything(),
@@ -545,7 +546,6 @@ targets::tar_test("tar_map2() list columns from values", {
   })
   tar_make(callr_function = NULL)
   tar_load(x)
-  expect_equal(x$fun1, rep(TRUE, 2))
-  expect_equal(x$fun2, rep(TRUE, 2))
-  expect_equal(x$list, list(c("a", "b"), c("c", "d")))
+  expect_equal(x$index, c(1L, 2L))
+  expect_equal(x$example, list(c("a", "b"), c("c", "d")))
 })
