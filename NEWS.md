@@ -1,3 +1,7 @@
+# tarchetypes 0.4.0.9000
+
+* Select list elements from `command1` using `[[` and not `[` in `tar_map2()` functions.
+
 # tarchetypes 0.4.0
 
 * Implement `tar_map_rep()` and `tar_map_rep_raw()` for dynamic batched replication within static branching for data frames (#78).

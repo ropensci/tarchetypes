@@ -237,9 +237,14 @@ tar_map2_run_rep <- function(command, values, columns) {
   lapply(
     X = seq_len(ncol(values)),
     FUN = function(index) {
+      value <- if_any(
+        is.list(values[[index]]) && length(values[[index]]) == 1L,
+        values[[index]][[1]],
+        values[[index]]
+      )
       assign(
         x = names[index],
-        value = values[[index]],
+        value = value,
         envir = envir
       )
     }
