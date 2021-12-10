@@ -39,7 +39,7 @@
 #'       length_input = length(arg1)
 #'     ),
 #'     values = tibble::tibble(arg1 = letters[seq_len(12)]),
-#'     group = rep(LETTERS[seq_len(2)], each = nrow(.x) / 2)
+#'     group = rep(LETTERS[seq_len(2)], each = nrow(!!.x) / 2)
 #'    )
 #' })
 #' targets::tar_make()
@@ -52,10 +52,12 @@ tar_map2 <- function(
   command2,
   values = NULL,
   names = NULL,
+  suffix1 = "1",
+  suffix2 = "2",
   columns1 = tidyselect::everything(),
   columns2 = tidyselect::everything(),
   combine = TRUE,
-  group = rep(1L, nrow(.x)),
+  group = rep(1L, nrow(!!.x)),
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -75,6 +77,8 @@ tar_map2 <- function(
     command2 = substitute(command2),
     values = values,
     names = substitute(names),
+    suffix1 = suffix1,
+    suffix2 = suffix2,
     columns1 = substitute(columns1),
     columns2 = substitute(columns2),
     combine = combine,

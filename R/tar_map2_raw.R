@@ -50,7 +50,7 @@
 #'       )
 #'     ),
 #'     values = tibble::tibble(arg1 = letters[seq_len(12)]),
-#'     group = quote(rep(LETTERS[seq_len(2)], each = nrow(.x) / 2))
+#'     group = quote(rep(LETTERS[seq_len(2)], each = nrow(!!.x) / 2))
 #'    )
 #' })
 #' targets::tar_make()
@@ -65,8 +65,10 @@ tar_map2_raw <- function(
   names = NULL,
   columns1 = quote(tidyselect::everything()),
   columns2 = quote(tidyselect::everything()),
+  suffix1 = "1",
+  suffix2 = "2",
   combine = TRUE,
-  group = quote(rep(1L, nrow(.x))),
+  group = quote(rep(1L, nrow(!!.x))),
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -109,8 +111,8 @@ tar_map2_raw <- function(
     command1 <- tar_command_append_static_values(command1, columns1)
     command2 <- tar_command_append_static_values(command2, columns1)
   }
-  name_upstream <- paste0(name, "_1")
-  name_downstream <- paste0(name, "_2")
+  name_upstream <- paste(name, suffix1, sep = "_")
+  name_downstream <- paste(name, suffix2, sep = "_")
   sym_upstream <- as.symbol(name_upstream)
   sym_downstream <- as.symbol(name_downstream)
   target_upstream <- targets::tar_target_raw(
@@ -193,7 +195,7 @@ tar_map2_command_upstream <- function(command, group) {
 tar_map2_command_downstream <- function(command, sym_upstream, columns2) {
   rlang::call2(
     "tar_map2_run",
-    data = command,
+    command = command,
     values = sym_upstream,
     columns = columns2,
     .ns = "tarchetypes"
@@ -211,15 +213,13 @@ tar_map2_command_downstream <- function(command, sym_upstream, columns2) {
 #' @param group Function on the data to return the `tar_group` column.
 #'   If `group` is `NULL`, then no `tar_group` column is attached.
 tar_map2_group <- function(data, group) {
-  if (!is.null(group)) {
-    expr <- targets::tar_tidy_eval(
-      group,
-      envir = list(.x = data),
-      tidy_eval = TRUE
-    )
-    out <- eval(expr, envir = targets::tar_option_get("envir"))
-    data[["tar_group"]] <- as.integer(as.factor(out))
-  }
+  expr <- targets::tar_tidy_eval(
+    expr = substitute(group),
+    envir = list(.x = data),
+    tidy_eval = TRUE
+  )
+  out <- eval(expr, envir = targets::tar_option_get("envir"))
+  data[["tar_group"]] <- as.integer(as.factor(out))
   data
 }
 
@@ -231,7 +231,9 @@ tar_map2_group <- function(data, group) {
 #' @return A data frame with a `tar_group` column attached (if `group`
 #'   is not `NULL`).
 #' @param command Command to run.
-#' @param values Data frame of named arguments to map over.
+#' @param values Data frame of named arguments produced by `command1`
+#'   that `command2` dynamically maps over. Different from the `values`
+#'   argument of `tar_map2()`.
 #' @param columns tidyselect expression to select columns of `values`
 #'   to append to the result.
 tar_map2_run <- function(command, values, columns) {
@@ -240,12 +242,13 @@ tar_map2_run <- function(command, values, columns) {
   out <- lapply(
     split(values, f = seq_len(nrow(values))),
     tar_map2_run_rep,
-    command = command
+    command = command,
+    columns = columns
   )
   do.call(vctrs::vec_rbind, out)
 }
 
-tar_map2_run_rep <- function(command, values) {
+tar_map2_run_rep <- function(command, values, columns) {
   envir <- targets::tar_envir()
   names <- names(values)
   lapply(

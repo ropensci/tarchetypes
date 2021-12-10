@@ -64,7 +64,7 @@ targets::tar_test("tar_map_rep(): combine, columns, static branches", {
   expect_equal(out, exp)
   # output
   targets::tar_make(callr_function = NULL)
-  out <- dplyr::arrange(tar_read(x), tar_batch, tar_rep, scenario)
+  out <- dplyr::arrange(targets::tar_read(x), tar_batch, tar_rep, scenario)
   d <- dplyr::distinct(out, tar_group, tar_batch, tar_rep)
   expect_equal(nrow(out), nrow(d))
   expect_equal(out$out, rep(c(10050, 5050, 10010), times = 6))
@@ -139,9 +139,9 @@ targets::tar_test("tar_map_rep(): no combine, 1 col, static branches", {
   # output
   targets::tar_make(callr_function = NULL)
   out <- dplyr::bind_rows(
-    tar_read(x_diffuse),
-    tar_read(x_medium),
-    tar_read(x_tight)
+    targets::tar_read(x_diffuse),
+    targets::tar_read(x_medium),
+    targets::tar_read(x_tight)
   )
   out <- dplyr::arrange(out, tar_batch, tar_rep, scenario)
   d <- dplyr::distinct(out, tar_batch, tar_rep)
@@ -220,7 +220,7 @@ targets::tar_test("tar_map_rep(): combine, no cols, static branches", {
   expect_equal(out, exp)
   # output
   targets::tar_make(callr_function = NULL)
-  out <- dplyr::arrange(tar_read(x), tar_batch, tar_rep, tar_group)
+  out <- dplyr::arrange(targets::tar_read(x), tar_batch, tar_rep, tar_group)
   d <- dplyr::distinct(out, tar_group, tar_batch, tar_rep)
   expect_equal(nrow(out), nrow(d))
   expect_equal(out$out, rep(c(10050, 5050, 10010), times = 6))
@@ -279,7 +279,7 @@ targets::tar_test("tar_map_rep(): no static branches", {
   expect_equal(out, exp)
   # output
   targets::tar_make(callr_function = NULL)
-  out <- dplyr::arrange(tar_read(x), tar_batch, tar_rep)
+  out <- dplyr::arrange(targets::tar_read(x), tar_batch, tar_rep)
   d <- dplyr::distinct(out, tar_batch, tar_rep)
   expect_equal(nrow(out), nrow(d))
   expect_equal(out$out, rep(2001, times = 6))
