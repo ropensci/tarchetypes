@@ -12,8 +12,10 @@ tar_map2_raw(
   names = NULL,
   columns1 = quote(tidyselect::everything()),
   columns2 = quote(tidyselect::everything()),
+  suffix1 = "1",
+  suffix2 = "2",
   combine = TRUE,
-  group = quote(rep(1L, nrow(.x))),
+  group = quote(rep(1L, nrow(!!.x))),
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -64,6 +66,14 @@ to append to the output of all targets.}
 to select which columns of \code{command1}
 output to append to \code{command2} output.
 In case of conflicts, \code{column1} takes precedence.}
+
+\item{suffix1}{Character of length 1,
+suffix to apply to the \code{command1} targets to distinguish
+them from the \code{command2} targets.}
+
+\item{suffix2}{Character of length 1,
+suffix to apply to the \code{command2} targets to distinguish
+them from the \code{command1} targets.}
 
 \item{combine}{Logical of length 1, whether to statically combine
 all the results into a single target downstream.}
@@ -258,7 +268,7 @@ targets::tar_script({
       )
     ),
     values = tibble::tibble(arg1 = letters[seq_len(12)]),
-    group = quote(rep(LETTERS[seq_len(2)], each = nrow(.x) / 2))
+    group = quote(rep(LETTERS[seq_len(2)], each = nrow(!!.x) / 2))
    )
 })
 targets::tar_make()

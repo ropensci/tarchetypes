@@ -24,6 +24,12 @@
 #'   to select which columns of `command1`
 #'   output to append to `command2` output.
 #'   In case of conflicts, `column1` takes precedence.
+#' @param suffix1 Character of length 1,
+#'   suffix to apply to the `command1` targets to distinguish
+#'   them from the `command2` targets.
+#' @param suffix2 Character of length 1,
+#'   suffix to apply to the `command2` targets to distinguish
+#'   them from the `command1` targets.
 #' @param group Function on the data produced by `command1` to create the
 #'   `tar_group` column that determines the batching structure for the
 #'   `command2` targets.
@@ -85,6 +91,12 @@ tar_map2_raw <- function(
   targets::tar_assert_scalar(name)
   targets::tar_assert_chr(name)
   targets::tar_assert_nzchar(name)
+  targets::tar_assert_scalar(suffix1)
+  targets::tar_assert_chr(suffix1)
+  targets::tar_assert_nzchar(suffix1)
+  targets::tar_assert_scalar(suffix2)
+  targets::tar_assert_chr(suffix2)
+  targets::tar_assert_nzchar(suffix2)
   targets::tar_assert_df(values %|||% data.frame())
   if (!is.null(values)) {
     targets::tar_assert_ge(nrow(values), 1L)

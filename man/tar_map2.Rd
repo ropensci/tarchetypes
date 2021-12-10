@@ -10,10 +10,12 @@ tar_map2(
   command2,
   values = NULL,
   names = NULL,
+  suffix1 = "1",
+  suffix2 = "2",
   columns1 = tidyselect::everything(),
   columns2 = tidyselect::everything(),
   combine = TRUE,
-  group = rep(1L, nrow(.x)),
+  group = rep(1L, nrow(!!.x)),
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -55,6 +57,14 @@ use \code{rlang::syms()}.}
 to select which columns of \code{values} to use to construct
 statically branched target names. If \code{NULL}, then
 short names are automatically generated.}
+
+\item{suffix1}{Character of length 1,
+suffix to apply to the \code{command1} targets to distinguish
+them from the \code{command2} targets.}
+
+\item{suffix2}{Character of length 1,
+suffix to apply to the \code{command2} targets to distinguish
+them from the \code{command1} targets.}
 
 \item{columns1}{A tidyselect expression to select which columns of \code{values}
 to append to the output of all targets.}
@@ -251,7 +261,7 @@ targets::tar_script({
       length_input = length(arg1)
     ),
     values = tibble::tibble(arg1 = letters[seq_len(12)]),
-    group = rep(LETTERS[seq_len(2)], each = nrow(.x) / 2)
+    group = rep(LETTERS[seq_len(2)], each = nrow(!!.x) / 2)
    )
 })
 targets::tar_make()

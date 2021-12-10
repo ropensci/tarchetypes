@@ -206,3 +206,214 @@ targets::tar_test("tar_map2(): no combine, no columns, static branches", {
   expect_equal(length(unlist(tar_meta(x_2_a)$children)), 3L)
   expect_equal(length(unlist(tar_meta(x_2_b)$children)), 3L)
 })
+
+targets::tar_test("tar_map2() columns1", {
+  skip_if_not_installed("dplyr")
+  targets::tar_script({
+    f1 <- function(arg1) {
+      tibble::tibble(
+        value_arg1 = arg1,
+        value_arg2 = seq_len(6)
+      )
+    }
+    f2 <- function(arg1, arg2) {
+      tibble::tibble(
+        result = paste(arg1, arg2),
+        length_arg1 = length(arg1),
+        length_arg2 = length(arg2),
+        random = sample.int(1e6, size = 1L)
+      )
+    }
+    tar_map2(
+      x,
+      command1 = f1(arg1),
+      command2 = f2(value_arg1, value_arg2),
+      values = tibble::tibble(arg1 = letters[seq_len(2)]),
+      names = arg1,
+      columns1 = arg1,
+      columns2 = NULL,
+      group = rep(LETTERS[seq_len(3)], each = nrow(!!.x) / 3),
+      combine = FALSE
+    )
+  })
+  # upstream output
+  targets::tar_make(callr_function = NULL)
+  targets::tar_load(
+    tidyselect::any_of(
+      c("x_1_a", "x_1_b", "x_2_a", "x_2_b")
+    )
+  )
+  expect_equal(dim(x_1_a), c(6L, 4L))
+  expect_equal(dim(x_1_b), c(6L, 4L))
+  expect_equal(x_1_a$arg1, rep("a", 6L))
+  expect_equal(x_1_b$arg1, rep("b", 6L))
+  expect_equal(x_1_a$value_arg1, rep("a", 6L))
+  expect_equal(x_1_b$value_arg1, rep("b", 6L))
+  expect_equal(x_1_a$value_arg2, seq_len(6L))
+  expect_equal(x_1_b$value_arg2, seq_len(6L))
+  expect_equal(x_1_a$tar_group, rep(c(1L, 2L, 3L), each = 2L))
+  expect_equal(x_1_b$tar_group, rep(c(1L, 2L, 3L), each = 2L))
+  # downstream output
+  expect_equal(dim(x_2_a), c(6L, 5L))
+  expect_equal(dim(x_2_b), c(6L, 5L))
+  expect_equal(x_2_a$arg1, rep("a", 6L))
+  expect_equal(x_2_b$arg1, rep("b", 6L))
+  expect_equal(x_2_a$result, paste("a", seq_len(6L)))
+  expect_equal(x_2_b$result, paste("b", seq_len(6L)))
+  expect_equal(x_2_a$length_arg1, rep(1L, 6L))
+  expect_equal(x_2_b$length_arg1, rep(1L, 6L))
+  expect_equal(x_2_a$length_arg2, rep(1L, 6L))
+  expect_equal(x_2_b$length_arg2, rep(1L, 6L))
+  expect_equal(length(unique(x_2_a$random)), 6L)
+  expect_equal(length(unique(x_2_b$random)), 6L)
+  # metadata
+  expect_equal(length(unlist(tar_meta(x_2_a)$children)), 3L)
+  expect_equal(length(unlist(tar_meta(x_2_b)$children)), 3L)
+})
+
+targets::tar_test("tar_map2() columns2", {
+  skip_if_not_installed("dplyr")
+  targets::tar_script({
+    f1 <- function(arg1) {
+      tibble::tibble(
+        value_arg1 = arg1,
+        value_arg2 = seq_len(6)
+      )
+    }
+    f2 <- function(arg1, arg2) {
+      tibble::tibble(
+        result = paste(arg1, arg2),
+        length_arg1 = length(arg1),
+        length_arg2 = length(arg2),
+        random = sample.int(1e6, size = 1L)
+      )
+    }
+    tar_map2(
+      x,
+      command1 = f1(arg1),
+      command2 = f2(value_arg1, value_arg2),
+      values = tibble::tibble(arg1 = letters[seq_len(2)]),
+      names = arg1,
+      columns1 = NULL,
+      columns2 = value_arg1,
+      group = rep(LETTERS[seq_len(3)], each = nrow(!!.x) / 3),
+      combine = FALSE
+    )
+  })
+  # upstream output
+  targets::tar_make(callr_function = NULL)
+  targets::tar_load(
+    tidyselect::any_of(
+      c("x_1_a", "x_1_b", "x_2_a", "x_2_b")
+    )
+  )
+  expect_equal(dim(x_1_a), c(6L, 3L))
+  expect_equal(dim(x_1_b), c(6L, 3L))
+  expect_equal(x_1_a$value_arg1, rep("a", 6L))
+  expect_equal(x_1_b$value_arg1, rep("b", 6L))
+  expect_equal(x_1_a$value_arg2, seq_len(6L))
+  expect_equal(x_1_b$value_arg2, seq_len(6L))
+  expect_equal(x_1_a$tar_group, rep(c(1L, 2L, 3L), each = 2L))
+  expect_equal(x_1_b$tar_group, rep(c(1L, 2L, 3L), each = 2L))
+  # downstream output
+  expect_equal(dim(x_2_a), c(6L, 5L))
+  expect_equal(dim(x_2_b), c(6L, 5L))
+  expect_equal(x_2_a$value_arg1, rep("a", 6L))
+  expect_equal(x_2_b$value_arg1, rep("b", 6L))
+  expect_equal(x_2_a$result, paste("a", seq_len(6L)))
+  expect_equal(x_2_b$result, paste("b", seq_len(6L)))
+  expect_equal(x_2_a$length_arg1, rep(1L, 6L))
+  expect_equal(x_2_b$length_arg1, rep(1L, 6L))
+  expect_equal(x_2_a$length_arg2, rep(1L, 6L))
+  expect_equal(x_2_b$length_arg2, rep(1L, 6L))
+  expect_equal(length(unique(x_2_a$random)), 6L)
+  expect_equal(length(unique(x_2_b$random)), 6L)
+  # metadata
+  expect_equal(length(unlist(tar_meta(x_2_a)$children)), 3L)
+  expect_equal(length(unlist(tar_meta(x_2_b)$children)), 3L)
+})
+
+targets::tar_test("tar_map2(): no static branches", {
+  skip_if_not_installed("dplyr")
+  targets::tar_script({
+    f1 <- function(arg1) {
+      tibble::tibble(
+        arg1 = letters[seq_len(4)],
+        arg2 = seq_len(4)
+      )
+    }
+    f2 <- function(arg1, arg2) {
+      tibble::tibble(
+        result = paste(arg1, arg2),
+        length_arg1 = length(arg1),
+        length_arg2 = length(arg2),
+        random = sample.int(1e6, size = 1L)
+      )
+    }
+    tar_map2(
+      x,
+      command1 = f1(arg1),
+      command2 = f2(arg1, arg2),
+      values = NULL,
+      names = arg1,
+      suffix1 = "i",
+      suffix2 = "ii",
+      combine = TRUE,
+      group = rep(LETTERS[seq_len(2)], each = nrow(!!.x) / 2)
+    )
+  })
+  # manifest
+  out <- targets::tar_manifest(callr_function = NULL)
+  out <- out[order(out$name), ]
+  expect_equal(nrow(out), 2L)
+  expect_equal(
+    sort(out$name),
+    sort(
+      paste0("x", c("_i", "_ii"))
+    )
+  )
+  expect_equal(
+    grepl("_i$", out$name),
+    grepl("tar_map2_group", out$command)
+  )
+  expect_equal(
+    grepl("_ii", out$name),
+    grepl("tar_map2_run", out$command)
+  )
+  expect_equal(
+    grepl("^x_i$", out$name),
+    is.na(out$pattern)
+  )
+  expect_equal(
+    grepl("^x_ii", out$name),
+    !is.na(out$pattern)
+  )
+  # network
+  out <- targets::tar_network(callr_function = NULL)$edges
+  out <- dplyr::arrange(out, from, to)
+  exp <- tibble::tribble(
+    ~from, ~to,
+    "f1", "x_i",
+    "f2", "x_ii",
+    "x_i", "x_ii"
+  )
+  exp <- dplyr::arrange(exp, from, to)
+  expect_equal(out, exp)
+  # output
+  targets::tar_make(callr_function = NULL)
+  targets::tar_load(tidyselect::any_of(c("x_i", "x_ii")))
+  expect_equal(dim(x_i), c(4L, 3L))
+  expect_equal(x_i$arg1, letters[seq_len(4L)])
+  expect_equal(x_i$arg2, seq_len(4L))
+  expect_equal(x_i$tar_group, c(1L, 1L, 2L, 2L))
+  expect_equal(dim(x_ii), c(4L, 7L))
+  expect_equal(x_ii$result, c("a 1", "b 2", "c 3", "d 4"))
+  expect_equal(x_ii$length_arg1, rep(1L, 4L))
+  expect_equal(x_ii$length_arg2, rep(1L, 4L))
+  expect_equal(length(unique(x_ii$random)), 4L)
+  expect_equal(x_ii$arg1, letters[seq_len(4L)])
+  expect_equal(x_ii$arg2, seq_len(4L))
+  expect_equal(x_ii$tar_group, c(1L, 1L, 2L, 2L))
+  # metadata
+  expect_equal(length(unlist(tar_meta(x_ii)$children)), 2L)
+})

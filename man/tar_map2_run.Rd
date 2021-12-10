@@ -9,7 +9,9 @@ tar_map2_run(command, values, columns)
 \arguments{
 \item{command}{Command to run.}
 
-\item{values}{Data frame of named arguments to map over.}
+\item{values}{Data frame of named arguments produced by \code{command1}
+that \code{command2} dynamically maps over. Different from the \code{values}
+argument of \code{tar_map2()}.}
 
 \item{columns}{tidyselect expression to select columns of \code{values}
 to append to the result.}
