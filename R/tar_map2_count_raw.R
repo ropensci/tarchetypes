@@ -1,10 +1,13 @@
 #' @title Dynamic-within-static branching for data frames
-#'   (count batching).
+#'   (count batching; raw version).
 #' @export
 #' @family branching
 #' @description Define targets for batched
 #'   dynamic-within-static branching for data frames,
 #'   where the user sets the (maximum) number of batches.
+#'   Like `tar_map2_count()` except `name` is a character string
+#'   and `command1`, `command2`, `names`, `columns1`, and `columns2`
+#'   are all language objects.
 #' @details Static branching creates one pair of targets
 #'   for each row in `values`. In each pair,
 #'   there is an upstream non-dynamic target that runs `command1`
@@ -15,32 +18,38 @@
 #' @return A list of new target objects.
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
-#' @inheritParams tar_map2
-#' @inheritParams tar_map2_count_raw
+#' @param batches Positive integer of length 1,
+#'   maximum number of batches (dynamic branches within static branches)
+#'   of the downstream (`command2`) targets. Batches
+#'   are formed from row groups of the `command1` targets.
+#' @inheritParams tar_map2_raw
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
 #' targets::tar_script({
-#'   tarchetypes::tar_map2_count(
-#'     x,
-#'     command1 = tibble::tibble(
-#'       arg1 = arg1,
-#'       arg2 = seq_len(6)
-#'      ),
-#'     command2 = tibble::tibble(
-#'       result = paste(arg1, arg2),
-#'       random = sample.int(1e9, size = 1),
-#'       length_input = length(arg1)
+#'   tarchetypes::tar_map2_count_raw(
+#'     "x",
+#'     command1 = quote(
+#'       tibble::tibble(
+#'         arg1 = arg1,
+#'         arg2 = sample.int(12)
+#'        )
 #'     ),
-#'     values = tibble::tibble(arg1 = letters[seq_len(2)]),
-#'     batches = 3
+#'     command2 = quote(
+#'       tibble::tibble(
+#'         result = paste(arg1, arg2),
+#'         length_input = length(arg1)
+#'       )
+#'     ),
+#'     values = tibble::tibble(arg1 = letters[seq_len(12)]),
+#'     batches = 2
 #'    )
 #' })
 #' targets::tar_make()
 #' targets::tar_read(x)
 #' })
 #' }
-tar_map2_count <- function(
+tar_map2_count_raw <- function(
   name,
   command1,
   command2,
@@ -50,8 +59,8 @@ tar_map2_count <- function(
   combine = TRUE,
   suffix1 = "1",
   suffix2 = "2",
-  columns1 = tidyselect::everything(),
-  columns2 = tidyselect::everything(),
+  columns1 = quote(tidyselect::everything()),
+  columns2 = quote(tidyselect::everything()),
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -65,18 +74,25 @@ tar_map2_count <- function(
   retrieval = targets::tar_option_get("retrieval"),
   cue = targets::tar_option_get("cue")
 ) {
-  tar_map2_count_raw(
-    name = deparse(substitute(name)),
-    command1 = substitute(command1),
-    command2 = substitute(command2),
+  targets::tar_assert_scalar(batches)
+  targets::tar_assert_dbl(batches)
+  targets::tar_assert_positive(batches)
+  group <- substitute(
+    tarchetypes::tar_group_count_index(!!.x, count),
+    env = list(count = batches)
+  )
+  tar_map2_raw(
+    name = name,
+    command1 = command1,
+    command2 = command2,
     values = values,
-    names = substitute(names),
-    batches = batches,
+    names = names,
+    group = group,
     combine = combine,
     suffix1 = suffix1,
     suffix2 = suffix2,
-    columns1 = substitute(columns1),
-    columns2 = substitute(columns2),
+    columns1 = columns1,
+    columns2 = columns2,
     tidy_eval = tidy_eval,
     packages = packages,
     library = library,

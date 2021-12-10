@@ -200,8 +200,17 @@ See the "Target objects" section for background.
 \description{
 Define targets for batched
 dynamic-within-static branching for data frames.
+Not a user-side function. Do not invoke directly.
 }
 \details{
+Static branching creates one pair of targets
+for each row in \code{values}. In each pair,
+there is an upstream non-dynamic target that runs \code{command1}
+and a downstream dynamic target that runs \code{command2}.
+\code{command1} produces a data frame of arguments to
+\code{command2}, and \code{command2} dynamically maps over
+these arguments in batches.
+
 Static branching creates one pair of targets
 for each row in \code{values}. In each pair,
 there is an upstream non-dynamic target that runs \code{command1}
@@ -227,52 +236,13 @@ explains target factories (functions like this one which generate targets)
 and the design specification at
 \url{https://books.ropensci.org/targets-design/}
 details the structure and composition of target objects.
-
-
-Most \code{tarchetypes} functions are target factories,
-which means they return target objects
-or lists of target objects.
-Target objects represent skippable steps of the analysis pipeline
-as described at \url{https://books.ropensci.org/targets/}.
-Please read the walkthrough at
-\url{https://books.ropensci.org/targets/walkthrough.html}
-to understand the role of target objects in analysis pipelines.
-
-For developers,
-\url{https://wlandau.github.io/targetopia/contributing.html#target-factories}
-explains target factories (functions like this one which generate targets)
-and the design specification at
-\url{https://books.ropensci.org/targets-design/}
-details the structure and composition of target objects.
 }
 
-\examples{
-if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
-targets::tar_dir({ # tar_dir() runs code from a temporary directory.
-targets::tar_script({
-  tarchetypes::tar_map2(
-    x,
-    command1 = tibble::tibble(
-      arg1 = arg1,
-      arg2 = sample.int(12)
-     ),
-    command2 = tibble::tibble(
-      result = paste(arg1, arg2),
-      length_input = length(arg1)
-    ),
-    values = tibble::tibble(arg1 = letters[seq_len(12)]),
-    group = rep(LETTERS[seq_len(2)], each = nrow(!!.x) / 2)
-   )
-})
-targets::tar_make()
-targets::tar_read(x)
-})
-}
-}
 \seealso{
 Other branching: 
 \code{\link{tar_combine_raw}()},
 \code{\link{tar_combine}()},
+\code{\link{tar_map2_count_raw}()},
 \code{\link{tar_map2_count}()},
 \code{\link{tar_map2_raw}()},
 \code{\link{tar_map_rep_raw}()},

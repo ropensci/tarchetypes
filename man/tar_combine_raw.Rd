@@ -216,6 +216,7 @@ targets::tar_manifest()
 \seealso{
 Other branching: 
 \code{\link{tar_combine}()},
+\code{\link{tar_map2_count_raw}()},
 \code{\link{tar_map2_count}()},
 \code{\link{tar_map2_raw}()},
 \code{\link{tar_map2}()},

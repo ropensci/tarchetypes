@@ -2,14 +2,11 @@
 #' @keywords internal
 #' @family branching
 #' @description Define targets for batched
-#'   dynamic-within-static branching for data frames.
-#' @details Static branching creates one pair of targets
-#'   for each row in `values`. In each pair,
-#'   there is an upstream non-dynamic target that runs `command1`
-#'   and a downstream dynamic target that runs `command2`.
-#'   `command1` produces a data frame of arguments to
-#'   `command2`, and `command2` dynamically maps over
-#'   these arguments in batches.
+#'   dynamic-within-static branching for data frames (raw version).
+#'   Not a user-side function. Do not invoke directly.
+#' @details Like `tar_map2()` except `name` is a character string
+#'   and `command1`, `command2`, `group`, `names`, `columns1`, and `columns2`
+#'   are language objects.
 #' @return A list of new target objects.
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
@@ -34,36 +31,9 @@
 #' @param suffix2 Character of length 1,
 #'   suffix to apply to the `command2` targets to distinguish
 #'   them from the `command1` targets.
-#' @inheritSection tar_map Target objects
 #' @inheritParams tar_map_rep_raw
 #' @inheritParams tar_rep2
 #' @inheritParams tar_map
-#' @examples
-#' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
-#' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
-#' targets::tar_script({
-#'   tarchetypes::tar_map2_raw(
-#'     "x",
-#'     command1 = quote(
-#'       tibble::tibble(
-#'         arg1 = arg1,
-#'         arg2 = sample.int(12)
-#'       )
-#'     ),
-#'     command2 = quote(
-#'       tibble::tibble(
-#'         result = paste(arg1, arg2),
-#'         length_input = length(arg1)
-#'       )
-#'     ),
-#'     values = tibble::tibble(arg1 = letters[seq_len(12)]),
-#'     group = quote(rep(LETTERS[seq_len(2)], each = nrow(!!.x) / 2))
-#'    )
-#' })
-#' targets::tar_make()
-#' targets::tar_read(x)
-#' })
-#' }
 tar_map2_raw <- function(
   name,
   command1,

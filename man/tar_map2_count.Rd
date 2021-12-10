@@ -230,23 +230,6 @@ explains target factories (functions like this one which generate targets)
 and the design specification at
 \url{https://books.ropensci.org/targets-design/}
 details the structure and composition of target objects.
-
-
-Most \code{tarchetypes} functions are target factories,
-which means they return target objects
-or lists of target objects.
-Target objects represent skippable steps of the analysis pipeline
-as described at \url{https://books.ropensci.org/targets/}.
-Please read the walkthrough at
-\url{https://books.ropensci.org/targets/walkthrough.html}
-to understand the role of target objects in analysis pipelines.
-
-For developers,
-\url{https://wlandau.github.io/targetopia/contributing.html#target-factories}
-explains target factories (functions like this one which generate targets)
-and the design specification at
-\url{https://books.ropensci.org/targets-design/}
-details the structure and composition of target objects.
 }
 
 \examples{
@@ -257,14 +240,15 @@ targets::tar_script({
     x,
     command1 = tibble::tibble(
       arg1 = arg1,
-      arg2 = sample.int(12)
+      arg2 = seq_len(6)
      ),
     command2 = tibble::tibble(
       result = paste(arg1, arg2),
+      random = sample.int(1e9, size = 1),
       length_input = length(arg1)
     ),
-    values = tibble::tibble(arg1 = letters[seq_len(12)]),
-    batches = 2
+    values = tibble::tibble(arg1 = letters[seq_len(2)]),
+    batches = 3
    )
 })
 targets::tar_make()
@@ -276,6 +260,7 @@ targets::tar_read(x)
 Other branching: 
 \code{\link{tar_combine_raw}()},
 \code{\link{tar_combine}()},
+\code{\link{tar_map2_count_raw}()},
 \code{\link{tar_map2_raw}()},
 \code{\link{tar_map2}()},
 \code{\link{tar_map_rep_raw}()},
