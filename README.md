@@ -5,7 +5,7 @@
 [![zenodo](https://zenodo.org/badge/282774543.svg)](https://zenodo.org/badge/latestdoi/282774543)
 [![R
 Targetopia](https://img.shields.io/badge/R_Targetopia-member-blue?style=flat&labelColor=gray)](https://wlandau.github.io/targetopia/)
-[![cran](http://www.r-pkg.org/badges/version/tarchetypes)](https://cran.r-project.org/package=tarchetypes)
+[![CRAN](https://www.r-pkg.org/badges/version/tarchetypes)](https://CRAN.R-project.org/package=tarchetypes)
 [![status](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![check](https://github.com/ropensci/tarchetypes/workflows/check/badge.svg)](https://github.com/ropensci/tarchetypes/actions?query=workflow%3Acheck)
 [![codecov](https://codecov.io/gh/ropensci/tarchetypes/branch/main/graph/badge.svg?token=3T5DlLwUVl)](https://app.codecov.io/gh/ropensci/tarchetypes)
@@ -30,12 +30,12 @@ and usage patterns.
 `tarchetypes` has functions for easy dynamic branching over subsets of
 data frames:
 
-  - `tar_group_by()`: define row groups using `dplyr::group_by()`
+-   `tar_group_by()`: define row groups using `dplyr::group_by()`
     semantics.
-  - `tar_group_select()`: define row groups using `tidyselect`
+-   `tar_group_select()`: define row groups using `tidyselect`
     semantics.
-  - `tar_group_count()`: define a given number row groups.
-  - `tar_group_size()`: define row groups of a given size.
+-   `tar_group_count()`: define a given number row groups.
+-   `tar_group_size()`: define row groups of a given size.
 
 If you define a target with one of these functions, all downstream
 dynamic targets will automatically branch over the row groups.
@@ -57,17 +57,22 @@ list(
 # R console:
 library(targets)
 tar_make()
-#> ● run target data
-#> ● run branch group_e9b1e0d0
-#> ● run branch group_8e74a2e8
-#> ● run branch group_9ea8aadc
-#> ● run branch group_5126e4df
-#> ● end pipeline
+#> • start target data
+#> • built target data
+#> • start branch group_b3d7d010
+#> • built branch group_b3d7d010
+#> • start branch group_6a76c5c0
+#> • built branch group_6a76c5c0
+#> • start branch group_164b16bf
+#> • built branch group_164b16bf
+#> • start branch group_f5aae602
+#> • built branch group_f5aae602
+#> • built pattern group
+#> • end pipeline
 
 # First row group:
 tar_read(group, branches = 1)
-#> # A tibble: 3 x 4
-#> # Groups:   var1, var2 [1]
+#> # A tibble: 3 × 4
 #>   var1  var2    rep tar_group
 #>   <fct> <fct> <dbl>     <int>
 #> 1 a     c         1         1
@@ -76,8 +81,7 @@ tar_read(group, branches = 1)
 
 # Second row group:
 tar_read(group, branches = 2)
-#> # A tibble: 3 x 4
-#> # Groups:   var1, var2 [1]
+#> # A tibble: 3 × 4
 #>   var1  var2    rep tar_group
 #>   <fct> <fct> <dbl>     <int>
 #> 1 a     d         1         2
@@ -93,7 +97,7 @@ Consider the following R Markdown report.
     title: report
     output: html_document
     ---
-    
+
     ```{r}
     library(targets)
     tar_read(dataset)
@@ -182,7 +186,7 @@ tar_plan(
 ## Installation
 
 | Type        | Source   | Command                                                               |
-| ----------- | -------- | --------------------------------------------------------------------- |
+|-------------|----------|-----------------------------------------------------------------------|
 | Release     | CRAN     | `install.packages("tarchetypes")`                                     |
 | Development | GitHub   | `remotes::install_github("ropensci/tarchetypes")`                     |
 | Development | rOpenSci | `install.packages("tarchetypes", repos = "https://dev.ropensci.org")` |

@@ -5,22 +5,23 @@
   ],
   "@type": "SoftwareSourceCode",
   "identifier": "tarchetypes",
-  "description": "The 'targets' package is a pipeline toolkit that brings together\n  function-oriented programming and Make-like declarative workflows for\n  Statistics and data science in R. The 'tarchetypes' package provides\n  convenient user-side functions to make 'targets' easier to use.\n  By establishing reusable archetypes for common kinds of\n  targets and pipelines, these functions help express complicated\n  reproducible workflows concisely and compactly.\n  The methods in this package were influenced by the 'drake' R package\n  by Will Landau (2018) <doi:10.21105/joss.00550>.",
+  "description": "Function-oriented Make-like declarative workflows for\n  Statistics and data science are supported in the 'targets' R package.\n  As an extension to 'targets', the 'tarchetypes' package provides\n  convenient user-side functions to make 'targets' easier to use.\n  By establishing reusable archetypes for common kinds of\n  targets and pipelines, these functions help express complicated\n  reproducible workflows concisely and compactly.\n  The methods in this package were influenced by the 'drake' R package\n  by Will Landau (2018) <doi:10.21105/joss.00550>.",
   "name": "tarchetypes: Archetypes for Targets",
   "codeRepository": "https://github.com/ropensci/tarchetypes",
   "relatedLink": [
     "https://docs.ropensci.org/tarchetypes",
-    "https://docs.ropensci.org/tarchetypes/"
+    "https://docs.ropensci.org/tarchetypes/",
+    "https://CRAN.R-project.org/package=tarchetypes"
   ],
   "issueTracker": "https://github.com/ropensci/tarchetypes/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.0.1",
+  "version": "0.4.1",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.0.3 (2020-10-10)",
+  "runtimePlatform": "R version 4.1.0 (2021-05-18)",
   "author": [
     {
       "@type": "Person",
@@ -48,6 +49,19 @@
     }
   ],
   "softwareSuggestions": [
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "curl",
+      "name": "curl",
+      "version": ">= 4.3",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=curl"
+    },
     {
       "@type": "SoftwareApplication",
       "identifier": "knitr",
@@ -123,6 +137,19 @@
     },
     {
       "@type": "SoftwareApplication",
+      "identifier": "dplyr",
+      "name": "dplyr",
+      "version": ">= 1.0.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=dplyr"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "fs",
       "name": "fs",
       "version": ">= 1.4.2",
@@ -151,8 +178,27 @@
       "@type": "SoftwareApplication",
       "identifier": "targets",
       "name": "targets",
-      "version": ">= 0.0.1",
-      "sameAs": "https://github.com/ropensci/targets"
+      "version": ">= 0.6.0",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=targets"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "identifier": "tibble",
+      "name": "tibble",
+      "version": ">= 3.0.1",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=tibble"
     },
     {
       "@type": "SoftwareApplication",
@@ -201,8 +247,8 @@
   ],
   "releaseNotes": "https://github.com/ropensci/tarchetypes/blob/master/NEWS.md",
   "readme": "https://github.com/ropensci/tarchetypes/blob/main/README.md",
-  "fileSize": "431.61KB",
-  "contIntegration": "https://codecov.io/gh/ropensci/targets",
+  "fileSize": "857.081KB",
+  "contIntegration": ["https://github.com/ropensci/tarchetypes/actions?query=workflow%3Acheck", "https://app.codecov.io/gh/ropensci/tarchetypes", "https://github.com/ropensci/tarchetypes/actions?query=workflow%3Alint"],
   "developmentStatus": "https://www.repostatus.org/#active",
   "review": {
     "@type": "Review",
@@ -219,6 +265,28 @@
     "r-package",
     "workflow",
     "targets",
-    "r-targetopia"
+    "r-targetopia",
+    "peer-reviewed"
+  ],
+  "provider": {
+    "@id": "https://cran.r-project.org",
+    "@type": "Organization",
+    "name": "Comprehensive R Archive Network (CRAN)",
+    "url": "https://cran.r-project.org"
+  },
+  "citation": [
+    {
+      "@type": "SoftwareSourceCode",
+      "datePublished": "2021",
+      "author": [
+        {
+          "@type": "Person",
+          "givenName": ["William", "Michael"],
+          "familyName": "Landau"
+        }
+      ],
+      "name": "tarchetypes: Archetypes for Targets",
+      "description": "{https://docs.ropensci.org/tarchetypes/, https://github.com/ropensci/tarchetypes}"
+    }
   ]
 }

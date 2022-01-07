@@ -1,4 +1,4 @@
-# tarchetypes 0.4.0.9000
+# tarchetypes 0.4.1
 
 * Select list elements from `command1` using `[[` and not `[` in `tar_map2()` functions.
 
