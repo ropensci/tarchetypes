@@ -2,7 +2,7 @@
 % Please edit documentation in R/tar_files_raw.R
 \name{tar_files_raw}
 \alias{tar_files_raw}
-\title{Easy dynamic branching over files or urls (raw version).}
+\title{Dynamic branching over output or input files (raw version).}
 \usage{
 tar_files_raw(
   name,
@@ -176,8 +176,7 @@ or \code{format = "url"}.
 See the "Target objects" section for background.
 }
 \description{
-Shorthand for a pattern that correctly
-branches over files or urls.
+Dynamic branching over output or input files.
 }
 \details{
 \code{tar_files_raw()} is similar to \code{\link[=tar_files]{tar_files()}}
@@ -188,7 +187,8 @@ and \code{command} must be a language object.
 and one downstream. The upstream target does some work
 and returns some file paths, and the downstream
 target is a pattern that applies \code{format = "file"}
-or \code{format = "url"}.
+or \code{format = "url"}. (URLs are input-only, they must already
+exist beforehand.)
 This is the correct way to dynamically
 iterate over file/url targets. It makes sure any downstream patterns
 only rerun some of their branches if the files/urls change.

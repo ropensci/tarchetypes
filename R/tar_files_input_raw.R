@@ -1,9 +1,7 @@
-#' @title Easy dynamic branching over known existing
-#'   files or urls (raw version).
+#' @title Dynamic branching over input files or URLs (raw version).
 #' @export
 #' @family Dynamic branching over files
-#' @description Shorthand for a pattern that correctly
-#'   branches over files or urls.
+#' @description Dynamic branching over input files or URLs.
 #' @details `tar_files_input_raw()` is similar to [tar_files_input()]
 #'   except the `name` argument must be a character string.
 #'

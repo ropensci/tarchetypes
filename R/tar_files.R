@@ -1,13 +1,13 @@
-#' @title Easy dynamic branching over files or urls.
+#' @title Dynamic branching over output or input files.
 #' @export
 #' @family Dynamic branching over files
-#' @description Shorthand for a pattern that correctly
-#'   branches over files or urls.
+#' @description Dynamic branching over output or input files.
 #' @details `tar_files()` creates a pair of targets, one upstream
 #'   and one downstream. The upstream target does some work
 #'   and returns some file paths, and the downstream
 #'   target is a pattern that applies `format = "file"`
-#'   or `format = "url"`.
+#'   or `format = "url"`. (URLs are input-only, they must already
+#'   exist beforehand.)
 #'   This is the correct way to dynamically
 #'   iterate over file/url targets. It makes sure any downstream patterns
 #'   only rerun some of their branches if the files/urls change.

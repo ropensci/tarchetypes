@@ -2,8 +2,7 @@
 % Please edit documentation in R/tar_files_input_raw.R
 \name{tar_files_input_raw}
 \alias{tar_files_input_raw}
-\title{Easy dynamic branching over known existing
-files or urls (raw version).}
+\title{Dynamic branching over input files or URLs (raw version).}
 \usage{
 tar_files_input_raw(
   name,
@@ -109,8 +108,7 @@ or \code{format = "url"}.
 See the "Target objects" section for background.
 }
 \description{
-Shorthand for a pattern that correctly
-branches over files or urls.
+Dynamic branching over input files or URLs.
 }
 \details{
 \code{tar_files_input_raw()} is similar to \code{\link[=tar_files_input]{tar_files_input()}}
