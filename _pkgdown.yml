@@ -33,6 +33,9 @@ reference:
 - title: Formats
   contents:
   - '`tar_formats`'
+- title: Simple files
+  contents:
+  - '`tar_file_read`'
 - title: Static branching
   contents:
   - '`tar_combine`'

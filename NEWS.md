@@ -1,3 +1,7 @@
+# tarchetypes 0.4.1.9000
+
+* Implement `tar_file_read()` (#84, @petrbouchal).
+
 # tarchetypes 0.4.1
 
 * Select list elements from `command1` using `[[` and not `[` in `tar_map2()` functions.
