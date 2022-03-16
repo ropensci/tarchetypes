@@ -1,6 +1,7 @@
 # tarchetypes 0.5.0
 
 * Implement `tar_file_read()` (#84, @petrbouchal).
+* Suppress warnings for deprecated AWS formats.
 
 # tarchetypes 0.4.1
 

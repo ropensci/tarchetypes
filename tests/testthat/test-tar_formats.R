@@ -88,61 +88,61 @@ targets::tar_test("tar_torch()", {
 })
 
 targets::tar_test("tar_aws_file()", {
-  x <- tar_aws_file(x, 0)
+  x <- suppressWarnings(tar_aws_file(x, 0))
   expect_true(inherits(x, "tar_target"))
-  expect_equal(x$settings$format, "aws_file")
+  expect_true(grepl("file", x$settings$format))
 })
 
 targets::tar_test("tar_aws_rds()", {
-  x <- tar_aws_rds(x, 0)
+  x <- suppressWarnings(tar_aws_rds(x, 0))
   expect_true(inherits(x, "tar_target"))
-  expect_equal(x$settings$format, "aws_rds")
+  expect_true(grepl("rds", x$settings$format))
 })
 
 targets::tar_test("tar_aws_qs()", {
-  x <- tar_aws_qs(x, 0)
+  x <- suppressWarnings(tar_aws_qs(x, 0))
   expect_true(inherits(x, "tar_target"))
-  expect_equal(x$settings$format, "aws_qs")
+  expect_true(grepl("qs", x$settings$format))
 })
 
 targets::tar_test("tar_format_aws_feather()", {
-  x <- tar_format_aws_feather(x, 0)
+  x <- suppressWarnings(tar_format_aws_feather(x, 0))
   expect_true(inherits(x, "tar_target"))
-  expect_equal(x$settings$format, "aws_feather")
+  expect_true(grepl("feather", x$settings$format))
 })
 
 targets::tar_test("tar_aws_parquet()", {
-  x <- tar_aws_parquet(x, 0)
+  x <- suppressWarnings(tar_aws_parquet(x, 0))
   expect_true(inherits(x, "tar_target"))
-  expect_equal(x$settings$format, "aws_parquet")
+  expect_true(grepl("parquet", x$settings$format))
 })
 
 targets::tar_test("tar_aws_fst()", {
-  x <- tar_aws_fst(x, 0)
+  x <- suppressWarnings(tar_aws_fst(x, 0))
   expect_true(inherits(x, "tar_target"))
-  expect_equal(x$settings$format, "aws_fst")
+  expect_true(grepl("fst", x$settings$format))
 })
 
 targets::tar_test("tar_aws_fst_dt()", {
-  x <- tar_aws_fst_dt(x, 0)
+  x <- suppressWarnings(tar_aws_fst_dt(x, 0))
   expect_true(inherits(x, "tar_target"))
-  expect_equal(x$settings$format, "aws_fst_dt")
+  expect_true(grepl("fst_dt", x$settings$format))
 })
 
 targets::tar_test("tar_aws_fst_tbl()", {
-  x <- tar_aws_fst_tbl(x, 0)
+  x <- suppressWarnings(tar_aws_fst_tbl(x, 0))
   expect_true(inherits(x, "tar_target"))
-  expect_equal(x$settings$format, "aws_fst_tbl")
+  expect_true(grepl("fst_tbl", x$settings$format))
 })
 
 targets::tar_test("tar_aws_keras()", {
-  x <- tar_aws_keras(x, 0)
+  x <- suppressWarnings(tar_aws_keras(x, 0))
   expect_true(inherits(x, "tar_target"))
-  expect_equal(x$settings$format, "aws_keras")
+  expect_true(grepl("keras", x$settings$format))
 })
 
 targets::tar_test("tar_aws_torch()", {
-  x <- tar_aws_torch(x, 0)
+  x <- suppressWarnings(tar_aws_torch(x, 0))
   expect_true(inherits(x, "tar_target"))
-  expect_equal(x$settings$format, "aws_torch")
+  expect_true(grepl("torch", x$settings$format))
 })
