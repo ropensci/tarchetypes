@@ -1,4 +1,4 @@
-# tarchetypes 0.4.1.9000
+# tarchetypes 0.5.0
 
 * Implement `tar_file_read()` (#84, @petrbouchal).
 
