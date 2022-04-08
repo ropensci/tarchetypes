@@ -50,6 +50,7 @@ tar_cue_skip <- function(
   command = TRUE,
   depend = TRUE,
   format = TRUE,
+  repository = TRUE,
   iteration = TRUE,
   file = TRUE
 ) {
@@ -59,6 +60,7 @@ tar_cue_skip <- function(
     command = command,
     depend = depend,
     format = format,
+    repository = repository,
     iteration = iteration,
     file = file
   )

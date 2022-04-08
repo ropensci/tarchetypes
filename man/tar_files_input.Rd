@@ -9,6 +9,7 @@ tar_files_input(
   files,
   batches = length(files),
   format = c("file", "url", "aws_file"),
+  repository = targets::tar_option_get("repository"),
   iteration = targets::tar_option_get("iteration"),
   error = targets::tar_option_get("error"),
   memory = targets::tar_option_get("memory"),
@@ -47,6 +48,23 @@ for heavy workloads.}
 
 \item{format}{Character, either \code{"file"} or \code{"url"}. See the \code{format}
 argument of \code{targets::tar_target()} for details.}
+
+\item{repository}{Character of length 1, remote repository for target
+storage. Choices:
+\itemize{
+\item \code{"local"}: file system of the local machine.
+\item \code{"aws"}: Amazon Web Services (AWS) S3 bucket. Can be configured
+with a non-AWS S3 bucket using the \code{endpoint} argument of
+\code{\link[targets:tar_resources_aws]{tar_resources_aws()}}, but versioning capabilities may be lost
+in doing so.
+See the cloud storage section of
+\url{https://books.ropensci.org/targets/data.html}
+for details for instructions.
+\item \code{"gcp"}: Google Cloud Platform storage bucket.
+See the cloud storage section of
+\url{https://books.ropensci.org/targets/data.html}
+for details for instructions.
+}}
 
 \item{iteration}{Character, iteration method. Must be a method
 supported by the \code{iteration} argument of \code{targets::tar_target()}.

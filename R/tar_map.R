@@ -153,6 +153,7 @@ tar_map_iter <- function(values, target, command, pattern) {
     packages = target$command$packages,
     library = target$command$library,
     format = settings$format,
+    repository = settings$repository,
     iteration = settings$iteration,
     error = settings$error,
     memory = settings$memory,
@@ -167,6 +168,7 @@ tar_map_iter <- function(values, target, command, pattern) {
       command = target$cue$command,
       depend = target$cue$depend,
       format = target$cue$format,
+      repository = target$cue$repository,
       iteration = target$cue$iteration,
       file = target$cue$file
     )

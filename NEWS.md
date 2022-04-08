@@ -3,6 +3,7 @@
 * Implement `tar_file_read()` (#84, @petrbouchal).
 * Suppress warnings for deprecated AWS formats.
 * Select the correct targets in `tar_select_targets()` (#92, @arcruz0).
+* Support the `repository` argument for `targets` >= 0.11.0.
 
 # tarchetypes 0.4.1
 

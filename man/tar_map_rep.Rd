@@ -18,6 +18,7 @@ tar_map_rep(
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
   format = targets::tar_option_get("format"),
+  repository = targets::tar_option_get("repository"),
   error = targets::tar_option_get("error"),
   memory = targets::tar_option_get("memory"),
   deployment = targets::tar_option_get("deployment"),
@@ -98,6 +99,23 @@ An efficient data frame format like \code{"feather"} is recommended,
 but the default is \code{"rds"} to avoid incurring extra package
 dependencies. See the help file of \code{targets::tar_target()}
 for details on storage formats.}
+
+\item{repository}{Character of length 1, remote repository for target
+storage. Choices:
+\itemize{
+\item \code{"local"}: file system of the local machine.
+\item \code{"aws"}: Amazon Web Services (AWS) S3 bucket. Can be configured
+with a non-AWS S3 bucket using the \code{endpoint} argument of
+\code{\link[targets:tar_resources_aws]{tar_resources_aws()}}, but versioning capabilities may be lost
+in doing so.
+See the cloud storage section of
+\url{https://books.ropensci.org/targets/data.html}
+for details for instructions.
+\item \code{"gcp"}: Google Cloud Platform storage bucket.
+See the cloud storage section of
+\url{https://books.ropensci.org/targets/data.html}
+for details for instructions.
+}}
 
 \item{error}{Character of length 1, what to do if the target
 stops and throws an error. Options:

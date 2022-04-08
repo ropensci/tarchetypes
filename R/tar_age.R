@@ -56,6 +56,7 @@ tar_age <- function(
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
   format = targets::tar_option_get("format"),
+  repository = targets::tar_option_get("repository"),
   iteration = targets::tar_option_get("iteration"),
   error = targets::tar_option_get("error"),
   memory = targets::tar_option_get("memory"),
@@ -79,6 +80,7 @@ tar_age <- function(
     command = cue$command,
     depend = cue$depend,
     format = cue$format,
+    repository = cue$repository,
     iteration = cue$iteration,
     file = cue$file
   )
@@ -89,6 +91,7 @@ tar_age <- function(
     packages = packages,
     library = library,
     format = format,
+    repository = repository,
     iteration = iteration,
     error = error,
     memory = memory,

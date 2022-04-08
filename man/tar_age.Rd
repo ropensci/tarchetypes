@@ -13,6 +13,7 @@ tar_age(
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
   format = targets::tar_option_get("format"),
+  repository = targets::tar_option_get("repository"),
   iteration = targets::tar_option_get("iteration"),
   error = targets::tar_option_get("error"),
   memory = targets::tar_option_get("memory"),
@@ -63,6 +64,10 @@ when loading \code{packages}.}
 \item{format}{Logical, whether to rerun the target if the user-specified
 storage format changed. The storage format is user-specified through
 \code{\link[targets:tar_target]{tar_target()}} or \code{\link[targets:tar_option_set]{tar_option_set()}}.}
+
+\item{repository}{Logical, whether to rerun the target if the user-specified
+storage repository changed. The storage repository is user-specified
+through \code{\link[targets:tar_target]{tar_target()}} or \code{\link[targets:tar_option_set]{tar_option_set()}}.}
 
 \item{iteration}{Logical, whether to rerun the target if the user-specified
 iteration method changed. The iteration method is user-specified through
