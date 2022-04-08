@@ -2,6 +2,7 @@
 
 * Implement `tar_file_read()` (#84, @petrbouchal).
 * Suppress warnings for deprecated AWS formats.
+* Select the correct targets in `tar_select_targets()` (#92, @arcruz0).
 
 # tarchetypes 0.4.1
 
