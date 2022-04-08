@@ -50,7 +50,8 @@ to locally recreate the target's initial RNG state.}
 (before \code{tar_make()}). Applies to arguments \code{command} and \code{change}.}
 
 \item{packages}{Character vector of packages to load right before
-the target builds. Use \code{tar_option_set()} to set packages
+the target builds or the output data is reloaded for
+downstream targets. Use \code{tar_option_set()} to set packages
 globally for all subsequent targets you define.}
 
 \item{library}{Character vector of library paths to try
