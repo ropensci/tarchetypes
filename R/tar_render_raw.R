@@ -107,6 +107,7 @@ tar_render_raw <- function(
     packages = packages,
     library = library,
     format = "file",
+    repository = "local",
     error = error,
     deployment = deployment,
     priority = priority,

@@ -147,6 +147,7 @@ tar_render_rep_raw <- function(
     packages = packages,
     library = library,
     format = "file",
+    repository = "local",
     iteration = iteration,
     error = error,
     deployment = deployment,
