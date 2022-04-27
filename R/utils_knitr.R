@@ -34,6 +34,7 @@ knitr_lines <- function(path) {
   handle <- basename(tempfile())
   connection <- textConnection(handle, open = "w", local = TRUE)
   on.exit(close(connection))
+  knitr::opts_knit$set(root.dir = getwd())
   withr::with_options(
     new = list(knitr.purl.inline = TRUE),
     code = knitr::knit(path, output = connection, tangle = TRUE, quiet = TRUE)
