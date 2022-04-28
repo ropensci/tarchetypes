@@ -34,7 +34,15 @@ knitr_lines <- function(path) {
   handle <- basename(tempfile())
   connection <- textConnection(handle, open = "w", local = TRUE)
   on.exit(close(connection))
+
+  # Setting the knitr working directory to our project (targets) directory.
+  # Otherwise, the directory of `path` is used and we cannot open a connection
+  # to child documents.
+  # See https://github.com/ropensci/tarchetypes/pull/93 for a discussion.
+  old_root_dir <- knitr::opts_knit$get("root.dir")
   knitr::opts_knit$set(root.dir = getwd())
+  on.exit(knitr::opts_knit$set(root.dir = old_root_dir), add = TRUE)
+
   withr::with_options(
     new = list(knitr.purl.inline = TRUE),
     code = knitr::knit(path, output = connection, tangle = TRUE, quiet = TRUE)
