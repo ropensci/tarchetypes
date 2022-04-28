@@ -124,3 +124,66 @@ targets::tar_test("tar_render() with a _files/ directory", {
     c("report.html", "report.Rmd", "report_files")
   )
 })
+
+targets::tar_test("tar_render() works with child documents", {
+  skip_pandoc()
+
+  # Create a main file and a child file in a subdirectory
+  dir.create("report")
+  writeLines(
+    text = c(
+      "---",
+      "title: report",
+      "output_format: html_document",
+      "---",
+      "",
+      "```{r, child = \"report/child.Rmd\"}",
+      "```"
+    ),
+    con = "report/main.Rmd"
+  )
+  writeLines(
+    text = c(
+      "# Child Document",
+      "",
+      "```{r}",
+      "targets::tar_read(data)",
+      "```"
+    ),
+    con = "report/child.Rmd"
+  )
+
+  targets::tar_script({
+    library(tarchetypes)
+    list(
+      tar_target(data, data.frame(x = seq_len(26L), y = letters)),
+      tar_render(report, "report/main.Rmd", quiet = TRUE)
+    )
+  })
+
+  # First run.
+  suppressMessages(targets::tar_make(callr_function = NULL))
+  progress <- targets::tar_progress()
+  progress <- progress[progress$progress != "skipped", ]
+  expect_equal(sort(progress$name), sort(c("data", "report")))
+  out <- targets::tar_read(report)
+  expect_equal(out, c("report/main.html", "report/main.Rmd"))
+
+  # Should not rerun the report.
+  suppressMessages(targets::tar_make(callr_function = NULL))
+  progress <- targets::tar_progress()
+  progress <- progress[progress$progress != "skipped", ]
+  expect_equal(nrow(progress), 0L)
+  targets::tar_script({
+    library(tarchetypes)
+    list(
+      tar_target(data, data.frame(x = rev(seq_len(26L)), y = letters)),
+      tar_render(report, "report/main.Rmd")
+    )
+  })
+
+  # Should rerun the report.
+  suppressMessages(targets::tar_make(callr_function = NULL))
+  expect_equal(sort(targets::tar_progress()$name), sort(c("data", "report")))
+})
+
