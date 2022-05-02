@@ -1,3 +1,7 @@
+# tarchetypes 0.6.0.9000
+
+* Temporarily change `root.dir` when scanning for dependencies so `knitr` child documents work (#93, @mutlusun).
+
 # tarchetypes 0.6.0
 
 * Implement `tar_file_read()` (#84, @petrbouchal).

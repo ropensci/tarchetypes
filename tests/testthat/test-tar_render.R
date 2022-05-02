@@ -126,8 +126,8 @@ targets::tar_test("tar_render() with a _files/ directory", {
 })
 
 targets::tar_test("tar_render() works with child documents", {
+  skip_on_cran()
   skip_pandoc()
-
   # Create a main file and a child file in a subdirectory
   dir.create("report")
   writeLines(
@@ -156,7 +156,6 @@ targets::tar_test("tar_render() works with child documents", {
     ),
     con = "report/child.Rmd"
   )
-
   targets::tar_script({
     library(targets)
     library(tarchetypes)
@@ -166,7 +165,6 @@ targets::tar_test("tar_render() works with child documents", {
       tar_render(report, "report/main.Rmd", quiet = TRUE)
     )
   })
-
   # First run.
   suppressMessages(targets::tar_make(callr_function = NULL))
   progress <- targets::tar_progress()
@@ -174,13 +172,11 @@ targets::tar_test("tar_render() works with child documents", {
   expect_equal(sort(progress$name), sort(c("child", "main", "report")))
   out <- targets::tar_read(report)
   expect_equal(out, c("report/main.html", "report/main.Rmd"))
-
   # Should not rerun the report.
   suppressMessages(targets::tar_make(callr_function = NULL))
   progress <- targets::tar_progress()
   progress <- progress[progress$progress != "skipped", ]
   expect_equal(nrow(progress), 0L)
-
   # Should rerun the report.
   # Only the dependency in the main document is changed.
   targets::tar_script({
@@ -214,7 +210,6 @@ targets::tar_test("tar_render() works with child documents", {
     sort(targets::tar_progress()$name),
     sort(c("child", "main", "report"))
   )
-
   # Should rerun the report.
   # Change the main file slightly (but not the code)
   writeLines(
@@ -238,7 +233,6 @@ targets::tar_test("tar_render() works with child documents", {
     sort(targets::tar_progress()$name),
     sort(c("child", "main", "report"))
   )
-
   # Should rerun the report.
   # Change the child file slightly (but not the code)
   writeLines(
@@ -256,7 +250,6 @@ targets::tar_test("tar_render() works with child documents", {
     sort(targets::tar_progress()$name),
     sort(c("child", "main", "report"))
   )
-
   # Detect whether `value_main_target_changed` and
   # `value_child_target_changed` are correctly print in HTML file
   # (the values should occure once in the HTML file)
@@ -269,10 +262,10 @@ targets::tar_test("tar_render() works with child documents", {
     sum(grepl("value_child_target_changed", html_file, fixed = TRUE)),
     1L
   )
-
   # Check that the dependency graph is correct of our targets. `report` should
   # depend on `main` and `child`.
   edges <- tar_network(callr_function = NULL)$edges
+  edges <- edges[edges$to == "report",, drop = FALSE] # nolint
   expect_identical(
     edges,
     tibble::tibble(
