@@ -1,6 +1,8 @@
 # tarchetypes 0.6.0.9000
 
 * Temporarily change `root.dir` when scanning for dependencies so `knitr` child documents work (#93, @mutlusun).
+* Use `format = "rds"` for `target_batch` in `tar_map_rep_raw()` so the global format option does not mess up the pipeline.
+* Handle non-atomic length-one list columns in `tar_append_static_values()`.
 
 # tarchetypes 0.6.0
 

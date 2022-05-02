@@ -211,7 +211,7 @@ tar_append_static_values <- function(object, values) {
   args <- list(.data = object)
   for (name in setdiff(names(values), names(object))) {
     args[[name]] <- if_any(
-      length(values[[name]]) == 1L,
+      length(values[[name]]) == 1L && is.atomic(values[[name]]),
       values[[name]],
       list(values[[name]])
     )
