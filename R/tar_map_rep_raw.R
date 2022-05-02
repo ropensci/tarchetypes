@@ -119,6 +119,7 @@ tar_map_rep_raw <- function(
     name = name_batch,
     command = substitute(seq_len(batches), env = list(batches = batches)),
     packages = character(0),
+    format = "rds",
     iteration = "vector",
     error = error,
     memory = memory,
