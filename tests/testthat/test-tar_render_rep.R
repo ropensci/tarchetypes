@@ -265,3 +265,19 @@ targets::tar_test("tar_render_rep() with output_file and _files", {
     expect_equal(out, exp)
   }
 })
+
+targets::tar_test("tar_render_rep_run_params", {
+  params <- tibble::tibble(param1 = letters[seq_len(4)])
+  out <- tar_render_rep_run_params(params, 1)
+  expect_equal(out$param1, letters[seq_len(4)])
+  expect_equal(out$tar_group, rep(1, 4))
+  out <- tar_render_rep_run_params(params, 2)
+  expect_equal(out$param1, letters[seq_len(4)])
+  expect_equal(out$tar_group, c(1, 1, 2, 2))
+  out <- tar_render_rep_run_params(params, 3)
+  expect_equal(out$param1, letters[seq_len(4)])
+  expect_equal(sort(unique(out$tar_group)), sort(c(1, 2, 3)))
+  out <- tar_render_rep_run_params(params, 4)
+  expect_equal(out$param1, letters[seq_len(4)])
+  expect_equal(out$tar_group, seq_len(4))
+})

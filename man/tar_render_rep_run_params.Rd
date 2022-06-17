@@ -18,4 +18,11 @@ A batched data frame of R Markdown parameters.
 Internal function needed for \code{tar_render_rep()}.
 Users should not invoke it directly.
 }
+\examples{
+params <- tibble::tibble(param1 = letters[seq_len(4)])
+tar_render_rep_run_params(params, 1)
+tar_render_rep_run_params(params, 2)
+tar_render_rep_run_params(params, 3)
+tar_render_rep_run_params(params, 4)
+}
 \keyword{internal}

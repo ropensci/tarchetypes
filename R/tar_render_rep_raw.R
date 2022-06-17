@@ -175,9 +175,19 @@ tar_render_rep_params_command <- function(params, batches) {
 #' @return A batched data frame of R Markdown parameters.
 #' @param params Data frame of R Markdown parameters.
 #' @param batches Number of batches to split up the renderings.
+#' @examples
+#' params <- tibble::tibble(param1 = letters[seq_len(4)])
+#' tar_render_rep_run_params(params, 1)
+#' tar_render_rep_run_params(params, 2)
+#' tar_render_rep_run_params(params, 3)
+#' tar_render_rep_run_params(params, 4)
 tar_render_rep_run_params <- function(params, batches) {
   batches <- batches %|||% nrow(params)
-  params$tar_group <- as.integer(cut(seq_len(nrow(params)), breaks = batches))
+  params$tar_group <- if_any(
+    batches > 1L,
+    as.integer(cut(seq_len(nrow(params)), breaks = batches)),
+    rep(1L, nrow(params))
+  )
   params
 }
 
