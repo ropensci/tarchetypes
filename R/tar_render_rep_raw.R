@@ -217,6 +217,8 @@ tar_render_rep_command <- function(name, path, quiet, args) {
 #'   report, automatically created by `tar_render_rep()`.
 tar_render_rep_run <- function(path, params, args, deps) {
   targets::tar_assert_package("rmarkdown")
+  rm(deps)
+  gc()
   envir <- parent.frame()
   params <- split(params, f = seq_len(nrow(params)))
   args$envir <- args$envir %|||% targets::tar_envir(default = envir)
