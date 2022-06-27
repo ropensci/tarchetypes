@@ -39,9 +39,9 @@ assert_values_list <- function(values) {
   targets::tar_assert_equal_lengths(values)
 }
 
-assert_quarto <- function() {
+assert_quarto <- function(debug = FALSE) {
   targets::tar_assert_package("quarto")
-  if (is.null(quarto::quarto_path())) {
+  if (is.null(quarto::quarto_path()) || debug) {
     targets::tar_throw_validate("Quarto CLI not found.")
   }
 }

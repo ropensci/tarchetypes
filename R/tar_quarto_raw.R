@@ -91,7 +91,6 @@ tar_quarto_raw <- function(
   output_file = NULL,
   execute = TRUE,
   execute_params = NULL,
-  execute_dir = NULL,
   cache = NULL,
   cache_refresh = FALSE,
   debug = FALSE,

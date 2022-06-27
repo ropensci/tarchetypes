@@ -15,5 +15,4 @@ vignettes/*.html
 README.html
 .Rproj.user
 report.Rmd
-
-/.quarto/
+.quarto

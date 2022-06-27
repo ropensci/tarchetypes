@@ -21,6 +21,7 @@
 ^\.RData$
 ^\.Rhistory$
 ^\.Rproj\.user$
+^\.quarto$
 ^_pkgdown\.yml$
 ^_targets$
 ^_targets\.R$
