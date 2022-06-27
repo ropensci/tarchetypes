@@ -1,4 +1,5 @@
 targets::tar_test("tar_quarto() works", {
+  skip_on_cran()
   skip_quarto()
   lines <- c(
     "---",
@@ -43,6 +44,7 @@ targets::tar_test("tar_quarto() works", {
 })
 
 targets::tar_test("tar_quarto(nested) runs from the project root", {
+  skip_on_cran()
   skip_quarto()
   lines <- c(
     "---",
@@ -74,6 +76,7 @@ targets::tar_test("tar_quarto(nested) runs from the project root", {
 })
 
 targets::tar_test("tar_quarto() for parameterized reports", {
+  skip_on_cran()
   skip_quarto()
   lines <- c(
     "---",
@@ -254,5 +257,82 @@ targets::tar_test("tar_quarto() works with child documents", {
       from = c("child", "main"),
       to = c("report", "report")
     )
+  )
+})
+
+targets::tar_test("quarto projects", {
+  skip_on_cran()
+  skip_quarto()
+  lines <- c(
+    "project:",
+    "  type: book",
+    "book:",
+    "  title: 'r'",
+    "  author: 'a'",
+    "  chapters:",
+    "    - index.qmd",
+    "    - r2.qmd"
+  )
+  writeLines(lines, "_quarto.yml")
+  lines <- c(
+    "# Preface {.unnumbered}",
+    "",
+    "r1.",
+    "",
+    "```{r}",
+    "targets::tar_read(r1)",
+    "```"
+  )
+  writeLines(lines, "index.qmd")
+  lines <- c(
+    "# r2",
+    "",
+    "r2.",
+    "",
+    "```{r}",
+    "targets::tar_read(r2)",
+    "```"
+  )
+  writeLines(lines, "r2.qmd")
+  targets::tar_script({
+    library(tarchetypes)
+    list(
+      tar_target(r1, "r1_value"),
+      tar_target(r2, "r2_value"),
+      tar_quarto(
+        project,
+        input = ".",
+        files = c("_quarto.yml", "_book")
+      )
+    )
+  }, ask = FALSE)
+  edges <- targets::tar_network(callr_function = NULL)$edges
+  expect_equal(sort(edges$from), sort(c("r1", "r2")))
+  expect_equal(edges$to, c("project", "project"))
+  targets::tar_make(callr_function = NULL)
+  expect_true(
+    any(grepl("r1_value", readLines("_book/index.html", warn = FALSE)))
+  )
+  expect_true(any(grepl("r2_value", readLines("_book/r2.html", warn = FALSE))))
+  expect_equal(targets::tar_outdated(callr_function = NULL), character(0))
+  unlink("_book/search.json")
+  expect_equal(targets::tar_outdated(callr_function = NULL), "project")
+  targets::tar_make(callr_function = NULL)
+  expect_equal(targets::tar_outdated(callr_function = NULL), character(0))
+  targets::tar_script({
+    library(tarchetypes)
+    list(
+      tar_target(r1, "r1_value"),
+      tar_target(r2, "r2_value2"),
+      tar_quarto(
+        project,
+        input = ".",
+        files = c("_quarto.yml", "_book")
+      )
+    )
+  }, ask = FALSE)
+  expect_equal(
+    sort(targets::tar_outdated(callr_function = NULL)),
+    sort(c("project", "r2"))
   )
 })
