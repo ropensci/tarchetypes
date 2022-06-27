@@ -83,6 +83,8 @@
 #'   "targets::tar_read(data)",
 #'   "```"
 #' )
+# In tar_dir(), not part of the user's file space:
+#' writeLines(lines, "report.qmd")
 #' # Include the report in a pipeline as follows.
 #' targets::tar_script({
 #'   library(tarchetypes)
@@ -106,7 +108,10 @@
 #'   "print(params$your_param)",
 #'   "```"
 #' )
+# In tar_dir(), not part of the user's file space:
+#' writeLines(lines, "report.qmd")
 #' # Include the report in the pipeline as follows.
+#' unlink("_targets.R") # In tar_dir(), not the user's file space.
 #' targets::tar_script({
 #'   library(tarchetypes)
 #'   list(

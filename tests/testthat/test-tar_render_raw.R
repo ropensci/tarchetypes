@@ -1,7 +1,7 @@
 # targets::tar_test() runs code from a temporary directory
 # to avoid writing to the user's file space.
 targets::tar_test("tar_render_raw() works", {
-  skip_pandoc()
+  skip_rmarkdown()
   lines <- c(
     "---",
     "title: report",
@@ -45,7 +45,7 @@ targets::tar_test("tar_render_raw() works", {
 })
 
 targets::tar_test("tar_render_raw(nested) runs from project root", {
-  skip_pandoc()
+  skip_rmarkdown()
   lines <- c(
     "---",
     "title: report",
@@ -72,7 +72,7 @@ targets::tar_test("tar_render_raw(nested) runs from project root", {
 })
 
 targets::tar_test("tar_render_raw() for parameterized reports", {
-  skip_pandoc()
+  skip_rmarkdown()
   lines <- c(
     "---",
     "title: report",

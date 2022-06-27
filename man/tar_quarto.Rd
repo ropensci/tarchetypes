@@ -230,6 +230,7 @@ lines <- c(
   "targets::tar_read(data)",
   "```"
 )
+writeLines(lines, "report.qmd")
 # Include the report in a pipeline as follows.
 targets::tar_script({
   library(tarchetypes)
@@ -253,7 +254,9 @@ lines <- c(
   "print(params$your_param)",
   "```"
 )
+writeLines(lines, "report.qmd")
 # Include the report in the pipeline as follows.
+unlink("_targets.R") # In tar_dir(), not the user's file space.
 targets::tar_script({
   library(tarchetypes)
   list(

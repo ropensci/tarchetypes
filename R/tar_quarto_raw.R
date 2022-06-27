@@ -39,6 +39,8 @@
 #'   "targets::tar_read(data)",
 #'   "```"
 #' )
+#' # In tar_dir(), not part of the user's file space:
+#' writeLines(lines, "report.qmd")
 #' # Include the report in a pipeline as follows.
 #' targets::tar_script({
 #'   library(tarchetypes)
@@ -48,7 +50,7 @@
 #'   )
 #' }, ask = FALSE)
 #' # Then, run the pipeline as usual.
-#'
+#' 
 #' # Parameterized Quarto:
 #' lines <- c(
 #'   "---",
@@ -62,6 +64,8 @@
 #'   "print(params$your_param)",
 #'   "```"
 #' )
+#' # In tar_dir(), not part of the user's file space:
+#' writeLines(lines, "report.qmd")
 #' # Include the report in the pipeline as follows.
 #' targets::tar_script({
 #'   library(tarchetypes)
@@ -75,8 +79,8 @@
 #'     )
 #'   )
 #' }, ask = FALSE)
-#' })
 #' # Then, run the pipeline as usual.
+#' })
 #' }
 tar_quarto_raw <- function(
   name,
@@ -205,22 +209,36 @@ tar_quarto_command <- function(
   quiet,
   pandoc_args
 ) {
-  args <- list(
-    input = input,
-    output_format = output_format,
-    output_file = output_file,
-    execute = execute,
-    execute_params = execute_params,
-    execute_dir = quote(getwd()),
-    execute_daemon = 0,
-    execute_daemon_restart = FALSE,
-    execute_debug = FALSE,
-    cache = cache,
-    cache_refresh = cache_refresh,
-    debug = debug,
-    quiet = quiet,
-    pandoc_args = pandoc_args,
-    as_job = FALSE
+  args <- substitute(
+    list(
+      input = input,
+      output_format = output_format,
+      output_file = output_file,
+      execute = execute,
+      execute_params = execute_params,
+      execute_dir = quote(getwd()),
+      execute_daemon = 0,
+      execute_daemon_restart = FALSE,
+      execute_debug = FALSE,
+      cache = cache,
+      cache_refresh = cache_refresh,
+      debug = debug,
+      quiet = quiet,
+      pandoc_args = pandoc_args,
+      as_job = FALSE
+    ),
+    env = list(
+      input = input,
+      output_format = output_format,
+      output_file = output_file,
+      execute = execute,
+      execute_params = execute_params,
+      cache = cache,
+      cache_refresh = cache_refresh,
+      debug = debug,
+      quiet = quiet,
+      pandoc_args = pandoc_args
+    )
   )
   deps <- sort(unique(unlist(map(sources, ~knitr_deps(.x)))))
   deps <- call_list(as_symbols(deps))
@@ -264,7 +282,10 @@ tar_quarto_command <- function(
 #' })
 #' }
 tar_quarto_run <- function(args, deps, files) {
+  rm(deps)
+  gc()
   assert_quarto()
+  args <- args[!map_lgl(args, is.null)]
   do.call(what = quarto::quarto_render, args = args)
   sort(as.character(fs::path_rel(unlist(files))))
 }

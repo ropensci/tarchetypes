@@ -141,6 +141,8 @@ tar_render_command <- function(path, args, quiet) {
 #' @param deps An unnamed list of target dependencies of the R Markdown
 #'   report, automatically created by `tar_render()`.
 tar_render_run <- function(path, args, deps) {
+  rm(deps)
+  gc()
   targets::tar_assert_package("rmarkdown")
   withr::local_options(list(crayon.enabled = NULL))
   envir <- parent.frame()
