@@ -1,9 +1,9 @@
-targets::tar_test("tar_format_api()", {
-  expect_null(tar_format_api(x, 1))
+targets::tar_test("tar_format_alias_api()", {
+  expect_null(tar_format_alias_api(x, 1))
 })
 
-targets::tar_test("tar_format()", {
-  f <- tar_format("file")
+targets::tar_test("tar_format_alias()", {
+  f <- tar_format_alias("file")
   x <- f(x, 0)
   expect_true(inherits(x, "tar_target"))
   expect_equal(x$settings$format, "file")
@@ -45,8 +45,8 @@ targets::tar_test("tar_qs()", {
   expect_equal(x$settings$format, "qs")
 })
 
-targets::tar_test("tar_format_feather()", {
-  x <- tar_format_feather(x, 0)
+targets::tar_test("tar_format_alias_feather()", {
+  x <- tar_format_alias_feather(x, 0)
   expect_true(inherits(x, "tar_target"))
   expect_equal(x$settings$format, "feather")
 })
@@ -105,8 +105,8 @@ targets::tar_test("tar_aws_qs()", {
   expect_true(grepl("qs", x$settings$format))
 })
 
-targets::tar_test("tar_format_aws_feather()", {
-  x <- suppressWarnings(tar_format_aws_feather(x, 0))
+targets::tar_test("tar_format_alias_aws_feather()", {
+  x <- suppressWarnings(tar_format_alias_aws_feather(x, 0))
   expect_true(inherits(x, "tar_target"))
   expect_true(grepl("feather", x$settings$format))
 })

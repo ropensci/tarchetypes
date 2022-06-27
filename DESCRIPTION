@@ -53,6 +53,7 @@ Imports:
 Suggests:
   curl (>= 4.3),
   knitr (>= 1.28),
+  quarto (>= 1.0),
   rmarkdown (>= 2.1),
   testthat (>= 3.0.0),
   xml2 (>= 1.3.2)
