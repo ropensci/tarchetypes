@@ -161,6 +161,8 @@ targets::tar_make()
 \seealso{
 Other Literate programming targets: 
 \code{\link{tar_knit}()},
+\code{\link{tar_quarto_raw}()},
+\code{\link{tar_quarto}()},
 \code{\link{tar_render_raw}()},
 \code{\link{tar_render_rep_raw}()},
 \code{\link{tar_render_rep}()},

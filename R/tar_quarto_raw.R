@@ -7,9 +7,9 @@
 #'   except that it uses standard evaluation for the
 #'   `name` and `execute_params` arguments (instead of quoting them).
 #' @return A target object with `format = "file"`.
-#'   When this target runs, it returns a character vector
-#'   of file paths: the rendered documents, the Quarto source files,
-#'   and other input and output files.
+#'   When this target runs, it returns a sorted character vector
+#'   of all the important file paths: the rendered documents,
+#'   the Quarto source files, and other input and output files.
 #'   All returned paths are *relative* paths to ensure portability
 #'   (so that the project can be moved from one file system to another
 #'   without invalidating the target).
@@ -44,7 +44,7 @@
 #'   library(tarchetypes)
 #'   list(
 #'     tar_target(data, data.frame(x = seq_len(26), y = letters)),
-#'     tar_quarto_raw("report", "report.qmd")
+#'     tar_quarto_raw("report", input = "report.qmd", files = "report.html")
 #'   )
 #' }, ask = FALSE)
 #' # Then, run the pipeline as usual.
@@ -69,7 +69,8 @@
 #'     tar_target(data, data.frame(x = seq_len(26), y = letters)),
 #'     tar_quarto_raw(
 #'       "report",
-#'       "report.qmd",
+#'       input = "report.qmd",
+#'       files = "report.html",
 #'       execute_params = quote(list(your_param = data))
 #'     )
 #'   )
@@ -79,8 +80,8 @@
 #' }
 tar_quarto_raw <- function(
   name,
+  input,
   files,
-  input = NULL,
   sources = tarchetypes::tar_quarto_sources(input),
   output_format = NULL,
   output_file = NULL,
@@ -111,6 +112,7 @@ tar_quarto_raw <- function(
   targets::tar_assert_scalar(input %|||% ".")
   targets::tar_assert_chr(input %|||% ".")
   targets::tar_assert_nzchar(input %|||% ".")
+  targets::tar_assert_path(input)
   targets::tar_assert_chr(sources)
   targets::tar_assert_nzchar(sources)
   targets::tar_assert_path(sources)
@@ -172,7 +174,7 @@ tar_quarto_raw <- function(
 #'   containing the name of the Quarto source document or the root
 #'   directory of the Quarto project.
 #' @examples
-#' tar_quarto_sources("file.qmd")
+#' tar_quarto_sources(".")
 tar_quarto_sources <- function(input = NULL) {
   input <- input %|||% "."
   targets::tar_assert_scalar(input)
@@ -197,11 +199,72 @@ tar_quarto_command <- function(
   output_file,
   execute,
   execute_params,
-  cache = cache,
+  cache,
   cache_refresh,
   debug,
   quiet,
   pandoc_args
 ) {
-  browser()
+  args <- list(
+    input = input,
+    output_format = output_format,
+    output_file = output_file,
+    execute = execute,
+    execute_params = execute_params,
+    execute_dir = quote(getwd()),
+    execute_daemon = 0,
+    execute_daemon_restart = FALSE,
+    execute_debug = FALSE,
+    cache = cache,
+    cache_refresh = cache_refresh,
+    debug = debug,
+    quiet = quiet,
+    pandoc_args = pandoc_args,
+    as_job = FALSE
+  )
+  deps <- sort(unique(unlist(map(sources, ~knitr_deps(.x)))))
+  deps <- call_list(as_symbols(deps))
+  fun <- call_ns("tarchetypes", "tar_quarto_run")
+  expr <- list(fun, args = args, deps = deps, files = sort(c(files, sources)))
+  as.expression(as.call(expr))
+}
+
+#' @title Render a Quarto project inside a `tar_quarto()` target.
+#' @description Internal function needed for `tar_quarto()`.
+#'   Users should not invoke it directly.
+#' @export
+#' @keywords internal
+#' @return Sorted character vector with the paths to all the important
+#'   files that `targets` should track for changes.
+#' @param args A named list of arguments to `quarto::quarto_render()`.
+#' @param deps An unnamed list of target dependencies of the Quarto
+#'   source files.
+#' @param files Character vector with the paths to all the important
+#'   files that `targets` should track for changes.
+#' @examples
+#' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
+#' targets::tar_dir({  # tar_dir() runs code from a temporary directory.
+#' # Unparameterized Quarto document:
+#' lines <- c(
+#'   "---",
+#'   "title: Quarto source file",
+#'   "output_format: html",
+#'   "---",
+#'   "Assume these lines are in the Quarto source file.",
+#'   "```{r}",
+#'   "1 + 1",
+#'   "```"
+#' )
+#' tmp <- tempfile(fileext = ".qmd")
+#' writeLines(lines, tmp)
+#' args <- list(input = tmp, quiet = TRUE)
+#' files <- fs::path_ext_set(tmp, "html")
+#' tar_quarto_run(args = args, deps = list(), files = files)
+#' file.exists(files)
+#' })
+#' }
+tar_quarto_run <- function(args, deps, files) {
+  assert_quarto()
+  do.call(what = quarto::quarto_render, args = args)
+  sort(as.character(fs::path_rel(unlist(files))))
 }
