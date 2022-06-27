@@ -50,7 +50,7 @@
 #'   )
 #' }, ask = FALSE)
 #' # Then, run the pipeline as usual.
-#' 
+#'
 #' # Parameterized Quarto:
 #' lines <- c(
 #'   "---",

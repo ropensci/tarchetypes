@@ -178,7 +178,6 @@ targets::tar_test("tar_quarto() works with child documents", {
     sort(targets::tar_progress()$name),
     sort(c("child", "main", "report"))
   )
-  
   # Should rerun the report.
   # Only the dependency in the child document is changed.
   targets::tar_script({
