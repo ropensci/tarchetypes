@@ -155,7 +155,7 @@ tar_render_run <- function(path, args, deps) {
 tar_render_paths <- function(output, source) {
   output <- fs::path_rel(output)
   source <- fs::path_rel(source)
-  files <- paste0(fs::path_ext_remove(output), "_files")
+  files <- paste0(fs::path_ext_remove(output[1]), "_files")
   files <- if_any(all(file.exists(files)), files, character(0))
-  c(output, source, files)
+  c(sort(output), sort(source), files)
 }

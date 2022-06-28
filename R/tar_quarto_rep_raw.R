@@ -356,8 +356,9 @@ tar_quarto_rep_run <- function(args, execute_params, files, deps) {
   execute_params <- split(execute_params, f = seq_len(nrow(execute_params)))
   out <- unname(unlist(map(execute_params, ~tar_quarto_rep_rep(args, .x))))
   support <- sprintf("%s_files", fs::path_ext_remove(basename(args$input)))
-  out <- if_any(dir.exists(support), c(out, support), out)
-  sort(unique(c(out, files)))
+  files <- if_any(dir.exists(support), c(files, support), files)
+  files <- sort(unique(files))
+  unique(c(out, args$input, files))
 }
 
 tar_quarto_rep_rep <- function(args, execute_params) {
@@ -368,7 +369,7 @@ tar_quarto_rep_rep <- function(args, execute_params) {
   args$execute_params[["output_file"]] <- NULL
   args$execute_params[["tar_group"]] <- NULL
   do.call(quarto::quarto_render, args)
-  as.character(fs::path_rel(unlist(c(args$input, args$output_file))))
+  sort(as.character(fs::path_rel(unlist(args$output_file))))
 }
 
 tar_quarto_rep_default_path <- function(input, execute_params) {

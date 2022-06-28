@@ -242,7 +242,8 @@ tar_quarto_command <- function(
   deps <- sort(unique(unlist(map(sources, ~knitr_deps(.x)))))
   deps <- call_list(as_symbols(deps))
   fun <- call_ns("tarchetypes", "tar_quarto_run")
-  expr <- list(fun, args = args, deps = deps, files = sort(c(files, sources)))
+  files <- unique(c(sort(files), sort(sources)))
+  expr <- list(fun, args = args, deps = deps, files = files)
   as.expression(as.call(expr))
 }
 
@@ -287,6 +288,6 @@ tar_quarto_run <- function(args, deps, files) {
   args <- args[!map_lgl(args, is.null)]
   do.call(what = quarto::quarto_render, args = args)
   support <- sprintf("%s_files", fs::path_ext_remove(basename(args$input)))
-  files <- if_any(dir.exists(support), c(files, support), files)
-  sort(as.character(fs::path_rel(unlist(files))))
+  files <- if_any(dir.exists(support), unique(c(files, support)), files)
+  as.character(fs::path_rel(unlist(files)))
 }
