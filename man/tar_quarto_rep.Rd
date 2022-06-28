@@ -9,6 +9,7 @@ tar_quarto_rep(
   input,
   execute_params = data.frame(),
   batches = NULL,
+  files = character(0),
   execute = TRUE,
   cache = NULL,
   cache_refresh = FALSE,
@@ -52,7 +53,10 @@ and one column per Quarto parameter. You may also include an
 \code{output_file} column to specify the path of each rendered report.
 If an \code{output_file} column is not included,
 then the output files are automatically determined using the parameters,
-and the default file extension is \code{"html"}.
+and the default file extension is \code{"html"}, regardless of the
+YAML front-matter of the Quarto source file.
+(\code{"html"} may not be correct for your use case, so if you need a different
+file extension, then you will need to supply an \code{output_file} column.)
 Quarto parameters must not be named \code{tar_group} or \code{output_file}.
 This \code{execute_params} argument is converted into the command for a target
 that supplies the Quarto parameters.}
@@ -61,6 +65,15 @@ that supplies the Quarto parameters.}
 For a large number of reports, increase the number of batches
 to decrease target-level overhead. Defaults to the number of
 reports to render (1 report per batch).}
+
+\item{files}{Character vector of extra files that \code{targets}
+should track for changes. If the content of one of these files changes,
+then the report will rerun over all the parameters on the next
+\code{tar_make()}. These files are \emph{extra} files, and they
+do not include the Quarto
+source document or rendered output document,
+which are already tracked for changes. Examples include
+bibliographies, style sheets, and supporting image files.}
 
 \item{execute}{Whether to execute embedded code chunks.}
 
@@ -169,7 +182,11 @@ rendered report and one column per parameter. An optional
 \code{output_file} column may be included to set the output file path
 of each rendered report. If an \code{output_file} column is not included,
 then the output files are automatically determined using the parameters,
-and the default file extension is \code{"html"}.
+and the default file extension is \code{"html"}regardless of the
+YAML front-matter of the Quarto source file.
+(\code{"html"} may not be correct for your use case, so if you need a different
+file extension, then you will need to supply an \code{output_file} column.)
+
 The Quarto source should mention other dependency targets
 \code{tar_load()} and \code{tar_read()} in the active code chunks
 (which also allows you to render the report

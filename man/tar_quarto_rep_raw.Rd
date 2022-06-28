@@ -9,6 +9,7 @@ tar_quarto_rep_raw(
   input,
   execute_params = expression(NULL),
   batches = NULL,
+  files = character(0),
   execute = TRUE,
   cache = NULL,
   cache_refresh = FALSE,
@@ -44,8 +45,8 @@ You can recover the seed of a completed target
 with \code{tar_meta(your_target, seed)} and run \code{set.seed()} on the result
 to locally recreate the target's initial RNG state.}
 
-\item{input}{The input file or project directory to be rendered (defualts
-to rendering the project in the current working directory).}
+\item{input}{Character string, file path to the Quarto source file.
+Must have length 1.}
 
 \item{execute_params}{Expression object with code to generate
 a data frame or \code{tibble} with one row per rendered report
@@ -54,6 +55,8 @@ and one column per Quarto parameter. You may also include an
 If an \code{output_file} column is not included,
 then the output files are automatically determined using the parameters,
 and the default file extension is \code{"html"}.
+(\code{"html"} may not be correct for your use case, so if you need a different
+file extension, then you will need to supply an \code{output_file} column.)
 Quarto parameters must not be named \code{tar_group} or \code{output_file}.
 This \code{execute_params} argument is converted into the command for a target
 that supplies the Quarto parameters.}
@@ -62,6 +65,15 @@ that supplies the Quarto parameters.}
 For a large number of reports, increase the number of batches
 to decrease target-level overhead. Defaults to the number of
 reports to render (1 report per batch).}
+
+\item{files}{Character vector of extra files that \code{targets}
+should track for changes. If the content of one of these files changes,
+then the report will rerun over all the parameters on the next
+\code{tar_make()}. These files are \emph{extra} files, and they
+do not include the Quarto
+source document or rendered output document,
+which are already tracked for changes. Examples include
+bibliographies, style sheets, and supporting image files.}
 
 \item{execute}{Whether to execute embedded code chunks.}
 
@@ -138,9 +150,6 @@ explicitly from another language.
 \item{cue}{An optional object from \code{tar_cue()} to customize the
 rules that decide whether the target is up to date.}
 
-\item{path}{Character string, file path to the Quarto source file.
-Must have length 1.}
-
 \item{args}{Named list of other arguments to \code{quarto::quarto_render()}.
 Must not include \code{params} or \code{output_file}. Evaluated when the target
 is defined.}
@@ -166,6 +175,12 @@ Parameters must be given as a data frame with one row per
 rendered report and one column per parameter. An optional
 \code{output_file} column may be included to set the output file path
 of each rendered report.
+If an \code{output_file} column is not included,
+then the output files are automatically determined using the parameters,
+and the default file extension is \code{"html"}.
+(\code{"html"} may not be correct for your use case, so if you need a different
+file extension, then you will need to supply an \code{output_file} column.)
+
 The Quarto source should mention other dependency targets
 \code{tar_load()} and \code{tar_read()} in the active code chunks
 (which also allows you to render the report
@@ -225,6 +240,7 @@ lines <- c(
   "print(params$par)",
   "```"
 )
+writeLines(lines, "report.qmd") # In tar_dir(), not the user's file space.
 # The following pipeline will run the report for each row of params.
 targets::tar_script({
   library(tarchetypes)

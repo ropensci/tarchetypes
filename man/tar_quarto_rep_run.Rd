@@ -5,12 +5,21 @@
 \title{Render a batch of parameterized Quarto reports
 inside a \code{tar_quarto_rep()} target.}
 \usage{
-tar_quarto_rep_run(args, execute_params, deps)
+tar_quarto_rep_run(args, execute_params, files, deps)
 }
 \arguments{
 \item{args}{A named list of arguments to \code{quarto::quarto_render()}.}
 
 \item{execute_params}{A data frame of Quarto parameters to branch over.}
+
+\item{files}{Character vector of extra files that \code{targets}
+should track for changes. If the content of one of these files changes,
+then the report will rerun over all the parameters on the next
+\code{tar_make()}. These files are \emph{extra} files, and they
+do not include the Quarto
+source document or rendered output document,
+which are already tracked for changes. Examples include
+bibliographies, style sheets, and supporting image files.}
 
 \item{deps}{An unnamed list of target dependencies of the Quarto
 report, automatically created by \code{tar_quarto_rep()}.}
@@ -23,5 +32,48 @@ depend on the input source path, and they have no defaults.
 \description{
 Internal function needed for \code{tar_quarto()}.
 Users should not invoke it directly.
+}
+\examples{
+if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
+targets::tar_dir({ # tar_dir() runs code from a temporary directory.
+# Parameterized Quarto:
+lines <- c(
+  "---",
+  "title: 'report.qmd source file'",
+  "output_format: html_document",
+  "params:",
+  "  par: \"default value\"",
+  "---",
+  "Assume these lines are in a file called report.qmd.",
+  "```{r}",
+  "print(params$par)",
+  "```"
+)
+writeLines(lines, "report.qmd") # In tar_dir(), not the user's file space.
+args <- list(
+  input = "report.qmd",
+  execute = TRUE,
+  execute_dir = quote(getwd()),
+  execute_daemon = 0,
+  execute_daemon_restart = FALSE,
+  execute_debug = FALSE,
+  cache = FALSE,
+  cache_refresh = FALSE,
+  debug = FALSE,
+  quiet = TRUE,
+  as_job = FALSE
+)
+execute_params <- tibble::tibble(
+  par = c("non-default value 1", "non-default value 2"),
+  output_file = c("report1.html", "report2.html")
+)
+tar_quarto_rep_run(
+  args = args,
+  execute_params = execute_params,
+  files = character(0),
+  deps = NULL
+)
+})
+}
 }
 \keyword{internal}

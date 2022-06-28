@@ -10,7 +10,11 @@
 #'   `output_file` column may be included to set the output file path
 #'   of each rendered report. If an `output_file` column is not included,
 #'   then the output files are automatically determined using the parameters,
-#'   and the default file extension is `"html"`.
+#'   and the default file extension is `"html"`regardless of the
+#'   YAML front-matter of the Quarto source file.
+#'   (`"html"` may not be correct for your use case, so if you need a different
+#'   file extension, then you will need to supply an `output_file` column.)
+#'
 #'   The Quarto source should mention other dependency targets
 #'   `tar_load()` and `tar_read()` in the active code chunks
 #'   (which also allows you to render the report
@@ -48,7 +52,10 @@
 #'   `output_file` column to specify the path of each rendered report.
 #'   If an `output_file` column is not included,
 #'   then the output files are automatically determined using the parameters,
-#'   and the default file extension is `"html"`.
+#'   and the default file extension is `"html"`, regardless of the
+#'   YAML front-matter of the Quarto source file.
+#'   (`"html"` may not be correct for your use case, so if you need a different
+#'   file extension, then you will need to supply an `output_file` column.)
 #'   Quarto parameters must not be named `tar_group` or `output_file`.
 #'   This `execute_params` argument is converted into the command for a target
 #'   that supplies the Quarto parameters.
@@ -87,6 +94,7 @@ tar_quarto_rep <- function(
   input,
   execute_params = data.frame(),
   batches = NULL,
+  files = character(0),
   execute = TRUE,
   cache = NULL,
   cache_refresh = FALSE,
@@ -109,6 +117,7 @@ tar_quarto_rep <- function(
     input = input,
     execute_params = substitute(execute_params),
     batches = batches,
+    files = files,
     execute = execute,
     cache = cache,
     cache_refresh = cache_refresh,

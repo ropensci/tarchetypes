@@ -25,6 +25,7 @@ targets::tar_test("tar_quarto() works", {
   progress <- progress[progress$progress != "skipped", ]
   expect_equal(sort(progress$name), sort(c("data", "report")))
   out <- targets::tar_read(report)
+  out <- setdiff(out, "report_files")
   expect_equal(sort(basename(out)), sort(c("report.html", "report.qmd")))
   # Should not rerun the report.
   suppressMessages(targets::tar_make(callr_function = NULL))

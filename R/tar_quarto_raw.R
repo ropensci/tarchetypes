@@ -286,5 +286,7 @@ tar_quarto_run <- function(args, deps, files) {
   assert_quarto()
   args <- args[!map_lgl(args, is.null)]
   do.call(what = quarto::quarto_render, args = args)
+  support <- sprintf("%s_files", fs::path_ext_remove(basename(args$input)))
+  files <- if_any(dir.exists(support), c(files, support), files)
   sort(as.character(fs::path_rel(unlist(files))))
 }
