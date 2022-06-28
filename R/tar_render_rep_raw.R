@@ -50,6 +50,8 @@
 #'   and one column per R Markdown parameter. You may also include an
 #'   `output_file` column to specify the path of each rendered report.
 #'   R Markdown parameters must not be named `tar_group` or `output_file`.
+#'   This `params` argument is converted into the command for a target
+#'   that supplies the R Markdown parameters.
 #' @param batches Number of batches to group the R Markdown files.
 #'   For a large number of reports, increase the number of batches
 #'   to decrease target-level overhead. Defaults to the number of
