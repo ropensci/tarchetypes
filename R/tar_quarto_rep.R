@@ -75,6 +75,7 @@
 #'   "print(params$par)",
 #'   "```"
 #' )
+#' writeLines(lines, "report.qmd") # In tar_dir(), not the user's file space.
 #' # The following pipeline will run the report for each row of params.
 #' targets::tar_script({
 #'   library(tarchetypes)
