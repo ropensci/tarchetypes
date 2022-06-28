@@ -74,9 +74,6 @@
 #'   to `tar_target()` for the Quarto documents. Does not apply
 #'   to the target with Quarto parameters (whose iteration
 #'   is always `"group"`).
-#' @param args Named list of other arguments to `quarto::quarto_render()`.
-#'   Must not include `params` or `output_file`. Evaluated when the target
-#'   is defined.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({ # tar_dir() runs code from a temporary directory.

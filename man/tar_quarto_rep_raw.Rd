@@ -149,10 +149,6 @@ explicitly from another language.
 
 \item{cue}{An optional object from \code{tar_cue()} to customize the
 rules that decide whether the target is up to date.}
-
-\item{args}{Named list of other arguments to \code{quarto::quarto_render()}.
-Must not include \code{params} or \code{output_file}. Evaluated when the target
-is defined.}
 }
 \value{
 A list of target objects to render the Quarto
