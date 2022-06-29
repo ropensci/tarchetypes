@@ -59,7 +59,8 @@ then the output files are automatically determined using the parameters,
 and the default file format is determined by the YAML front-matter
 of the Quarto source document. Only the first file format is used,
 the others are not generated.
-Quarto parameters must not be named \code{tar_group} or \code{output_file}.
+Quarto parameters must not be named \code{tar_group}, \code{tar_hash},
+or \code{output_file}.
 This \code{execute_params} argument is converted into the command for a target
 that supplies the Quarto parameters.}
 

@@ -152,3 +152,14 @@ tidyselect_names <- function() {
   out <- c(tidyselect, paste0("tidyselect::", tidyselect))
   c(out, paste0("tidyselect:::", tidyselect))
 }
+
+knitr_params_default_output_file <- function(params, default_output_file) {
+  base <- fs::path_ext_remove(default_output_file)
+  hash <- hash_rows(params)
+  ext <- fs::path_ext(default_output_file)
+  out <- file.path(
+    dirname(default_output_file),
+    sprintf("%s_%s.%s", base, hash, ext)
+  )
+  gsub("^\\.\\/", "", out)
+}

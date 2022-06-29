@@ -15,6 +15,7 @@ tar_quarto(
   debug = FALSE,
   quiet = TRUE,
   pandoc_args = NULL,
+  tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
   error = targets::tar_option_get("error"),
@@ -75,6 +76,11 @@ respectively for Rmd and Jupyter input files).}
 \item{quiet}{Suppress warning and other messages.}
 
 \item{pandoc_args}{Additional command line options to pass to pandoc.}
+
+\item{tidy_eval}{Logical, whether to enable tidy evaluation
+when interpreting \code{command} and \code{pattern}. If \code{TRUE}, you can use the
+"bang-bang" operator \verb{!!} to programmatically insert
+the values of global objects.}
 
 \item{packages}{Character vector of packages to load right before
 the target builds or the output data is reloaded for

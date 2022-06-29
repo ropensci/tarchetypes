@@ -1,4 +1,4 @@
-test_that("tar_quarto_files() single Rmd/qmd", {
+targets::tar_test("tar_quarto_files() single Rmd/qmd", {
   skip_quarto()
   lines <- c(
     "---",
@@ -20,7 +20,7 @@ test_that("tar_quarto_files() single Rmd/qmd", {
   }
 })
 
-test_that("tar_quarto_files() project", {
+targets::tar_test("tar_quarto_files() project", {
   skip_on_cran()
   skip_quarto()
   fs::dir_create("x")

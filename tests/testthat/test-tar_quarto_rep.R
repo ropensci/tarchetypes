@@ -110,6 +110,8 @@ targets::tar_test("tar_quarto_rep() run", {
   targets::tar_make(callr_function = NULL)
   # results of params
   out <- targets::tar_read(report_params)
+  expect_equal(length(unique(out$output_file)), 4L)
+  out$output_file <- NULL
   exp <- data.frame(
     par = c("parval1", "parval2", "parval3", "parval4"),
     tar_group = c(1L, 1L, 2L, 2L),
@@ -268,17 +270,18 @@ targets::tar_test("tar_quarto_rep() run with output_file not specified", {
 })
 
 targets::tar_test("tar_quarto_rep_run_params", {
+  file <- "report.html"
   params <- tibble::tibble(param1 = letters[seq_len(4)])
-  out <- tar_quarto_rep_run_params(params, 1)
+  out <- tar_quarto_rep_run_params(params, 1, file)
   expect_equal(out$param1, letters[seq_len(4)])
   expect_equal(out$tar_group, rep(1, 4))
-  out <- tar_quarto_rep_run_params(params, 2)
+  out <- tar_quarto_rep_run_params(params, 2, file)
   expect_equal(out$param1, letters[seq_len(4)])
   expect_equal(out$tar_group, c(1, 1, 2, 2))
-  out <- tar_quarto_rep_run_params(params, 3)
+  out <- tar_quarto_rep_run_params(params, 3, file)
   expect_equal(out$param1, letters[seq_len(4)])
   expect_equal(sort(unique(out$tar_group)), sort(c(1, 2, 3)))
-  out <- tar_quarto_rep_run_params(params, 4)
+  out <- tar_quarto_rep_run_params(params, 4, file)
   expect_equal(out$param1, letters[seq_len(4)])
   expect_equal(out$tar_group, seq_len(4))
 })

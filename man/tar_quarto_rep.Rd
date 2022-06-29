@@ -16,6 +16,7 @@ tar_quarto_rep(
   debug = FALSE,
   quiet = TRUE,
   pandoc_args = NULL,
+  tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
   format = targets::tar_option_get("format"),
@@ -59,7 +60,8 @@ then the output files are automatically determined using the parameters,
 and the default file format is determined by the YAML front-matter
 of the Quarto source document. Only the first file format is used,
 the others are not generated.
-Quarto parameters must not be named \code{tar_group} or \code{output_file}.
+Quarto parameters must not be named \code{tar_group}, \code{tar_hash},
+or \code{output_file}.
 This \code{execute_params} argument is converted into the command for a target
 that supplies the Quarto parameters.}
 
@@ -89,6 +91,10 @@ respectively for Rmd and Jupyter input files).}
 \item{quiet}{Suppress warning and other messages.}
 
 \item{pandoc_args}{Additional command line options to pass to pandoc.}
+
+\item{tidy_eval}{Logical of length 1, whether to use tidy evaluation
+to resolve \code{execute_params}. Similar to the \code{tidy_eval}
+argument of \code{targets::tar_target()}.}
 
 \item{packages}{Character vector of packages to load right before
 the target builds or the output data is reloaded for

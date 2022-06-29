@@ -117,6 +117,7 @@ tar_quarto <- function(
   debug = FALSE,
   quiet = TRUE,
   pandoc_args = NULL,
+  tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
   error = targets::tar_option_get("error"),
@@ -127,10 +128,9 @@ tar_quarto <- function(
   cue = targets::tar_option_get("cue")
 ) {
   name <- targets::tar_deparse_language(substitute(name))
-  envir <- tar_option_get("envir")
   execute_params <- targets::tar_tidy_eval(
     substitute(execute_params),
-    envir = envir,
+    envir = tar_option_get("envir"),
     tidy_eval = tidy_eval
   )
   tar_quarto_raw(

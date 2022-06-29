@@ -40,6 +40,9 @@
 #' @inheritParams targets::tar_target
 #' @inheritParams quarto::quarto_render
 #' @inheritParams tar_quarto_rep_raw
+#' @param tidy_eval Logical of length 1, whether to use tidy evaluation
+#'   to resolve `execute_params`. Similar to the `tidy_eval`
+#'   argument of `targets::tar_target()`.
 #' @param execute_params Code to generate
 #'   a data frame or `tibble` with one row per rendered report
 #'   and one column per Quarto parameter. You may also include an
@@ -51,7 +54,8 @@
 #'   and the default file format is determined by the YAML front-matter
 #'   of the Quarto source document. Only the first file format is used,
 #'   the others are not generated.
-#'   Quarto parameters must not be named `tar_group` or `output_file`.
+#'   Quarto parameters must not be named `tar_group`, `tar_hash`,
+#'   or `output_file`.
 #'   This `execute_params` argument is converted into the command for a target
 #'   that supplies the Quarto parameters.
 #' @examples
@@ -97,6 +101,7 @@ tar_quarto_rep <- function(
   debug = FALSE,
   quiet = TRUE,
   pandoc_args = NULL,
+  tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
   format = targets::tar_option_get("format"),
@@ -108,10 +113,15 @@ tar_quarto_rep <- function(
   retrieval = targets::tar_option_get("retrieval"),
   cue = targets::tar_option_get("cue")
 ) {
+  execute_params <- targets::tar_tidy_eval(
+    substitute(execute_params),
+    envir = targets::tar_option_get("envir"),
+    tidy_eval = tidy_eval
+  )
   tar_quarto_rep_raw(
     name = targets::tar_deparse_language(substitute(name)),
     path = path,
-    execute_params = substitute(execute_params),
+    execute_params = execute_params,
     batches = batches,
     extra_files = extra_files,
     execute = execute,

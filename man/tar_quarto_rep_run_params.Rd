@@ -4,12 +4,15 @@
 \alias{tar_quarto_rep_run_params}
 \title{Prepare Quarto parameters for \code{tar_quarto_rep()}.}
 \usage{
-tar_quarto_rep_run_params(execute_params, batches)
+tar_quarto_rep_run_params(execute_params, batches, default_output_file)
 }
 \arguments{
 \item{execute_params}{Data frame of Quarto parameters.}
 
 \item{batches}{Number of batches to split up the renderings.}
+
+\item{default_output_file}{Default output file path deduced
+from the YAML front-matter of the Quarto source document.}
 }
 \value{
 A batched data frame of Quarto parameters.
