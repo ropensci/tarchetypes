@@ -184,17 +184,31 @@ tar_render_rep_params_command <- function(params, batches) {
 #' tar_render_rep_run_params(params, 3)
 #' tar_render_rep_run_params(params, 4)
 tar_render_rep_run_params <- function(params, batches) {
-  targets::tar_assert_df(execute_params)
+  targets::tar_assert_df(params)
   illegal <- "tar_group"
-  intersect <- intersect(illegal, colnames(execute_params))
+  intersect <- intersect(illegal, colnames(params))
   targets::tar_assert_le(
     length(intersect),
     0L,
     paste(
-      "illegal columns in execute_params:",
+      "illegal columns in params:",
       paste(intersect, collapse = ", ")
     )
   )
+  if ("output_file" %in% colnames(params)) {
+    targets::tar_assert_unique(
+      params$output_file,
+      msg = paste(
+        "If an output_file column is given in the params argument of",
+        "tar_render_rep(), then all the output files must be unique."
+      )
+    )
+  } else {
+    targets::tar_assert_unique(
+      hash_rows(params),
+      msg = "Rows of params in tar_render_rep() must be unique."
+    )
+  }
   batches <- batches %|||% nrow(params)
   params$tar_group <- if_any(
     batches > 1L,

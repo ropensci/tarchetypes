@@ -252,7 +252,22 @@ tar_quarto_rep_run_params <- function(
       paste(intersect, collapse = ", ")
     )
   )
-  if (!("output_file" %in% colnames(execute_params))) {
+  if ("output_file" %in% colnames(execute_params)) {
+    targets::tar_assert_unique(
+      execute_params$output_file,
+      msg = paste(
+        "If an output_file column is given in the execute_params argument of",
+        "tar_quarto_rep(), then all the output files must be unique."
+      )
+    )
+  } else {
+    targets::tar_assert_unique(
+      hash_rows(execute_params),
+      msg = paste(
+        "Rows of execute_params in tar_quarto_rep() must be unique",
+        "if an output_file column is absent."
+      )
+    )
     execute_params$output_file <- tar_quarto_rep_default_output_file(
       execute_params,
       default_output_file

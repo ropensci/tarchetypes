@@ -14,7 +14,7 @@ map_lgl <- function(x, f, ...) {
   vapply(X = x, FUN = as_function(f), FUN.VALUE = logical(1), ...)
 }
 
-map_rows <- function (x, f, ...) {
+map_rows <- function(x, f, ...) {
   apply(X = x, MARGIN = 1L, FUN = as_function(f), ...)
 }
 

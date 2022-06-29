@@ -15,9 +15,10 @@ current working directory.}
 \value{
 A named list of important file paths in a Quarto project or document:
 \itemize{
-\item \code{sources}: source files with \code{tar_load()}/\code{tar_read()} target dependencies
-in R code chunks.
-\item \code{output}: output files that will be generated during \code{quarto::quarto_render()}.
+\item \code{sources}: source files with \code{tar_load()}/\code{tar_read()}
+target dependencies in R code chunks.
+\item \code{output}: output files that will be generated during
+\code{quarto::quarto_render()}.
 \item \code{input}: pre-existing files required to render the project or document,
 such as \verb{_quarto.yml}.
 }
