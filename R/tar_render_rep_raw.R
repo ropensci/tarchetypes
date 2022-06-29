@@ -184,6 +184,17 @@ tar_render_rep_params_command <- function(params, batches) {
 #' tar_render_rep_run_params(params, 3)
 #' tar_render_rep_run_params(params, 4)
 tar_render_rep_run_params <- function(params, batches) {
+  targets::tar_assert_df(execute_params)
+  illegal <- "tar_group"
+  intersect <- intersect(illegal, colnames(execute_params))
+  targets::tar_assert_le(
+    length(intersect),
+    0L,
+    paste(
+      "illegal columns in execute_params:",
+      paste(intersect, collapse = ", ")
+    )
+  )
   batches <- batches %|||% nrow(params)
   params$tar_group <- if_any(
     batches > 1L,

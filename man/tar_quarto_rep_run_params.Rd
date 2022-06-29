@@ -23,9 +23,9 @@ Users should not invoke it directly.
 }
 \examples{
 execute_params <- tibble::tibble(param1 = letters[seq_len(4)])
-tar_quarto_rep_run_params(execute_params, 1)
-tar_quarto_rep_run_params(execute_params, 2)
-tar_quarto_rep_run_params(execute_params, 3)
-tar_quarto_rep_run_params(execute_params, 4)
+tar_quarto_rep_run_params(execute_params, 1, "report.html")
+tar_quarto_rep_run_params(execute_params, 2, "report.html")
+tar_quarto_rep_run_params(execute_params, 3, "report.html")
+tar_quarto_rep_run_params(execute_params, 4, "report.html")
 }
 \keyword{internal}

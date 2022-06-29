@@ -58,8 +58,7 @@
 #'   and the default file format is determined by the YAML front-matter
 #'   of the Quarto source document. Only the first file format is used,
 #'   the others are not generated.
-#'   Quarto parameters must not be named `tar_group`, `tar_hash`,
-#'   or `output_file`.
+#'   Quarto parameters must not be named `tar_group` or `output_file`.
 #'   This `execute_params` argument is converted into the command for a target
 #'   that supplies the Quarto parameters.
 #' @param batches Number of batches to group the Quarto files.
@@ -233,17 +232,17 @@ tar_quarto_rep_params_command <- function(
 #'   from the YAML front-matter of the Quarto source document.
 #' @examples
 #' execute_params <- tibble::tibble(param1 = letters[seq_len(4)])
-#' tar_quarto_rep_run_params(execute_params, 1)
-#' tar_quarto_rep_run_params(execute_params, 2)
-#' tar_quarto_rep_run_params(execute_params, 3)
-#' tar_quarto_rep_run_params(execute_params, 4)
+#' tar_quarto_rep_run_params(execute_params, 1, "report.html")
+#' tar_quarto_rep_run_params(execute_params, 2, "report.html")
+#' tar_quarto_rep_run_params(execute_params, 3, "report.html")
+#' tar_quarto_rep_run_params(execute_params, 4, "report.html")
 tar_quarto_rep_run_params <- function(
   execute_params,
   batches,
   default_output_file
 ) {
   targets::tar_assert_df(execute_params)
-  illegal <- c("tar_group", "tar_hash")
+  illegal <- "tar_group"
   intersect <- intersect(illegal, colnames(execute_params))
   targets::tar_assert_le(
     length(intersect),
@@ -254,7 +253,7 @@ tar_quarto_rep_run_params <- function(
     )
   )
   if (!("output_file" %in% colnames(execute_params))) {
-    execute_params$output_file <- knitr_params_default_output_file(
+    execute_params$output_file <- tar_quarto_rep_default_output_file(
       execute_params,
       default_output_file
     )
@@ -416,7 +415,17 @@ tar_quarto_rep_rep <- function(args, execute_params, default_output_file) {
   args$execute_params <- execute_params
   args$execute_params[["output_file"]] <- NULL
   args$execute_params[["tar_group"]] <- NULL
-  args$execute_params[["tar_hash"]] <- NULL
   do.call(quarto::quarto_render, args)
   sort(as.character(fs::path_rel(unlist(args$output_file))))
+}
+
+tar_quarto_rep_default_output_file <- function(params, default_output_file) {
+  base <- fs::path_ext_remove(default_output_file)
+  hash <- hash_rows(params)
+  ext <- fs::path_ext(default_output_file)
+  out <- file.path(
+    dirname(default_output_file),
+    sprintf("%s_%s.%s", base, hash, ext)
+  )
+  gsub("^\\.\\/", "", out)
 }

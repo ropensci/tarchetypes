@@ -54,8 +54,7 @@
 #'   and the default file format is determined by the YAML front-matter
 #'   of the Quarto source document. Only the first file format is used,
 #'   the others are not generated.
-#'   Quarto parameters must not be named `tar_group`, `tar_hash`,
-#'   or `output_file`.
+#'   Quarto parameters must not be named `tar_group` or `output_file`.
 #'   This `execute_params` argument is converted into the command for a target
 #'   that supplies the Quarto parameters.
 #' @examples
