@@ -8,7 +8,8 @@
 #' @name tarchetypes-package
 #' @importFrom digest digest
 #' @importFrom dplyr bind_rows mutate select
-#' @importFrom fs dir_create path_ext_remove path_rel
+#' @importFrom fs dir_create is_dir path_ext path_ext_remove
+#'   path_ext_set path_rel
 #' @importFrom rlang as_function call2 check_installed enquo expr
 #'   inform is_missing quo_squash
 #' @importFrom targets tar_assert_chr tar_assert_dbl tar_assert_df
@@ -31,7 +32,7 @@
 #' @importFrom tibble as_tibble
 #' @importFrom tidyselect all_of any_of contains ends_with everything
 #'   last_col matches num_range one_of starts_with
-#' @importFrom utils download.file globalVariables
+#' @importFrom utils download.file globalVariables head
 #' @importFrom vctrs vec_c vec_rbind
 #' @importFrom withr local_options with_options
 NULL

@@ -2,8 +2,8 @@ targets::tar_test("tar_format_api()", {
   expect_null(tar_format_api(x, 1))
 })
 
-targets::tar_test("tar_format()", {
-  f <- tar_format("file")
+targets::tar_test("tar_format_alias()", {
+  f <- tar_format_alias("file")
   x <- f(x, 0)
   expect_true(inherits(x, "tar_target"))
   expect_equal(x$settings$format, "file")

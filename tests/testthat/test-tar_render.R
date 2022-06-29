@@ -1,5 +1,5 @@
 targets::tar_test("tar_render() works", {
-  skip_pandoc()
+  skip_rmarkdown()
   lines <- c(
     "---",
     "title: report",
@@ -43,7 +43,7 @@ targets::tar_test("tar_render() works", {
 })
 
 targets::tar_test("tar_render(nested) runs from the project root", {
-  skip_pandoc()
+  skip_rmarkdown()
   lines <- c(
     "---",
     "title: report",
@@ -70,7 +70,7 @@ targets::tar_test("tar_render(nested) runs from the project root", {
 })
 
 targets::tar_test("tar_render() for parameterized reports", {
-  skip_pandoc()
+  skip_rmarkdown()
   lines <- c(
     "---",
     "title: report",
@@ -103,7 +103,7 @@ targets::tar_test("tar_render() for parameterized reports", {
 })
 
 targets::tar_test("tar_render() with a _files/ directory", {
-  skip_pandoc()
+  skip_rmarkdown()
   lines <- c(
     "---",
     "title: report with a plot",
@@ -127,7 +127,7 @@ targets::tar_test("tar_render() with a _files/ directory", {
 
 targets::tar_test("tar_render() works with child documents", {
   skip_on_cran()
-  skip_pandoc()
+  skip_rmarkdown()
   # Create a main file and a child file in a subdirectory
   dir.create("report")
   writeLines(

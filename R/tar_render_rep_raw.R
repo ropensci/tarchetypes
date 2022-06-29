@@ -50,6 +50,8 @@
 #'   and one column per R Markdown parameter. You may also include an
 #'   `output_file` column to specify the path of each rendered report.
 #'   R Markdown parameters must not be named `tar_group` or `output_file`.
+#'   This `params` argument is converted into the command for a target
+#'   that supplies the R Markdown parameters.
 #' @param batches Number of batches to group the R Markdown files.
 #'   For a large number of reports, increase the number of batches
 #'   to decrease target-level overhead. Defaults to the number of
@@ -182,6 +184,31 @@ tar_render_rep_params_command <- function(params, batches) {
 #' tar_render_rep_run_params(params, 3)
 #' tar_render_rep_run_params(params, 4)
 tar_render_rep_run_params <- function(params, batches) {
+  targets::tar_assert_df(params)
+  illegal <- "tar_group"
+  intersect <- intersect(illegal, colnames(params))
+  targets::tar_assert_le(
+    length(intersect),
+    0L,
+    paste(
+      "illegal columns in params:",
+      paste(intersect, collapse = ", ")
+    )
+  )
+  if ("output_file" %in% colnames(params)) {
+    targets::tar_assert_unique(
+      params$output_file,
+      msg = paste(
+        "If an output_file column is given in the params argument of",
+        "tar_render_rep(), then all the output files must be unique."
+      )
+    )
+  } else {
+    targets::tar_assert_unique(
+      hash_rows(params),
+      msg = "Rows of params in tar_render_rep() must be unique."
+    )
+  }
   batches <- batches %|||% nrow(params)
   params$tar_group <- if_any(
     batches > 1L,
@@ -217,6 +244,8 @@ tar_render_rep_command <- function(name, path, quiet, args) {
 #'   report, automatically created by `tar_render_rep()`.
 tar_render_rep_run <- function(path, params, args, deps) {
   targets::tar_assert_package("rmarkdown")
+  rm(deps)
+  gc()
   envir <- parent.frame()
   params <- split(params, f = seq_len(nrow(params)))
   args$envir <- args$envir %|||% targets::tar_envir(default = envir)
@@ -239,6 +268,5 @@ tar_render_rep_rep <- function(path, params, args) {
 tar_render_rep_default_path <- function(path, params) {
   out <- fs::path_ext_remove(path)
   hash <- digest::digest(params, algo = "xxhash32")
-  out <- paste0(out, "_", hash)
-  out
+  sprintf("%s_%s", out, hash)
 }

@@ -1,4 +1,5 @@
 knitr_deps <- function(path) {
+  targets::tar_assert_package("knitr")
   expr <- knitr_expr(path)
   knitr_expr_warn_raw(expr)
   walk_ast(expr, walk_call_knitr)

@@ -45,6 +45,8 @@
 #'   with one row per rendered report
 #'   and one column per R Markdown parameter. You may also include an
 #'   `output_file` column to specify the path of each rendered report.
+#'   This `params` argument is converted into the command for a target
+#'   that supplies the R Markdown parameters.
 #' @param ... Other named arguments to `rmarkdown::render()`.
 #'   Unlike [tar_render()], these arguments are evaluated when the target
 #'   is defined, not when it is run. (The only reason to delay evaluation

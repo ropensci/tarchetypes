@@ -22,3 +22,10 @@ targets::tar_test("assert_hook_expr", {
     class = "tar_condition_validate"
   )
 })
+
+targets::tar_test("assert_quarto", {
+  expect_error(
+    assert_quarto(debug = TRUE),
+    class = "tar_condition_validate"
+  )
+})

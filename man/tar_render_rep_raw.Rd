@@ -47,7 +47,9 @@ Must have length 1.}
 a data frame or \code{tibble} with one row per rendered report
 and one column per R Markdown parameter. You may also include an
 \code{output_file} column to specify the path of each rendered report.
-R Markdown parameters must not be named \code{tar_group} or \code{output_file}.}
+R Markdown parameters must not be named \code{tar_group} or \code{output_file}.
+This \code{params} argument is converted into the command for a target
+that supplies the R Markdown parameters.}
 
 \item{batches}{Number of batches to group the R Markdown files.
 For a large number of reports, increase the number of batches
@@ -224,6 +226,10 @@ targets::tar_script({
 Other Literate programming targets: 
 \code{\link{tar_knit_raw}()},
 \code{\link{tar_knit}()},
+\code{\link{tar_quarto_raw}()},
+\code{\link{tar_quarto_rep_raw}()},
+\code{\link{tar_quarto_rep}()},
+\code{\link{tar_quarto}()},
 \code{\link{tar_render_raw}()},
 \code{\link{tar_render_rep}()},
 \code{\link{tar_render}()}

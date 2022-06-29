@@ -64,7 +64,13 @@ for details for instructions.
 See the cloud storage section of
 \url{https://books.ropensci.org/targets/data.html}
 for details for instructions.
-}}
+}
+
+Note: if \code{repository} is not \code{"local"} and \code{format} is \code{"file"}
+then the target should create a single output file.
+That output file is uploaded to the cloud and tracked for changes
+where it exists in the cloud. The local file is deleted after
+the target runs.}
 
 \item{iteration}{Character, iteration method. Must be a method
 supported by the \code{iteration} argument of \code{targets::tar_target()}.

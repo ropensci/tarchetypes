@@ -22,6 +22,10 @@ reference:
   contents:
   - '`tar_knit`'
   - '`tar_knit_raw`'
+  - '`tar_quarto`'
+  - '`tar_quarto_raw`'
+  - '`tar_quarto_rep`'
+  - '`tar_quarto_rep_raw`'
   - '`tar_render`'
   - '`tar_render_raw`'
   - '`tar_render_rep`'
@@ -30,6 +34,7 @@ reference:
   contents:
   - '`tar_knitr_deps`'
   - '`tar_knitr_deps_expr`'
+  - '`tar_quarto_files`'
 - title: Formats
   contents:
   - '`tar_formats`'
