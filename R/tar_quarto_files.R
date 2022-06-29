@@ -33,8 +33,9 @@ tar_quarto_files <- function(path = ".") {
     tar_quarto_files_project(path),
     tar_quarto_files_document(path)
   )
-  for (field in names(out)) {
-    out[[field]] <- as.character(sort(fs::path_rel(unique(out[[field]]))))
+  for (field in c("sources", "output", "input")) {
+    out[[field]] <- sort(fs::path_rel(unique(as.character(out[[field]]))))
+    out[[field]] <- as.character(out[[field]])
   }
   out
 }

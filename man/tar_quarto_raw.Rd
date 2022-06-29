@@ -61,6 +61,11 @@ the list of file dependencies automatically detected through
 \item{output_format}{Character of length 1, Quarto document output format.
 See the help file of \code{quarto::quarto_render()} for more details.}
 
+\item{output_file}{The name of the output file. If using \code{NULL} then the
+output filename will be based on filename for the input file.}
+
+\item{execute}{Whether to execute embedded code chunks.}
+
 \item{execute_params}{A non-expression language object
 (use \code{quote()}, not \code{expression()}) that
 evaluates to a named list of parameters
@@ -69,6 +74,17 @@ custom elements of the \code{params} list in the YAML front-matter of the
 Quarto source files. The list is quoted
 (not evaluated until the target runs)
 so that upstream targets can serve as parameter values.}
+
+\item{cache}{Cache execution output (uses knitr cache and jupyter-cache
+respectively for Rmd and Jupyter input files).}
+
+\item{cache_refresh}{Force refresh of execution cache.}
+
+\item{debug}{Leave intermediate files in place after render.}
+
+\item{quiet}{Suppress warning and other messages.}
+
+\item{pandoc_args}{Additional command line options to pass to pandoc.}
 
 \item{packages}{Character vector of packages to load right before
 the target builds or the output data is reloaded for

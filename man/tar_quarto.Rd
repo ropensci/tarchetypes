@@ -58,8 +58,8 @@ No need to include anything already in the output of \code{\link[=tar_quarto_fil
 the list of file dependencies automatically detected through
 \code{quarto::quarto_inspect()}.}
 
-\item{output_format}{Target output format (defaults to "html"). The option
-\code{"all"} will render all formats defined within the file or project.}
+\item{output_format}{Character of length 1, Quarto document output format.
+See the help file of \code{quarto::quarto_render()} for more details.}
 
 \item{output_file}{The name of the output file. If using \code{NULL} then the
 output filename will be based on filename for the input file.}

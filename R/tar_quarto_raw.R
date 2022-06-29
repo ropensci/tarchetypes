@@ -16,6 +16,7 @@
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
 #' @inheritParams targets::tar_target_raw
+#' @inheritParams quarto::quarto_render
 #' @param path Character of length 1,
 #'   either the single `*.qmd` source file to be rendered
 #'   or a directory containing a Quarto project.

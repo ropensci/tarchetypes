@@ -37,7 +37,6 @@
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
 #' @inheritParams targets::tar_target
-#' @inheritParams quarto::quarto_render
 #' @inheritParams tar_quarto_raw
 #' @param execute_params Code, cannot be `NULL`.
 #'   `execute_params` evaluates to a named list of parameters
