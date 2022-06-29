@@ -107,7 +107,6 @@ tar_quarto_raw <- function(
   debug = FALSE,
   quiet = TRUE,
   pandoc_args = NULL,
-  tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
   error = targets::tar_option_get("error"),
