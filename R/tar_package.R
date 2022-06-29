@@ -8,7 +8,7 @@
 #' @name tarchetypes-package
 #' @importFrom digest digest
 #' @importFrom dplyr bind_rows mutate select
-#' @importFrom fs dir_create path_ext_remove path_rel
+#' @importFrom fs dir_create is_dir path_ext_remove path_rel
 #' @importFrom rlang as_function call2 check_installed enquo expr
 #'   inform is_missing quo_squash
 #' @importFrom targets tar_assert_chr tar_assert_dbl tar_assert_df

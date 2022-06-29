@@ -1,5 +1,4 @@
 targets::tar_test("tar_quarto() works", {
-  skip_on_cran()
   skip_quarto()
   lines <- c(
     "---",
@@ -16,7 +15,7 @@ targets::tar_test("tar_quarto() works", {
     library(tarchetypes)
     list(
       tar_target(data, data.frame(x = seq_len(26L), y = letters)),
-      tar_quarto(report, input = "report.qmd", files = "report.html")
+      tar_quarto(report, path = "report.qmd")
     )
   })
   # First run.
@@ -36,7 +35,7 @@ targets::tar_test("tar_quarto() works", {
     library(tarchetypes)
     list(
       tar_target(data, data.frame(x = rev(seq_len(26L)), y = letters)),
-      tar_quarto(report, input = "report.qmd", files = "report.html")
+      tar_quarto(report, path = "report.qmd")
     )
   })
   # Should rerun the report.
@@ -64,8 +63,7 @@ targets::tar_test("tar_quarto(nested) runs from the project root", {
     list(
       tar_quarto(
         report,
-        input = file.path("out_tar_quarto", "report.qmd"),
-        files = file.path("out_tar_quarto", "report.html")
+        path = file.path("out_tar_quarto", "report.qmd")
       )
     )
   })
@@ -100,8 +98,7 @@ targets::tar_test("tar_quarto() for parameterized reports", {
       tar_target(upstream, "anotherverydistinctvalue"),
       tar_quarto(
         report,
-        input = "report.qmd",
-        files = "report.html",
+        path = "report.qmd",
         execute_params = list(param1 = !!value, param2 = upstream)
       )
     )
@@ -148,7 +145,7 @@ targets::tar_test("tar_quarto() works with child documents", {
     list(
       tar_target(main, "value_main_target"),
       tar_target(child, "value_child_target"),
-      tar_quarto(report, input = "report/main.qmd", files = "report/main.html")
+      tar_quarto(report, path = "report/main.qmd")
     )
   })
   # First run.
@@ -171,7 +168,7 @@ targets::tar_test("tar_quarto() works with child documents", {
     list(
       tar_target(main, "value_main_target_changed"),
       tar_target(child, "value_child_target"),
-      tar_quarto(report, input = "report/main.qmd", files = "report/main.html")
+      tar_quarto(report, path = "report/main.qmd")
     )
   })
   suppressMessages(targets::tar_make(callr_function = NULL))
@@ -187,7 +184,7 @@ targets::tar_test("tar_quarto() works with child documents", {
     list(
       tar_target(main, "value_main_target_changed"),
       tar_target(child, "value_child_target_changed"),
-      tar_quarto(report, input = "report/main.qmd", files = "report/main.html")
+      tar_quarto(report, path = "report/main.qmd")
     )
   })
   suppressMessages(targets::tar_make(callr_function = NULL))
@@ -299,11 +296,7 @@ targets::tar_test("quarto projects", {
     list(
       tar_target(r1, "r1_value"),
       tar_target(r2, "r2_value"),
-      tar_quarto(
-        project,
-        input = ".",
-        files = c("_quarto.yml", "_book")
-      )
+      tar_quarto(project)
     )
   }, ask = FALSE)
   edges <- targets::tar_network(callr_function = NULL)$edges
@@ -324,11 +317,7 @@ targets::tar_test("quarto projects", {
     list(
       tar_target(r1, "r1_value"),
       tar_target(r2, "r2_value2"),
-      tar_quarto(
-        project,
-        input = ".",
-        files = c("_quarto.yml", "_book")
-      )
+      tar_quarto(project)
     )
   }, ask = FALSE)
   expect_equal(

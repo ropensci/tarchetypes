@@ -1,6 +1,7 @@
 # tarchetypes 0.6.0.9000
 
 * Add new functions `tar_quarto()` and `tar_quarto_rep()` (and "raw" versions) for Quarto documents and projects in pipelines (#89).
+* Add new function `tar_quarto_files()` to inspect Quarto projects and documents for important files: source files to inspect for target dependencies, output documents, and Quarto-specific inputs like `_quarto.yml`. Uses `quarto::quarto_inspect()` and powers the automatic file detection in `tar_quarto()` etc. (#89).
 * Temporarily change `root.dir` when scanning for dependencies so `knitr` child documents work (#93, @mutlusun).
 * Use `format = "rds"` for `target_batch` in `tar_map_rep_raw()` so the global format option does not mess up the pipeline.
 * Handle non-atomic length-one list columns in `tar_append_static_values()`.

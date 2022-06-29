@@ -4,7 +4,7 @@
 \alias{tar_quarto_run}
 \title{Render a Quarto project inside a \code{tar_quarto()} target.}
 \usage{
-tar_quarto_run(args, deps, files)
+tar_quarto_run(args, deps, sources, output, input)
 }
 \arguments{
 \item{args}{A named list of arguments to \code{quarto::quarto_render()}.}
@@ -12,8 +12,12 @@ tar_quarto_run(args, deps, files)
 \item{deps}{An unnamed list of target dependencies of the Quarto
 source files.}
 
-\item{files}{Character vector with the paths to all the important
-files that \code{targets} should track for changes.}
+\item{sources}{Character vector of Quarto source files.}
+
+\item{output}{Character vector of Quarto output files and directories.}
+
+\item{input}{Character vector of non-source Quarto input files
+and directories.}
 }
 \value{
 Sorted character vector with the paths to all the important
