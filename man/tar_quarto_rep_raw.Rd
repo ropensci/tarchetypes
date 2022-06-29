@@ -6,7 +6,7 @@
 \usage{
 tar_quarto_rep_raw(
   name,
-  input,
+  path,
   execute_params = expression(NULL),
   batches = NULL,
   extra_files = character(0),
@@ -45,17 +45,20 @@ You can recover the seed of a completed target
 with \code{tar_meta(your_target, seed)} and run \code{set.seed()} on the result
 to locally recreate the target's initial RNG state.}
 
-\item{input}{Character string, file path to the Quarto source file.
+\item{path}{Character string, file path to the Quarto source file.
 Must have length 1.}
 
 \item{execute_params}{Expression object with code to generate
 a data frame or \code{tibble} with one row per rendered report
 and one column per Quarto parameter. You may also include an
 \code{output_file} column to specify the path of each rendered report.
+If included, the \code{output_file} column must be a character vector
+with one and only one output file for each row of parameters.
 If an \code{output_file} column is not included,
 then the output files are automatically determined using the parameters,
 and the default file format is determined by the YAML front-matter
-of the Quarto source document.
+of the Quarto source document. Only the first file format is used,
+the others are not generated.
 Quarto parameters must not be named \code{tar_group} or \code{output_file}.
 This \code{execute_params} argument is converted into the command for a target
 that supplies the Quarto parameters.}
@@ -169,11 +172,7 @@ parameterized Quarto reports that depend on other targets.
 Parameters must be given as a data frame with one row per
 rendered report and one column per parameter. An optional
 \code{output_file} column may be included to set the output file path
-of each rendered report.
-If an \code{output_file} column is not included,
-then the output files are automatically determined using the parameters,
-and the output format is determined by the YAML front-matter
-of the Quarto source document.
+of each rendered report. (See the \code{execute_params} argument for details.)
 
 The Quarto source should mention other dependency targets
 \code{tar_load()} and \code{tar_read()} in the active code chunks
@@ -241,7 +240,7 @@ targets::tar_script({
   list(
     tar_quarto_rep_raw(
       "report",
-      input = "report.qmd",
+      path = "report.qmd",
       execute_params = quote(tibble::tibble(par = c(1, 2)))
     )
   )

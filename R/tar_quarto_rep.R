@@ -8,10 +8,7 @@
 #'   Parameters must be given as a data frame with one row per
 #'   rendered report and one column per parameter. An optional
 #'   `output_file` column may be included to set the output file path
-#'   of each rendered report. If an `output_file` column is not included,
-#'   then the output files are automatically determined using the parameters,
-#'   and the default file extension is determined by the YAML front-matter
-#'   of the Quarto source document.
+#'   of each rendered report. (See the `execute_params` argument for details.)
 #'
 #'   The Quarto source should mention other dependency targets
 #'   `tar_load()` and `tar_read()` in the active code chunks
@@ -43,16 +40,17 @@
 #' @inheritParams targets::tar_target
 #' @inheritParams quarto::quarto_render
 #' @inheritParams tar_quarto_rep_raw
-#' @param input Character of length 1, file path to the Quarto source file.
-#' @param execute_params Code to generate a data frame or `tibble`
-#'   with one row per rendered report
+#' @param execute_params Code to generate
+#'   a data frame or `tibble` with one row per rendered report
 #'   and one column per Quarto parameter. You may also include an
 #'   `output_file` column to specify the path of each rendered report.
+#'   If included, the `output_file` column must be a character vector
+#'   with one and only one output file for each row of parameters.
 #'   If an `output_file` column is not included,
 #'   then the output files are automatically determined using the parameters,
-#'   and the output format is determined by the YAML front-matter
-#'   of the Quarto source document.
-#'
+#'   and the default file format is determined by the YAML front-matter
+#'   of the Quarto source document. Only the first file format is used,
+#'   the others are not generated.
 #'   Quarto parameters must not be named `tar_group` or `output_file`.
 #'   This `execute_params` argument is converted into the command for a target
 #'   that supplies the Quarto parameters.
@@ -79,7 +77,7 @@
 #'   list(
 #'     tar_quarto_rep(
 #'       report,
-#'       input = "report.qmd",
+#'       path = "report.qmd",
 #'       execute_params = tibble::tibble(par = c(1, 2))
 #'     )
 #'   )
@@ -89,7 +87,7 @@
 #' }
 tar_quarto_rep <- function(
   name,
-  input,
+  path,
   execute_params = data.frame(),
   batches = NULL,
   extra_files = character(0),
@@ -112,7 +110,7 @@ tar_quarto_rep <- function(
 ) {
   tar_quarto_rep_raw(
     name = targets::tar_deparse_language(substitute(name)),
-    input = input,
+    path = path,
     execute_params = substitute(execute_params),
     batches = batches,
     extra_files = extra_files,

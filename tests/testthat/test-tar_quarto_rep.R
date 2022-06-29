@@ -21,7 +21,7 @@ targets::tar_test("tar_quarto_rep() manifest", {
       tar_target(x, "value_of_x"),
       tar_quarto_rep(
         report,
-        input = "report.qmd",
+        path = "report.qmd",
         execute_params = data.frame(
           par = c("parval1", "parval2", "parval3", "parval4"),
           stringsAsFactors = FALSE
@@ -60,7 +60,7 @@ targets::tar_test("tar_quarto_rep() graph", {
       tar_target(x, "value_of_x"),
       tar_quarto_rep(
         report,
-        input = "report.qmd",
+        path = "report.qmd",
         execute_params = data.frame(
           par = c("parval1", "parval2", "parval3", "parval4"),
           stringsAsFactors = FALSE
@@ -98,7 +98,7 @@ targets::tar_test("tar_quarto_rep() run", {
       tar_target(x, "value_of_x"),
       tar_quarto_rep(
         report,
-        input = "report.qmd",
+        path = "report.qmd",
         execute_params = data.frame(
           par = c("parval1", "parval2", "parval3", "parval4"),
           stringsAsFactors = FALSE
@@ -166,7 +166,7 @@ targets::tar_test("tar_quarto_rep() run", {
       tar_target(x, "value_of_x"),
       tar_quarto_rep(
         report,
-        input = "report.qmd",
+        path = "report.qmd",
         execute_params = data.frame(
           par = c("parval1", "parval2", "parval3-modified", "parval4"),
           stringsAsFactors = FALSE
@@ -207,7 +207,7 @@ targets::tar_test("tar_quarto_rep() run with output_file specified", {
       tar_target(x, "value_of_x"),
       tar_quarto_rep(
         report,
-        input = "report.qmd",
+        path = "report.qmd",
         execute_params = data.frame(
           par = c("parval1", "parval2", "parval3", "parval4"),
           output_file = c("f1.html", "f2.html", "f3.html", "f4.html"),
@@ -247,7 +247,7 @@ targets::tar_test("tar_quarto_rep() run with output_file not specified", {
       tar_target(x, "value_of_x"),
       tar_quarto_rep(
         report,
-        input = "rep.qmd",
+        path = "rep.qmd",
         execute_params = data.frame(
           par = c("parval1", "parval2", "parval3", "parval4"),
           stringsAsFactors = FALSE
