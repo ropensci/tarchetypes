@@ -13,12 +13,22 @@ to a Quarto project. Defaults to the Quarto project in the
 current working directory.}
 }
 \value{
-A named list of important file paths in a Quarto project:
-source files to scrape for target dependencies, as well as
-other input and output files to track for changes.
+A named list of important file paths in a Quarto project or document:
+\itemize{
+\item \code{sources}: source files with \code{tar_load()}/\code{tar_read()} target dependencies
+in R code chunks.
+\item \code{output}: output files that will be generated during \code{quarto::quarto_render()}.
+\item \code{input}: pre-existing files required to render the project or document,
+such as \verb{_quarto.yml}.
+}
 }
 \description{
 Detect the important files in a Quarto project.
+}
+\details{
+This function is just a thin wrapper that interprets the output
+of \code{quarto::quarto_inspect()} and returns what \code{tarchetypes} needs to
+know about the current Quarto project or document.
 }
 \examples{
 lines <- c(

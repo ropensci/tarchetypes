@@ -5,14 +5,20 @@
 \title{Render a batch of parameterized Quarto reports
 inside a \code{tar_quarto_rep()} target.}
 \usage{
-tar_quarto_rep_run(args, execute_params, files, deps)
+tar_quarto_rep_run(
+  args,
+  execute_params,
+  extra_files,
+  deps,
+  default_output_file
+)
 }
 \arguments{
 \item{args}{A named list of arguments to \code{quarto::quarto_render()}.}
 
 \item{execute_params}{A data frame of Quarto parameters to branch over.}
 
-\item{files}{Character vector of extra files that \code{targets}
+\item{extra_files}{Character vector of extra files that \code{targets}
 should track for changes. If the content of one of these files changes,
 then the report will rerun over all the parameters on the next
 \code{tar_make()}. These files are \emph{extra} files, and they
@@ -23,6 +29,10 @@ bibliographies, style sheets, and supporting image files.}
 
 \item{deps}{An unnamed list of target dependencies of the Quarto
 report, automatically created by \code{tar_quarto_rep()}.}
+
+\item{default_output_file}{Output file path determined by the
+YAML front-matter of the Quarto source document.
+Automatic output file names are based on this file.}
 }
 \value{
 Character vector with the path to the Quarto
@@ -70,8 +80,9 @@ execute_params <- tibble::tibble(
 tar_quarto_rep_run(
   args = args,
   execute_params = execute_params,
-  files = character(0),
-  deps = NULL
+  extra_files = character(0),
+  deps = NULL,
+  default_output_file = "report_default.html"
 )
 })
 }

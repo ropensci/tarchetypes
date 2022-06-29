@@ -9,7 +9,7 @@ tar_quarto_rep_raw(
   input,
   execute_params = expression(NULL),
   batches = NULL,
-  files = character(0),
+  extra_files = character(0),
   execute = TRUE,
   cache = NULL,
   cache_refresh = FALSE,
@@ -54,9 +54,8 @@ and one column per Quarto parameter. You may also include an
 \code{output_file} column to specify the path of each rendered report.
 If an \code{output_file} column is not included,
 then the output files are automatically determined using the parameters,
-and the default file extension is \code{"html"}.
-(\code{"html"} may not be correct for your use case, so if you need a different
-file extension, then you will need to supply an \code{output_file} column.)
+and the default file format is determined by the YAML front-matter
+of the Quarto source document.
 Quarto parameters must not be named \code{tar_group} or \code{output_file}.
 This \code{execute_params} argument is converted into the command for a target
 that supplies the Quarto parameters.}
@@ -66,7 +65,7 @@ For a large number of reports, increase the number of batches
 to decrease target-level overhead. Defaults to the number of
 reports to render (1 report per batch).}
 
-\item{files}{Character vector of extra files that \code{targets}
+\item{extra_files}{Character vector of extra files that \code{targets}
 should track for changes. If the content of one of these files changes,
 then the report will rerun over all the parameters on the next
 \code{tar_make()}. These files are \emph{extra} files, and they
@@ -173,9 +172,8 @@ rendered report and one column per parameter. An optional
 of each rendered report.
 If an \code{output_file} column is not included,
 then the output files are automatically determined using the parameters,
-and the default file extension is \code{"html"}.
-(\code{"html"} may not be correct for your use case, so if you need a different
-file extension, then you will need to supply an \code{output_file} column.)
+and the output format is determined by the YAML front-matter
+of the Quarto source document.
 
 The Quarto source should mention other dependency targets
 \code{tar_load()} and \code{tar_read()} in the active code chunks

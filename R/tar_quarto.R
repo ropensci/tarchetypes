@@ -31,6 +31,10 @@
 #'   When this target runs, it returns a character vector
 #'   of file paths: the rendered documents, the Quarto source files,
 #'   and other input and output files.
+#'   The output files are determined by the YAML front-matter of
+#'   standalone Quarto documents and `_quarto.yml` in Quarto projects,
+#'   and you can see these files with [tar_quarto_files()]
+#'   (powered by `quarto::quarto_inspect()`).
 #'   All returned paths are *relative* paths to ensure portability
 #'   (so that the project can be moved from one file system to another
 #'   without invalidating the target).
@@ -106,8 +110,6 @@ tar_quarto <- function(
   name,
   path = ".",
   extra_files = character(0),
-  output_format = NULL,
-  output_file = NULL,
   execute = TRUE,
   execute_params = list(),
   cache = NULL,
@@ -135,8 +137,6 @@ tar_quarto <- function(
     name = name,
     path = path,
     extra_files = extra_files,
-    output_format = output_format,
-    output_file = output_file,
     execute = execute,
     execute_params = execute_params,
     cache = cache,

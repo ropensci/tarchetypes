@@ -15,9 +15,8 @@
 #'   of each rendered report.
 #'   If an `output_file` column is not included,
 #'   then the output files are automatically determined using the parameters,
-#'   and the default file extension is `"html"`.
-#'   (`"html"` may not be correct for your use case, so if you need a different
-#'   file extension, then you will need to supply an `output_file` column.)
+#'   and the output format is determined by the YAML front-matter
+#'   of the Quarto source document.
 #'
 #'   The Quarto source should mention other dependency targets
 #'   `tar_load()` and `tar_read()` in the active code chunks
@@ -58,9 +57,8 @@
 #'   `output_file` column to specify the path of each rendered report.
 #'   If an `output_file` column is not included,
 #'   then the output files are automatically determined using the parameters,
-#'   and the default file extension is `"html"`.
-#'   (`"html"` may not be correct for your use case, so if you need a different
-#'   file extension, then you will need to supply an `output_file` column.)
+#'   and the default file format is determined by the YAML front-matter
+#'   of the Quarto source document.
 #'   Quarto parameters must not be named `tar_group` or `output_file`.
 #'   This `execute_params` argument is converted into the command for a target
 #'   that supplies the Quarto parameters.
@@ -110,7 +108,7 @@ tar_quarto_rep_raw <- function(
     input,
     execute_params = expression(NULL),
     batches = NULL,
-    files = character(0),
+    extra_files = character(0),
     execute = TRUE,
     cache = NULL,
     cache_refresh = FALSE,
@@ -140,8 +138,8 @@ tar_quarto_rep_raw <- function(
   targets::tar_assert_lang(execute_params)
   targets::tar_assert_dbl(batches %|||% 0L, "batches must be numeric.")
   targets::tar_assert_scalar(batches %|||% 0L, "batches must have length 1.")
-  targets::tar_assert_chr(files)
-  targets::tar_assert_nzchar(files)
+  targets::tar_assert_chr(extra_files)
+  targets::tar_assert_nzchar(extra_files)
   targets::tar_assert_scalar(execute)
   targets::tar_assert_lgl(execute)
   targets::tar_assert_scalar(cache %|||% TRUE)
@@ -172,18 +170,20 @@ tar_quarto_rep_raw <- function(
     retrieval = retrieval,
     cue = cue
   )
+  default_output_file <- tar_quarto_files(input)$output
   target <- targets::tar_target_raw(
     name = name,
     command = tar_quarto_rep_command(
       name = name,
       input = input,
-      files = files,
+      extra_files = extra_files,
       execute = execute,
       cache = cache,
       cache_refresh = cache_refresh,
       debug = debug,
       quiet = quiet,
-      pandoc_args = pandoc_args
+      pandoc_args = pandoc_args,
+      default_output_file = default_output_file
     ),
     pattern = substitute(map(x), env = list(x = sym_params)),
     packages = packages,
@@ -236,13 +236,14 @@ tar_quarto_rep_run_params <- function(execute_params, batches) {
 tar_quarto_rep_command <- function(
   name,
   input,
-  files,
+  extra_files,
   execute,
   cache,
   cache_refresh,
   debug,
   quiet,
-  pandoc_args
+  pandoc_args,
+  default_output_file
 ) {
   args <- substitute(
     list(
@@ -277,8 +278,9 @@ tar_quarto_rep_command <- function(
     fun = fun,
     args = args,
     execute_params = execute_params,
-    files = files,
-    deps = deps
+    extra_files = extra_files,
+    deps = deps,
+    default_output_file = default_output_file
   )
   as.expression(as.call(exprs))
 }
@@ -294,7 +296,7 @@ tar_quarto_rep_command <- function(
 #'   depend on the input source path, and they have no defaults.
 #' @param args A named list of arguments to `quarto::quarto_render()`.
 #' @param execute_params A data frame of Quarto parameters to branch over.
-#' @param files Character vector of extra files that `targets`
+#' @param extra_files Character vector of extra files that `targets`
 #'   should track for changes. If the content of one of these files changes,
 #'   then the report will rerun over all the parameters on the next
 #'   `tar_make()`. These files are *extra* files, and they
@@ -304,6 +306,9 @@ tar_quarto_rep_command <- function(
 #'   bibliographies, style sheets, and supporting image files.
 #' @param deps An unnamed list of target dependencies of the Quarto
 #'   report, automatically created by `tar_quarto_rep()`.
+#' @param default_output_file Output file path determined by the
+#'   YAML front-matter of the Quarto source document.
+#'   Automatic output file names are based on this file.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
@@ -341,27 +346,45 @@ tar_quarto_rep_command <- function(
 #' tar_quarto_rep_run(
 #'   args = args,
 #'   execute_params = execute_params,
-#'   files = character(0),
-#'   deps = NULL
+#'   extra_files = character(0),
+#'   deps = NULL,
+#'   default_output_file = "report_default.html"
 #' )
 #' })
 #' }
-tar_quarto_rep_run <- function(args, execute_params, files, deps) {
+tar_quarto_rep_run <- function(
+  args,
+  execute_params,
+  extra_files,
+  deps,
+  default_output_file
+) {
   assert_quarto()
   rm(deps)
   gc()
   execute_params <- split(execute_params, f = seq_len(nrow(execute_params)))
-  out <- unname(unlist(map(execute_params, ~tar_quarto_rep_rep(args, .x))))
+  out <- map(execute_params, ~tar_quarto_rep_rep(args, .x, default_output_file))
+  out <- unname(unlist(out))
   support <- sprintf("%s_files", fs::path_ext_remove(basename(args$input)))
-  files <- if_any(dir.exists(support), c(files, support), files)
-  files <- sort(unique(files))
-  unique(c(out, args$input, files))
+  extra_files <- if_any(
+    dir.exists(support),
+    c(extra_files, support),
+    extra_files
+  )
+  extra_files <- sort(unique(extra_files))
+  unique(c(out, args$input, extra_files))
 }
 
-tar_quarto_rep_rep <- function(args, execute_params) {
+tar_quarto_rep_rep <- function(args, execute_params, default_output_file) {
   withr::local_options(list(crayon.enabled = NULL))
-  default_path <- tar_quarto_rep_default_path(args$input, execute_params)
-  args$output_file <- execute_params[["output_file"]] %|||% default_path
+  default_path <- tar_quarto_rep_default_path(
+    args$input,
+    execute_params,
+    default_output_file
+  )
+  args$output_file <- as.character(
+    execute_params[["output_file"]] %|||% default_path
+  )
   args$execute_params <- execute_params
   args$execute_params[["output_file"]] <- NULL
   args$execute_params[["tar_group"]] <- NULL
@@ -369,8 +392,9 @@ tar_quarto_rep_rep <- function(args, execute_params) {
   sort(as.character(fs::path_rel(unlist(args$output_file))))
 }
 
-tar_quarto_rep_default_path <- function(input, execute_params) {
-  out <- fs::path_ext_remove(input)
+tar_quarto_rep_default_path <- function(input, execute_params, default_output_file) {
+  base <- fs::path_ext_remove(default_output_file)
   hash <- digest::digest(execute_params, algo = "xxhash32")
-  sprintf("%s_%s.html", out, hash)
+  ext <- fs::path_ext(default_output_file)
+  sprintf("%s_%s.%s", base, hash, ext)
 }

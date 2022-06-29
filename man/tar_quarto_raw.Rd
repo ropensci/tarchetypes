@@ -8,8 +8,6 @@ tar_quarto_raw(
   name,
   path = ".",
   extra_files = character(0),
-  output_format = NULL,
-  output_file = NULL,
   execute = TRUE,
   execute_params = NULL,
   cache = NULL,
@@ -56,12 +54,6 @@ directories to track for changes. The target will be invalidated
 No need to include anything already in the output of \code{\link[=tar_quarto_files]{tar_quarto_files()}},
 the list of file dependencies automatically detected through
 \code{quarto::quarto_inspect()}.}
-
-\item{output_format}{Character of length 1, Quarto document output format.
-See the help file of \code{quarto::quarto_render()} for more details.}
-
-\item{output_file}{The name of the output file. If using \code{NULL} then the
-output filename will be based on filename for the input file.}
 
 \item{execute}{Whether to execute embedded code chunks.}
 
@@ -144,6 +136,10 @@ A target object with \code{format = "file"}.
 When this target runs, it returns a sorted character vector
 of all the important file paths: the rendered documents,
 the Quarto source files, and other input and output files.
+The output files are determined by the YAML front-matter of
+standalone Quarto documents and \verb{_quarto.yml} in Quarto projects,
+and you can see these files with \code{\link[=tar_quarto_files]{tar_quarto_files()}}
+(powered by \code{quarto::quarto_inspect()}).
 All returned paths are \emph{relative} paths to ensure portability
 (so that the project can be moved from one file system to another
 without invalidating the target).

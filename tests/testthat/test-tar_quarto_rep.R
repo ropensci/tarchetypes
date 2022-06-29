@@ -224,6 +224,49 @@ targets::tar_test("tar_quarto_rep() run with output_file specified", {
   expect_equal(length(unique(out)), 4L)
 })
 
+targets::tar_test("tar_quarto_rep() run with output_file not specified", {
+  skip_on_cran()
+  skip_quarto()
+  lines <- c(
+    "---",
+    "title: report",
+    "output_format: html_document",
+    "params:",
+    "  par: \"default value\"",
+    "---",
+    "",
+    "```{r}",
+    "print(params$par)",
+    "print(targets::tar_read(x))",
+    "```"
+  )
+  writeLines(lines, "rep.qmd")
+  targets::tar_script({
+    library(tarchetypes)
+    list(
+      tar_target(x, "value_of_x"),
+      tar_quarto_rep(
+        report,
+        input = "rep.qmd",
+        execute_params = data.frame(
+          par = c("parval1", "parval2", "parval3", "parval4"),
+          stringsAsFactors = FALSE
+        )
+      )
+    )
+  })
+  files <- list.files(pattern = "html$")
+  expect_equal(files, character(0))
+  targets::tar_make(callr_function = NULL)
+  out <- unlist(targets::tar_meta(report, children)$children)
+  expect_equal(length(out), 4L)
+  expect_equal(length(unique(out)), 4L)
+  files <- list.files(pattern = "html$")
+  expect_equal(length(files), 4L)
+  expect_equal(length(unique(files)), 4L)
+  expect_true(all(grepl("^rep_", files)))
+})
+
 targets::tar_test("tar_quarto_rep_run_params", {
   params <- tibble::tibble(param1 = letters[seq_len(4)])
   out <- tar_quarto_rep_run_params(params, 1)

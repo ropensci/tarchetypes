@@ -10,6 +10,10 @@
 #'   When this target runs, it returns a sorted character vector
 #'   of all the important file paths: the rendered documents,
 #'   the Quarto source files, and other input and output files.
+#'   The output files are determined by the YAML front-matter of
+#'   standalone Quarto documents and `_quarto.yml` in Quarto projects,
+#'   and you can see these files with [tar_quarto_files()]
+#'   (powered by `quarto::quarto_inspect()`).
 #'   All returned paths are *relative* paths to ensure portability
 #'   (so that the project can be moved from one file system to another
 #'   without invalidating the target).
@@ -28,8 +32,6 @@
 #'   No need to include anything already in the output of [tar_quarto_files()],
 #'   the list of file dependencies automatically detected through
 #'   `quarto::quarto_inspect()`.
-#' @param output_format Character of length 1, Quarto document output format.
-#'   See the help file of `quarto::quarto_render()` for more details.
 #' @param execute_params A non-expression language object
 #'   (use `quote()`, not `expression()`) that
 #'   evaluates to a named list of parameters
@@ -98,8 +100,6 @@ tar_quarto_raw <- function(
   name,
   path = ".",
   extra_files = character(0),
-  output_format = NULL,
-  output_file = NULL,
   execute = TRUE,
   execute_params = NULL,
   cache = NULL,
@@ -126,11 +126,6 @@ tar_quarto_raw <- function(
   targets::tar_assert_chr(path)
   targets::tar_assert_nzchar(path)
   targets::tar_assert_path(path)
-  targets::tar_assert_scalar(output_format %|||% ".")
-  targets::tar_assert_chr(output_format %|||% ".")
-  targets::tar_assert_nzchar(output_format %|||% ".")
-  targets::tar_assert_chr(output_file %|||% ".")
-  targets::tar_assert_nzchar(output_file %|||% ".")
   targets::tar_assert_scalar(execute)
   targets::tar_assert_lgl(execute)
   targets::tar_assert_lang(execute_params)
@@ -153,8 +148,6 @@ tar_quarto_raw <- function(
     sources = sources,
     output = output,
     input = input,
-    output_format = output_format,
-    output_file = output_file,
     execute = execute,
     execute_params = execute_params,
     cache = cache,
@@ -184,8 +177,6 @@ tar_quarto_command <- function(
   sources,
   output,
   input,
-  output_format,
-  output_file,
   execute,
   execute_params,
   cache,
@@ -197,8 +188,6 @@ tar_quarto_command <- function(
   args <- substitute(
     list(
       input = path,
-      output_format = output_format,
-      output_file = output_file,
       execute = execute,
       execute_params = execute_params,
       execute_dir = quote(getwd()),
@@ -214,8 +203,6 @@ tar_quarto_command <- function(
     ),
     env = list(
       path = path,
-      output_format = output_format,
-      output_file = output_file,
       execute = execute,
       execute_params = execute_params,
       cache = cache,

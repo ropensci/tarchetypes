@@ -2,9 +2,15 @@
 #' @export
 #' @family Literate programming utilities
 #' @description Detect the important files in a Quarto project.
-#' @return A named list of important file paths in a Quarto project:
-#'   source files to scrape for target dependencies, as well as
-#'   other input and output files to track for changes.
+#' @details This function is just a thin wrapper that interprets the output
+#'   of `quarto::quarto_inspect()` and returns what `tarchetypes` needs to
+#'   know about the current Quarto project or document.
+#' @return A named list of important file paths in a Quarto project or document:
+#'   * `sources`: source files with `tar_load()`/`tar_read()` target dependencies
+#'     in R code chunks.
+#'   * `output`: output files that will be generated during `quarto::quarto_render()`.
+#'   * `input`: pre-existing files required to render the project or document,
+#'     such as `_quarto.yml`.
 #' @param path Character of length 1, either the file path
 #'   to a Quarto source document or the directory path
 #'   to a Quarto project. Defaults to the Quarto project in the
