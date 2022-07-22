@@ -1,4 +1,4 @@
-# tarchetypes 0.7.0
+# tarchetypes 0.6.0.9000
 
 * Add new functions `tar_quarto()` and `tar_quarto_rep()` (and "raw" versions) for Quarto documents and projects in pipelines (#89).
 * Add new function `tar_quarto_files()` to inspect Quarto projects and documents for important files: source files to inspect for target dependencies, output documents, and Quarto-specific inputs like `_quarto.yml`. Uses `quarto::quarto_inspect()` and powers the automatic file detection in `tar_quarto()` etc. (#89).
