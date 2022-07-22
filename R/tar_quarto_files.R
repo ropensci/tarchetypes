@@ -28,7 +28,8 @@
 #' )
 #' path <- tempfile(fileext = ".qmd")
 #' writeLines(lines, path)
-#' tar_quarto_files(path)
+#' # If Quarto is installed, run:
+#' # tar_quarto_files(path)
 tar_quarto_files <- function(path = ".") {
   assert_quarto()
   targets::tar_assert_scalar(path)

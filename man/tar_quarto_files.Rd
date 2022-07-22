@@ -43,7 +43,8 @@ lines <- c(
 )
 path <- tempfile(fileext = ".qmd")
 writeLines(lines, path)
-tar_quarto_files(path)
+# If Quarto is installed, run:
+# tar_quarto_files(path)
 }
 \seealso{
 Other Literate programming utilities: 
