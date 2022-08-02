@@ -56,10 +56,19 @@ targets::tar_test("tar_quarto_files() project", {
   )
   writeLines(lines, file.path("x", "r2.qmd"))
   info <- tar_quarto_files("x")
-  expect_equal(
-    sort(info$sources),
-    sort(file.path("x", c("index.qmd", "r2.qmd")))
-  )
-  expect_equal(info$output, file.path("x", "_book"))
-  expect_equal(info$input, file.path("x", "_quarto.yml"))
+  if (identical(tolower(Sys.info()[["sysname"]]), "windows")) {
+    expect_equal(
+      sort(basename(info$sources)),
+      sort(c("index.qmd", "r2.qmd"))
+    )
+    expect_equal(basename(info$output), "_book")
+    expect_equal(basename(info$input), "_quarto.yml")
+  } else {
+    expect_equal(
+      sort(info$sources),
+      sort(file.path("x", c("index.qmd", "r2.qmd")))
+    )
+    expect_equal(info$output, file.path("x", "_book"))
+    expect_equal(info$input, file.path("x", "_quarto.yml"))
+  }
 })

@@ -171,7 +171,11 @@ targets::tar_test("tar_render() works with child documents", {
   progress <- progress[progress$progress != "skipped", ]
   expect_equal(sort(progress$name), sort(c("child", "main", "report")))
   out <- targets::tar_read(report)
-  expect_equal(out, c("report/main.html", "report/main.Rmd"))
+  if (identical(tolower(Sys.info()[["sysname"]]), "windows")) {
+    expect_equal(basename(out), c("main.html", "main.Rmd"))
+  } else {
+    expect_equal(out, c("report/main.html", "report/main.Rmd"))
+  }
   # Should not rerun the report.
   suppressMessages(targets::tar_make(callr_function = NULL))
   progress <- targets::tar_progress()
@@ -193,7 +197,6 @@ targets::tar_test("tar_render() works with child documents", {
     sort(targets::tar_progress()$name),
     sort(c("child", "main", "report"))
   )
-
   # Should rerun the report.
   # Only the dependency in the child document is changed.
   targets::tar_script({
