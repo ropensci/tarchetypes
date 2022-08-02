@@ -1,4 +1,4 @@
-# tarchetypes 0.6.0.9000
+# tarchetypes 0.6.0.9001
 
 * Add new functions `tar_quarto()` and `tar_quarto_rep()` (and "raw" versions) for Quarto documents and projects in pipelines (#89).
 * Add new function `tar_quarto_files()` to inspect Quarto projects and documents for important files: source files to inspect for target dependencies, output documents, and Quarto-specific inputs like `_quarto.yml`. Uses `quarto::quarto_inspect()` and powers the automatic file detection in `tar_quarto()` etc. (#89).
@@ -8,6 +8,7 @@
 * Handle non-atomic length-one list columns in `tar_append_static_values()`.
 * Allow `tar_render()` to work with just one row of parameters (#96, #97, @ugoebel73).
 * Remove dependencies and collect garbage before running reports.
+* Make sure all the target factories have `memory` and `garbage_collection` arguments.
 
 # tarchetypes 0.6.0
 
