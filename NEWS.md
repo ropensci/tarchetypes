@@ -1,3 +1,7 @@
+# tarchetypes 0.7.0.9000
+
+
+
 # tarchetypes 0.7.0
 
 * Add new functions `tar_quarto()` and `tar_quarto_rep()` (and "raw" versions) for Quarto documents and projects in pipelines (#89).
