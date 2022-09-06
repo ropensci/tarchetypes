@@ -1,6 +1,6 @@
 # tarchetypes 0.7.0.9000
 
-
+* Document <https://github.com/ropensci/tarchetypes/discussions/105> (@MarekGierlinski).
 
 # tarchetypes 0.7.0
 

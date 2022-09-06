@@ -10,16 +10,14 @@ tar_map(values, ..., names = tidyselect::everything(), unlist = FALSE)
 \item{values}{Named list or data frame with values to iterate over.
 The names are the names of symbols in the commands and pattern
 statements, and the elements are values that get substituted
-in place of those symbols. Elements of the \code{values} list
-should be small objects that can easily deparse to names,
-such as characters, integers, and symbols.
-For more complicated elements of \code{values}, such as
-lists with multiple numeric vectors,
-\code{tar_map()} attempts to parse the elements into expressions,
-but this process is not perfect, and the default
-target names come out garbled.
-To create a list of symbols as a column of \code{values},
-use \code{rlang::syms()}.}
+in place of those symbols. \code{\link[=tar_map]{tar_map()}} uses these elements
+to create new R code, so they should be basic types, symbols,
+or R expressions. For objects even a little bit complicated,
+especially objects with attributes, it is not obvious how to
+convert the object into code that generates it.
+For complicated objects, consider using \code{quote()} when
+you define \code{values}, as shown at
+\url{https://github.com/ropensci/tarchetypes/discussions/105}.}
 
 \item{...}{One or more target objects or list of target objects.
 Lists can be arbitrarily nested, as in \code{list()}.}
