@@ -11,7 +11,12 @@ targets::tar_test("tar_files_input() writes the correct targets", {
   out <- targets::tar_manifest(x_files, callr_function = NULL)
   expect_equal(out$name, "x_files")
   expect_equal(out$command, "list(\"a.txt\", \"b.txt\")")
-  expect_equal(out$pattern, NA_character_)
+  if ("pattern" %in% colnames(out)) {
+    if (all(is.na(out$pattern))) {
+      out$pattern <- NULL
+    }
+    expect_null(out$pattern)
+  }
 })
 
 targets::tar_test("tar_files_input() writes the correct targets (batched)", {
@@ -34,7 +39,12 @@ targets::tar_test("tar_files_input() writes the correct targets (batched)", {
     out$command,
     "list(c(\"a.txt\", \"b.txt\"), c(\"c.txt\", \"d.txt\"))"
   )
-  expect_equal(out$pattern, NA_character_)
+  if ("pattern" %in% colnames(out)) {
+    if (all(is.na(out$pattern))) {
+      out$pattern <- NULL
+    }
+    expect_null(out$pattern)
+  }
 })
 
 targets::tar_test("tar_files_input() correctly responds to changes in files", {

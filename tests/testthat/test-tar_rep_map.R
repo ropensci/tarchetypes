@@ -43,32 +43,45 @@ targets::tar_test("tar_rep_map() manifest", {
       class = "tar_condition_deprecate"
     )
   )
+  expect_empty_pattern <- function(out) {
+    if ("pattern" %in% colnames(out)) {
+      if (all(is.na(out$pattern))) {
+        out$pattern <- NULL
+      }
+      expect_null(out$pattern)
+    }
+  }
   suppressWarnings({
     expect_equal(nrow(out), 8L)
     out <- targets::tar_manifest(label, callr_function = NULL)
     expect_equal(out$command, "\"aggregate\"")
-    expect_true(is.na(out$pattern))
+    expect_empty_pattern(out)
     out <- targets::tar_manifest(data1_batch, callr_function = NULL)
     expect_equal(out$command, "seq_len(2)")
-    expect_true(is.na(out$pattern))
+    expect_empty_pattern(out)
     out <- targets::tar_manifest(data2_batch, callr_function = NULL)
     expect_equal(out$command, "seq_len(2)")
-    expect_true(is.na(out$pattern))
+    expect_empty_pattern(out)
     out <- targets::tar_manifest(data1, callr_function = NULL)
     expect_true(grepl("tar_rep_run", out$command))
     expect_false(is.na(out$pattern))
+    expect_true(length(out$pattern) > 0L && nzchar(out$pattern) > 0L)
     out <- targets::tar_manifest(data2, callr_function = NULL)
     expect_true(grepl("tar_rep_run", out$command))
     expect_false(is.na(out$pattern))
+    expect_true(length(out$pattern) > 0L && nzchar(out$pattern) > 0L)
     out <- targets::tar_manifest(aggregate1, callr_function = NULL)
     expect_true(grepl("tar_rep2_run", out$command))
     expect_false(is.na(out$pattern))
+    expect_true(length(out$pattern) > 0L && nzchar(out$pattern) > 0L)
     out <- targets::tar_manifest(aggregate2, callr_function = NULL)
     expect_true(grepl("tar_rep2_run", out$command))
     expect_false(is.na(out$pattern))
+    expect_true(length(out$pattern) > 0L && nzchar(out$pattern) > 0L)
     out <- targets::tar_manifest(aggregate3, callr_function = NULL)
     expect_true(grepl("tar_rep2_run", out$command))
     expect_false(is.na(out$pattern))
+    expect_true(length(out$pattern) > 0L && nzchar(out$pattern) > 0L)
   })
 })
 
