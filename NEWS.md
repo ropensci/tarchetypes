@@ -1,6 +1,6 @@
 # tarchetypes 0.7.1.9000
 
-
+* Migrate away from deprecated `targets::tar_path()`.
 
 # tarchetypes 0.7.1
 
