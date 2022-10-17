@@ -6,7 +6,7 @@
 #'   convenient helper functions to create specialized targets, making
 #'   pipelines in targets easier and cleaner to write and understand.
 #' @name tarchetypes-package
-#' @importFrom digest digest
+#' @importFrom digest digest digest2int
 #' @importFrom dplyr bind_rows mutate select
 #' @importFrom fs dir_create is_dir path_ext path_ext_remove
 #'   path_ext_set path_rel
@@ -34,7 +34,7 @@
 #'   last_col matches num_range one_of starts_with
 #' @importFrom utils download.file globalVariables head
 #' @importFrom vctrs vec_c vec_rbind
-#' @importFrom withr local_options with_options
+#' @importFrom withr local_options with_options local_seed
 NULL
 
 utils::globalVariables(".x")
