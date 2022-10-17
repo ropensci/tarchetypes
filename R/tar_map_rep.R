@@ -7,6 +7,7 @@
 #' @return A list of new target objects.
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
+#' @inheritSection tar_rep Replicate-specific seeds
 #' @param command R code for a single replicate. Must return
 #'   a data frame.
 #' @param columns A tidyselect expression to select which columns of `values`

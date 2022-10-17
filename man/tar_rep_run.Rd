@@ -4,11 +4,9 @@
 \alias{tar_rep_run}
 \title{Run a batch in a \code{tar_rep()} archetype.}
 \usage{
-tar_rep_run(name, command, batch, reps, iteration)
+tar_rep_run(command, batch, reps, iteration)
 }
 \arguments{
-\item{name}{Character of length 1, name of the parent target.}
-
 \item{command}{Expression object, command to replicate.}
 
 \item{batch}{Numeric of length 1, batch index.}

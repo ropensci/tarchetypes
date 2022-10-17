@@ -245,7 +245,7 @@ that maps over the batch ids. (Thus, each batch is a branch.)
 Each batch/branch replicates the command a certain number of times.
 If the command returns a list or data frame, then
 the targets from \code{tar_rep()} will try to append new elements/columns
-\code{tar_batch}, \code{tar_rep}, and \code{tar_rep_seed} to the output
+\code{tar_batch}, \code{tar_rep}, and \code{tar_seed} to the output
 to denote the batch, rep-within-batch index, and rep-specific seed,
 respectively.
 
@@ -255,14 +255,14 @@ in the \code{iteration} argument. If \code{"list"}, reps and batches
 are aggregated with \code{list()}. If \code{"vector"},
 then \code{vctrs::vec_c()}. If \code{"group"}, then \code{vctrs::vec_rbind()}.
 }
-\section{Rep-specific seeds}{
+\section{Replicate-specific seeds}{
 
 In ordinary pipelines, each target has its own unique deterministic
 pseudo-random number generator seed derived from its target name.
-In batched replication, however, each batch is a target with multiple
+In batched replicate, however, each batch is a target with multiple
 replications within that batch. That is why \code{\link[=tar_rep]{tar_rep()}}
-and friends give each \emph{replication} its own unique seed.
-Each replication-specific seed is created
+and friends give each \emph{replicate} its own unique seed.
+Each replicate-specific seed is created
 based on the dynamic parent target name,
 batch index, and rep-within-batch index,
 and the seed is set just before the rep runs.

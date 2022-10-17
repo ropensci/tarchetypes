@@ -226,7 +226,7 @@ targets::tar_test("tar_map_rep(): combine, no cols, static branches", {
   expect_equal(out$out, rep(c(10050, 5050, 10010), times = 6))
   expect_equal(
     sort(colnames(out)),
-    sort(c("tar_group", "out", "tar_batch", "tar_rep"))
+    sort(c("tar_group", "out", "tar_batch", "tar_rep", "tar_seed"))
   )
   # metadata
   meta <- targets::tar_meta(x_diffuse)
@@ -283,7 +283,10 @@ targets::tar_test("tar_map_rep(): no static branches", {
   d <- dplyr::distinct(out, tar_batch, tar_rep)
   expect_equal(nrow(out), nrow(d))
   expect_equal(out$out, rep(2001, times = 6))
-  expect_equal(sort(colnames(out)), sort(c("out", "tar_batch", "tar_rep")))
+  expect_equal(
+    sort(colnames(out)),
+    sort(c("out", "tar_batch", "tar_rep", "tar_seed"))
+  )
   # metadata
   meta <- targets::tar_meta(x)
   expect_equal(length(unlist(meta$children)), 2L)
