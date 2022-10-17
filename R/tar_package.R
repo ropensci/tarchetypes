@@ -24,7 +24,7 @@
 #'   tar_assert_match tar_assert_nonmissing tar_assert_positive
 #'   tar_assert_scalar tar_assert_target tar_assert_target_list
 #'   tar_assert_true tar_assert_unique tar_assert_unique_targets
-#'   tar_cue tar_deparse_language tar_deparse_safe
+#'   tar_cue tar_definition tar_deparse_language tar_deparse_safe
 #'   tar_dir tar_envir tar_exist_meta
 #'   tar_group tar_load tar_meta tar_option_get tar_read tar_runtime_object
 #'   tar_script tar_target tar_target_raw tar_test tar_tidy_eval
