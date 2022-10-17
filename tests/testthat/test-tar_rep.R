@@ -55,7 +55,7 @@ targets::tar_test("tar_rep(iteration = 'vector')", {
   expect_true(is.integer(out$x))
   expect_equal(out$tar_batch, rep(seq_len(2), each = 6))
   expect_equal(out$tar_rep, rep(rep(seq_len(3), each = 2), times = 2))
-  expect_true(is.numeric(df$tar_rep_seed))
+  expect_true(is.numeric(out$tar_rep_seed))
   expect_equal(length(tar_meta(x, fields = "children")$children[[1]]), 2L)
   expect_equal(tar_read(x, branches = 1), out[seq_len(6), ])
   expect_equiv(tar_read(x, branches = 2), out[seq_len(6) + 6, ])
