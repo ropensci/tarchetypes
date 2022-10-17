@@ -245,8 +245,9 @@ that maps over the batch ids. (Thus, each batch is a branch.)
 Each batch/branch replicates the command a certain number of times.
 If the command returns a list or data frame, then
 the targets from \code{tar_rep()} will try to append new elements/columns
-\code{tar_batch} and \code{tar_rep} to the output
-to denote the batch and rep-within-batch IDs, respectively.
+\code{tar_batch}, \code{tar_rep}, and \code{tar_rep_seed} to the output
+to denote the batch, rep-within-batch index, and rep-specific seed,
+respectively.
 
 Both batches and reps within each batch
 are aggregated according to the method you specify
@@ -254,6 +255,19 @@ in the \code{iteration} argument. If \code{"list"}, reps and batches
 are aggregated with \code{list()}. If \code{"vector"},
 then \code{vctrs::vec_c()}. If \code{"group"}, then \code{vctrs::vec_rbind()}.
 }
+\section{Rep-specific seeds}{
+
+The rep-specific seed in the \code{"tar_rep_seed"} column the the output
+is assigned based on the dynamic parent target name,
+batch index, and rep-within-batch index. This pseudo-random
+number generator seed is set just before the rep runs.
+Rep-specific seeds are invariant to batching structure. In other words,
+\code{tar_rep(name = x, command = rnorm(1), batches = 100, reps = 1, ...)}
+produces the same numerical output as
+\code{tar_rep(name = x, command = rnorm(1), batches = 10, reps = 10, ...)}
+(but with different batch names).
+}
+
 \section{Target objects}{
 
 Most \code{tarchetypes} functions are target factories,

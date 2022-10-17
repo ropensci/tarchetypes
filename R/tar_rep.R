@@ -11,14 +11,25 @@
 #'   Each batch/branch replicates the command a certain number of times.
 #'   If the command returns a list or data frame, then
 #'   the targets from `tar_rep()` will try to append new elements/columns
-#'   `tar_batch` and `tar_rep` to the output
-#'   to denote the batch and rep-within-batch IDs, respectively.
+#'   `tar_batch`, `tar_rep`, and `tar_rep_seed` to the output
+#'   to denote the batch, rep-within-batch index, and rep-specific seed,
+#'   respectively.
 #'
 #'   Both batches and reps within each batch
 #'   are aggregated according to the method you specify
 #'   in the `iteration` argument. If `"list"`, reps and batches
 #'   are aggregated with `list()`. If `"vector"`,
 #'   then `vctrs::vec_c()`. If `"group"`, then `vctrs::vec_rbind()`.
+#' @section Rep-specific seeds:
+#'   The rep-specific seed in the `"tar_rep_seed"` column the the output
+#'   is assigned based on the dynamic parent target name,
+#'   batch index, and rep-within-batch index. This pseudo-random
+#'   number generator seed is set just before the rep runs.
+#'   Rep-specific seeds are invariant to batching structure. In other words,
+#'   `tar_rep(name = x, command = rnorm(1), batches = 100, reps = 1, ...)`
+#'   produces the same numerical output as
+#'   `tar_rep(name = x, command = rnorm(1), batches = 10, reps = 10, ...)`
+#'   (but with different batch names).
 #' @export
 #' @return A list of two targets, one upstream and one downstream.
 #'   The upstream target returns a numeric index of batch ids,
