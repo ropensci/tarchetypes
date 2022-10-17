@@ -344,3 +344,35 @@ targets::tar_test("tar_map_rep() list column support", {
     list(c(1L, 2L), c(1L, 2L), c(3L, 4L), c(3L, 4L))
   )
 })
+
+targets::tar_test("tar_map_rep() seeds are resilient to re-batching", {
+  
+  stop("need to implement for tar_map_rep()")
+  
+  targets::tar_script({
+    f <- function() {
+      digest::digest(paste(sample.int(n = 1e9, size = 1000), collapse = "_"))
+    }
+    tarchetypes::tar_rep(x, f(), batches = 1, reps = 4)
+  })
+  targets::tar_make(callr_function = NULL)
+  out1 <- unname(targets::tar_read(x))
+  targets::tar_script({
+    f <- function() {
+      digest::digest(paste(sample.int(n = 1e9, size = 1000), collapse = "_"))
+    }
+    tarchetypes::tar_rep(x, f(), batches = 2, reps = 2)
+  })
+  targets::tar_make(callr_function = NULL)
+  out2 <- unname(targets::tar_read(x))
+  targets::tar_script({
+    f <- function() {
+      digest::digest(paste(sample.int(n = 1e9, size = 1000), collapse = "_"))
+    }
+    tarchetypes::tar_rep(x, f(), batches = 4, reps = 1)
+  })
+  targets::tar_make(callr_function = NULL)
+  out3 <- unname(targets::tar_read(x))
+  expect_equal(out1, out2)
+  expect_equal(out1, out3)
+})
