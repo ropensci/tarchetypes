@@ -98,7 +98,8 @@ tar_force <- function(
 #' @param condition Logical, whether to run the downstream target
 #'   in [tar_force()].
 tar_force_change <- function(condition) {
-  path <- targets::tar_path()
+  name <- targets::tar_definition()$settings$name
+  path <- file.path(tar_runtime_object()$get_store(), "objects", name)
   new <- basename(tempfile(pattern = ""))
   old <- if_any(file.exists(path), readRDS(path), new)
   if_any(condition, new, old)
