@@ -21,10 +21,15 @@
 #'   are aggregated with `list()`. If `"vector"`,
 #'   then `vctrs::vec_c()`. If `"group"`, then `vctrs::vec_rbind()`.
 #' @section Rep-specific seeds:
-#'   The rep-specific seed in the `"tar_rep_seed"` column the the output
-#'   is assigned based on the dynamic parent target name,
-#'   batch index, and rep-within-batch index. This pseudo-random
-#'   number generator seed is set just before the rep runs.
+#'   In ordinary pipelines, each target has its own unique deterministic
+#'   pseudo-random number generator seed derived from its target name.
+#'   In batched replication, however, each batch is a target with multiple
+#'   replications within that batch. That is why [tar_rep()]
+#'   and friends give each *replication* its own unique seed.
+#'   Each replication-specific seed is created
+#'   based on the dynamic parent target name,
+#'   batch index, and rep-within-batch index,
+#'   and the seed is set just before the rep runs.
 #'   Rep-specific seeds are invariant to batching structure. In other words,
 #'   `tar_rep(name = x, command = rnorm(1), batches = 100, reps = 1, ...)`
 #'   produces the same numerical output as
