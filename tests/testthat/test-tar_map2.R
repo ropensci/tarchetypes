@@ -78,7 +78,10 @@ targets::tar_test("tar_map2(): combine, columns, static branches", {
       c("x", "x_i_a", "x_i_b", "x_ii_a", "x_ii_b")
     )
   )
-  expect_equal(dim(x), c(8L, 7L))
+  expect_equal(dim(x), c(8L, 10L))
+  expect_true(is.numeric(x$tar_batch))
+  expect_true(is.numeric(x$tar_rep))
+  expect_true(is.numeric(x$tar_seed))
   out <- dplyr::arrange(x, arg1, arg2)
   expect_equal(out$tar_group, rep(c(1L, 2L), each = 4L))
   out$tar_group <- NULL
@@ -192,8 +195,8 @@ targets::tar_test("tar_map2(): no combine, no columns, static branches", {
   expect_equal(x_1_a$tar_group, rep(c(1L, 2L, 3L), each = 2L))
   expect_equal(x_1_b$tar_group, rep(c(1L, 2L, 3L), each = 2L))
   # downstream output
-  expect_equal(dim(x_2_a), c(6L, 4L))
-  expect_equal(dim(x_2_b), c(6L, 4L))
+  expect_equal(dim(x_2_a), c(6L, 7L))
+  expect_equal(dim(x_2_b), c(6L, 7L))
   expect_equal(x_2_a$result, paste("a", seq_len(6L)))
   expect_equal(x_2_b$result, paste("b", seq_len(6L)))
   expect_equal(x_2_a$length_arg1, rep(1L, 6L))
@@ -254,8 +257,8 @@ targets::tar_test("tar_map2() columns1", {
   expect_equal(x_1_a$tar_group, rep(c(1L, 2L, 3L), each = 2L))
   expect_equal(x_1_b$tar_group, rep(c(1L, 2L, 3L), each = 2L))
   # downstream output
-  expect_equal(dim(x_2_a), c(6L, 5L))
-  expect_equal(dim(x_2_b), c(6L, 5L))
+  expect_equal(dim(x_2_a), c(6L, 8L))
+  expect_equal(dim(x_2_b), c(6L, 8L))
   expect_equal(x_2_a$arg1, rep("a", 6L))
   expect_equal(x_2_b$arg1, rep("b", 6L))
   expect_equal(x_2_a$result, paste("a", seq_len(6L)))
@@ -316,8 +319,8 @@ targets::tar_test("tar_map2() columns2", {
   expect_equal(x_1_a$tar_group, rep(c(1L, 2L, 3L), each = 2L))
   expect_equal(x_1_b$tar_group, rep(c(1L, 2L, 3L), each = 2L))
   # downstream output
-  expect_equal(dim(x_2_a), c(6L, 5L))
-  expect_equal(dim(x_2_b), c(6L, 5L))
+  expect_equal(dim(x_2_a), c(6L, 8L))
+  expect_equal(dim(x_2_b), c(6L, 8L))
   expect_equal(x_2_a$value_arg1, rep("a", 6L))
   expect_equal(x_2_b$value_arg1, rep("b", 6L))
   expect_equal(x_2_a$result, paste("a", seq_len(6L)))
@@ -406,7 +409,7 @@ targets::tar_test("tar_map2(): no static branches", {
   expect_equal(x_i$arg1, letters[seq_len(4L)])
   expect_equal(x_i$arg2, seq_len(4L))
   expect_equal(x_i$tar_group, c(1L, 1L, 2L, 2L))
-  expect_equal(dim(x_ii), c(4L, 7L))
+  expect_equal(dim(x_ii), c(4L, 10L))
   expect_equal(x_ii$result, c("a 1", "b 2", "c 3", "d 4"))
   expect_equal(x_ii$length_arg1, rep(1L, 4L))
   expect_equal(x_ii$length_arg2, rep(1L, 4L))
@@ -603,4 +606,72 @@ targets::tar_test("list column elements from command1 are selected", {
   targets::tar_make(callr_function = NULL)
   targets::tar_load(x)
   expect_equal(x$length2, c(2L, 2L))
+})
+
+targets::tar_test("tar_map2() seed resilience", {
+  skip_on_cran()
+  skip_if_not_installed("dplyr")
+  targets::tar_script({
+    f1 <- function(arg1) {
+      tibble::tibble(
+        arg1 = arg1,
+        arg2 = seq_len(4)
+      )
+    }
+    f2 <- function(arg1, arg2) {
+      tibble::tibble(
+        result = paste(arg1, arg2),
+        length_arg1 = length(arg1),
+        length_arg2 = length(arg2),
+        random = sample.int(1e6, size = 1L)
+      )
+    }
+    tar_map2(
+      x,
+      command1 = f1(arg1),
+      command2 = f2(arg1, arg2),
+      values = tibble::tibble(arg1 = letters[seq_len(2)]),
+      names = arg1,
+      suffix1 = "i",
+      suffix2 = "ii",
+      group = rep(LETTERS[seq_len(2)], each = nrow(!!.x) / 2)
+    )
+  })
+  tar_make(callr_function = NULL)
+  out1 <- tar_read(x)
+  out1$tar_batch <- NULL
+  out1$tar_rep <- NULL
+  out1$tar_group <- NULL
+  targets::tar_script({
+    f1 <- function(arg1) {
+      tibble::tibble(
+        arg1 = arg1,
+        arg2 = seq_len(4)
+      )
+    }
+    f2 <- function(arg1, arg2) {
+      tibble::tibble(
+        result = paste(arg1, arg2),
+        length_arg1 = length(arg1),
+        length_arg2 = length(arg2),
+        random = sample.int(1e6, size = 1L)
+      )
+    }
+    tar_map2(
+      x,
+      command1 = f1(arg1),
+      command2 = f2(arg1, arg2),
+      values = tibble::tibble(arg1 = letters[seq_len(2)]),
+      names = arg1,
+      suffix1 = "i",
+      suffix2 = "ii",
+      group = rep(1L, nrow(!!.x))
+    )
+  })
+  tar_make(callr_function = NULL)
+  out2 <- tar_read(x)
+  out2$tar_batch <- NULL
+  out2$tar_rep <- NULL
+  out2$tar_group <- NULL
+  expect_equal(out1, out2)
 })

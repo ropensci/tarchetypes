@@ -18,6 +18,7 @@
 #'   `command1` produces a data frame of arguments to
 #'   `command2`, and `command2` dynamically maps over
 #'   these arguments in batches.
+#' @inheritSection tar_rep Replicate-specific seeds
 #' @return A list of new target objects.
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects

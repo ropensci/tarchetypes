@@ -36,6 +36,12 @@
 #'   produces the same numerical output as
 #'   `tar_rep(name = x, command = rnorm(1), batches = 10, reps = 10, ...)`
 #'   (but with different batch names).
+#'   Other target factories with this seed scheme are [tar_rep2()],
+#'   [tar_map_rep()], [tar_map2_count()], and [tar_map2_size()].
+#'   For the last two, it is possible to manually supply your own seeds
+#'   through the `command1` argument and then invoke them in your
+#'   custom code for `command2` (`set.seed()`, `withr::with_seed`,
+#'   or `withr::local_seed()`).
 #' @return A list of two targets, one upstream and one downstream.
 #'   The upstream target returns a numeric index of batch ids,
 #'   and the downstream one dynamically maps over the batch ids

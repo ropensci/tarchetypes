@@ -9,6 +9,7 @@
 #' @return A new target object to perform batched computation.
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
+#' @inheritSection tar_rep Replicate-specific seeds
 #' @inheritParams targets::tar_target
 #' @param ... Symbols to name one or more upstream batched targets
 #'   created by [tar_rep()].

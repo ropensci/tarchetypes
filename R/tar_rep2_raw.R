@@ -13,6 +13,7 @@
 #'   downstream of [tar_rep()].
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
+#' @inheritSection tar_rep Replicate-specific seeds
 #' @inheritParams targets::tar_target
 #' @param targets Character vector of names of upstream batched targets
 #'   created by [tar_rep()].

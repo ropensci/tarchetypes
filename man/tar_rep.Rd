@@ -271,6 +271,12 @@ Rep-specific seeds are invariant to batching structure. In other words,
 produces the same numerical output as
 \code{tar_rep(name = x, command = rnorm(1), batches = 10, reps = 10, ...)}
 (but with different batch names).
+Other target factories with this seed scheme are \code{\link[=tar_rep2]{tar_rep2()}},
+\code{\link[=tar_map_rep]{tar_map_rep()}}, \code{\link[=tar_map2_count]{tar_map2_count()}}, and \code{\link[=tar_map2_size]{tar_map2_size()}}.
+For the last two, it is possible to manually supply your own seeds
+through the \code{command1} argument and then invoke them in your
+custom code for \code{command2} (\code{set.seed()}, \code{withr::with_seed},
+or \code{withr::local_seed()}).
 }
 
 \section{Target objects}{

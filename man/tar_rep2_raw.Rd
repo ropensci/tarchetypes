@@ -241,6 +241,30 @@ and the design specification at
 details the structure and composition of target objects.
 }
 
+\section{Replicate-specific seeds}{
+
+In ordinary pipelines, each target has its own unique deterministic
+pseudo-random number generator seed derived from its target name.
+In batched replicate, however, each batch is a target with multiple
+replications within that batch. That is why \code{\link[=tar_rep]{tar_rep()}}
+and friends give each \emph{replicate} its own unique seed.
+Each replicate-specific seed is created
+based on the dynamic parent target name,
+batch index, and rep-within-batch index,
+and the seed is set just before the rep runs.
+Rep-specific seeds are invariant to batching structure. In other words,
+\code{tar_rep(name = x, command = rnorm(1), batches = 100, reps = 1, ...)}
+produces the same numerical output as
+\code{tar_rep(name = x, command = rnorm(1), batches = 10, reps = 10, ...)}
+(but with different batch names).
+Other target factories with this seed scheme are \code{\link[=tar_rep2]{tar_rep2()}},
+\code{\link[=tar_map_rep]{tar_map_rep()}}, \code{\link[=tar_map2_count]{tar_map2_count()}}, and \code{\link[=tar_map2_size]{tar_map2_size()}}.
+For the last two, it is possible to manually supply your own seeds
+through the \code{command1} argument and then invoke them in your
+custom code for \code{command2} (\code{set.seed()}, \code{withr::with_seed},
+or \code{withr::local_seed()}).
+}
+
 \examples{
 if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({ # tar_dir() runs code from a temporary directory.
