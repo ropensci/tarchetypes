@@ -407,3 +407,75 @@ targets::tar_test("tar_map_rep() seeds are resilient to re-batching", {
   expect_equal(out1, out2)
   expect_equal(out1, out3)
 })
+
+targets::tar_test("tar_map_rep() seeds change with the seed option", {
+  skip_on_cran()
+  skip_if(!("seed" %in% names(formals(targets::tar_option_set))))
+  targets::tar_script({
+    tar_option_set(seed = 1L)
+    f <- function(x) {
+      out <- digest::digest(
+        paste(c(x, sample.int(n = 1e9, size = 1000)), collapse = "_")
+      )
+      data.frame(x = out)
+    }
+    tarchetypes::tar_map_rep(
+      x,
+      f(a),
+      values = list(a = c(1, 2)),
+      batches = 2,
+      reps = 2
+    )
+  })
+  targets::tar_make(callr_function = NULL)
+  out1 <- paste(unname(targets::tar_read(x)), collapse = " ")
+  targets::tar_destroy()
+  targets::tar_make(callr_function = NULL)
+  out2 <- paste(unname(targets::tar_read(x)), collapse = " ")
+  targets::tar_script({
+    tar_option_set(seed = 2L)
+    f <- function(x) {
+      out <- digest::digest(
+        paste(c(x, sample.int(n = 1e9, size = 1000)), collapse = "_")
+      )
+      data.frame(x = out)
+    }
+    tarchetypes::tar_map_rep(
+      x,
+      f(a),
+      values = list(a = c(1, 2)),
+      batches = 2,
+      reps = 2
+    )
+  })
+  targets::tar_make(callr_function = NULL)
+  out3 <- paste(unname(targets::tar_read(x)), collapse = " ")
+  targets::tar_script({
+    tar_option_set(seed = NA)
+    f <- function(x) {
+      out <- digest::digest(
+        paste(c(x, sample.int(n = 1e9, size = 1000)), collapse = "_")
+      )
+      data.frame(x = out)
+    }
+    tarchetypes::tar_map_rep(
+      x,
+      f(a),
+      values = list(a = c(1, 2)),
+      batches = 2,
+      reps = 2
+    )
+  })
+  targets::tar_make(callr_function = NULL)
+  out4 <- paste(unname(targets::tar_read(x)), collapse = " ")
+  targets::tar_make(callr_function = NULL)
+  out5 <- paste(unname(targets::tar_read(x)), collapse = " ")
+  expect_equal(out1, out2)
+  expect_false(out1 == out3)
+  expect_false(out1 == out4)
+  expect_false(out1 == out5)
+  expect_false(out1 == out3)
+  expect_false(out3 == out4)
+  expect_false(out3 == out5)
+  expect_false(out4 == out5)
+})

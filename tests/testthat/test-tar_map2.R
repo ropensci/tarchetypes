@@ -675,3 +675,108 @@ targets::tar_test("tar_map2() seed resilience", {
   out2$tar_group <- NULL
   expect_equal(out1, out2)
 })
+
+targets::tar_test("tar_map2() seeds change with the seed option", {
+  skip_on_cran()
+  skip_if(!("seed" %in% names(formals(targets::tar_option_set))))
+  targets::tar_script({
+    tar_option_set(seed = 1L)
+    f1 <- function(arg1) {
+      tibble::tibble(
+        arg1 = arg1,
+        arg2 = seq_len(4)
+      )
+    }
+    f2 <- function(arg1, arg2) {
+      tibble::tibble(
+        result = paste(arg1, arg2),
+        length_arg1 = length(arg1),
+        length_arg2 = length(arg2),
+        random = sample.int(1e6, size = 1L)
+      )
+    }
+    tar_map2(
+      x,
+      command1 = f1(arg1),
+      command2 = f2(arg1, arg2),
+      values = tibble::tibble(arg1 = letters[seq_len(2)]),
+      names = arg1,
+      suffix1 = "i",
+      suffix2 = "ii",
+      group = rep(1L, nrow(!!.x))
+    )
+  })
+  targets::tar_make(callr_function = NULL)
+  out1 <- paste(unname(targets::tar_read(x)), collapse = " ")
+  targets::tar_destroy()
+  targets::tar_make(callr_function = NULL)
+  out2 <- paste(unname(targets::tar_read(x)), collapse = " ")
+  targets::tar_script({
+    tar_option_set(seed = 2L)
+    f1 <- function(arg1) {
+      tibble::tibble(
+        arg1 = arg1,
+        arg2 = seq_len(4)
+      )
+    }
+    f2 <- function(arg1, arg2) {
+      tibble::tibble(
+        result = paste(arg1, arg2),
+        length_arg1 = length(arg1),
+        length_arg2 = length(arg2),
+        random = sample.int(1e6, size = 1L)
+      )
+    }
+    tar_map2(
+      x,
+      command1 = f1(arg1),
+      command2 = f2(arg1, arg2),
+      values = tibble::tibble(arg1 = letters[seq_len(2)]),
+      names = arg1,
+      suffix1 = "i",
+      suffix2 = "ii",
+      group = rep(1L, nrow(!!.x))
+    )
+  })
+  targets::tar_make(callr_function = NULL)
+  out3 <- paste(unname(targets::tar_read(x)), collapse = " ")
+  targets::tar_script({
+    tar_option_set(seed = NA)
+    f1 <- function(arg1) {
+      tibble::tibble(
+        arg1 = arg1,
+        arg2 = seq_len(4)
+      )
+    }
+    f2 <- function(arg1, arg2) {
+      tibble::tibble(
+        result = paste(arg1, arg2),
+        length_arg1 = length(arg1),
+        length_arg2 = length(arg2),
+        random = sample.int(1e6, size = 1L)
+      )
+    }
+    tar_map2(
+      x,
+      command1 = f1(arg1),
+      command2 = f2(arg1, arg2),
+      values = tibble::tibble(arg1 = letters[seq_len(2)]),
+      names = arg1,
+      suffix1 = "i",
+      suffix2 = "ii",
+      group = rep(1L, nrow(!!.x))
+    )
+  })
+  targets::tar_make(callr_function = NULL)
+  out4 <- paste(unname(targets::tar_read(x)), collapse = " ")
+  targets::tar_make(callr_function = NULL)
+  out5 <- paste(unname(targets::tar_read(x)), collapse = " ")
+  expect_equal(out1, out2)
+  expect_false(out1 == out3)
+  expect_false(out1 == out4)
+  expect_false(out1 == out5)
+  expect_false(out1 == out3)
+  expect_false(out3 == out4)
+  expect_false(out3 == out5)
+  expect_false(out4 == out5)
+})

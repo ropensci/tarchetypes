@@ -306,7 +306,7 @@ targets::tar_test("tar_rep2() seeds are resilient to re-batching", {
     )
   })
   targets::tar_make(callr_function = NULL)
-  out1 <- targets::tar_read(x)
+  out1 <- targets::tar_read(y)
   out1$tar_batch <- NULL
   out1$tar_rep <- NULL
   targets::tar_script({
@@ -332,7 +332,7 @@ targets::tar_test("tar_rep2() seeds are resilient to re-batching", {
     )
   })
   targets::tar_make(callr_function = NULL)
-  out2 <- targets::tar_read(x)
+  out2 <- targets::tar_read(y)
   out2$tar_batch <- NULL
   out2$tar_rep <- NULL
   targets::tar_script({
@@ -358,9 +358,102 @@ targets::tar_test("tar_rep2() seeds are resilient to re-batching", {
     )
   })
   targets::tar_make(callr_function = NULL)
-  out3 <- targets::tar_read(x)
+  out3 <- targets::tar_read(y)
   out3$tar_batch <- NULL
   out3$tar_rep <- NULL
   expect_equal(out1, out2)
   expect_equal(out1, out3)
+})
+
+targets::tar_test("tar_rep2() seeds change with the seed option", {
+  skip_on_cran()
+  skip_if(!("seed" %in% names(formals(targets::tar_option_set))))
+  targets::tar_script({
+    tar_option_set(seed = 1L)
+    f <- function() {
+      tibble::tibble(
+        x = digest::digest(
+          paste(sample.int(n = 1e9, size = 1000), collapse = "_")
+        )
+      )
+    }
+    g <- function(x) {
+      x$x <- paste0(
+        x$x,
+        digest::digest(
+          paste(sample.int(n = 1e9, size = 1000), collapse = "_")
+        )
+      )
+      x
+    }
+    list(
+      tarchetypes::tar_rep(x, f(), batches = 2, reps = 2),
+      tarchetypes::tar_rep2(y, g(x), targets = "x")
+    )
+  })
+  targets::tar_make(callr_function = NULL)
+  out1 <- paste(unname(targets::tar_read(y)), collapse = " ")
+  targets::tar_destroy()
+  targets::tar_make(callr_function = NULL)
+  out2 <- paste(unname(targets::tar_read(y)), collapse = " ")
+  targets::tar_script({
+    tar_option_set(seed = 2L)
+    f <- function() {
+      tibble::tibble(
+        x = digest::digest(
+          paste(sample.int(n = 1e9, size = 1000), collapse = "_")
+        )
+      )
+    }
+    g <- function(x) {
+      x$x <- paste0(
+        x$x,
+        digest::digest(
+          paste(sample.int(n = 1e9, size = 1000), collapse = "_")
+        )
+      )
+      x
+    }
+    list(
+      tarchetypes::tar_rep(x, f(), batches = 2, reps = 2),
+      tarchetypes::tar_rep2(y, g(x), targets = "x")
+    )
+  })
+  targets::tar_make(callr_function = NULL)
+  out3 <- paste(unname(targets::tar_read(y)), collapse = " ")
+  targets::tar_script({
+    tar_option_set(seed = NA)
+    f <- function() {
+      tibble::tibble(
+        x = digest::digest(
+          paste(sample.int(n = 1e9, size = 1000), collapse = "_")
+        )
+      )
+    }
+    g <- function(x) {
+      x$x <- paste0(
+        x$x,
+        digest::digest(
+          paste(sample.int(n = 1e9, size = 1000), collapse = "_")
+        )
+      )
+      x
+    }
+    list(
+      tarchetypes::tar_rep(x, f(), batches = 2, reps = 2),
+      tarchetypes::tar_rep2(y, g(x), targets = "x")
+    )
+  })
+  targets::tar_make(callr_function = NULL)
+  out4 <- paste(unname(targets::tar_read(y)), collapse = " ")
+  targets::tar_make(callr_function = NULL)
+  out5 <- paste(unname(targets::tar_read(y)), collapse = " ")
+  expect_equal(out1, out2)
+  expect_false(out1 == out3)
+  expect_false(out1 == out4)
+  expect_false(out1 == out5)
+  expect_false(out1 == out3)
+  expect_false(out3 == out4)
+  expect_false(out3 == out5)
+  expect_false(out4 == out5)
 })
