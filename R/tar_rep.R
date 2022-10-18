@@ -37,11 +37,16 @@
 #'   `tar_rep(name = x, command = rnorm(1), batches = 10, reps = 10, ...)`
 #'   (but with different batch names).
 #'   Other target factories with this seed scheme are [tar_rep2()],
-#'   [tar_map_rep()], [tar_map2_count()], and [tar_map2_size()].
-#'   For the last two, it is possible to manually supply your own seeds
+#'   [tar_map_rep()], [tar_map2_count()], [tar_map2_size()],
+#'   [tar_render_rep()], and [tar_quarto_rep()].
+#'   For the `tar_map2_*()` functions,
+#'   it is possible to manually supply your own seeds
 #'   through the `command1` argument and then invoke them in your
 #'   custom code for `command2` (`set.seed()`, `withr::with_seed`,
-#'   or `withr::local_seed()`).
+#'   or `withr::local_seed()`). For [tar_render_rep()],
+#'   custom seeds can be supplied to the `params` argument
+#'   and then invoked in the individual R Markdown reports.
+#'   Likewise with [tar_quarto_rep()] and the `execute_params` argument.
 #' @return A list of two targets, one upstream and one downstream.
 #'   The upstream target returns a numeric index of batch ids,
 #'   and the downstream one dynamically maps over the batch ids

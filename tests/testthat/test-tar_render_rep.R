@@ -281,3 +281,59 @@ targets::tar_test("tar_render_rep_run_params", {
   expect_equal(out$param1, letters[seq_len(4)])
   expect_equal(out$tar_group, seq_len(4))
 })
+
+targets::tar_test("tar_render_rep() seed resilience", {
+  skip_on_cran()
+  skip_rmarkdown()
+  lines <- c(
+    "---",
+    "title: report",
+    "output_format: html_document",
+    "params:",
+    "  index: 1",
+    "---",
+    "",
+    "```{r}",
+    "path <- paste0(\"out_\", params$index, \".txt\")",
+    "writeLines(as.character(sample.int(n = 1e9, size = 1)), path)",
+    "```"
+  )
+  writeLines(lines, "report.Rmd")
+  targets::tar_script({
+    library(tarchetypes)
+    list(
+      tar_target(x, "value_of_x"),
+      tar_render_rep(
+        report,
+        "report.Rmd",
+        params = data.frame(
+          index = seq_len(4),
+          stringsAsFactors = FALSE
+        ),
+        batches = 2
+      )
+    )
+  })
+  targets::tar_make(callr_function = NULL)
+  files <- list.files(pattern = "^out_")
+  values1 <- as.integer(lapply(files, readLines))
+  targets::tar_script({
+    library(tarchetypes)
+    list(
+      tar_target(x, "value_of_x"),
+      tar_render_rep(
+        report,
+        "report.Rmd",
+        params = data.frame(
+          index = seq_len(4),
+          stringsAsFactors = FALSE
+        ),
+        batches = 1
+      )
+    )
+  })
+  targets::tar_make(callr_function = NULL)
+  files <- list.files(pattern = "^out_")
+  values2 <- as.integer(lapply(files, readLines))
+  expect_equal(values1, values2)
+})

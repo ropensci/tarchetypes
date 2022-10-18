@@ -282,11 +282,16 @@ produces the same numerical output as
 \code{tar_rep(name = x, command = rnorm(1), batches = 10, reps = 10, ...)}
 (but with different batch names).
 Other target factories with this seed scheme are \code{\link[=tar_rep2]{tar_rep2()}},
-\code{\link[=tar_map_rep]{tar_map_rep()}}, \code{\link[=tar_map2_count]{tar_map2_count()}}, and \code{\link[=tar_map2_size]{tar_map2_size()}}.
-For the last two, it is possible to manually supply your own seeds
+\code{\link[=tar_map_rep]{tar_map_rep()}}, \code{\link[=tar_map2_count]{tar_map2_count()}}, \code{\link[=tar_map2_size]{tar_map2_size()}},
+\code{\link[=tar_render_rep]{tar_render_rep()}}, and \code{\link[=tar_quarto_rep]{tar_quarto_rep()}}.
+For the \verb{tar_map2_*()} functions,
+it is possible to manually supply your own seeds
 through the \code{command1} argument and then invoke them in your
 custom code for \code{command2} (\code{set.seed()}, \code{withr::with_seed},
-or \code{withr::local_seed()}).
+or \code{withr::local_seed()}). For \code{\link[=tar_render_rep]{tar_render_rep()}},
+custom seeds can be supplied to the \code{params} argument
+and then invoked in the individual R Markdown reports.
+Likewise with \code{\link[=tar_quarto_rep]{tar_quarto_rep()}} and the \code{execute_params} argument.
 }
 
 \examples{
