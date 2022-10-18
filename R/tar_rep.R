@@ -3,6 +3,7 @@
 #'   of heavily dynamically-branched workflows:
 #'   <https://books.ropensci.org/targets/dynamic.html#batching>.
 #'   [tar_rep()] replicates a command in strategically sized batches.
+#' @export
 #' @family branching
 #' @details `tar_rep()` and `tar_rep_raw()` each create two targets:
 #'   an upstream local stem
@@ -11,15 +12,41 @@
 #'   Each batch/branch replicates the command a certain number of times.
 #'   If the command returns a list or data frame, then
 #'   the targets from `tar_rep()` will try to append new elements/columns
-#'   `tar_batch` and `tar_rep` to the output
-#'   to denote the batch and rep-within-batch IDs, respectively.
+#'   `tar_batch`, `tar_rep`, and `tar_seed` to the output
+#'   to denote the batch, rep-within-batch index, and rep-specific seed,
+#'   respectively.
 #'
 #'   Both batches and reps within each batch
 #'   are aggregated according to the method you specify
 #'   in the `iteration` argument. If `"list"`, reps and batches
 #'   are aggregated with `list()`. If `"vector"`,
 #'   then `vctrs::vec_c()`. If `"group"`, then `vctrs::vec_rbind()`.
-#' @export
+#' @section Replicate-specific seeds:
+#'   In ordinary pipelines, each target has its own unique deterministic
+#'   pseudo-random number generator seed derived from its target name.
+#'   In batched replicate, however, each batch is a target with multiple
+#'   replications within that batch. That is why [tar_rep()]
+#'   and friends give each *replicate* its own unique seed.
+#'   Each replicate-specific seed is created
+#'   based on the dynamic parent target name,
+#'   batch index, and rep-within-batch index,
+#'   and the seed is set just before the rep runs.
+#'   Rep-specific seeds are invariant to batching structure. In other words,
+#'   `tar_rep(name = x, command = rnorm(1), batches = 100, reps = 1, ...)`
+#'   produces the same numerical output as
+#'   `tar_rep(name = x, command = rnorm(1), batches = 10, reps = 10, ...)`
+#'   (but with different batch names).
+#'   Other target factories with this seed scheme are [tar_rep2()],
+#'   [tar_map_rep()], [tar_map2_count()], [tar_map2_size()],
+#'   and [tar_render_rep()].
+#'   For the `tar_map2_*()` functions,
+#'   it is possible to manually supply your own seeds
+#'   through the `command1` argument and then invoke them in your
+#'   custom code for `command2` (`set.seed()`, `withr::with_seed`,
+#'   or `withr::local_seed()`). For [tar_render_rep()],
+#'   custom seeds can be supplied to the `params` argument
+#'   and then invoked in the individual R Markdown reports.
+#'   Likewise with [tar_quarto_rep()] and the `execute_params` argument.
 #' @return A list of two targets, one upstream and one downstream.
 #'   The upstream target returns a numeric index of batch ids,
 #'   and the downstream one dynamically maps over the batch ids

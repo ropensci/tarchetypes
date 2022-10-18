@@ -226,7 +226,7 @@ targets::tar_test("tar_map_rep(): combine, no cols, static branches", {
   expect_equal(out$out, rep(c(10050, 5050, 10010), times = 6))
   expect_equal(
     sort(colnames(out)),
-    sort(c("tar_group", "out", "tar_batch", "tar_rep"))
+    sort(c("tar_group", "out", "tar_batch", "tar_rep", "tar_seed"))
   )
   # metadata
   meta <- targets::tar_meta(x_diffuse)
@@ -283,7 +283,10 @@ targets::tar_test("tar_map_rep(): no static branches", {
   d <- dplyr::distinct(out, tar_batch, tar_rep)
   expect_equal(nrow(out), nrow(d))
   expect_equal(out$out, rep(2001, times = 6))
-  expect_equal(sort(colnames(out)), sort(c("out", "tar_batch", "tar_rep")))
+  expect_equal(
+    sort(colnames(out)),
+    sort(c("out", "tar_batch", "tar_rep", "tar_seed"))
+  )
   # metadata
   meta <- targets::tar_meta(x)
   expect_equal(length(unlist(meta$children)), 2L)
@@ -340,4 +343,67 @@ targets::tar_test("tar_map_rep() list column support", {
     tar_read(x)$theta,
     list(c(1L, 2L), c(1L, 2L), c(3L, 4L), c(3L, 4L))
   )
+})
+
+targets::tar_test("tar_map_rep() seeds are resilient to re-batching", {
+  skip_on_cran()
+  targets::tar_script({
+    f <- function(x) {
+      out <- digest::digest(
+        paste(c(x, sample.int(n = 1e9, size = 1000)), collapse = "_")
+      )
+      data.frame(x = out)
+    }
+    tarchetypes::tar_map_rep(
+      x,
+      f(a),
+      values = list(a = c(1, 2)),
+      batches = 1,
+      reps = 4
+    )
+  })
+  targets::tar_make(callr_function = NULL)
+  out1 <- targets::tar_read(x)
+  out1$tar_batch <- NULL
+  out1$tar_rep <- NULL
+  targets::tar_script({
+    f <- function(x) {
+      out <- digest::digest(
+        paste(c(x, sample.int(n = 1e9, size = 1000)), collapse = "_")
+      )
+      data.frame(x = out)
+    }
+    tarchetypes::tar_map_rep(
+      x,
+      f(a),
+      values = list(a = c(1, 2)),
+      batches = 2,
+      reps = 2
+    )
+  })
+  targets::tar_make(callr_function = NULL)
+  out2 <- targets::tar_read(x)
+  out2$tar_batch <- NULL
+  out2$tar_rep <- NULL
+  targets::tar_script({
+    f <- function(x) {
+      out <- digest::digest(
+        paste(c(x, sample.int(n = 1e9, size = 1000)), collapse = "_")
+      )
+      data.frame(x = out)
+    }
+    tarchetypes::tar_map_rep(
+      x,
+      f(a),
+      values = list(a = c(1, 2)),
+      batches = 4,
+      reps = 1
+    )
+  })
+  targets::tar_make(callr_function = NULL)
+  out3 <- targets::tar_read(x)
+  out3$tar_batch <- NULL
+  out3$tar_rep <- NULL
+  expect_equal(out1, out2)
+  expect_equal(out1, out3)
 })

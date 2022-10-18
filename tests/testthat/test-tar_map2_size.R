@@ -78,7 +78,7 @@ targets::tar_test("tar_map2_size()", {
       c("x", "x_i_a", "x_i_b", "x_ii_a", "x_ii_b")
     )
   )
-  expect_equal(dim(x), c(12L, 7L))
+  expect_equal(dim(x), c(12L, 10L))
   out <- dplyr::arrange(x, arg1, arg2)
   expect_equal(out$tar_group, rep(c(1L, 2L), each = 6L))
   out$tar_group <- NULL

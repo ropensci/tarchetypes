@@ -253,21 +253,34 @@ tar_render_rep_run <- function(path, params, args, deps) {
   rm(deps)
   gc()
   envir <- parent.frame()
-  params <- split(params, f = seq_len(nrow(params)))
   args$envir <- args$envir %|||% targets::tar_envir(default = envir)
   force(args$envir)
-  unname(unlist(map(params, ~tar_render_rep_rep(path, .x, args))))
+  params <- split(params, f = seq_len(nrow(params)))
+  out <- map(
+    seq_along(params),
+    ~tar_render_rep_rep(path = path, rep = .x, params = params, args = args)
+  )
+  unname(unlist(out))
 }
 
-tar_render_rep_rep <- function(path, params, args) {
+tar_render_rep_rep <- function(rep, path, params, args) {
   withr::local_options(list(crayon.enabled = NULL))
+  pedigree <- targets::tar_definition()$pedigree
+  name <- pedigree$parent
+  batch <- pedigree$index
+  reps <- length(params)
+  seed <- produce_seed_rep(name = name, batch = batch, rep = rep, reps = reps)
+  params <- params[[rep]]
   default_path <- tar_render_rep_default_path(path, params)
   args$output_file <- params[["output_file"]] %|||% default_path
   args$params <- params
   args$params[["output_file"]] <- NULL
   args$params[["tar_group"]] <- NULL
   args$intermediates_dir <- fs::dir_create(tempfile())
-  output <- do.call(rmarkdown::render, args)
+  output <- withr::with_seed(
+    seed = seed,
+    code = do.call(rmarkdown::render, args)
+  )
   tar_render_paths(output, path)
 }
 

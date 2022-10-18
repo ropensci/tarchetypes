@@ -18,6 +18,7 @@
 #' @return A list of new target objects.
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
+#' @inheritSection tar_rep Replicate-specific seeds
 #' @param size Positive integer of length 1,
 #'   maximum number of rows in each batch for
 #'   the downstream (`command2`) targets. Batches

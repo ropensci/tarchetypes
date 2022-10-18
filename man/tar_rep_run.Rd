@@ -9,9 +9,9 @@ tar_rep_run(command, batch, reps, iteration)
 \arguments{
 \item{command}{Expression object, command to replicate.}
 
-\item{batch}{Numeric, batch index.}
+\item{batch}{Numeric of length 1, batch index.}
 
-\item{reps}{Numeric, number of reps per batch.}
+\item{reps}{Numeric of length 1, number of reps per batch.}
 
 \item{iteration}{Character, iteration method.}
 }

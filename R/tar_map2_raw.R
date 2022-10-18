@@ -10,6 +10,7 @@
 #' @return A list of new target objects.
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
+#' @inheritSection tar_rep Replicate-specific seeds
 #' @param name Character of length 1, base name of the targets.
 #' @param command1 Language object to create named arguments to `command2`.
 #'   Must return a data frame with one row per call to `command2`.
@@ -230,17 +231,21 @@ tar_map2_group <- function(data, group) {
 tar_map2_run <- function(command, values, columns) {
   command <- substitute(command)
   columns <- substitute(columns)
+  splits <- split(values, f = seq_len(nrow(values)))
   out <- lapply(
-    split(values, f = seq_len(nrow(values))),
-    tar_map2_run_rep,
+    X = seq_along(splits),
+    FUN = tar_map2_run_rep,
     command = command,
-    columns = columns
+    splits = splits,
+    columns = columns,
+    reps = length(splits)
   )
   do.call(vctrs::vec_rbind, out)
 }
 
-tar_map2_run_rep <- function(command, values, columns) {
+tar_map2_run_rep <- function(rep, command, splits, columns, reps) {
   envir <- targets::tar_envir()
+  values <- splits[[rep]]
   names <- names(values)
   lapply(
     X = seq_len(ncol(values)),
@@ -257,7 +262,18 @@ tar_map2_run_rep <- function(command, values, columns) {
       )
     }
   )
-  out <- eval(command, envir = targets::tar_envir())
+  pedigree <- targets::tar_definition()$pedigree
+  name <- pedigree$parent
+  batch <- pedigree$index
+  seed <- produce_seed_rep(name = name, batch = batch, rep = rep, reps = reps)
+  out <- withr::with_seed(
+    seed = seed,
+    code = eval(command, envir = targets::tar_envir())
+  )
   columns <- targets::tar_tidyselect_eval(columns, colnames(values))
-  tar_append_static_values(out, values[, columns])
+  out <- tar_append_static_values(out, values[, columns])
+  out[["tar_batch"]] <- as.integer(batch)
+  out[["tar_rep"]] <- as.integer(rep)
+  out[["tar_seed"]] <- as.integer(seed)
+  out
 }

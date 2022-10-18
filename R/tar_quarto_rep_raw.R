@@ -418,7 +418,15 @@ tar_quarto_rep_run <- function(
   rm(deps)
   gc()
   execute_params <- split(execute_params, f = seq_len(nrow(execute_params)))
-  out <- map(execute_params, ~tar_quarto_rep_rep(args, .x, default_output_file))
+  out <- map(
+    seq_along(execute_params),
+    ~tar_quarto_rep_rep(
+      rep = .x,
+      args = args,
+      execute_params = execute_params,
+      default_output_file = default_output_file
+    )
+  )
   out <- unname(unlist(out))
   support <- sprintf("%s_files", fs::path_ext_remove(basename(args$input)))
   extra_files <- if_any(
@@ -430,13 +438,19 @@ tar_quarto_rep_run <- function(
   unique(c(out, args$input, extra_files))
 }
 
-tar_quarto_rep_rep <- function(args, execute_params, default_output_file) {
+tar_quarto_rep_rep <- function(rep, args, execute_params, default_output_file) {
   withr::local_options(list(crayon.enabled = NULL))
+  pedigree <- targets::tar_definition()$pedigree
+  name <- pedigree$parent
+  batch <- pedigree$index
+  reps <- length(execute_params)
+  seed <- produce_seed_rep(name = name, batch = batch, rep = rep, reps = reps)
+  execute_params <- execute_params[[rep]]
   args$output_file <- basename(execute_params[["output_file"]])
   args$execute_params <- execute_params
   args$execute_params[["output_file"]] <- NULL
   args$execute_params[["tar_group"]] <- NULL
-  do.call(quarto::quarto_render, args)
+  withr::with_seed(seed = seed, code = do.call(quarto::quarto_render, args))
   sort(as.character(fs::path_rel(unlist(args$output_file))))
 }
 

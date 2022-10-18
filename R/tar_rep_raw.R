@@ -19,6 +19,7 @@
 #'   in the `iteration` argument. If `"list"`, reps and batches
 #'   are aggregated with `list()`. If `"vector"`,
 #'   then `vctrs::vec_c()`. If `"group"`, then `vctrs::vec_rbind()`.
+#' @inheritSection tar_rep Replicate-specific seeds
 #' @return A list of two target objects, one upstream and one downstream.
 #'   The upstream one does some work and returns some file paths,
 #'   and the downstream target is a pattern that applies `format = "file"`.
@@ -157,9 +158,15 @@ tar_rep_target <- function(
   retrieval,
   cue
 ) {
+  command <- tar_rep_command_target(
+    command = command,
+    name_batch = name_batch,
+    reps = reps,
+    iteration = iteration
+  )
   targets::tar_target_raw(
     name = name,
-    command = tar_rep_command_target(command, name_batch, reps, iteration),
+    command = command,
     pattern = tar_rep_pattern(name_batch),
     packages = packages,
     library = library,
@@ -182,7 +189,12 @@ tar_rep_command_batch <- function(batches) {
   as.expression(substitute(seq_len(x), env = list(x = batches)))
 }
 
-tar_rep_command_target <- function(command, name_batch, reps, iteration) {
+tar_rep_command_target <- function(
+  command,
+  name_batch,
+  reps,
+  iteration
+) {
   out <- substitute(
     tarchetypes::tar_rep_run(
       command = command,
@@ -213,12 +225,16 @@ tar_rep_pattern <- function(name_batch) {
 #'   user-defined command supplied to [tar_rep()]. Depends on what
 #'   the user specifies. Common use cases are simulated datasets.
 #' @param command Expression object, command to replicate.
-#' @param batch Numeric, batch index.
-#' @param reps Numeric, number of reps per batch.
+#' @param batch Numeric of length 1, batch index.
+#' @param reps Numeric of length 1, number of reps per batch.
 #' @param iteration Character, iteration method.
 tar_rep_run <- function(command, batch, reps, iteration) {
   expr <- substitute(command)
-  out <- tar_rep_run_map(expr, batch, reps)
+  out <- tar_rep_run_map(
+    expr = expr,
+    batch = batch,
+    reps = reps
+  )
   tar_rep_bind(out, iteration)
 }
 
@@ -237,15 +253,27 @@ tar_rep_run_map <- function(expr, batch, reps) {
     seq_len(reps),
     tar_rep_run_map_rep,
     expr = expr,
-    batch = batch
+    batch = batch,
+    reps = reps
   )
 }
 
-tar_rep_run_map_rep <- function(expr, batch, rep) {
-  out <- eval(expr, envir = targets::tar_envir())
+tar_rep_run_map_rep <- function(expr, batch, rep, reps) {
+  name <- targets::tar_definition()$pedigree$parent
+  seed <- produce_seed_rep(name = name, batch = batch, rep = rep, reps = reps)
+  out <- withr::with_seed(
+    seed = seed,
+    code = eval(expr, envir = targets::tar_envir())
+  )
   if (is.list(out)) {
     out[["tar_batch"]] <- as.integer(batch)
     out[["tar_rep"]] <- as.integer(rep)
+    out[["tar_seed"]] <- as.integer(seed)
   }
   out
+}
+
+produce_seed_rep <- function(name, batch, rep, reps) {
+  scalar <- paste(name, rep + reps * (batch - 1))
+  digest::digest2int(as.character(scalar), seed = 0L)
 }

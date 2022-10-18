@@ -13,6 +13,7 @@
 #'   downstream of [tar_rep()].
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
+#' @inheritSection tar_rep Replicate-specific seeds
 #' @inheritParams targets::tar_target
 #' @param targets Character vector of names of upstream batched targets
 #'   created by [tar_rep()].
@@ -132,16 +133,25 @@ tar_rep2_run <- function(command, batches, iteration) {
     seq_len(reps),
     tar_rep2_run_rep,
     command = command,
-    batches = batches
+    batches = batches,
+    reps = reps
   )
   tar_rep_bind(out, iteration)
 }
 
-tar_rep2_run_rep <- function(index, command, batches) {
+tar_rep2_run_rep <- function(index, command, batches, reps) {
+  name <- targets::tar_definition()$pedigree$parent
   slice <- slice_batches(batches, index)
-  out <- eval(command, envir = slice, enclos = targets::tar_envir())
-  out$tar_batch <- slice[[1]]$tar_batch[1]
-  out$tar_rep <- slice[[1]]$tar_rep[1]
+  batch <- slice[[1]]$tar_batch[1]
+  rep <- slice[[1]]$tar_rep[1]
+  seed <- produce_seed_rep(name = name, batch = batch, rep = rep, reps = reps)
+  out <- withr::with_seed(
+    seed = seed,
+    code = eval(command, envir = slice, enclos = targets::tar_envir())
+  )
+  out$tar_batch <- batch
+  out$tar_rep <- rep
+  out$tar_seed <- seed
   out
 }
 

@@ -192,6 +192,7 @@ targets::tar_test("tar_rep2() pipeline", {
   out <- tar_read(aggregate1, branches = 2)
   expect_equal(out$tar_batch, rep(2L, 6L))
   expect_equal(out$tar_rep, rep(seq_len(3L), each = 2L))
+  expect_true(is.numeric(out$tar_seed))
 })
 
 targets::tar_test("tar_rep2() runs the command once per rep", {
@@ -278,4 +279,88 @@ targets::tar_test("tar_rep2() errors if bad upstream data type", {
     targets::tar_make(callr_function = NULL),
     class = "tar_condition_run"
   )
+})
+
+targets::tar_test("tar_rep2() seeds are resilient to re-batching", {
+  skip_on_cran()
+  targets::tar_script({
+    f <- function() {
+      tibble::tibble(
+        x = digest::digest(
+          paste(sample.int(n = 1e9, size = 1000), collapse = "_")
+        )
+      )
+    }
+    g <- function(x) {
+      x$x <- paste0(
+        x$x,
+        digest::digest(
+          paste(sample.int(n = 1e9, size = 1000), collapse = "_")
+        )
+      )
+      x
+    }
+    list(
+      tarchetypes::tar_rep(x, f(), batches = 1, reps = 4),
+      tarchetypes::tar_rep2(y, g(x), targets = "x")
+    )
+  })
+  targets::tar_make(callr_function = NULL)
+  out1 <- targets::tar_read(x)
+  out1$tar_batch <- NULL
+  out1$tar_rep <- NULL
+  targets::tar_script({
+    f <- function() {
+      tibble::tibble(
+        x = digest::digest(
+          paste(sample.int(n = 1e9, size = 1000), collapse = "_")
+        )
+      )
+    }
+    g <- function(x) {
+      x$x <- paste0(
+        x$x,
+        digest::digest(
+          paste(sample.int(n = 1e9, size = 1000), collapse = "_")
+        )
+      )
+      x
+    }
+    list(
+      tarchetypes::tar_rep(x, f(), batches = 2, reps = 2),
+      tarchetypes::tar_rep2(y, g(x), targets = "x")
+    )
+  })
+  targets::tar_make(callr_function = NULL)
+  out2 <- targets::tar_read(x)
+  out2$tar_batch <- NULL
+  out2$tar_rep <- NULL
+  targets::tar_script({
+    f <- function() {
+      tibble::tibble(
+        x = digest::digest(
+          paste(sample.int(n = 1e9, size = 1000), collapse = "_")
+        )
+      )
+    }
+    g <- function(x) {
+      x$x <- paste0(
+        x$x,
+        digest::digest(
+          paste(sample.int(n = 1e9, size = 1000), collapse = "_")
+        )
+      )
+      x
+    }
+    list(
+      tarchetypes::tar_rep(x, f(), batches = 4, reps = 1),
+      tarchetypes::tar_rep2(y, g(x), targets = "x")
+    )
+  })
+  targets::tar_make(callr_function = NULL)
+  out3 <- targets::tar_read(x)
+  out3$tar_batch <- NULL
+  out3$tar_rep <- NULL
+  expect_equal(out1, out2)
+  expect_equal(out1, out3)
 })

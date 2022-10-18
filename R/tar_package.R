@@ -6,7 +6,7 @@
 #'   convenient helper functions to create specialized targets, making
 #'   pipelines in targets easier and cleaner to write and understand.
 #' @name tarchetypes-package
-#' @importFrom digest digest
+#' @importFrom digest digest digest2int
 #' @importFrom dplyr bind_rows mutate select
 #' @importFrom fs dir_create is_dir path_ext path_ext_remove
 #'   path_ext_set path_rel
@@ -24,7 +24,7 @@
 #'   tar_assert_match tar_assert_nonmissing tar_assert_positive
 #'   tar_assert_scalar tar_assert_target tar_assert_target_list
 #'   tar_assert_true tar_assert_unique tar_assert_unique_targets
-#'   tar_cue tar_deparse_language tar_deparse_safe
+#'   tar_cue tar_definition tar_deparse_language tar_deparse_safe
 #'   tar_dir tar_envir tar_exist_meta
 #'   tar_group tar_load tar_meta tar_option_get tar_read tar_runtime_object
 #'   tar_script tar_target tar_target_raw tar_test tar_tidy_eval
@@ -34,7 +34,7 @@
 #'   last_col matches num_range one_of starts_with
 #' @importFrom utils download.file globalVariables head
 #' @importFrom vctrs vec_c vec_rbind
-#' @importFrom withr local_options with_options
+#' @importFrom withr local_options with_options local_seed
 NULL
 
 utils::globalVariables(".x")

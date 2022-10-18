@@ -11,6 +11,7 @@
 #' @return A list of new target objects.
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
+#' @inheritSection tar_rep Replicate-specific seeds
 #' @param command Language object, R code for a single replicate. Must return
 #'   a data frame.
 #' @param names Language object with a tidyselect expression
@@ -92,8 +93,9 @@ tar_map_rep_raw <- function(
   targets::tar_assert_scalar(name)
   targets::tar_assert_chr(name)
   targets::tar_assert_nzchar(name)
-  targets::tar_assert_df(values %|||% data.frame())
   if (!is.null(values)) {
+    assert_values_list(values)
+    values <- tibble::as_tibble(values)
     targets::tar_assert_ge(nrow(values), 1L)
   }
   if (!is.null(names)) {
@@ -131,9 +133,15 @@ tar_map_rep_raw <- function(
     retrieval = "main",
     cue = cue
   )
+  command_dynamic <- tar_rep_command_target(
+    command = command,
+    name_batch = name_batch,
+    reps = reps,
+    iteration = "vector"
+  )
   target_dynamic <- targets::tar_target_raw(
     name = name,
-    command = tar_rep_command_target(command, name_batch, reps, "vector"),
+    command = command_dynamic,
     pattern = tar_rep_pattern(name_batch),
     packages = packages,
     library = library,

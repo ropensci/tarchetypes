@@ -15,6 +15,7 @@
 #' @return A list of new target objects.
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
+#' @inheritSection tar_rep Replicate-specific seeds
 #' @inheritParams tar_map2
 #' @inheritParams tar_map2_count_raw
 #' @examples
