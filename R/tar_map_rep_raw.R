@@ -93,8 +93,9 @@ tar_map_rep_raw <- function(
   targets::tar_assert_scalar(name)
   targets::tar_assert_chr(name)
   targets::tar_assert_nzchar(name)
-  targets::tar_assert_df(values %|||% data.frame())
   if (!is.null(values)) {
+    assert_values_list(values)
+    values <- tibble::as_tibble(values)
     targets::tar_assert_ge(nrow(values), 1L)
   }
   if (!is.null(names)) {

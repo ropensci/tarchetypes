@@ -346,33 +346,63 @@ targets::tar_test("tar_map_rep() list column support", {
 })
 
 targets::tar_test("tar_map_rep() seeds are resilient to re-batching", {
-  
-  stop("need to implement for tar_map_rep()")
-  
   targets::tar_script({
-    f <- function() {
-      digest::digest(paste(sample.int(n = 1e9, size = 1000), collapse = "_"))
+    f <- function(x) {
+      out <- digest::digest(
+        paste(c(x, sample.int(n = 1e9, size = 1000)), collapse = "_")
+      )
+      data.frame(x = out)
     }
-    tarchetypes::tar_rep(x, f(), batches = 1, reps = 4)
+    tarchetypes::tar_map_rep(
+      x,
+      f(a),
+      values = list(a = c(1, 2)),
+      batches = 1,
+      reps = 4
+    )
   })
   targets::tar_make(callr_function = NULL)
-  out1 <- unname(targets::tar_read(x))
+  out1 <- targets::tar_read(x)
+  out1$tar_batch <- NULL
+  out1$tar_rep <- NULL
   targets::tar_script({
-    f <- function() {
-      digest::digest(paste(sample.int(n = 1e9, size = 1000), collapse = "_"))
+    f <- function(x) {
+      out <- digest::digest(
+        paste(c(x, sample.int(n = 1e9, size = 1000)), collapse = "_")
+      )
+      data.frame(x = out)
     }
-    tarchetypes::tar_rep(x, f(), batches = 2, reps = 2)
+    tarchetypes::tar_map_rep(
+      x,
+      f(a),
+      values = list(a = c(1, 2)),
+      batches = 2,
+      reps = 2
+    )
   })
   targets::tar_make(callr_function = NULL)
-  out2 <- unname(targets::tar_read(x))
+  out2 <- targets::tar_read(x)
+  out2$tar_batch <- NULL
+  out2$tar_rep <- NULL
   targets::tar_script({
-    f <- function() {
-      digest::digest(paste(sample.int(n = 1e9, size = 1000), collapse = "_"))
+    f <- function(x) {
+      out <- digest::digest(
+        paste(c(x, sample.int(n = 1e9, size = 1000)), collapse = "_")
+      )
+      data.frame(x = out)
     }
-    tarchetypes::tar_rep(x, f(), batches = 4, reps = 1)
+    tarchetypes::tar_map_rep(
+      x,
+      f(a),
+      values = list(a = c(1, 2)),
+      batches = 4,
+      reps = 1
+    )
   })
   targets::tar_make(callr_function = NULL)
-  out3 <- unname(targets::tar_read(x))
+  out3 <- targets::tar_read(x)
+  out3$tar_batch <- NULL
+  out3$tar_rep <- NULL
   expect_equal(out1, out2)
   expect_equal(out1, out3)
 })
