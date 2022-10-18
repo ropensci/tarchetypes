@@ -450,7 +450,11 @@ tar_quarto_rep_rep <- function(rep, args, execute_params, default_output_file) {
   args$execute_params <- execute_params
   args$execute_params[["output_file"]] <- NULL
   args$execute_params[["tar_group"]] <- NULL
-  withr::with_seed(seed = seed, code = do.call(quarto::quarto_render, args))
+  if_any(
+    anyNA(seed),
+    do.call(quarto::quarto_render, args),
+    withr::with_seed(seed = seed, code = do.call(quarto::quarto_render, args))
+  )
   sort(as.character(fs::path_rel(unlist(args$output_file))))
 }
 

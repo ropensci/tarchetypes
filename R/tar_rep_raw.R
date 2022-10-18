@@ -261,9 +261,13 @@ tar_rep_run_map <- function(expr, batch, reps) {
 tar_rep_run_map_rep <- function(expr, batch, rep, reps) {
   name <- targets::tar_definition()$pedigree$parent
   seed <- produce_seed_rep(name = name, batch = batch, rep = rep, reps = reps)
-  out <- withr::with_seed(
-    seed = seed,
-    code = eval(expr, envir = targets::tar_envir())
+  out <- if_any(
+    anyNA(seed),
+    eval(expr, envir = targets::tar_envir()),
+    withr::with_seed(
+      seed = seed,
+      code = eval(expr, envir = targets::tar_envir())
+    )
   )
   if (is.list(out)) {
     out[["tar_batch"]] <- as.integer(batch)
@@ -274,6 +278,14 @@ tar_rep_run_map_rep <- function(expr, batch, rep, reps) {
 }
 
 produce_seed_rep <- function(name, batch, rep, reps) {
+  seed <- if_any(
+    "seed" %in% names(formals(targets::tar_option_set)),
+    targets::tar_option_get("seed"),
+    0L
+  )
+  if (anyNA(seed)) {
+    return(NA_integer_)
+  }
   scalar <- paste(name, rep + reps * (batch - 1))
-  digest::digest2int(as.character(scalar), seed = 0L)
+  digest::digest2int(as.character(scalar), seed = seed)
 }

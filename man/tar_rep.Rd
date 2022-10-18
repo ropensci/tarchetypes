@@ -260,13 +260,15 @@ then \code{vctrs::vec_c()}. If \code{"group"}, then \code{vctrs::vec_rbind()}.
 In ordinary pipelines, each target has its own unique deterministic
 pseudo-random number generator seed derived from its target name.
 In batched replicate, however, each batch is a target with multiple
-replications within that batch. That is why \code{\link[=tar_rep]{tar_rep()}}
+replicate within that batch. That is why \code{\link[=tar_rep]{tar_rep()}}
 and friends give each \emph{replicate} its own unique seed.
 Each replicate-specific seed is created
 based on the dynamic parent target name,
-batch index, and rep-within-batch index,
-and the seed is set just before the rep runs.
-Rep-specific seeds are invariant to batching structure. In other words,
+\code{tar_option_get("seed")} (for \code{targets} version 0.13.5.9000 and above),
+batch index, and rep-within-batch index.
+The seed is set just before the replicate runs.
+Replicate-specific seeds are invariant to batching structure.
+In other words,
 \code{tar_rep(name = x, command = rnorm(1), batches = 100, reps = 1, ...)}
 produces the same numerical output as
 \code{tar_rep(name = x, command = rnorm(1), batches = 10, reps = 10, ...)}

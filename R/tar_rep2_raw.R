@@ -145,9 +145,13 @@ tar_rep2_run_rep <- function(index, command, batches, reps) {
   batch <- slice[[1]]$tar_batch[1]
   rep <- slice[[1]]$tar_rep[1]
   seed <- produce_seed_rep(name = name, batch = batch, rep = rep, reps = reps)
-  out <- withr::with_seed(
-    seed = seed,
-    code = eval(command, envir = slice, enclos = targets::tar_envir())
+  out <- if_any(
+    anyNA(seed),
+    eval(command, envir = slice, enclos = targets::tar_envir()),
+    withr::with_seed(
+      seed = seed,
+      code = eval(command, envir = slice, enclos = targets::tar_envir())
+    )
   )
   out$tar_batch <- batch
   out$tar_rep <- rep

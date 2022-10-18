@@ -266,9 +266,13 @@ tar_map2_run_rep <- function(rep, command, splits, columns, reps) {
   name <- pedigree$parent
   batch <- pedigree$index
   seed <- produce_seed_rep(name = name, batch = batch, rep = rep, reps = reps)
-  out <- withr::with_seed(
-    seed = seed,
-    code = eval(command, envir = targets::tar_envir())
+  out <- if_any(
+    anyNA(seed),
+    eval(command, envir = targets::tar_envir()),
+    withr::with_seed(
+      seed = seed,
+      code = eval(command, envir = targets::tar_envir())
+    )
   )
   columns <- targets::tar_tidyselect_eval(columns, colnames(values))
   out <- tar_append_static_values(out, values[, columns])
