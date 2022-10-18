@@ -142,6 +142,7 @@ targets::tar_test("tar_rep_run() with unsupported iteration method", {
 })
 
 targets::tar_test("tar_rep() seeds are resilient to re-batching", {
+  skip_on_cran()
   targets::tar_script({
     f <- function() {
       digest::digest(paste(sample.int(n = 1e9, size = 1000), collapse = "_"))

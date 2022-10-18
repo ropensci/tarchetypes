@@ -346,6 +346,7 @@ targets::tar_test("tar_map_rep() list column support", {
 })
 
 targets::tar_test("tar_map_rep() seeds are resilient to re-batching", {
+  skip_on_cran()
   targets::tar_script({
     f <- function(x) {
       out <- digest::digest(
