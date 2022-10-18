@@ -259,7 +259,7 @@ produces the same numerical output as
 (but with different batch names).
 Other target factories with this seed scheme are \code{\link[=tar_rep2]{tar_rep2()}},
 \code{\link[=tar_map_rep]{tar_map_rep()}}, \code{\link[=tar_map2_count]{tar_map2_count()}}, \code{\link[=tar_map2_size]{tar_map2_size()}},
-\code{\link[=tar_render_rep]{tar_render_rep()}}, and \code{\link[=tar_quarto_rep]{tar_quarto_rep()}}.
+and \code{\link[=tar_render_rep]{tar_render_rep()}}.
 For the \verb{tar_map2_*()} functions,
 it is possible to manually supply your own seeds
 through the \code{command1} argument and then invoke them in your

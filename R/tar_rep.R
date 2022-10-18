@@ -38,7 +38,7 @@
 #'   (but with different batch names).
 #'   Other target factories with this seed scheme are [tar_rep2()],
 #'   [tar_map_rep()], [tar_map2_count()], [tar_map2_size()],
-#'   [tar_render_rep()], and [tar_quarto_rep()].
+#'   and [tar_render_rep()].
 #'   For the `tar_map2_*()` functions,
 #'   it is possible to manually supply your own seeds
 #'   through the `command1` argument and then invoke them in your
