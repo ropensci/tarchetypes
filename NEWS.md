@@ -1,4 +1,4 @@
-# tarchetypes 0.7.1.9000
+# tarchetypes 0.7.2
 
 * Migrate away from deprecated `targets::tar_path()`.
 * Implement and return resilient seeds in batched replication (#111, #113).
