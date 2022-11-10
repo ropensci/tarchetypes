@@ -41,6 +41,8 @@
 #'   will cause the appropriate targets to rerun during `tar_make()`.
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
+#' @inheritSection tar_rep Replicate-specific seeds
+#' @inheritSection tar_rep Nested futures for batched replication
 #' @inheritParams targets::tar_target
 #' @inheritParams rmarkdown::render
 #' @param path Character string, file path to the R Markdown source file.
@@ -256,9 +258,15 @@ tar_render_rep_run <- function(path, params, args, deps) {
   args$envir <- args$envir %|||% targets::tar_envir(default = envir)
   force(args$envir)
   params <- split(params, f = seq_len(nrow(params)))
-  out <- map(
-    seq_along(params),
-    ~tar_render_rep_rep(path = path, rep = .x, params = params, args = args)
+  out <- furrr::future_map(
+    .x = seq_along(params),
+    .f = ~tar_render_rep_rep(
+      rep = .x,
+      path = path,
+      params = params,
+      args = args
+    ),
+    .options = furrr::furrr_options(seed = TRUE)
   )
   unname(unlist(out))
 }

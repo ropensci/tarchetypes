@@ -21,6 +21,14 @@
 #'   in the `iteration` argument. If `"list"`, reps and batches
 #'   are aggregated with `list()`. If `"vector"`,
 #'   then `vctrs::vec_c()`. If `"group"`, then `vctrs::vec_rbind()`.
+#' @inheritSection tar_map Target objects
+#' @section Nested futures for batched replication:
+#'   Batched replication functions like [tar_rep()] support nested futures
+#'   for parallelism within batches. For example, if your `future` plan
+#'   (see <https://books.ropensci.org/targets/hpc.html#future>) is
+#'   `future::plan(list(future.batchtools::batchtools_slurm, future::multicore))`, # nolint
+#'   then the SLURM plan will parallelize the batches and the multicore plan
+#'   will parallelize the reps within each batch.
 #' @section Replicate-specific seeds:
 #'   In ordinary pipelines, each target has its own unique deterministic
 #'   pseudo-random number generator seed derived from its target name.
@@ -64,7 +72,6 @@
 #'   batch and each inner list has one element per rep within batch.
 #'   To un-batch this nested list, call
 #'   `tar_read(your_target, recursive = FALSE)`.
-#' @inheritSection tar_map Target objects
 #' @inheritParams targets::tar_target
 #' @param command R code to run multiple times. Must return a list or
 #'   data frame because `tar_rep()` will try to append new elements/columns

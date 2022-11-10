@@ -11,6 +11,7 @@
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
 #' @inheritSection tar_rep Replicate-specific seeds
+#' @inheritSection tar_rep Nested futures for batched replication
 #' @param name Character of length 1, base name of the targets.
 #' @param command1 Language object to create named arguments to `command2`.
 #'   Must return a data frame with one row per call to `command2`.
@@ -232,13 +233,16 @@ tar_map2_run <- function(command, values, columns) {
   command <- substitute(command)
   columns <- substitute(columns)
   splits <- split(values, f = seq_len(nrow(values)))
-  out <- lapply(
-    X = seq_along(splits),
-    FUN = tar_map2_run_rep,
-    command = command,
-    splits = splits,
-    columns = columns,
-    reps = length(splits)
+  out <- furrr::future_map(
+    .x = seq_along(splits),
+    .f = ~tar_map2_run_rep(
+      rep = .x,
+      command = command,
+      splits = splits,
+      columns = columns,
+      reps = length(splits)
+    ),
+    .options = furrr::furrr_options(seed = TRUE)
   )
   do.call(vctrs::vec_rbind, out)
 }

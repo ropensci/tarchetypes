@@ -216,6 +216,47 @@ and the design specification at
 details the structure and composition of target objects.
 }
 
+\section{Replicate-specific seeds}{
+
+In ordinary pipelines, each target has its own unique deterministic
+pseudo-random number generator seed derived from its target name.
+In batched replicate, however, each batch is a target with multiple
+replicate within that batch. That is why \code{\link[=tar_rep]{tar_rep()}}
+and friends give each \emph{replicate} its own unique seed.
+Each replicate-specific seed is created
+based on the dynamic parent target name,
+\code{tar_option_get("seed")} (for \code{targets} version 0.13.5.9000 and above),
+batch index, and rep-within-batch index.
+The seed is set just before the replicate runs.
+Replicate-specific seeds are invariant to batching structure.
+In other words,
+\code{tar_rep(name = x, command = rnorm(1), batches = 100, reps = 1, ...)}
+produces the same numerical output as
+\code{tar_rep(name = x, command = rnorm(1), batches = 10, reps = 10, ...)}
+(but with different batch names).
+Other target factories with this seed scheme are \code{\link[=tar_rep2]{tar_rep2()}},
+\code{\link[=tar_map_rep]{tar_map_rep()}}, \code{\link[=tar_map2_count]{tar_map2_count()}}, \code{\link[=tar_map2_size]{tar_map2_size()}},
+and \code{\link[=tar_render_rep]{tar_render_rep()}}.
+For the \verb{tar_map2_*()} functions,
+it is possible to manually supply your own seeds
+through the \code{command1} argument and then invoke them in your
+custom code for \code{command2} (\code{set.seed()}, \code{withr::with_seed},
+or \code{withr::local_seed()}). For \code{\link[=tar_render_rep]{tar_render_rep()}},
+custom seeds can be supplied to the \code{params} argument
+and then invoked in the individual R Markdown reports.
+Likewise with \code{\link[=tar_quarto_rep]{tar_quarto_rep()}} and the \code{execute_params} argument.
+}
+
+\section{Nested futures for batched replication}{
+
+Batched replication functions like \code{\link[=tar_rep]{tar_rep()}} support nested futures
+for parallelism within batches. For example, if your \code{future} plan
+(see \url{https://books.ropensci.org/targets/hpc.html#future}) is
+\code{future::plan(list(future.batchtools::batchtools_slurm, future::multicore))}, # nolint
+then the SLURM plan will parallelize the batches and the multicore plan
+will parallelize the reps within each batch.
+}
+
 \examples{
 if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({ # tar_dir() runs code from a temporary directory.

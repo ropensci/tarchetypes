@@ -287,6 +287,16 @@ and then invoked in the individual R Markdown reports.
 Likewise with \code{\link[=tar_quarto_rep]{tar_quarto_rep()}} and the \code{execute_params} argument.
 }
 
+\section{Nested futures for batched replication}{
+
+Batched replication functions like \code{\link[=tar_rep]{tar_rep()}} support nested futures
+for parallelism within batches. For example, if your \code{future} plan
+(see \url{https://books.ropensci.org/targets/hpc.html#future}) is
+\code{future::plan(list(future.batchtools::batchtools_slurm, future::multicore))}, # nolint
+then the SLURM plan will parallelize the batches and the multicore plan
+will parallelize the reps within each batch.
+}
+
 \seealso{
 Other branching: 
 \code{\link{tar_combine_raw}()},

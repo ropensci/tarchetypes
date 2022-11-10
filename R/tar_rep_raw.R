@@ -20,6 +20,7 @@
 #'   are aggregated with `list()`. If `"vector"`,
 #'   then `vctrs::vec_c()`. If `"group"`, then `vctrs::vec_rbind()`.
 #' @inheritSection tar_rep Replicate-specific seeds
+#' @inheritSection tar_rep Nested futures for batched replication
 #' @return A list of two target objects, one upstream and one downstream.
 #'   The upstream one does some work and returns some file paths,
 #'   and the downstream target is a pattern that applies `format = "file"`.
@@ -249,16 +250,19 @@ tar_rep_bind <- function(out, iteration) {
 }
 
 tar_rep_run_map <- function(expr, batch, reps) {
-  lapply(
-    seq_len(reps),
-    tar_rep_run_map_rep,
-    expr = expr,
-    batch = batch,
-    reps = reps
+  furrr::future_map(
+    .x = seq_len(reps),
+    .f = ~tar_rep_run_map_rep(
+      rep = .x,
+      expr = expr,
+      batch = batch,
+      reps = reps
+    ),
+    .options = furrr::furrr_options(seed = TRUE)
   )
 }
 
-tar_rep_run_map_rep <- function(expr, batch, rep, reps) {
+tar_rep_run_map_rep <- function(rep, expr, batch, reps) {
   name <- targets::tar_definition()$pedigree$parent
   seed <- produce_seed_rep(name = name, batch = batch, rep = rep, reps = reps)
   out <- if_any(

@@ -19,6 +19,7 @@
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
 #' @inheritSection tar_rep Replicate-specific seeds
+#' @inheritSection tar_rep Nested futures for batched replication
 #' @param batches Positive integer of length 1,
 #'   maximum number of batches (dynamic branches within static branches)
 #'   of the downstream (`command2`) targets. Batches

@@ -36,6 +36,8 @@
 #'   will cause the appropriate targets to rerun during `tar_make()`.
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
+#' @inheritSection tar_rep Replicate-specific seeds
+#' @inheritSection tar_rep Nested futures for batched replication
 #' @inheritParams targets::tar_target
 #' @inheritParams rmarkdown::render
 #' @inheritParams tar_render_rep_raw

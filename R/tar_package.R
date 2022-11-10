@@ -10,10 +10,12 @@
 #' @importFrom dplyr bind_rows mutate select
 #' @importFrom fs dir_create is_dir path_ext path_ext_remove
 #'   path_ext_set path_rel
+#' @importFrom furrr future_map furrr_options
 #' @importFrom rlang as_function call2 check_installed enquo expr
 #'   inform is_missing quo_squash
 #' @importFrom targets tar_assert_chr tar_assert_dbl tar_assert_df
-#'   tar_assert_envir tar_assert_equal_lengths tar_assert_expr tar_assert_flag
+#'   tar_assert_envir tar_assert_equal_lengths
+#'   tar_assert_expr tar_assert_flag
 #'   tar_assert_function tar_assert_ge tar_assert_identical
 #'   tar_assert_in tar_assert_not_dirs tar_assert_not_dir
 #'   tar_assert_not_in tar_assert_inherits tar_assert_int

@@ -42,6 +42,8 @@
 #'   will cause the appropriate targets to rerun during `tar_make()`.
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
+#' @inheritSection tar_rep Replicate-specific seeds
+#' @inheritSection tar_rep Nested futures for batched replication
 #' @inheritParams quarto::quarto_render
 #' @inheritParams targets::tar_target
 #' @inheritParams tar_quarto_rep_run
@@ -418,14 +420,15 @@ tar_quarto_rep_run <- function(
   rm(deps)
   gc()
   execute_params <- split(execute_params, f = seq_len(nrow(execute_params)))
-  out <- map(
-    seq_along(execute_params),
-    ~tar_quarto_rep_rep(
+  out <- furrr::future_map(
+    .x = seq_along(execute_params),
+    .f = ~tar_quarto_rep_rep(
       rep = .x,
       args = args,
       execute_params = execute_params,
       default_output_file = default_output_file
-    )
+    ),
+    .options = furrr::furrr_options(seed = TRUE)
   )
   out <- unname(unlist(out))
   support <- sprintf("%s_files", fs::path_ext_remove(basename(args$input)))

@@ -255,6 +255,16 @@ in the \code{iteration} argument. If \code{"list"}, reps and batches
 are aggregated with \code{list()}. If \code{"vector"},
 then \code{vctrs::vec_c()}. If \code{"group"}, then \code{vctrs::vec_rbind()}.
 }
+\section{Nested futures for batched replication}{
+
+Batched replication functions like \code{\link[=tar_rep]{tar_rep()}} support nested futures
+for parallelism within batches. For example, if your \code{future} plan
+(see \url{https://books.ropensci.org/targets/hpc.html#future}) is
+\code{future::plan(list(future.batchtools::batchtools_slurm, future::multicore))}, # nolint
+then the SLURM plan will parallelize the batches and the multicore plan
+will parallelize the reps within each batch.
+}
+
 \section{Replicate-specific seeds}{
 
 In ordinary pipelines, each target has its own unique deterministic
