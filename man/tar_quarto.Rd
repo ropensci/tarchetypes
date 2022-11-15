@@ -205,6 +205,16 @@ instead of the working directory of the report.
 5. Sets convenient default options such as \code{deployment = "main"}
 in the target and \code{quiet = TRUE} in \code{quarto::quarto_render()}.
 }
+\section{Quarto troubleshooting}{
+
+If you encounter difficult errors, please read
+\url{https://github.com/quarto-dev/quarto-r/issues/16}.
+In addition, please try to reproduce the error using
+\code{quarto::quarto_render("your_report.qmd", execute_dir = getwd())}
+without using \code{targets} at all. Isolating errors this way
+makes them much easier to solve.
+}
+
 \section{Target objects}{
 
 Most \code{tarchetypes} functions are target factories,

@@ -44,6 +44,7 @@
 #' @inheritSection tar_map Target objects
 #' @inheritSection tar_rep Replicate-specific seeds
 #' @inheritSection tar_rep Nested futures for batched replication
+#' @inheritSection tar_quarto Quarto troubleshooting
 #' @inheritParams quarto::quarto_render
 #' @inheritParams targets::tar_target
 #' @inheritParams tar_quarto_rep_run

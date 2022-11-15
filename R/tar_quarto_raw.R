@@ -19,6 +19,7 @@
 #'   without invalidating the target).
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
+#' @inheritSection tar_quarto Quarto troubleshooting
 #' @inheritParams targets::tar_target_raw
 #' @inheritParams quarto::quarto_render
 #' @param path Character of length 1,

@@ -297,6 +297,16 @@ then the SLURM plan will parallelize the batches and the multicore plan
 will parallelize the reps within each batch.
 }
 
+\section{Quarto troubleshooting}{
+
+If you encounter difficult errors, please read
+\url{https://github.com/quarto-dev/quarto-r/issues/16}.
+In addition, please try to reproduce the error using
+\code{quarto::quarto_render("your_report.qmd", execute_dir = getwd())}
+without using \code{targets} at all. Isolating errors this way
+makes them much easier to solve.
+}
+
 \examples{
 if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({ # tar_dir() runs code from a temporary directory.

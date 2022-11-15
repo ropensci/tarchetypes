@@ -27,6 +27,13 @@
 #'       instead of the working directory of the report.
 #'     5. Sets convenient default options such as `deployment = "main"`
 #'       in the target and `quiet = TRUE` in `quarto::quarto_render()`.
+#' @section Quarto troubleshooting:
+#'   If you encounter difficult errors, please read
+#'   <https://github.com/quarto-dev/quarto-r/issues/16>.
+#'   In addition, please try to reproduce the error using
+#'   `quarto::quarto_render("your_report.qmd", execute_dir = getwd())`
+#'   without using `targets` at all. Isolating errors this way
+#'   makes them much easier to solve.
 #' @return A target object with `format = "file"`.
 #'   When this target runs, it returns a character vector
 #'   of file paths: the rendered documents, the Quarto source files,
