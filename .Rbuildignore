@@ -26,6 +26,7 @@
 ^_targets$
 ^_targets\.R$
 ^docs$
+^revdep$
 ^CODE_OF_CONDUCT.md$
 ^codemeta\.json$
 ^CONTRIBUTING.md$
