@@ -1,4 +1,4 @@
-# tarchetypes 0.7.2.9000
+# tarchetypes 0.7.3
 
 * Support nested futures for parallelism among reps within batches (#117, @kkmann).
 * Add Quarto troubleshooting section to help files.
