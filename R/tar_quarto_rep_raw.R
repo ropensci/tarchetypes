@@ -43,8 +43,8 @@
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
 #' @inheritSection tar_rep Replicate-specific seeds
-#' @inheritSection tar_rep Nested futures for batched replication
 #' @inheritSection tar_quarto Quarto troubleshooting
+#' @inheritParams tar_rep
 #' @inheritParams quarto::quarto_render
 #' @inheritParams targets::tar_target
 #' @inheritParams tar_quarto_rep_run
@@ -117,6 +117,7 @@ tar_quarto_rep_raw <- function(
   debug = FALSE,
   quiet = TRUE,
   pandoc_args = NULL,
+  parallel_reps = FALSE,
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
   format = targets::tar_option_get("format"),
@@ -192,7 +193,8 @@ tar_quarto_rep_raw <- function(
       debug = debug,
       quiet = quiet,
       pandoc_args = pandoc_args,
-      default_output_file = default_output_file
+      default_output_file = default_output_file,
+      parallel_reps = parallel_reps
     ),
     pattern = substitute(map(x), env = list(x = sym_params)),
     packages = packages,
@@ -301,7 +303,8 @@ tar_quarto_rep_command <- function(
   debug,
   quiet,
   pandoc_args,
-  default_output_file
+  default_output_file,
+  parallel_reps
 ) {
   args <- substitute(
     list(
@@ -338,7 +341,8 @@ tar_quarto_rep_command <- function(
     execute_params = execute_params,
     extra_files = extra_files,
     deps = deps,
-    default_output_file = default_output_file
+    default_output_file = default_output_file,
+    parallel_reps = parallel_reps
   )
   as.expression(as.call(exprs))
 }
@@ -352,6 +356,7 @@ tar_quarto_rep_command <- function(
 #' @return Character vector with the path to the Quarto
 #'   source file and the rendered output file. Both paths
 #'   depend on the input source path, and they have no defaults.
+#' @inheritParams tar_rep
 #' @param args A named list of arguments to `quarto::quarto_render()`.
 #' @param execute_params A data frame of Quarto parameters to branch over.
 #' @param extra_files Character vector of extra files that `targets`
@@ -415,22 +420,46 @@ tar_quarto_rep_run <- function(
   execute_params,
   extra_files,
   deps,
-  default_output_file
+  default_output_file,
+  parallel_reps
 ) {
   assert_quarto()
   rm(deps)
   gc()
   execute_params <- split(execute_params, f = seq_len(nrow(execute_params)))
-  out <- furrr::future_map(
-    .x = seq_along(execute_params),
-    .f = ~tar_quarto_rep_rep(
-      rep = .x,
-      args = args,
-      execute_params = execute_params,
-      default_output_file = default_output_file
-    ),
-    .options = furrr::furrr_options(seed = TRUE)
+  call <- quote(
+    function(.x, .y, args, default_output_file) {
+      tarchetypes::tar_quarto_rep_rep(
+        rep = .x,
+        execute_params = .y,
+        args = args,
+        default_output_file = default_output_file
+      )
+    }
   )
+  fun <- eval(call, envir = targets::tar_option_get("envir"))
+  if (parallel_reps) {
+    out <- furrr::future_map2(
+      .x = seq_along(execute_params),
+      .y = execute_params,
+      .f = fun,
+      .options = furrr::furrr_options(
+        seed = TRUE,
+        packages = targets::tar_definition()$command$packages
+      ),
+      args = args,
+      default_output_file = default_output_file
+    )
+  } else {
+    out <- map2(
+      x = seq_along(execute_params),
+      y = execute_params,
+      f = fun,
+      args = args,
+      default_output_file = default_output_file
+    )
+  }
+  
   out <- unname(unlist(out))
   support <- sprintf("%s_files", fs::path_ext_remove(basename(args$input)))
   extra_files <- if_any(
@@ -442,14 +471,24 @@ tar_quarto_rep_run <- function(
   unique(c(out, args$input, extra_files))
 }
 
-tar_quarto_rep_rep <- function(rep, args, execute_params, default_output_file) {
+#' @title Run a rep in a `tar_quarto_rep()`.
+#' @export
+#' @keywords internal
+#' @description Not a user-side function. Do not invoke directly.
+#' @return Output file paths.
+#' @param rep Rep number.
+#' @param execute_params Quarto parameters.
+#' @param args Arguments to `quarto::quarto_render()`.
+#' @param default_output_file Default Quarto output file.
+#' @examples
+#' # See the examples of tar_quarto_rep().
+tar_quarto_rep_rep <- function(rep, execute_params, args, default_output_file) {
   withr::local_options(list(crayon.enabled = NULL))
   pedigree <- targets::tar_definition()$pedigree
   name <- pedigree$parent
   batch <- pedigree$index
   reps <- length(execute_params)
   seed <- produce_seed_rep(name = name, batch = batch, rep = rep, reps = reps)
-  execute_params <- execute_params[[rep]]
   args$output_file <- basename(execute_params[["output_file"]])
   args$execute_params <- execute_params
   args$execute_params[["output_file"]] <- NULL

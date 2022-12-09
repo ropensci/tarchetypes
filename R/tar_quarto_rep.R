@@ -38,8 +38,8 @@
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
 #' @inheritSection tar_rep Replicate-specific seeds
-#' @inheritSection tar_rep Nested futures for batched replication
 #' @inheritSection tar_quarto Quarto troubleshooting
+#' @inheritParams tar_rep
 #' @inheritParams targets::tar_target
 #' @inheritParams quarto::quarto_render
 #' @inheritParams tar_quarto_rep_raw
@@ -103,6 +103,7 @@ tar_quarto_rep <- function(
   debug = FALSE,
   quiet = TRUE,
   pandoc_args = NULL,
+  parallel_reps = FALSE,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -134,6 +135,7 @@ tar_quarto_rep <- function(
     debug = debug,
     quiet = quiet,
     pandoc_args = pandoc_args,
+    parallel_reps = parallel_reps,
     packages = packages,
     library = library,
     format = format,

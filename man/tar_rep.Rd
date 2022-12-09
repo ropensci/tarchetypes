@@ -9,6 +9,7 @@ tar_rep(
   command,
   batches = 1,
   reps = 1,
+  parallel_reps = FALSE,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -53,6 +54,14 @@ branches created during \code{tar_make()}.}
 
 \item{reps}{Number of replications in each batch. The total number
 of replications is \code{batches * reps}.}
+
+\item{parallel_reps}{Logical of length 1, whether to run reps within batches
+in parallel using the \code{furrr} package. If \code{TRUE}, then \code{furrr} functions
+will run the reps in parallel using the \code{future} plan you defined
+in your \verb{_targets.R} file. If you are running the pipeline
+with \code{tar_make_future()}, then you may need to define a nested plan
+with an outer plan to parallelize among targets and an inner
+plan to parallelize within targets (e.g. reps).}
 
 \item{tidy_eval}{Whether to invoke tidy evaluation
 (e.g. the \verb{!!} operator from \code{rlang}) as soon as the target is defined
@@ -255,16 +264,6 @@ in the \code{iteration} argument. If \code{"list"}, reps and batches
 are aggregated with \code{list()}. If \code{"vector"},
 then \code{vctrs::vec_c()}. If \code{"group"}, then \code{vctrs::vec_rbind()}.
 }
-\section{Nested futures for batched replication}{
-
-Batched replication functions like \code{\link[=tar_rep]{tar_rep()}} support nested futures
-for parallelism within batches. For example, if your \code{future} plan
-(see \url{https://books.ropensci.org/targets/hpc.html#future}) is
-\code{future::plan(list(future.batchtools::batchtools_slurm, future::multicore))}, # nolint
-then the SLURM plan will parallelize the batches and the multicore plan
-will parallelize the reps within each batch.
-}
-
 \section{Replicate-specific seeds}{
 
 In ordinary pipelines, each target has its own unique deterministic

@@ -22,13 +22,6 @@
 #'   are aggregated with `list()`. If `"vector"`,
 #'   then `vctrs::vec_c()`. If `"group"`, then `vctrs::vec_rbind()`.
 #' @inheritSection tar_map Target objects
-#' @section Nested futures for batched replication:
-#'   Batched replication functions like [tar_rep()] support nested futures
-#'   for parallelism within batches. For example, if your `future` plan
-#'   (see <https://books.ropensci.org/targets/hpc.html#future>) is
-#'   `future::plan(list(future.batchtools::batchtools_slurm, future::multicore))`, # nolint
-#'   then the SLURM plan will parallelize the batches and the multicore plan
-#'   will parallelize the reps within each batch.
 #' @section Replicate-specific seeds:
 #'   In ordinary pipelines, each target has its own unique deterministic
 #'   pseudo-random number generator seed derived from its target name.
@@ -81,6 +74,13 @@
 #'   branches created during `tar_make()`.
 #' @param reps Number of replications in each batch. The total number
 #'   of replications is `batches * reps`.
+#' @param parallel_reps Logical of length 1, whether to run reps within batches
+#'   in parallel using the `furrr` package. If `TRUE`, then `furrr` functions
+#'   will run the reps in parallel using the `future` plan you defined
+#'   in your `_targets.R` file. If you are running the pipeline
+#'   with `tar_make_future()`, then you may need to define a nested plan
+#'   with an outer plan to parallelize among targets and an inner
+#'   plan to parallelize within targets (e.g. reps).
 #' @param tidy_eval Whether to invoke tidy evaluation
 #'   (e.g. the `!!` operator from `rlang`) as soon as the target is defined
 #'   (before `tar_make()`). Applies to the `command` argument.
@@ -123,6 +123,7 @@ tar_rep <- function(
   command,
   batches = 1,
   reps = 1,
+  parallel_reps = FALSE,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -147,6 +148,7 @@ tar_rep <- function(
     command = command,
     batches = batches,
     reps = reps,
+    parallel_reps = parallel_reps,
     packages = packages,
     library = library,
     format = format,

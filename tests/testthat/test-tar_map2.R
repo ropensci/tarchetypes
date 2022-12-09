@@ -23,7 +23,8 @@ targets::tar_test("tar_map2(): combine, columns, static branches", {
       names = arg1,
       suffix1 = "i",
       suffix2 = "ii",
-      group = rep(LETTERS[seq_len(2)], each = nrow(!!.x) / 2)
+      group = rep(LETTERS[seq_len(2)], each = nrow(!!.x) / 2),
+      parallel_reps = TRUE
     )
   })
   # manifest
@@ -136,7 +137,8 @@ targets::tar_test("tar_map2(): no combine, no columns, static branches", {
       columns1 = NULL,
       columns2 = NULL,
       group = rep(LETTERS[seq_len(3)], each = nrow(!!.x) / 3),
-      combine = FALSE
+      combine = FALSE,
+      parallel_reps = FALSE
     )
   })
   # manifest

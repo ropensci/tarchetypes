@@ -2,6 +2,16 @@ map <- function(x, f, ...) {
   lapply(X = x, FUN = as_function(f), ...)
 }
 
+map2 <- function(x, y, f, ...) {
+  targets::tar_assert_equal_lengths(x, y)
+  fun <- as_function(f)
+  out <- list()
+  for (i in seq_along(x)) {
+    out[[i]] <- fun(.x = x[[i]], .y = y[[i]], ...)
+  }
+  out
+}
+
 map_chr <- function(x, f, ...) {
   vapply(X = x, FUN = as_function(f), FUN.VALUE = character(1), ...)
 }

@@ -10,7 +10,8 @@ tar_quarto_rep_run(
   execute_params,
   extra_files,
   deps,
-  default_output_file
+  default_output_file,
+  parallel_reps
 )
 }
 \arguments{
@@ -33,6 +34,14 @@ report, automatically created by \code{tar_quarto_rep()}.}
 \item{default_output_file}{Output file path determined by the
 YAML front-matter of the Quarto source document.
 Automatic output file names are based on this file.}
+
+\item{parallel_reps}{Logical of length 1, whether to run reps within batches
+in parallel using the \code{furrr} package. If \code{TRUE}, then \code{furrr} functions
+will run the reps in parallel using the \code{future} plan you defined
+in your \verb{_targets.R} file. If you are running the pipeline
+with \code{tar_make_future()}, then you may need to define a nested plan
+with an outer plan to parallelize among targets and an inner
+plan to parallelize within targets (e.g. reps).}
 }
 \value{
 Character vector with the path to the Quarto

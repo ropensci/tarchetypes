@@ -37,7 +37,7 @@
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
 #' @inheritSection tar_rep Replicate-specific seeds
-#' @inheritSection tar_rep Nested futures for batched replication
+#' @inheritParams tar_rep
 #' @inheritParams targets::tar_target
 #' @inheritParams rmarkdown::render
 #' @inheritParams tar_render_rep_raw
@@ -89,6 +89,7 @@ tar_render_rep <- function(
   path,
   params = data.frame(),
   batches = NULL,
+  parallel_reps = FALSE,
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
   format = targets::tar_option_get("format"),
@@ -109,6 +110,7 @@ tar_render_rep <- function(
     path = path,
     params = substitute(params),
     batches = batches,
+    parallel_reps = parallel_reps,
     packages = packages,
     library = library,
     format = format,

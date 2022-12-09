@@ -2,6 +2,13 @@ targets::tar_test("map()", {
   expect_equal(unname(map(letters, ~.x)), as.list(letters))
 })
 
+targets::tar_test("map2()", {
+  expect_equal(
+    as.numeric(map2(seq_len(4), seq_len(4), ~.x + .y)),
+    seq_len(4) * 2
+  )
+})
+
 targets::tar_test("map_chr()", {
   expect_equal(unname(map_chr(letters, ~.x)), letters)
 })

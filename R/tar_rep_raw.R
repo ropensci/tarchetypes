@@ -20,13 +20,13 @@
 #'   are aggregated with `list()`. If `"vector"`,
 #'   then `vctrs::vec_c()`. If `"group"`, then `vctrs::vec_rbind()`.
 #' @inheritSection tar_rep Replicate-specific seeds
-#' @inheritSection tar_rep Nested futures for batched replication
 #' @return A list of two target objects, one upstream and one downstream.
 #'   The upstream one does some work and returns some file paths,
 #'   and the downstream target is a pattern that applies `format = "file"`.
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
 #' @inheritParams targets::tar_target_raw
+#' @inheritParams tar_rep
 #' @param command Expression object with code to run multiple times.
 #'   Must return a list or data frame when evaluated.
 #' @param batches Number of batches. This is also the number of dynamic
@@ -58,6 +58,7 @@ tar_rep_raw <- function(
   command,
   batches = 1,
   reps = 1,
+  parallel_reps = FALSE,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -92,6 +93,7 @@ tar_rep_raw <- function(
     command = command,
     batches = batches,
     reps = reps,
+    parallel_reps = parallel_reps,
     packages = packages,
     library = library,
     format = format,
@@ -144,6 +146,7 @@ tar_rep_target <- function(
   command,
   batches,
   reps,
+  parallel_reps,
   packages,
   library,
   format,
@@ -163,6 +166,7 @@ tar_rep_target <- function(
     command = command,
     name_batch = name_batch,
     reps = reps,
+    parallel_reps = parallel_reps,
     iteration = iteration
   )
   targets::tar_target_raw(
@@ -194,6 +198,7 @@ tar_rep_command_target <- function(
   command,
   name_batch,
   reps,
+  parallel_reps,
   iteration
 ) {
   out <- substitute(
@@ -201,13 +206,15 @@ tar_rep_command_target <- function(
       command = command,
       batch = batch,
       reps = reps,
+      parallel_reps = parallel_reps,
       iteration = iteration
     ),
     env = list(
       command = command,
       batch = as.symbol(name_batch),
       reps = reps,
-      iteration = iteration
+      iteration = iteration,
+      parallel_reps = parallel_reps
     )
   )
   as.expression(out)
@@ -225,16 +232,18 @@ tar_rep_pattern <- function(name_batch) {
 #' @return Aggregated results of multiple executions of the
 #'   user-defined command supplied to [tar_rep()]. Depends on what
 #'   the user specifies. Common use cases are simulated datasets.
+#' @inheritParams tar_rep
 #' @param command Expression object, command to replicate.
 #' @param batch Numeric of length 1, batch index.
 #' @param reps Numeric of length 1, number of reps per batch.
 #' @param iteration Character, iteration method.
-tar_rep_run <- function(command, batch, reps, iteration) {
+tar_rep_run <- function(command, batch, reps, iteration, parallel_reps) {
   expr <- substitute(command)
   out <- tar_rep_run_map(
     expr = expr,
     batch = batch,
-    reps = reps
+    reps = reps,
+    parallel_reps = parallel_reps
   )
   tar_rep_bind(out, iteration)
 }
@@ -249,19 +258,52 @@ tar_rep_bind <- function(out, iteration) {
   )
 }
 
-tar_rep_run_map <- function(expr, batch, reps) {
-  furrr::future_map(
-    .x = seq_len(reps),
-    .f = ~tar_rep_run_map_rep(
-      rep = .x,
+tar_rep_run_map <- function(expr, batch, reps, parallel_reps) {
+  call <- quote(
+    function (.x, expr, batch, reps) {
+      tarchetypes::tar_rep_run_map_rep(
+        rep = .x, 
+        expr = expr,
+        batch = batch,
+        reps = reps
+      )
+    }
+  )
+  fun <- eval(call, envir = targets::tar_option_get("envir"))
+  if (parallel_reps) {
+    furrr::future_map(
+      .x = seq_len(reps),
+      .f = fun,
+      .options = furrr::furrr_options(
+        seed = TRUE, 
+        packages = targets::tar_definition()$command$packages
+      ),
       expr = expr,
       batch = batch,
       reps = reps
-    ),
-    .options = furrr::furrr_options(seed = TRUE)
-  )
+    )
+  } else {
+    map(
+      x = seq_len(reps),
+      f = fun,
+      expr = expr,
+      batch = batch,
+      reps = reps
+    )
+  }
 }
 
+#' @title Run a rep in `tar_rep()`.
+#' @export
+#' @keywords internal
+#' @description Not a user-side function. Do not invoke directly.
+#' @return The result of running `expr`.
+#' @param rep Rep number.
+#' @param expr R expression to run.
+#' @param batch Batch number.
+#' @param reps Number of total reps.
+#' @examples
+#' # See the examples of tar_rep().
 tar_rep_run_map_rep <- function(rep, expr, batch, reps) {
   name <- targets::tar_definition()$pedigree$parent
   seed <- produce_seed_rep(name = name, batch = batch, rep = rep, reps = reps)

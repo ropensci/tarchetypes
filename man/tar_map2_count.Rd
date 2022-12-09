@@ -17,6 +17,7 @@ tar_map2_count(
   suffix2 = "2",
   columns1 = tidyselect::everything(),
   columns2 = tidyselect::everything(),
+  parallel_reps = FALSE,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -34,7 +35,21 @@ tar_map2_count(
 )
 }
 \arguments{
-\item{name}{Symbol, base name of the targets.}
+\item{name}{Symbol, name of the target. A target
+name must be a valid name for a symbol in R, and it
+must not start with a dot. Subsequent targets
+can refer to this name symbolically to induce a dependency relationship:
+e.g. \code{tar_target(downstream_target, f(upstream_target))} is a
+target named \code{downstream_target} which depends on a target
+\code{upstream_target} and a function \code{f()}. In addition, a target's
+name determines its random number generator seed. In this way,
+each target runs with a reproducible seed so someone else
+running the same pipeline should get the same results,
+and no two targets in the same pipeline share the same seed.
+(Even dynamic branches have different names and thus different seeds.)
+You can recover the seed of a completed target
+with \code{tar_meta(your_target, seed)} and run \code{set.seed()} on the result
+to locally recreate the target's initial RNG state.}
 
 \item{command1}{R code to create named arguments to \code{command2}.
 Must return a data frame with one row per call to \code{command2}.}
@@ -59,10 +74,8 @@ to select which columns of \code{values} to use to construct
 statically branched target names. If \code{NULL}, then
 short names are automatically generated.}
 
-\item{batches}{Positive integer of length 1,
-maximum number of batches (dynamic branches within static branches)
-of the downstream (\code{command2}) targets. Batches
-are formed from row groups of the \code{command1} target output.}
+\item{batches}{Number of batches. This is also the number of dynamic
+branches created during \code{tar_make()}.}
 
 \item{combine}{Logical of length 1, whether to statically combine
 all the results into a single target downstream.}
@@ -84,10 +97,17 @@ output to append to \code{command2} output.
 Columns already in the target output are not appended.
 \code{columns1} takes precedence over \code{columns2}.}
 
-\item{tidy_eval}{Logical, whether to enable tidy evaluation
-when interpreting \code{command} and \code{pattern}. If \code{TRUE}, you can use the
-"bang-bang" operator \verb{!!} to programmatically insert
-the values of global objects.}
+\item{parallel_reps}{Logical of length 1, whether to run reps within batches
+in parallel using the \code{furrr} package. If \code{TRUE}, then \code{furrr} functions
+will run the reps in parallel using the \code{future} plan you defined
+in your \verb{_targets.R} file. If you are running the pipeline
+with \code{tar_make_future()}, then you may need to define a nested plan
+with an outer plan to parallelize among targets and an inner
+plan to parallelize within targets (e.g. reps).}
+
+\item{tidy_eval}{Whether to invoke tidy evaluation
+(e.g. the \verb{!!} operator from \code{rlang}) as soon as the target is defined
+(before \code{tar_make()}). Applies to the \code{command} argument.}
 
 \item{packages}{Character vector of packages to load right before
 the target builds or the output data is reloaded for
@@ -97,11 +117,11 @@ globally for all subsequent targets you define.}
 \item{library}{Character vector of library paths to try
 when loading \code{packages}.}
 
-\item{format}{Character of length 1, storage format of the output.
-An efficient data frame format like \code{"feather"} is recommended,
-but the default is \code{"rds"} to avoid incurring extra package
-dependencies. See the help file of \code{targets::tar_target()}
-for details on storage formats.}
+\item{format}{Optional storage format for the target's return value.
+With the exception of \code{format = "file"}, each target
+gets a file in \verb{_targets/objects}, and each format is a different
+way to save and load this file. See the "Storage formats" section
+for a detailed list of possible data storage formats.}
 
 \item{repository}{Character of length 1, remote repository for target
 storage. Choices:
@@ -291,16 +311,6 @@ or \code{withr::local_seed()}). For \code{\link[=tar_render_rep]{tar_render_rep(
 custom seeds can be supplied to the \code{params} argument
 and then invoked in the individual R Markdown reports.
 Likewise with \code{\link[=tar_quarto_rep]{tar_quarto_rep()}} and the \code{execute_params} argument.
-}
-
-\section{Nested futures for batched replication}{
-
-Batched replication functions like \code{\link[=tar_rep]{tar_rep()}} support nested futures
-for parallelism within batches. For example, if your \code{future} plan
-(see \url{https://books.ropensci.org/targets/hpc.html#future}) is
-\code{future::plan(list(future.batchtools::batchtools_slurm, future::multicore))}, # nolint
-then the SLURM plan will parallelize the batches and the multicore plan
-will parallelize the reps within each batch.
 }
 
 \examples{

@@ -101,7 +101,8 @@ targets::tar_test("tar_render_rep() run", {
           par = c("parval1", "parval2", "parval3", "parval4"),
           stringsAsFactors = FALSE
         ),
-        batches = 2
+        batches = 2,
+        parallel_reps = TRUE
       )
     )
   })
@@ -169,7 +170,8 @@ targets::tar_test("tar_render_rep() run", {
           par = c("parval1", "parval2", "parval3-modified", "parval4"),
           stringsAsFactors = FALSE
         ),
-        batches = 2
+        batches = 2,
+        parallel_reps = TRUE
       )
     )
   })
@@ -210,7 +212,8 @@ targets::tar_test("tar_render_rep() run with output_file specified", {
           par = c("parval1", "parval2", "parval3", "parval4"),
           output_file = c("f1.html", "f2.html", "f3.html", "f4.html"),
           stringsAsFactors = FALSE
-        )
+        ),
+        parallel_reps = FALSE
       )
     )
   })

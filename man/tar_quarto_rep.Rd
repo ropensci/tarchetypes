@@ -16,6 +16,7 @@ tar_quarto_rep(
   debug = FALSE,
   quiet = TRUE,
   pandoc_args = NULL,
+  parallel_reps = FALSE,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -66,10 +67,8 @@ Quarto parameters must not be named \code{tar_group} or \code{output_file}.
 This \code{execute_params} argument is converted into the command for a target
 that supplies the Quarto parameters.}
 
-\item{batches}{Number of batches to group the Quarto files.
-For a large number of reports, increase the number of batches
-to decrease target-level overhead. Defaults to the number of
-reports to render (1 report per batch).}
+\item{batches}{Number of batches. This is also the number of dynamic
+branches created during \code{tar_make()}.}
 
 \item{extra_files}{Character vector of extra files that \code{targets}
 should track for changes. If the content of one of these files changes,
@@ -93,6 +92,14 @@ respectively for Rmd and Jupyter input files).}
 
 \item{pandoc_args}{Additional command line options to pass to pandoc.}
 
+\item{parallel_reps}{Logical of length 1, whether to run reps within batches
+in parallel using the \code{furrr} package. If \code{TRUE}, then \code{furrr} functions
+will run the reps in parallel using the \code{future} plan you defined
+in your \verb{_targets.R} file. If you are running the pipeline
+with \code{tar_make_future()}, then you may need to define a nested plan
+with an outer plan to parallelize among targets and an inner
+plan to parallelize within targets (e.g. reps).}
+
 \item{tidy_eval}{Logical of length 1, whether to use tidy evaluation
 to resolve \code{execute_params}. Similar to the \code{tidy_eval}
 argument of \code{targets::tar_target()}.}
@@ -114,16 +121,20 @@ for a detailed list of possible data storage formats.}
 \item{iteration}{Character of length 1, name of the iteration mode
 of the target. Choices:
 \itemize{
-\item \code{"vector"}: branching happens with \code{vctrs::vec_slice()} and
+\item \code{"vector"}: branching happens with \code{vectors::vec_slice()} and
 aggregation happens with \code{vctrs::vec_c()}.
 \item \code{"list"}, branching happens with \verb{[[]]} and aggregation happens with
-\code{list()}.
+\code{list()}. In the case of list iteration, \code{tar_read(your_target)}
+will return a list of lists, where the outer list has one element per
+batch and each inner list has one element per rep within batch.
+To un-batch this nested list, call
+\code{tar_read(your_target, recursive = FALSE)}.
 \item \code{"group"}: \code{dplyr::group_by()}-like functionality to branch over
 subsets of a data frame. The target's return value must be a data
 frame with a special \code{tar_group} column of consecutive integers
 from 1 through the number of groups. Each integer designates a group,
 and a branch is created for each collection of rows in a group.
-See the \code{\link[targets:tar_group]{tar_group()}} function to see how you can
+See the \code{\link[=tar_group]{tar_group()}} function to see how you can
 create the special \code{tar_group} column with \code{dplyr::group_by()}.
 }}
 
@@ -285,16 +296,6 @@ or \code{withr::local_seed()}). For \code{\link[=tar_render_rep]{tar_render_rep(
 custom seeds can be supplied to the \code{params} argument
 and then invoked in the individual R Markdown reports.
 Likewise with \code{\link[=tar_quarto_rep]{tar_quarto_rep()}} and the \code{execute_params} argument.
-}
-
-\section{Nested futures for batched replication}{
-
-Batched replication functions like \code{\link[=tar_rep]{tar_rep()}} support nested futures
-for parallelism within batches. For example, if your \code{future} plan
-(see \url{https://books.ropensci.org/targets/hpc.html#future}) is
-\code{future::plan(list(future.batchtools::batchtools_slurm, future::multicore))}, # nolint
-then the SLURM plan will parallelize the batches and the multicore plan
-will parallelize the reps within each batch.
 }
 
 \section{Quarto troubleshooting}{

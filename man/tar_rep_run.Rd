@@ -4,7 +4,7 @@
 \alias{tar_rep_run}
 \title{Run a batch in a \code{tar_rep()} archetype.}
 \usage{
-tar_rep_run(command, batch, reps, iteration)
+tar_rep_run(command, batch, reps, iteration, parallel_reps)
 }
 \arguments{
 \item{command}{Expression object, command to replicate.}
@@ -14,6 +14,14 @@ tar_rep_run(command, batch, reps, iteration)
 \item{reps}{Numeric of length 1, number of reps per batch.}
 
 \item{iteration}{Character, iteration method.}
+
+\item{parallel_reps}{Logical of length 1, whether to run reps within batches
+in parallel using the \code{furrr} package. If \code{TRUE}, then \code{furrr} functions
+will run the reps in parallel using the \code{future} plan you defined
+in your \verb{_targets.R} file. If you are running the pipeline
+with \code{tar_make_future()}, then you may need to define a nested plan
+with an outer plan to parallelize among targets and an inner
+plan to parallelize within targets (e.g. reps).}
 }
 \value{
 Aggregated results of multiple executions of the

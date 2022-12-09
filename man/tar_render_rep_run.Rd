@@ -5,7 +5,7 @@
 \title{Render a batch of parameterized R Markdown reports
 inside a \code{tar_render_rep()} target.}
 \usage{
-tar_render_rep_run(path, params, args, deps)
+tar_render_rep_run(path, params, args, deps, parallel_reps)
 }
 \arguments{
 \item{path}{Path to the R Markdown source file.}
@@ -14,6 +14,14 @@ tar_render_rep_run(path, params, args, deps)
 
 \item{deps}{An unnamed list of target dependencies of the R Markdown
 report, automatically created by \code{tar_render_rep()}.}
+
+\item{parallel_reps}{Logical of length 1, whether to run reps within batches
+in parallel using the \code{furrr} package. If \code{TRUE}, then \code{furrr} functions
+will run the reps in parallel using the \code{future} plan you defined
+in your \verb{_targets.R} file. If you are running the pipeline
+with \code{tar_make_future()}, then you may need to define a nested plan
+with an outer plan to parallelize among targets and an inner
+plan to parallelize within targets (e.g. reps).}
 }
 \value{
 Character vector with the path to the R Markdown

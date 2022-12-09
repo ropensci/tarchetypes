@@ -1,6 +1,7 @@
 # tarchetypes 0.7.3.9000
 
-
+* Implement `parallel_reps = FALSE` in batched replication functions (#117).
+* Ensure the function passed to `furrr` functions has environment `tar_option_get("envir")`.
 
 # tarchetypes 0.7.3
 

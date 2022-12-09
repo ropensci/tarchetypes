@@ -16,7 +16,7 @@
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
 #' @inheritSection tar_rep Replicate-specific seeds
-#' @inheritSection tar_rep Nested futures for batched replication
+#' @inheritParams tar_rep
 #' @inheritParams tar_map2
 #' @inheritParams tar_map2_count_raw
 #' @examples
@@ -54,6 +54,7 @@ tar_map2_count <- function(
   suffix2 = "2",
   columns1 = tidyselect::everything(),
   columns2 = tidyselect::everything(),
+  parallel_reps = FALSE,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -81,6 +82,7 @@ tar_map2_count <- function(
     suffix2 = suffix2,
     columns1 = substitute(columns1),
     columns2 = substitute(columns2),
+    parallel_reps = parallel_reps,
     tidy_eval = tidy_eval,
     packages = packages,
     library = library,

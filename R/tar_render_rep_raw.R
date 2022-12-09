@@ -42,9 +42,9 @@
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
 #' @inheritSection tar_rep Replicate-specific seeds
-#' @inheritSection tar_rep Nested futures for batched replication
 #' @inheritParams targets::tar_target
 #' @inheritParams rmarkdown::render
+#' @inheritParams tar_rep
 #' @param path Character string, file path to the R Markdown source file.
 #'   Must have length 1.
 #' @param params Expression object with code to generate
@@ -102,6 +102,7 @@ tar_render_rep_raw <- function(
   path,
   params = expression(NULL),
   batches = NULL,
+  parallel_reps = FALSE,
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
   format = targets::tar_option_get("format"),
@@ -150,7 +151,7 @@ tar_render_rep_raw <- function(
   )
   target <- targets::tar_target_raw(
     name = name,
-    command = tar_render_rep_command(name, path, quiet, args),
+    command = tar_render_rep_command(name, path, quiet, args, parallel_reps),
     pattern = substitute(map(x), env = list(x = sym_params)),
     packages = packages,
     library = library,
@@ -226,14 +227,21 @@ tar_render_rep_run_params <- function(params, batches) {
   params
 }
 
-tar_render_rep_command <- function(name, path, quiet, args) {
+tar_render_rep_command <- function(name, path, quiet, args, parallel_reps) {
   args$input <- path
   args$knit_root_dir <- quote(getwd())
   args$quiet <- quiet
   params <- as.symbol(paste0(name, "_params"))
   deps <- call_list(as_symbols(knitr_deps(path)))
   fun <- call_ns("tarchetypes", "tar_render_rep_run")
-  exprs <- list(fun, path = path, params = params, args = args, deps = deps)
+  exprs <- list(
+    fun,
+    path = path,
+    params = params,
+    args = args,
+    deps = deps,
+    parallel_reps = parallel_reps
+  )
   as.expression(as.call(exprs))
 }
 
@@ -246,11 +254,12 @@ tar_render_rep_command <- function(name, path, quiet, args) {
 #' @return Character vector with the path to the R Markdown
 #'   source file and the rendered output file. Both paths
 #'   depend on the input source path, and they have no defaults.
+#' @inheritParams tar_rep
 #' @param path Path to the R Markdown source file.
 #' @param args A named list of arguments to `rmarkdown::render()`.
 #' @param deps An unnamed list of target dependencies of the R Markdown
 #'   report, automatically created by `tar_render_rep()`.
-tar_render_rep_run <- function(path, params, args, deps) {
+tar_render_rep_run <- function(path, params, args, deps, parallel_reps) {
   targets::tar_assert_package("rmarkdown")
   rm(deps)
   gc()
@@ -258,27 +267,59 @@ tar_render_rep_run <- function(path, params, args, deps) {
   args$envir <- args$envir %|||% targets::tar_envir(default = envir)
   force(args$envir)
   params <- split(params, f = seq_len(nrow(params)))
-  out <- furrr::future_map(
-    .x = seq_along(params),
-    .f = ~tar_render_rep_rep(
-      rep = .x,
-      path = path,
-      params = params,
-      args = args
-    ),
-    .options = furrr::furrr_options(seed = TRUE)
+  call <- quote(
+    function(.x, .y, args, path) {
+      tarchetypes::tar_render_rep_rep(
+        rep = .x,
+        params = .y,
+        args = args,
+        path = path
+      )
+    }
   )
+  fun <- eval(call, envir = targets::tar_option_get("envir"))
+  if (parallel_reps) {
+    out <- furrr::future_map2(
+      .x = seq_along(params),
+      .y = params,
+      .f = fun,
+      .options = furrr::furrr_options(
+        seed = TRUE,
+        packages = targets::tar_definition()$command$packages
+      ),
+      args = args,
+      path = path
+    )
+  } else {
+    out <- map2(
+      x = seq_along(params),
+      y = params,
+      f = fun,
+      args = args,
+      path = path
+    )
+  }
   unname(unlist(out))
 }
 
-tar_render_rep_rep <- function(rep, path, params, args) {
+#' @title Run a rep in a `tar_render_rep()`.
+#' @export
+#' @keywords internal
+#' @description Not a user-side function. Do not invoke directly.
+#' @return Output file paths.
+#' @param rep Rep number.
+#' @param params R Markdown parameters.
+#' @param args Arguments to `rmarkdown::render()`.
+#' @param path R Markdown output file.
+#' @examples
+#' # See the examples of tar_quarto_rep().
+tar_render_rep_rep <- function(rep, params, args, path) {
   withr::local_options(list(crayon.enabled = NULL))
   pedigree <- targets::tar_definition()$pedigree
   name <- pedigree$parent
   batch <- pedigree$index
   reps <- length(params)
   seed <- produce_seed_rep(name = name, batch = batch, rep = rep, reps = reps)
-  params <- params[[rep]]
   default_path <- tar_render_rep_default_path(path, params)
   args$output_file <- params[["output_file"]] %|||% default_path
   args$params <- params

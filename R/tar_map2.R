@@ -19,11 +19,11 @@
 #'   `command2`, and `command2` dynamically maps over
 #'   these arguments in batches.
 #' @inheritSection tar_rep Replicate-specific seeds
-#' @inheritSection tar_rep Nested futures for batched replication
 #' @return A list of new target objects.
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
 #' @inheritParams tar_map2_raw
+#' @inheritParams tar_rep
 #' @param name Symbol, base name of the targets.
 #' @param command1 R code to create named arguments to `command2`.
 #'   Must return a data frame with one row per call to `command2`.
@@ -48,6 +48,7 @@ tar_map2 <- function(
   suffix2 = "2",
   columns1 = tidyselect::everything(),
   columns2 = tidyselect::everything(),
+  parallel_reps = FALSE,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -75,6 +76,7 @@ tar_map2 <- function(
     suffix2 = suffix2,
     columns1 = substitute(columns1),
     columns2 = substitute(columns2),
+    parallel_reps = parallel_reps,
     tidy_eval = tidy_eval,
     packages = packages,
     library = library,
