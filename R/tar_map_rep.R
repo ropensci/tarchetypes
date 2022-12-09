@@ -8,6 +8,8 @@
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
 #' @inheritSection tar_rep Replicate-specific seeds
+#' @inheritParams tar_rep
+#' @inheritParams tar_map_rep_raw
 #' @param command R code for a single replicate. Must return
 #'   a data frame.
 #' @param columns A tidyselect expression to select which columns of `values`
@@ -16,7 +18,6 @@
 #' @param combine Logical of length 1, whether to statically combine
 #'   all the results into a single target downstream.
 #' @inheritSection tar_map Target objects
-#' @inheritParams tar_map_rep_raw
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
@@ -59,6 +60,7 @@ tar_map_rep <- function(
   columns = tidyselect::everything(),
   batches = 1,
   reps = 1,
+  parallel_reps = FALSE,
   combine = TRUE,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
@@ -83,6 +85,7 @@ tar_map_rep <- function(
     columns = substitute(columns),
     batches = batches,
     reps = reps,
+    parallel_reps = parallel_reps,
     combine = combine,
     tidy_eval = tidy_eval,
     packages = packages,

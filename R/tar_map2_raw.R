@@ -249,7 +249,7 @@ tar_map2_run <- function(command, values, columns, parallel_reps) {
   splits <- split(values, f = seq_len(nrow(values)))
   reps <- length(splits)
   call <- quote(
-    function(.x, .y, command, reps, columns) (
+    function(.x, .y, command, reps, columns) {
       tarchetypes::tar_map2_run_rep(
         rep = .x,
         values = .y,
@@ -257,7 +257,7 @@ tar_map2_run <- function(command, values, columns, parallel_reps) {
         reps = reps,
         columns = columns
       )
-    )
+    }
   )
   fun <- eval(call, envir = targets::tar_option_get("envir"))
   if (parallel_reps) {

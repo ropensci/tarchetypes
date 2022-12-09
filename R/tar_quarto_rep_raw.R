@@ -459,7 +459,6 @@ tar_quarto_rep_run <- function(
       default_output_file = default_output_file
     )
   }
-  
   out <- unname(unlist(out))
   support <- sprintf("%s_files", fs::path_ext_remove(basename(args$input)))
   extra_files <- if_any(

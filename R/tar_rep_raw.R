@@ -260,9 +260,9 @@ tar_rep_bind <- function(out, iteration) {
 
 tar_rep_run_map <- function(expr, batch, reps, parallel_reps) {
   call <- quote(
-    function (.x, expr, batch, reps) {
+    function(.x, expr, batch, reps) {
       tarchetypes::tar_rep_run_map_rep(
-        rep = .x, 
+        rep = .x,
         expr = expr,
         batch = batch,
         reps = reps
@@ -275,7 +275,7 @@ tar_rep_run_map <- function(expr, batch, reps, parallel_reps) {
       .x = seq_len(reps),
       .f = fun,
       .options = furrr::furrr_options(
-        seed = TRUE, 
+        seed = TRUE,
         packages = targets::tar_definition()$command$packages
       ),
       expr = expr,

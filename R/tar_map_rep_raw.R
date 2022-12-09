@@ -12,6 +12,7 @@
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
 #' @inheritSection tar_rep Replicate-specific seeds
+#' @inheritParams tar_rep
 #' @param command Language object, R code for a single replicate. Must return
 #'   a data frame.
 #' @param names Language object with a tidyselect expression
@@ -74,6 +75,7 @@ tar_map_rep_raw <- function(
   columns = quote(tidyselect::everything()),
   batches = 1,
   reps = 1,
+  parallel_reps = FALSE,
   combine = TRUE,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
@@ -137,6 +139,7 @@ tar_map_rep_raw <- function(
     command = command,
     name_batch = name_batch,
     reps = reps,
+    parallel_reps = parallel_reps,
     iteration = "vector"
   )
   target_dynamic <- targets::tar_target_raw(
