@@ -8,6 +8,7 @@ tar_rep2_raw(
   name,
   command,
   targets,
+  rep_workers = 1,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -50,6 +51,13 @@ If you supply more than one such target, all those targets must have the
 same number of batches and reps per batch. And they must all return
 either data frames or lists. List targets must use \code{iteration = "list"}
 in \code{\link[=tar_rep]{tar_rep()}}.}
+
+\item{rep_workers}{Positive integer of length 1, number of local R
+processes to use to run reps within batches in parallel. If 1,
+then reps are run sequentially within each batch. If greater than 1,
+then reps within batch are run in parallel using workers
+created with \code{future::plan(future.callr::callr, workers = rep_workers)}
+and invoked with \code{furrr::future_map()}.}
 
 \item{tidy_eval}{Logical, whether to enable tidy evaluation
 when interpreting \code{command} and \code{pattern}. If \code{TRUE}, you can use the

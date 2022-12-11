@@ -15,6 +15,7 @@
 #' @inheritSection tar_map Target objects
 #' @inheritSection tar_rep Replicate-specific seeds
 #' @inheritParams targets::tar_target
+#' @inheritParams tar_rep
 #' @param targets Character vector of names of upstream batched targets
 #'   created by [tar_rep()].
 #'   If you supply more than one such target, all those targets must have the
@@ -53,6 +54,7 @@ tar_rep2_raw <- function(
   name,
   command,
   targets,
+  rep_workers = 1,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -72,11 +74,13 @@ tar_rep2_raw <- function(
   targets::tar_assert_chr(targets)
   targets::tar_assert_nonempty(targets)
   targets::tar_assert_nzchar(targets)
+  tar_assert_rep_workers(rep_workers)
   command <- tar_raw_command(name, command)
   command <- tar_rep2_command(
     command = command,
     targets = targets,
-    iteration = iteration
+    iteration = iteration,
+    rep_workers = rep_workers
   )
   pattern <- call_function("map", lapply(targets, as.symbol))
   targets::tar_target_raw(
@@ -100,19 +104,21 @@ tar_rep2_raw <- function(
   )
 }
 
-tar_rep2_command <- function(command, targets, iteration) {
+tar_rep2_command <- function(command, targets, iteration, rep_workers) {
   batches <- lapply(targets, as.symbol)
   names(batches) <- targets
   substitute(
     tarchetypes::tar_rep2_run(
       command = command,
       batches = batches,
-      iteration = iteration
+      iteration = iteration,
+      rep_workers = rep_workers
     ),
     env = list(
       command = command,
       batches = call_list(batches),
-      iteration = iteration
+      iteration = iteration,
+      rep_workers = rep_workers
     )
   )
 }
@@ -122,10 +128,11 @@ tar_rep2_command <- function(command, targets, iteration) {
 #' @keywords internal
 #' @description Not a user-side function. Do not invoke directly.
 #' @return The result of batched replication.
+#' @inheritParams tar_rep
 #' @param command R expression, the command to run on each rep.
 #' @param batches Named list of batch data to map over.
 #' @param iteration Iteration method: `"list"`, `"vector"`, or `"group"`.
-tar_rep2_run <- function(command, batches, iteration) {
+tar_rep2_run <- function(command, batches, iteration, rep_workers) {
   command <- substitute(command)
   assert_batches(batches)
   reps <- batch_count_reps(batches[[1]])
@@ -148,15 +155,35 @@ tar_rep2_run <- function(command, batches, iteration) {
     }
   )
   fun <- eval(call, envir = targets::tar_option_get("envir"))
-  out <- map2(
-    x = seq_len(reps),
-    y = slices,
-    f = fun,
-    command = command,
-    batch = batch,
-    seeds = seeds,
-    envir = envir
-  )
+  if (rep_workers > 1L) {
+    plan_old <- future::plan()
+    on.exit(future::plan(plan_old, .cleanup = FALSE))
+    future::plan(future.callr::callr, workers = rep_workers, .cleanup = FALSE)
+    out <- furrr::future_map2(
+      .x = seq_len(reps),
+      .y = slices,
+      .f = fun,
+      .options = furrr::furrr_options(
+        seed = 1L,
+        packages = targets::tar_definition()$command$packages,
+        globals = names(targets::tar_option_get("envir"))
+      ),
+      command = as.expression(command),
+      batch = batch,
+      seeds = seeds,
+      envir = envir
+    )
+  } else {
+    out <- map2(
+      x = seq_len(reps),
+      y = slices,
+      f = fun,
+      command = as.expression(command),
+      batch = batch,
+      seeds = seeds,
+      envir = envir
+    )
+  }
   tar_rep_bind(out, iteration)
 }
 

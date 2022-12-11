@@ -4,7 +4,7 @@
 \alias{tar_rep2_run}
 \title{Run \code{\link[=tar_rep2]{tar_rep2()}} batches.}
 \usage{
-tar_rep2_run(command, batches, iteration)
+tar_rep2_run(command, batches, iteration, rep_workers)
 }
 \arguments{
 \item{command}{R expression, the command to run on each rep.}
@@ -12,6 +12,13 @@ tar_rep2_run(command, batches, iteration)
 \item{batches}{Named list of batch data to map over.}
 
 \item{iteration}{Iteration method: \code{"list"}, \code{"vector"}, or \code{"group"}.}
+
+\item{rep_workers}{Positive integer of length 1, number of local R
+processes to use to run reps within batches in parallel. If 1,
+then reps are run sequentially within each batch. If greater than 1,
+then reps within batch are run in parallel using workers
+created with \code{future::plan(future.callr::callr, workers = rep_workers)}
+and invoked with \code{furrr::future_map()}.}
 }
 \value{
 The result of batched replication.

@@ -8,6 +8,7 @@ tar_rep2(
   name,
   command,
   ...,
+  rep_workers = 1,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),

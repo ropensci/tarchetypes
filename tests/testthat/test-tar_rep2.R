@@ -153,14 +153,16 @@ targets::tar_test("tar_rep2() pipeline", {
         aggregate1,
         data.frame(x = label, value = data1$value + data2$value),
         data1,
-        data2
+        data2,
+        rep_workers = 1
       ),
       tarchetypes::tar_rep2(
         aggregate2,
         list(value = data1$value + data2$value),
         data1,
         data2,
-        iteration = "list"
+        iteration = "list",
+        rep_workers = 2
       ),
       tarchetypes::tar_rep2(
         aggregate3,
