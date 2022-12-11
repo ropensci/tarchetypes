@@ -4,7 +4,7 @@
 \alias{tar_render_rep_rep}
 \title{Run a rep in a \code{tar_render_rep()}.}
 \usage{
-tar_render_rep_rep(rep, params, args, path)
+tar_render_rep_rep(rep, params, args, path, seeds)
 }
 \arguments{
 \item{rep}{Rep number.}
@@ -14,6 +14,8 @@ tar_render_rep_rep(rep, params, args, path)
 \item{args}{Arguments to \code{rmarkdown::render()}.}
 
 \item{path}{R Markdown output file.}
+
+\item{seeds}{Random number generator seeds of the batch.}
 }
 \value{
 Output file paths.

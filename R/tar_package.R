@@ -13,6 +13,8 @@
 #' @importFrom furrr future_map future_map2 furrr_options
 #' @importFrom rlang as_function call2 check_installed enquo expr
 #'   inform is_missing quo_squash
+#' @importFrom future plan
+#' @importFrom future.callr callr
 #' @importFrom targets tar_assert_chr tar_assert_dbl tar_assert_df
 #'   tar_assert_envir tar_assert_equal_lengths
 #'   tar_assert_expr tar_assert_flag

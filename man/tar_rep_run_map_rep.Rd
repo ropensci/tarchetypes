@@ -4,7 +4,7 @@
 \alias{tar_rep_run_map_rep}
 \title{Run a rep in \code{tar_rep()}.}
 \usage{
-tar_rep_run_map_rep(rep, expr, batch, reps)
+tar_rep_run_map_rep(rep, expr, batch, seeds, envir)
 }
 \arguments{
 \item{rep}{Rep number.}
@@ -13,7 +13,9 @@ tar_rep_run_map_rep(rep, expr, batch, reps)
 
 \item{batch}{Batch number.}
 
-\item{reps}{Number of total reps.}
+\item{seeds}{Random number generator seeds of the batch.}
+
+\item{envir}{Environment of the target.}
 }
 \value{
 The result of running \code{expr}.

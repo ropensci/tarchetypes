@@ -74,13 +74,12 @@
 #'   branches created during `tar_make()`.
 #' @param reps Number of replications in each batch. The total number
 #'   of replications is `batches * reps`.
-#' @param parallel_reps Logical of length 1, whether to run reps within batches
-#'   in parallel using the `furrr` package. If `TRUE`, then `furrr` functions
-#'   will run the reps in parallel using the `future` plan you defined
-#'   in your `_targets.R` file. If you are running the pipeline
-#'   with `tar_make_future()`, then you may need to define a nested plan
-#'   with an outer plan to parallelize among targets and an inner
-#'   plan to parallelize within targets (e.g. reps).
+#' @param rep_workers Positive integer of length 1, number of local R
+#'   processes to use to run reps within batches in parallel. If 1,
+#'   then reps are run sequentially within each batch. If greater than 1,
+#'   then reps within batch are run in parallel using workers
+#'   created with `future::plan(future.callr::callr, workers = rep_workers)`
+#'   and invoked with `furrr::future_map()`.
 #' @param tidy_eval Whether to invoke tidy evaluation
 #'   (e.g. the `!!` operator from `rlang`) as soon as the target is defined
 #'   (before `tar_make()`). Applies to the `command` argument.
@@ -123,7 +122,7 @@ tar_rep <- function(
   command,
   batches = 1,
   reps = 1,
-  parallel_reps = FALSE,
+  rep_workers = 1,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -148,7 +147,7 @@ tar_rep <- function(
     command = command,
     batches = batches,
     reps = reps,
-    parallel_reps = parallel_reps,
+    rep_workers = rep_workers,
     packages = packages,
     library = library,
     format = format,

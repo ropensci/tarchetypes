@@ -1,4 +1,4 @@
-targets::tar_test("tar_rep(iteration = 'list', parallel_reps = FALSE)", {
+targets::tar_test("tar_rep(iteration = 'list', rep_workers = 1)", {
   targets::tar_script({
     list(
       tarchetypes::tar_rep(
@@ -7,7 +7,7 @@ targets::tar_test("tar_rep(iteration = 'list', parallel_reps = FALSE)", {
         batches = 2,
         reps = 3,
         iteration = "list",
-        parallel_reps = FALSE
+        rep_workers = 1
       )
     )
   })
@@ -34,7 +34,7 @@ targets::tar_test("tar_rep(iteration = 'list', parallel_reps = FALSE)", {
   expect_equal(tar_read(x, branches = 2), out[2])
 })
 
-targets::tar_test("tar_rep(iteration = 'vector', parallel_reps = TRUE)", {
+targets::tar_test("tar_rep(iteration = 'vector', rep_workers = 2)", {
   targets::tar_script({
     list(
       tarchetypes::tar_rep(
@@ -43,7 +43,7 @@ targets::tar_test("tar_rep(iteration = 'vector', parallel_reps = TRUE)", {
         batches = 2,
         reps = 3,
         iteration = "vector",
-        parallel_reps = TRUE
+        rep_workers = 2
       )
     )
   })
@@ -138,7 +138,7 @@ targets::tar_test("tar_rep() with non-list output", {
 
 targets::tar_test("tar_rep_run() with unsupported iteration method", {
   expect_error(
-    tar_rep_run(quote(1), 1, 1, "nope", parallel_reps = FALSE),
+    tar_rep_run(quote(1), 1, 1, "nope", rep_workers = 1),
     class = "tar_condition_validate"
   )
 })

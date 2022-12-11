@@ -4,7 +4,7 @@
 \alias{tar_quarto_rep_rep}
 \title{Run a rep in a \code{tar_quarto_rep()}.}
 \usage{
-tar_quarto_rep_rep(rep, execute_params, args, default_output_file)
+tar_quarto_rep_rep(rep, execute_params, args, default_output_file, seeds)
 }
 \arguments{
 \item{rep}{Rep number.}
@@ -14,6 +14,8 @@ tar_quarto_rep_rep(rep, execute_params, args, default_output_file)
 \item{args}{Arguments to \code{quarto::quarto_render()}.}
 
 \item{default_output_file}{Default Quarto output file.}
+
+\item{seeds}{Random number generator seeds of the batch.}
 }
 \value{
 Output file paths.

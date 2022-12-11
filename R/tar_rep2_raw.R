@@ -129,34 +129,68 @@ tar_rep2_run <- function(command, batches, iteration) {
   command <- substitute(command)
   assert_batches(batches)
   reps <- batch_count_reps(batches[[1]])
-  out <- map(
-    seq_len(reps),
-    tar_rep2_run_rep,
+  pedigree <- targets::tar_definition()$pedigree
+  name <- pedigree$parent
+  batch <- pedigree$index
+  seeds <- produce_batch_seeds(name = name, batch = batch, reps = reps)
+  envir <- targets::tar_envir()
+  slices <- split_batches(batches = batches, reps = reps)
+  call <- quote(
+    function(.x, .y, command, batch, seeds, envir) {
+      tarchetypes::tar_rep2_run_rep(
+        rep = .x,
+        slice = .y,
+        command = command,
+        batch = batch,
+        seeds = seeds,
+        envir = envir
+      )
+    }
+  )
+  fun <- eval(call, envir = targets::tar_option_get("envir"))
+  out <- map2(
+    x = seq_len(reps),
+    y = slices,
+    f = fun,
     command = command,
-    batches = batches,
-    reps = reps
+    batch = batch,
+    seeds = seeds,
+    envir = envir
   )
   tar_rep_bind(out, iteration)
 }
 
-tar_rep2_run_rep <- function(index, command, batches, reps) {
-  name <- targets::tar_definition()$pedigree$parent
-  slice <- slice_batches(batches, index)
-  batch <- slice[[1]]$tar_batch[1]
-  rep <- slice[[1]]$tar_rep[1]
-  seed <- produce_seed_rep(name = name, batch = batch, rep = rep, reps = reps)
+#' @title Run a rep in a `tar_rep2()`-powered function.
+#' @export
+#' @keywords internal
+#' @description Not a user-side function. Do not invoke directly.
+#' @return The result of running `expr`.
+#' @param rep Rep number.
+#' @param slice Slice of the upstream batch data of the given rep.
+#' @param command R command to run.
+#' @param batch Batch number.
+#' @param seeds Random number generator seeds of the batch.
+#' @param envir Environment of the target.
+#' @examples
+#' # See the examples of tar_rep2().
+tar_rep2_run_rep <- function(rep, slice, command, batch, seeds, envir) {
+  seed <- as.integer(if_any(anyNA(seeds), NA_integer_, seeds[rep]))
   out <- if_any(
     anyNA(seed),
-    eval(command, envir = slice, enclos = targets::tar_envir()),
+    eval(command, envir = slice, enclos = envir),
     withr::with_seed(
       seed = seed,
-      code = eval(command, envir = slice, enclos = targets::tar_envir())
+      code = eval(command, envir = slice, enclos = envir)
     )
   )
-  out$tar_batch <- batch
-  out$tar_rep <- rep
-  out$tar_seed <- seed
+  out$tar_batch <- as.integer(batch)
+  out$tar_rep <- as.integer(rep)
+  out$tar_seed <- as.integer(seed)
   out
+}
+
+split_batches <- function(batches, reps) {
+  lapply(X = seq_len(reps), FUN = slice_batches, batches = batches)
 }
 
 slice_batches <- function(batches, index) {

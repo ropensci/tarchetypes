@@ -102,7 +102,7 @@ tar_render_rep_raw <- function(
   path,
   params = expression(NULL),
   batches = NULL,
-  parallel_reps = FALSE,
+  rep_workers = 1,
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
   format = targets::tar_option_get("format"),
@@ -131,6 +131,8 @@ tar_render_rep_raw <- function(
     names(args %||% list(x = 1)),
     "args must be a named list."
   )
+  tar_assert_rep_workers(rep_workers)
+  rep_workers <- as.integer(rep_workers)
   name_params <- paste0(name, "_params")
   sym_params <- as.symbol(name_params)
   target_params <- targets::tar_target_raw(
@@ -151,7 +153,7 @@ tar_render_rep_raw <- function(
   )
   target <- targets::tar_target_raw(
     name = name,
-    command = tar_render_rep_command(name, path, quiet, args, parallel_reps),
+    command = tar_render_rep_command(name, path, quiet, args, rep_workers),
     pattern = substitute(map(x), env = list(x = sym_params)),
     packages = packages,
     library = library,
@@ -227,7 +229,7 @@ tar_render_rep_run_params <- function(params, batches) {
   params
 }
 
-tar_render_rep_command <- function(name, path, quiet, args, parallel_reps) {
+tar_render_rep_command <- function(name, path, quiet, args, rep_workers) {
   args$input <- path
   args$knit_root_dir <- quote(getwd())
   args$quiet <- quiet
@@ -240,7 +242,7 @@ tar_render_rep_command <- function(name, path, quiet, args, parallel_reps) {
     params = params,
     args = args,
     deps = deps,
-    parallel_reps = parallel_reps
+    rep_workers = rep_workers
   )
   as.expression(as.call(exprs))
 }
@@ -259,7 +261,7 @@ tar_render_rep_command <- function(name, path, quiet, args, parallel_reps) {
 #' @param args A named list of arguments to `rmarkdown::render()`.
 #' @param deps An unnamed list of target dependencies of the R Markdown
 #'   report, automatically created by `tar_render_rep()`.
-tar_render_rep_run <- function(path, params, args, deps, parallel_reps) {
+tar_render_rep_run <- function(path, params, args, deps, rep_workers) {
   targets::tar_assert_package("rmarkdown")
   rm(deps)
   gc()
@@ -268,27 +270,38 @@ tar_render_rep_run <- function(path, params, args, deps, parallel_reps) {
   force(args$envir)
   params <- split(params, f = seq_len(nrow(params)))
   call <- quote(
-    function(.x, .y, args, path) {
+    function(.x, .y, args, path, seeds) {
       tarchetypes::tar_render_rep_rep(
         rep = .x,
         params = .y,
         args = args,
-        path = path
+        path = path,
+        seeds = seeds
       )
     }
   )
   fun <- eval(call, envir = targets::tar_option_get("envir"))
-  if (parallel_reps) {
+  pedigree <- targets::tar_definition()$pedigree
+  name <- pedigree$parent
+  batch <- pedigree$index
+  reps <- length(params)
+  seeds <- produce_batch_seeds(name = name, batch = batch, reps = reps)
+  if (rep_workers > 1L) {
+    plan_old <- future::plan()
+    on.exit(future::plan(plan_old, .cleanup = FALSE))
+    future::plan(future.callr::callr, workers = rep_workers, .cleanup = FALSE)
     out <- furrr::future_map2(
       .x = seq_along(params),
       .y = params,
       .f = fun,
       .options = furrr::furrr_options(
-        seed = TRUE,
-        packages = targets::tar_definition()$command$packages
+        seed = 1L,
+        packages = targets::tar_definition()$command$packages,
+        globals = names(targets::tar_option_get("envir"))
       ),
       args = args,
-      path = path
+      path = path,
+      seeds = seeds
     )
   } else {
     out <- map2(
@@ -296,7 +309,8 @@ tar_render_rep_run <- function(path, params, args, deps, parallel_reps) {
       y = params,
       f = fun,
       args = args,
-      path = path
+      path = path,
+      seeds = seeds
     )
   }
   unname(unlist(out))
@@ -311,24 +325,25 @@ tar_render_rep_run <- function(path, params, args, deps, parallel_reps) {
 #' @param params R Markdown parameters.
 #' @param args Arguments to `rmarkdown::render()`.
 #' @param path R Markdown output file.
+#' @param seeds Random number generator seeds of the batch.
 #' @examples
 #' # See the examples of tar_quarto_rep().
-tar_render_rep_rep <- function(rep, params, args, path) {
+tar_render_rep_rep <- function(rep, params, args, path, seeds) {
   withr::local_options(list(crayon.enabled = NULL))
-  pedigree <- targets::tar_definition()$pedigree
-  name <- pedigree$parent
-  batch <- pedigree$index
-  reps <- length(params)
-  seed <- produce_seed_rep(name = name, batch = batch, rep = rep, reps = reps)
   default_path <- tar_render_rep_default_path(path, params)
   args$output_file <- params[["output_file"]] %|||% default_path
   args$params <- params
   args$params[["output_file"]] <- NULL
   args$params[["tar_group"]] <- NULL
   args$intermediates_dir <- fs::dir_create(tempfile())
-  output <- withr::with_seed(
-    seed = seed,
-    code = do.call(rmarkdown::render, args)
+  seed <- as.integer(if_any(anyNA(seeds), NA_integer_, seeds[rep]))
+  output <- if_any(
+    anyNA(seed),
+    do.call(rmarkdown::render, args),
+    withr::with_seed(
+      seed = seed,
+      code = do.call(rmarkdown::render, args)
+    )
   )
   tar_render_paths(output, path)
 }

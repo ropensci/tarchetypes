@@ -102,7 +102,7 @@ targets::tar_test("tar_render_rep() run", {
           stringsAsFactors = FALSE
         ),
         batches = 2,
-        parallel_reps = TRUE
+        rep_workers = 2
       )
     )
   })
@@ -171,7 +171,7 @@ targets::tar_test("tar_render_rep() run", {
           stringsAsFactors = FALSE
         ),
         batches = 2,
-        parallel_reps = TRUE
+        rep_workers = 2
       )
     )
   })
@@ -213,7 +213,7 @@ targets::tar_test("tar_render_rep() run with output_file specified", {
           output_file = c("f1.html", "f2.html", "f3.html", "f4.html"),
           stringsAsFactors = FALSE
         ),
-        parallel_reps = FALSE
+        rep_workers = 1
       )
     )
   })

@@ -75,7 +75,7 @@ tar_map_rep_raw <- function(
   columns = quote(tidyselect::everything()),
   batches = 1,
   reps = 1,
-  parallel_reps = FALSE,
+  rep_workers = 1,
   combine = TRUE,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
@@ -112,6 +112,8 @@ tar_map_rep_raw <- function(
   targets::tar_assert_dbl(reps)
   targets::tar_assert_scalar(combine)
   targets::tar_assert_lgl(combine)
+  tar_assert_rep_workers(rep_workers)
+  rep_workers <- as.integer(rep_workers)
   envir <- targets::tar_option_get("envir")
   command <- tar_raw_command(name, command)
   command <- targets::tar_tidy_eval(as.expression(command), envir, tidy_eval)
@@ -139,7 +141,7 @@ tar_map_rep_raw <- function(
     command = command,
     name_batch = name_batch,
     reps = reps,
-    parallel_reps = parallel_reps,
+    rep_workers = rep_workers,
     iteration = "vector"
   )
   target_dynamic <- targets::tar_target_raw(

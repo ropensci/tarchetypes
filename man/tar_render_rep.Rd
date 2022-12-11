@@ -9,7 +9,7 @@ tar_render_rep(
   path,
   params = data.frame(),
   batches = NULL,
-  parallel_reps = FALSE,
+  rep_workers = 1,
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
   format = targets::tar_option_get("format"),
@@ -56,13 +56,12 @@ that supplies the R Markdown parameters.}
 \item{batches}{Number of batches. This is also the number of dynamic
 branches created during \code{tar_make()}.}
 
-\item{parallel_reps}{Logical of length 1, whether to run reps within batches
-in parallel using the \code{furrr} package. If \code{TRUE}, then \code{furrr} functions
-will run the reps in parallel using the \code{future} plan you defined
-in your \verb{_targets.R} file. If you are running the pipeline
-with \code{tar_make_future()}, then you may need to define a nested plan
-with an outer plan to parallelize among targets and an inner
-plan to parallelize within targets (e.g. reps).}
+\item{rep_workers}{Positive integer of length 1, number of local R
+processes to use to run reps within batches in parallel. If 1,
+then reps are run sequentially within each batch. If greater than 1,
+then reps within batch are run in parallel using workers
+created with \code{future::plan(future.callr::callr, workers = rep_workers)}
+and invoked with \code{furrr::future_map()}.}
 
 \item{packages}{Character vector of packages to load right before
 the target builds or the output data is reloaded for

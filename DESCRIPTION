@@ -44,6 +44,8 @@ Imports:
   dplyr (>= 1.0.0),
   fs (>= 1.4.2),
   furrr (>= 0.3.0),
+  future (>= 1.0.0),
+  future.callr (>= 0.2.0),
   rlang (>= 0.4.7),
   targets (>= 0.11.0),
   tibble (>= 3.0.1),
@@ -62,4 +64,4 @@ Encoding: UTF-8
 Language: en-US
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3

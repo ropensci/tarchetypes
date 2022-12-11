@@ -4,7 +4,7 @@
 \alias{tar_map2_run_rep}
 \title{Run a rep in a \code{tar_map2()}-powered function.}
 \usage{
-tar_map2_run_rep(rep, values, command, reps, columns)
+tar_map2_run_rep(rep, values, command, batch, seeds, columns, envir)
 }
 \arguments{
 \item{rep}{Rep number.}
@@ -13,9 +13,13 @@ tar_map2_run_rep(rep, values, command, reps, columns)
 
 \item{command}{R command to run.}
 
-\item{reps}{Number of total reps.}
+\item{batch}{Batch number.}
+
+\item{seeds}{Random number generator seeds of the batch.}
 
 \item{columns}{Expression for appending static columns.}
+
+\item{envir}{Environment of the target.}
 }
 \value{
 The result of running \code{expr}.

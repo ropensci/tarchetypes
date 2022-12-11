@@ -16,7 +16,7 @@ tar_map2_raw(
   columns2 = quote(tidyselect::everything()),
   suffix1 = "1",
   suffix2 = "2",
-  parallel_reps = FALSE,
+  rep_workers = 1,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -83,13 +83,12 @@ them from the \code{command2} targets.}
 suffix to apply to the \code{command2} targets to distinguish
 them from the \code{command1} targets.}
 
-\item{parallel_reps}{Logical of length 1, whether to run reps within batches
-in parallel using the \code{furrr} package. If \code{TRUE}, then \code{furrr} functions
-will run the reps in parallel using the \code{future} plan you defined
-in your \verb{_targets.R} file. If you are running the pipeline
-with \code{tar_make_future()}, then you may need to define a nested plan
-with an outer plan to parallelize among targets and an inner
-plan to parallelize within targets (e.g. reps).}
+\item{rep_workers}{Positive integer of length 1, number of local R
+processes to use to run reps within batches in parallel. If 1,
+then reps are run sequentially within each batch. If greater than 1,
+then reps within batch are run in parallel using workers
+created with \code{future::plan(future.callr::callr, workers = rep_workers)}
+and invoked with \code{furrr::future_map()}.}
 
 \item{tidy_eval}{Whether to invoke tidy evaluation
 (e.g. the \verb{!!} operator from \code{rlang}) as soon as the target is defined
