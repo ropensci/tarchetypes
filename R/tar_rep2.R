@@ -11,6 +11,7 @@
 #' @inheritSection tar_map Target objects
 #' @inheritSection tar_rep Replicate-specific seeds
 #' @inheritParams targets::tar_target
+#' @inheritParams tar_rep
 #' @param ... Symbols to name one or more upstream batched targets
 #'   created by [tar_rep()].
 #'   If you supply more than one such target, all those targets must have the
