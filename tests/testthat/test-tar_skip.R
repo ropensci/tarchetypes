@@ -5,7 +5,8 @@ targets::tar_test("tar_skip() can cancel", {
     )
   })
   targets::tar_make(callr_function = NULL)
-  path <- file.path(targets::tar_config_get("store"), "objects", "x")
+  store <- targets::tar_config_get("store")
+  path <- targets::tar_path_target(name = "x", store = store)
   expect_false(file.exists(file.path(path)))
 })
 

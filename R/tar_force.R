@@ -99,7 +99,8 @@ tar_force <- function(
 #'   in [tar_force()].
 tar_force_change <- function(condition) {
   name <- targets::tar_definition()$settings$name
-  path <- file.path(tar_runtime_object()$get_store(), "objects", name)
+  store <- targets::tar_runtime_object()$get_store()
+  path <- targets::tar_path_target(name = name, store = store)
   new <- basename(tempfile(pattern = ""))
   old <- if_any(file.exists(path), readRDS(path), new)
   if_any(condition, new, old)
