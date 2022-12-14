@@ -2,6 +2,7 @@
 
 * Implement `rep_workers` to control inner parallelism in batched replication functions (#117).
 * Ensure the function passed to `furrr` functions has environment `tar_option_get("envir")`.
+* Allow subdirectories of rendered reports with `tar_quarto_rep()` (#129, @mglev1n).
 
 # tarchetypes 0.7.3
 

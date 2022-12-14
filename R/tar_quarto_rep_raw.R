@@ -474,7 +474,7 @@ tar_quarto_rep_run <- function(
     )
   }
   out <- unname(unlist(out))
-  support <- sprintf("%s_files", fs::path_ext_remove(basename(args$input)))
+  support <- sprintf("%s_files", fs::path_ext_remove(args$input))
   extra_files <- if_any(
     dir.exists(support),
     c(extra_files, support),
@@ -504,7 +504,7 @@ tar_quarto_rep_rep <- function(
   seeds
 ) {
   withr::local_options(list(crayon.enabled = NULL))
-  args$output_file <- basename(execute_params[["output_file"]])
+  args$output_file <- execute_params[["output_file"]]
   args$execute_params <- execute_params
   args$execute_params[["output_file"]] <- NULL
   args$execute_params[["tar_group"]] <- NULL
