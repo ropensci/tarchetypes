@@ -33,5 +33,6 @@
 ^pkgdown$
 ^README\.md$
 ^README\.Rmd$
+^report\.qmd$
 ^report\.Rmd$
 ^LICENSE\.md$
