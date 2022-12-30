@@ -170,6 +170,10 @@ Development | rOpenSci | `install.packages("tarchetypes", repos = "https://dev.r
 
 For specific documentation on `tarchetypes`, including the help files of all user-side functions, please visit the [reference website](https://docs.ropensci.org/tarchetypes/). For documentation on [`targets`](https://github.com/ropensci/targets) in general, please visit the [`targets` reference website](https://docs.ropensci.org/targets/). Many of the linked resources use `tarchetypes` functions such as [`tar_render()`](https://docs.ropensci.org/tarchetypes/reference/tar_render.html).
 
+## Help
+
+Please read the [help guide](https://books.ropensci.org/targets/help.html) to learn how best to ask for help using `targets` and `tarchetypes`.
+
 ## Code of conduct
 
 Please note that this package is released with a [Contributor Code of Conduct](https://ropensci.org/code-of-conduct/).

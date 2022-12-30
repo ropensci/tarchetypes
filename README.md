@@ -30,12 +30,11 @@ and usage patterns.
 `tarchetypes` has functions for easy dynamic branching over subsets of
 data frames:
 
--   `tar_group_by()`: define row groups using `dplyr::group_by()`
-    semantics.
--   `tar_group_select()`: define row groups using `tidyselect`
-    semantics.
--   `tar_group_count()`: define a given number row groups.
--   `tar_group_size()`: define row groups of a given size.
+- `tar_group_by()`: define row groups using `dplyr::group_by()`
+  semantics.
+- `tar_group_select()`: define row groups using `tidyselect` semantics.
+- `tar_group_count()`: define a given number row groups.
+- `tar_group_size()`: define row groups of a given size.
 
 If you define a target with one of these functions, all downstream
 dynamic targets will automatically branch over the row groups.
@@ -58,17 +57,17 @@ list(
 library(targets)
 tar_make()
 #> • start target data
-#> • built target data
+#> • built target data [0.023 seconds]
 #> • start branch group_b3d7d010
-#> • built branch group_b3d7d010
+#> • built branch group_b3d7d010 [0 seconds]
 #> • start branch group_6a76c5c0
-#> • built branch group_6a76c5c0
+#> • built branch group_6a76c5c0 [0.001 seconds]
 #> • start branch group_164b16bf
-#> • built branch group_164b16bf
+#> • built branch group_164b16bf [0 seconds]
 #> • start branch group_f5aae602
-#> • built branch group_f5aae602
+#> • built branch group_f5aae602 [0 seconds]
 #> • built pattern group
-#> • end pipeline
+#> • end pipeline [0.155 seconds]
 
 # First row group:
 tar_read(group, branches = 1)
@@ -201,6 +200,12 @@ visit the [`targets` reference
 website](https://docs.ropensci.org/targets/). Many of the linked
 resources use `tarchetypes` functions such as
 [`tar_render()`](https://docs.ropensci.org/tarchetypes/reference/tar_render.html).
+
+## Help
+
+Please read the [help
+guide](https://books.ropensci.org/targets/help.html) to learn how best
+to ask for help using `targets` and `tarchetypes`.
 
 ## Code of conduct
 
