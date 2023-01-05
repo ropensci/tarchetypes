@@ -1,4 +1,4 @@
-# tarchetypes 0.7.3.9000
+# tarchetypes 0.7.4
 
 * Implement `rep_workers` to control inner parallelism in batched replication functions (#117).
 * Ensure the function passed to `furrr` functions has environment `tar_option_get("envir")`.
