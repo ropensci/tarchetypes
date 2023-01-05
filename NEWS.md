@@ -1,3 +1,7 @@
+# tarchetypes 0.7.4.9000
+
+
+
 # tarchetypes 0.7.4
 
 * Implement `rep_workers` to control inner parallelism in batched replication functions (#117).
