@@ -225,3 +225,32 @@ targets::tar_test("inner hook invalidates target", {
   expect_equal(progress$name, "b")
   expect_equal(progress$progress, "built")
 })
+
+targets::tar_test("tar_hook_inner() sets deps by default", {
+  x <- list(
+    targets::tar_target(x1, task1()),
+    targets::tar_target(x2, task2(x1))
+  )
+  y <- tar_hook_inner(
+    x,
+    f(.x),
+    names_wrap = tidyselect::starts_with("x")
+  )[[2]]
+  expect_true("task2" %in% y$command$deps)
+  expect_true("f" %in% y$command$deps)
+})
+
+targets::tar_test("tar_hook_inner() set_deps = FALSE", {
+  x <- list(
+    targets::tar_target(x1, task1()),
+    targets::tar_target(x2, task2(x1))
+  )
+  y <- tar_hook_inner(
+    x,
+    f(.x),
+    names_wrap = tidyselect::starts_with("x"),
+    set_deps = FALSE
+  )[[2]]
+  expect_true("task2" %in% y$command$deps)
+  expect_false("f" %in% y$command$deps)
+})

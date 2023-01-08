@@ -4,7 +4,7 @@
 \alias{tar_hook_outer}
 \title{Hook to wrap commands}
 \usage{
-tar_hook_outer(targets, hook, names = NULL)
+tar_hook_outer(targets, hook, names = NULL, set_deps = TRUE)
 }
 \arguments{
 \item{targets}{A list of target objects. The input target list
@@ -21,10 +21,17 @@ The hook code is quoted (not evaluated) so there is no need
 to wrap it in \code{quote()}, \code{expression()}, or similar.}
 
 \item{names}{Name of targets in the target list
-to apply the hook. You can supply symbols, a character vector,
-or tidyselect helpers like \code{\link[=starts_with]{starts_with()}}.
+to apply the hook. Supplied with \code{tidyselect} helpers like
+\code{\link[=starts_with]{starts_with()}}, as in \code{names = starts_with("your_prefix_")}.
 Targets not included in \code{names} still remain in the target list,
 but they are not modified because the hook does not apply to them.}
+
+\item{set_deps}{Logical of length 1, whether to refresh the dependencies
+of each modified target by scanning the newly generated
+target commands for dependencies. If \code{FALSE}, then the target will
+keep the original set of dependencies it had before the hook.
+\code{TRUE} is recommended for nearly all situations. Only use \code{FALSE}
+if you have a specialized use case and you know what you are doing.}
 }
 \value{
 A flattened list of target objects with the hooks applied.

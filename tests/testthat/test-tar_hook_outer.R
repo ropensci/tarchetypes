@@ -157,3 +157,19 @@ targets::tar_test("outer hook invalidates target", {
   expect_equal(out$name, "a")
   expect_equal(out$progress, "built")
 })
+
+targets::tar_test("tar_hook_outer() sets deps by default", {
+  x <- targets::tar_target(x1, task1())
+  y <- tar_hook_outer(x, f(.x))[[1]]
+  expect_equal(y$command$string, "expression(f(task1()))")
+  expect_true("task1" %in% y$command$deps)
+  expect_true("f" %in% y$command$deps)
+})
+
+targets::tar_test("tar_hook_outer() sets_deps = FALSE", {
+  x <- targets::tar_target(x1, task1())
+  y <- tar_hook_outer(x, f(.x), set_deps = FALSE)[[1]]
+  expect_equal(y$command$string, "expression(f(task1()))")
+  expect_true("task1" %in% y$command$deps)
+  expect_false("f" %in% y$command$deps)
+})

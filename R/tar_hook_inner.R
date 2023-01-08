@@ -21,8 +21,8 @@
 #'   to wrap it in `quote()`, `expression()`, or similar.
 #' @param names_wrap Names of targets to wrap with the hook
 #'   where they appear as dependencies in the commands of other targets.
-#'   You can supply symbols, a character vector,
-#'   or tidyselect helpers like [starts_with()].
+#'   Use `tidyselect` helpers like [starts_with()], as in
+#'   `names_wrap = starts_with("your_prefix_")`.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
@@ -45,7 +45,16 @@
 #' targets::tar_manifest(fields = command)
 #' })
 #' }
-tar_hook_inner <- function(targets, hook, names = NULL, names_wrap = NULL) {
+tar_hook_inner <- function(
+  targets,
+  hook,
+  names = NULL,
+  names_wrap = NULL,
+  set_deps = TRUE
+) {
+  targets::tar_assert_scalar(set_deps)
+  targets::tar_assert_lgl(set_deps)
+  targets::tar_assert_nonmissing(set_deps)
   targets <- tar_copy_targets(targets)
   hook <- substitute(hook)
   targets::tar_assert_lang(hook)
@@ -61,7 +70,8 @@ tar_hook_inner <- function(targets, hook, names = NULL, names_wrap = NULL) {
     targets = targets,
     names_quosure = names_quosure,
     fun = tar_hook_inner_insert,
-    env_wrap = env_wrap
+    env_wrap = env_wrap,
+    set_deps = set_deps
   )
   targets
 }
@@ -82,9 +92,9 @@ tar_hook_inner_env_elt <- function(name, hook) {
   tar_sub_lang(hook, values = list(.x = as.symbol(name)))
 }
 
-tar_hook_inner_insert <- function(target, env_wrap) {
+tar_hook_inner_insert <- function(target, env_wrap, set_deps) {
   assert_hook_expr(target)
   lang <- target$command$expr[[1]]
   expr <- tar_sub_expr(lang, values = env_wrap)
-  tar_replace_command(target = target, expr = expr)
+  tar_replace_command(target = target, expr = expr, set_deps = set_deps)
 }

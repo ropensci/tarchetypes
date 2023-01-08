@@ -40,7 +40,10 @@
 #' targets::tar_manifest(fields = command)
 #' })
 #' }
-tar_hook_outer <- function(targets, hook, names = NULL) {
+tar_hook_outer <- function(targets, hook, names = NULL, set_deps = TRUE) {
+  targets::tar_assert_scalar(set_deps)
+  targets::tar_assert_lgl(set_deps)
+  targets::tar_assert_nonmissing(set_deps)
   targets <- tar_copy_targets(targets)
   hook <- substitute(hook)
   targets::tar_assert_lang(hook)
@@ -50,14 +53,15 @@ tar_hook_outer <- function(targets, hook, names = NULL) {
     targets = targets,
     names_quosure = names_quosure,
     fun = tar_hook_outer_insert,
-    hook = hook
+    hook = hook,
+    set_deps = set_deps
   )
   targets
 }
 
-tar_hook_outer_insert <- function(target, hook) {
+tar_hook_outer_insert <- function(target, hook, set_deps) {
   assert_hook_expr(target)
   lang <- target$command$expr[[1]]
   expr <- tar_sub_expr(hook, values = list(.x = lang))
-  tar_replace_command(target = target, expr = expr)
+  tar_replace_command(target = target, expr = expr, set_deps = set_deps)
 }
