@@ -1,6 +1,8 @@
 # tarchetypes 0.7.4.9000
 
 * Implement a new `set_deps` in the hook functions to force modified targets to keep the dependencies they had before applying the hook (#131, @edalfon).
+* Forward all settings to `tar_copy_target()` (#131, @edalfon).
+
 
 # tarchetypes 0.7.4
 
