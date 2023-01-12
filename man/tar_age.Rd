@@ -198,7 +198,7 @@ To invalidate dynamic branches at regular intervals,
 it is recommended to use \code{targets::tar_older()} in combination
 with \code{targets::tar_invalidate()} right before calling \code{tar_make()}.
 For example,
-\code{tar_invalidate(all_of(tar_older(Sys.time - as.difftime(1, units = "weeks"))))} # nolint
+\code{tar_invalidate(any_of(tar_older(Sys.time - as.difftime(1, units = "weeks"))))} # nolint
 invalidates all targets more than a week old. Then, the next \code{tar_make()}
 will rerun those targets.
 }
