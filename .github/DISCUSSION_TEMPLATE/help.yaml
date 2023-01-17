@@ -1,0 +1,14 @@
+title: "[help] "
+labels: ["help"]
+body:
+- type: checkboxes
+  attributes:
+    label: "Help"
+    options:
+    - label: "I understand and agree to <https://books.ropensci.org/targets/help.html>."
+      required: true
+- type: textarea
+  attributes:
+    label: "Description"
+    description: "Please ask your question and provide a reprex if troubleshooting."
+    value: "Please ask your question and provide a reprex if troubleshooting."
