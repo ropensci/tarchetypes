@@ -27,7 +27,7 @@ jobs:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: false
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: r-lib/actions/setup-pandoc@v2
 
