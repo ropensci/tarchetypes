@@ -15,9 +15,10 @@ download each of the URLs.
 Must be known and declared before the pipeline runs.}
 
 \item{method}{Method to be used for downloading files.  Current
-    download methods are \code{"internal"}, \code{"wininet"} (Windows
-    only) \code{"libcurl"}, \code{"wget"} and \code{"curl"}, and there
-    is a value \code{"auto"}: see \sQuote{Details} and \sQuote{Note}.
+    download methods are \code{"internal"}, \code{"libcurl"},
+    \code{"wget"}, \code{"curl"} and \code{"wininet"} (Windows
+    only), and there is a value \code{"auto"}: see \sQuote{Details} and
+    \sQuote{Note}.
 
     The method can also be set through the option
     \code{"download.file.method"}: see \code{\link{options}()}.
@@ -39,8 +40,8 @@ Must be known and declared before the pipeline runs.}
 
 \item{headers}{named character vector of HTTP headers to use in HTTP
     requests.  It is ignored for non-HTTP URLs.  The \code{User-Agent}
-    header, coming from the \code{HTTPUserAgent} option (see
-    \code{\link{options}}) is used as the first header, automatically.}
+    header taken from the \code{HTTPUserAgent} option (see
+    \code{\link{options}}) is automatically used as the first header.}
 }
 \value{
 A character vector of file paths where the URLs

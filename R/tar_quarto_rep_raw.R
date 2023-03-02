@@ -505,6 +505,7 @@ tar_quarto_rep_rep <- function(
 ) {
   withr::local_options(list(crayon.enabled = NULL))
   args$output_file <- execute_params[["output_file"]]
+  fs::dir_create(dirname(args$output_file))
   args$execute_params <- execute_params
   args$execute_params[["output_file"]] <- NULL
   args$execute_params[["tar_group"]] <- NULL

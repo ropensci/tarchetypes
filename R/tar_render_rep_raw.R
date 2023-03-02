@@ -332,6 +332,7 @@ tar_render_rep_rep <- function(rep, params, args, path, seeds) {
   withr::local_options(list(crayon.enabled = NULL))
   default_path <- tar_render_rep_default_path(path, params)
   args$output_file <- params[["output_file"]] %|||% default_path
+  fs::dir_create(dirname(args$output_file))
   args$params <- params
   args$params[["output_file"]] <- NULL
   args$params[["tar_group"]] <- NULL
