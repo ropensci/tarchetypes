@@ -15,6 +15,7 @@ tar_quarto_raw(
   debug = FALSE,
   quiet = TRUE,
   pandoc_args = NULL,
+  profile = NULL,
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
   error = targets::tar_option_get("error"),
@@ -78,6 +79,10 @@ respectively for Rmd and Jupyter input files).}
 \item{quiet}{Suppress warning and other messages.}
 
 \item{pandoc_args}{Additional command line options to pass to pandoc.}
+
+\item{profile}{Character of length 1, Quarto profile. If \code{NULL},
+the default profile will be used. Requires Quarto version 1.2 or higher.
+See \url{https://quarto.org/docs/projects/profiles.html} for details.}
 
 \item{packages}{Character vector of packages to load right before
 the target builds or the output data is reloaded for

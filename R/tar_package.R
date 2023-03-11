@@ -39,7 +39,7 @@
 #'   last_col matches num_range one_of starts_with
 #' @importFrom utils download.file globalVariables head
 #' @importFrom vctrs vec_c vec_rbind
-#' @importFrom withr local_options with_options local_seed
+#' @importFrom withr local_envvar local_options with_options local_seed
 NULL
 
 utils::globalVariables(".x")

@@ -1,5 +1,9 @@
 # tarchetypes 0.7.5.9000
 
+* Support Quarto profiles through the `QUARTO_PROFILE` environment variable (#139, @andrewheiss).
+
+# tarchetypes 0.7.5
+
 * Implement a new `set_deps` argument in the hook functions to force modified targets to keep the dependencies they had before applying the hook (#131, @edalfon).
 * Forward all settings to `tar_copy_target()` (#131, @edalfon).
 * Initialize the directory of output files in `tar_quarto_rep()` and `tar_render_rep()` (#129, @benzipperer).

@@ -16,6 +16,9 @@
 #'   to a Quarto source document or the directory path
 #'   to a Quarto project. Defaults to the Quarto project in the
 #'   current working directory.
+#' @param profile Character of length 1, Quarto profile. If `NULL`,
+#'   the default profile will be used. Requires Quarto version 1.2 or higher.
+#'   See <https://quarto.org/docs/projects/profiles.html> for details.
 #' @examples
 #' lines <- c(
 #'   "---",
@@ -30,12 +33,18 @@
 #' writeLines(lines, path)
 #' # If Quarto is installed, run:
 #' # tar_quarto_files(path)
-tar_quarto_files <- function(path = ".") {
+tar_quarto_files <- function(path = ".", profile = NULL) {
   assert_quarto()
   targets::tar_assert_scalar(path)
   targets::tar_assert_chr(path)
   targets::tar_assert_nzchar(path)
   targets::tar_assert_path(path)
+  targets::tar_assert_scalar(profile %|||% ".")
+  targets::tar_assert_chr(profile %|||% ".")
+  targets::tar_assert_nzchar(profile %|||% ".")
+  if (!is.null(profile)) {
+    withr::local_envvar(.new = c(QUARTO_PROFILE = profile))
+  }
   out <- if_any(
     fs::is_dir(path),
     tar_quarto_files_project(path),

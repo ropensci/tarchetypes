@@ -41,6 +41,9 @@
 #'   Quarto source files. The list is quoted
 #'   (not evaluated until the target runs)
 #'   so that upstream targets can serve as parameter values.
+#' @param profile Character of length 1, Quarto profile. If `NULL`,
+#'   the default profile will be used. Requires Quarto version 1.2 or higher.
+#'   See <https://quarto.org/docs/projects/profiles.html> for details.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({  # tar_dir() runs code from a temporary directory.
@@ -108,6 +111,7 @@ tar_quarto_raw <- function(
   debug = FALSE,
   quiet = TRUE,
   pandoc_args = NULL,
+  profile = NULL,
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
   error = targets::tar_option_get("error"),
@@ -142,7 +146,10 @@ tar_quarto_raw <- function(
   targets::tar_assert_scalar(quiet)
   targets::tar_assert_lgl(quiet)
   targets::tar_assert_chr(pandoc_args %|||% ".")
-  info <- tar_quarto_files(path)
+  targets::tar_assert_scalar(profile %|||% ".")
+  targets::tar_assert_chr(profile %|||% ".")
+  targets::tar_assert_nzchar(profile %|||% ".")
+  info <- tar_quarto_files(path = path, profile = profile)
   sources <- info$sources
   output <- info$output
   input <- sort(unique(c(info$input, extra_files)))
@@ -157,7 +164,8 @@ tar_quarto_raw <- function(
     cache_refresh = cache_refresh,
     debug = debug,
     quiet = quiet,
-    pandoc_args = pandoc_args
+    pandoc_args = pandoc_args,
+    profile = profile
   )
   targets::tar_target_raw(
     name = name,
@@ -188,7 +196,8 @@ tar_quarto_command <- function(
   cache_refresh,
   debug,
   quiet,
-  pandoc_args
+  pandoc_args,
+  profile
 ) {
   args <- substitute(
     list(
@@ -226,7 +235,8 @@ tar_quarto_command <- function(
     deps = deps,
     sources = sources,
     output = output,
-    input = input
+    input = input,
+    profile = profile
   )
   as.expression(as.call(expr))
 }
@@ -245,6 +255,7 @@ tar_quarto_command <- function(
 #' @param output Character vector of Quarto output files and directories.
 #' @param input Character vector of non-source Quarto input files
 #'   and directories.
+#' @param profile Quarto profile.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({  # tar_dir() runs code from a temporary directory.
@@ -267,10 +278,13 @@ tar_quarto_command <- function(
 #' file.exists(files)
 #' })
 #' }
-tar_quarto_run <- function(args, deps, sources, output, input) {
+tar_quarto_run <- function(args, deps, sources, output, input, profile) {
   rm(deps)
   gc()
   assert_quarto()
+  if (!is.null(profile)) {
+    withr::local_envvar(.new = c(QUARTO_PROFILE = profile))
+  }
   args <- args[!map_lgl(args, is.null)]
   do.call(what = quarto::quarto_render, args = args)
   support <- sprintf("%s_files", fs::path_ext_remove(basename(args$input)))

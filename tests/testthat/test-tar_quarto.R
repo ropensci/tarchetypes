@@ -325,3 +325,67 @@ targets::tar_test("quarto projects", {
     sort(c("project", "r2"))
   )
 })
+
+targets::tar_test("quarto profiles", {
+  skip_on_cran()
+  skip_quarto()
+  writeLines(
+    c(
+      "---",
+      "title: Testing",
+      "---",
+      "",
+      "Test."
+    ),
+    "testing.qmd"
+  )
+  writeLines(
+    c("project:",
+      "  output-dir: _output",
+      "",
+      "profile:",
+      "  default: basic"
+    ),
+    "_quarto.yml"
+  )
+  writeLines(
+    c(
+      "author: Basic author",
+      "",
+      "format:",
+      "  html:",
+      "    output-file: 'basic.html'"
+    ),
+    "_quarto-basic.yml"
+  )
+  writeLines(
+    c(
+      "author: Advanced author",
+      "",
+      "format:",
+      "  html:",
+      "    output-file: 'advanced.html'"
+    ),
+    "_quarto-advanced.yml"
+  )
+  targets::tar_script({
+    library(tarchetypes)
+    list(
+      tar_quarto(test, path = ".", profile = "basic")
+    )
+  })
+  targets::tar_make(callr_function = NULL)
+  expect_true(file.exists(file.path("_output", "basic.html")))
+  expect_false(file.exists(file.path("_output", "advanced.html")))
+  unlink("_output", recursive = TRUE)
+  targets::tar_destroy()
+  targets::tar_script({
+    library(tarchetypes)
+    list(
+      tar_quarto(test, path = ".", profile = "advanced")
+    )
+  })
+  targets::tar_make(callr_function = NULL)
+  expect_false(file.exists(file.path("_output", "basic.html")))
+  expect_true(file.exists(file.path("_output", "advanced.html")))
+})

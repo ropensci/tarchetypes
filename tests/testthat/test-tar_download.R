@@ -2,7 +2,7 @@ targets::tar_test("tar_download() with unequal url/path lengths", {
   expect_error(
     tarchetypes::tar_download(
       x,
-      urls = c("https://httpbin.org/etag/test", "https://r-project.org"),
+      urls = c("https://httpbin.org/etag/test", "https://www.r-project.org"),
       paths = "downloaded_file_1"
     ),
     class = "tar_condition_validate"
@@ -14,7 +14,7 @@ targets::tar_test("tar_download() manifest", {
     list(
       tarchetypes::tar_download(
         x,
-        urls = c("https://httpbin.org/etag/test", "https://r-project.org"),
+        urls = c("https://httpbin.org/etag/test", "https://www.r-project.org"),
         paths = c("downloaded_file_1", "downloaded_file_2")
       )
     )
@@ -46,7 +46,7 @@ targets::tar_test("tar_download() graph", {
     list(
       tarchetypes::tar_download(
         x,
-        urls = c("https://httpbin.org/etag/test", "https://r-project.org"),
+        urls = c("https://httpbin.org/etag/test", "https://www.r-project.org"),
         paths = c("downloaded_file_1", "downloaded_file_2")
       )
     )
@@ -59,7 +59,7 @@ targets::tar_test("tar_download()", {
   skip_on_cran()
   skip_if_offline()
   skip_if_not_installed("curl")
-  urls <- c("https://httpbin.org/etag/test", "https://r-project.org")
+  urls <- c("https://httpbin.org/etag/test", "https://www.r-project.org")
   handle <- curl::new_handle(nobody = TRUE)
   for (url in urls) {
     exists <- tryCatch({
@@ -74,7 +74,10 @@ targets::tar_test("tar_download()", {
     list(
       tarchetypes::tar_download(
         x,
-        urls = c("https://httpbin.org/etag/test", "https://r-project.org"),
+        urls = c(
+          "https://httpbin.org/etag/test",
+          "https://www.r-project.org"
+        ),
         paths = c("downloaded_file_1", "downloaded_file_2")
       )
     )
@@ -82,7 +85,7 @@ targets::tar_test("tar_download()", {
   targets::tar_make(callr_function = NULL)
   expect_equal(
     targets::tar_read(x_url),
-    c("https://httpbin.org/etag/test", "https://r-project.org")
+    c("https://httpbin.org/etag/test", "https://www.r-project.org")
   )
   expect_equal(
     targets::tar_read(x),

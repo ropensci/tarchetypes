@@ -4,7 +4,7 @@
 \alias{tar_quarto_files}
 \title{Quarto file detection}
 \usage{
-tar_quarto_files(path = ".")
+tar_quarto_files(path = ".", profile = NULL)
 }
 \arguments{
 \item{path}{Character of length 1, either the file path
