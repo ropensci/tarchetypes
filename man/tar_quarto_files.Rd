@@ -11,6 +11,10 @@ tar_quarto_files(path = ".", profile = NULL)
 to a Quarto source document or the directory path
 to a Quarto project. Defaults to the Quarto project in the
 current working directory.}
+
+\item{profile}{Character of length 1, Quarto profile. If \code{NULL},
+the default profile will be used. Requires Quarto version 1.2 or higher.
+See \url{https://quarto.org/docs/projects/profiles.html} for details.}
 }
 \value{
 A named list of important file paths in a Quarto project or document:
