@@ -526,7 +526,7 @@ tar_quarto_rep_rep <- function(
 }
 
 tar_quarto_rep_default_output_file <- function(params, default_output_file) {
-  base <- fs::path_ext_remove(default_output_file)
+  base <- basename(fs::path_ext_remove(default_output_file))
   hash <- hash_rows(params)
   ext <- fs::path_ext(default_output_file)
   out <- file.path(

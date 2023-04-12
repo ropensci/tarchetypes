@@ -1,6 +1,7 @@
 # tarchetypes 0.7.5.9000
 
 * Support Quarto profiles through the `QUARTO_PROFILE` environment variable (#139, @andrewheiss).
+* Take the basename of the source file for #129 so the output files land correctly when the source file is in a subdirectory (#129, `targets` issue 1047, @joelnitta).
 
 # tarchetypes 0.7.5
 
