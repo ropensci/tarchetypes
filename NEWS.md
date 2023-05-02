@@ -2,6 +2,7 @@
 
 * Support Quarto profiles through the `QUARTO_PROFILE` environment variable (#139, @andrewheiss).
 * Take the basename of the source file for #129 so the output files land correctly when the source file is in a subdirectory (#129, `targets` issue 1047, @joelnitta).
+* Use `targets::tar_runtime_object()$store` instead of `targets::tar_runtime_object()$get_store()` to ensure forward compatibility with `targets`.
 
 # tarchetypes 0.7.5
 
