@@ -17,7 +17,6 @@
 #'   are not appended.
 #' @param combine Logical of length 1, whether to statically combine
 #'   all the results into a single target downstream.
-#' @inheritSection tar_map Target objects
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({ # tar_dir() runs code from a temporary directory.

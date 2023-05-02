@@ -29,7 +29,6 @@
 #'   but the default is `"rds"` to avoid incurring extra package
 #'   dependencies. See the help file of `targets::tar_target()`
 #'   for details on storage formats.
-#' @inheritSection tar_map Target objects
 #' @inheritParams targets::tar_target
 #' @inheritParams tar_map
 #' @inheritParams tar_rep
