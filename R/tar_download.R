@@ -155,6 +155,9 @@ tar_download <- function(
 #'     headers = NULL
 #'   )
 #' }
+# Cannot reliably test because it relies on the network.
+# Semi-automated tests are in tests/interactive/test-tar_download.R.
+# nocov start
 tar_download_run <- function(
   urls,
   paths,
@@ -178,3 +181,4 @@ tar_download_run <- function(
   }
   paths
 }
+# nocov end
