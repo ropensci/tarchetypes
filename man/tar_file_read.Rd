@@ -12,6 +12,7 @@ tar_file_read(
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
   format = targets::tar_option_get("format"),
+  format_file = c("file", "file_fast"),
   repository = targets::tar_option_get("repository"),
   error = targets::tar_option_get("error"),
   memory = targets::tar_option_get("memory"),
@@ -66,6 +67,9 @@ With the exception of \code{format = "file"}, each target
 gets a file in \verb{_targets/objects}, and each format is a different
 way to save and load this file. See the "Storage formats" section
 for a detailed list of possible data storage formats.}
+
+\item{format_file}{Storage format of the file target, either
+\code{"file"} or \code{"file_fast"}.}
 
 \item{repository}{Character of length 1, remote repository for target
 storage. Choices:

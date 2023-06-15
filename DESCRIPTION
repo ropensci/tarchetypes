@@ -47,7 +47,7 @@ Imports:
   future (>= 1.0.0),
   future.callr (>= 0.2.0),
   rlang (>= 0.4.7),
-  targets (>= 0.14.0),
+  targets (>= 1.1.0),
   tibble (>= 3.0.1),
   tidyselect (>= 1.1.0),
   utils,

@@ -14,6 +14,8 @@
 #' @param read R code to read the file. Must include `!!.x`
 #'   where the file path goes: for example,
 #'   `read = readr::read_csv(file = !!.x, col_types = readr::cols())`.
+#' @param format_file Storage format of the file target, either
+#'   `"file"` or `"file_fast"`.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
@@ -31,6 +33,7 @@ tar_file_read <- function(
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
   format = targets::tar_option_get("format"),
+  format_file = c("file", "file_fast"),
   repository = targets::tar_option_get("repository"),
   error = targets::tar_option_get("error"),
   memory = targets::tar_option_get("memory"),
@@ -42,6 +45,7 @@ tar_file_read <- function(
   retrieval = targets::tar_option_get("retrieval"),
   cue = targets::tar_option_get("cue")
 ) {
+  format_file <- match.arg(format_file)
   name_read <- deparse(rlang::enexpr(name))
   name_file <- paste0(name_read, "_file")
   sym_file <- rlang::sym(name_file)
@@ -61,7 +65,7 @@ tar_file_read <- function(
       command = command,
       packages = packages,
       library = library,
-      format = "file",
+      format = format_file,
       repository = repository,
       error = error,
       memory = memory,

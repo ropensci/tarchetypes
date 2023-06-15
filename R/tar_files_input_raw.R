@@ -35,8 +35,8 @@
 #'   supported by the `iteration` argument of `targets::tar_target()`.
 #'   The iteration method for the upstream target is always `"list"`
 #'   in order to support batching.
-#' @param format Character, either `"file"` or `"url"`. See the `format`
-#'   argument of `targets::tar_target()` for details.
+#' @param format Character, either `"file"`, `"file_fast"`, or `"url"`.
+#'   See the `format` argument of `targets::tar_target()` for details.
 #' @param cue An optional object from `tar_cue()`
 #'   to customize the rules that decide whether the target is up to date.
 #'   Only applies to the downstream target. The upstream target always runs.
@@ -65,7 +65,7 @@ tar_files_input_raw <- function(
   name,
   files,
   batches = length(files),
-  format = c("file", "url", "aws_file"),
+  format = c("file", "file_fast", "url", "aws_file"),
   repository = targets::tar_option_get("repository"),
   iteration = targets::tar_option_get("iteration"),
   error = targets::tar_option_get("error"),

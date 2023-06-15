@@ -33,6 +33,12 @@ targets::tar_test("tar_file()", {
   expect_equal(x$settings$format, "file")
 })
 
+targets::tar_test("tar_file_fast()", {
+  x <- tar_file_fast(x, 0)
+  expect_true(inherits(x, "tar_target"))
+  expect_equal(x$settings$format, "file_fast")
+})
+
 targets::tar_test("tar_rds()", {
   x <- tar_rds(x, 0)
   expect_true(inherits(x, "tar_target"))

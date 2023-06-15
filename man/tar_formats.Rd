@@ -4,6 +4,7 @@
 \alias{tar_formats}
 \alias{tar_url}
 \alias{tar_file}
+\alias{tar_file_fast}
 \alias{tar_rds}
 \alias{tar_qs}
 \alias{tar_keras}
@@ -46,6 +47,26 @@ tar_url(
 )
 
 tar_file(
+  name,
+  command,
+  pattern = NULL,
+  tidy_eval = targets::tar_option_get("tidy_eval"),
+  packages = targets::tar_option_get("packages"),
+  library = targets::tar_option_get("library"),
+  repository = targets::tar_option_get("repository"),
+  iteration = targets::tar_option_get("iteration"),
+  error = targets::tar_option_get("error"),
+  memory = targets::tar_option_get("memory"),
+  garbage_collection = targets::tar_option_get("garbage_collection"),
+  deployment = targets::tar_option_get("deployment"),
+  priority = targets::tar_option_get("priority"),
+  resources = targets::tar_option_get("resources"),
+  storage = targets::tar_option_get("storage"),
+  retrieval = targets::tar_option_get("retrieval"),
+  cue = targets::tar_option_get("cue")
+)
+
+tar_file_fast(
   name,
   command,
   pattern = NULL,

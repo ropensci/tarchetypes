@@ -93,6 +93,10 @@ tar_file <- tar_format_alias("file")
 
 #' @export
 #' @rdname tar_formats
+tar_file_fast <- tar_format_alias("file_fast")
+
+#' @export
+#' @rdname tar_formats
 tar_rds <- tar_format_alias("rds")
 
 #' @export

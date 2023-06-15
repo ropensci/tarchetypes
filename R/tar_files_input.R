@@ -16,8 +16,8 @@
 #'   `tar_files_input()` creates a pair of targets, one upstream
 #'   and one downstream. The upstream target does some work
 #'   and returns some file paths, and the downstream
-#'   target is a pattern that applies `format = "file"`
-#'   or `format = "url"`.
+#'   target is a pattern that applies `format = "file"`,
+#'   `format = "file_fast"`, or `format = "url"`.
 #'   This is the correct way to dynamically
 #'   iterate over file/url targets. It makes sure any downstream patterns
 #'   only rerun some of their branches if the files/urls change.
@@ -57,7 +57,7 @@ tar_files_input <- function(
   name,
   files,
   batches = length(files),
-  format = c("file", "url", "aws_file"),
+  format = c("file", "file_fast", "url", "aws_file"),
   repository = targets::tar_option_get("repository"),
   iteration = targets::tar_option_get("iteration"),
   error = targets::tar_option_get("error"),

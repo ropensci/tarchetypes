@@ -9,9 +9,9 @@
 #'   `tar_files_raw()` creates a pair of targets, one upstream
 #'   and one downstream. The upstream target does some work
 #'   and returns some file paths, and the downstream
-#'   target is a pattern that applies `format = "file"`
-#'   or `format = "url"`. (URLs are input-only, they must already
-#'   exist beforehand.)
+#'   target is a pattern that applies `format = "file"`,
+#'   `format = "file_fast"`, or `format = "url"`.
+#'   (URLs are input-only, they must already exist beforehand.)
 #'   This is the correct way to dynamically
 #'   iterate over file/url targets. It makes sure any downstream patterns
 #'   only rerun some of their branches if the files/urls change.
@@ -20,8 +20,8 @@
 #'   <https://github.com/ropensci/drake/issues/1302>.
 #' @return A list of two targets, one upstream and one downstream.
 #'   The upstream one does some work and returns some file paths,
-#'   and the downstream target is a pattern that applies `format = "file"`
-#'   or `format = "url"`.
+#'   and the downstream target is a pattern that applies `format = "file"`,
+#'   `format = "file_fast"`, or `format = "url"`.
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
 #' @inheritParams targets::tar_target
@@ -53,7 +53,7 @@ tar_files_raw <- function(
   command,
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
-  format = c("file", "url", "aws_file"),
+  format = c("file", "file_fast", "url", "aws_file"),
   repository = targets::tar_option_get("repository"),
   iteration = targets::tar_option_get("iteration"),
   error = targets::tar_option_get("error"),

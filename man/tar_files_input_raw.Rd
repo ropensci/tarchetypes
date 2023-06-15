@@ -8,7 +8,7 @@ tar_files_input_raw(
   name,
   files,
   batches = length(files),
-  format = c("file", "url", "aws_file"),
+  format = c("file", "file_fast", "url", "aws_file"),
   repository = targets::tar_option_get("repository"),
   iteration = targets::tar_option_get("iteration"),
   error = targets::tar_option_get("error"),
@@ -46,8 +46,8 @@ could cause a lot of overhead and consume a lot of computing resources.
 Consider reducing the number of batches below the number of files
 for heavy workloads.}
 
-\item{format}{Character, either \code{"file"} or \code{"url"}. See the \code{format}
-argument of \code{targets::tar_target()} for details.}
+\item{format}{Character, either \code{"file"}, \code{"file_fast"}, or \code{"url"}.
+See the \code{format} argument of \code{targets::tar_target()} for details.}
 
 \item{repository}{Character of length 1, remote repository for target
 storage. Choices:
