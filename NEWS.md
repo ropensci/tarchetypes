@@ -1,4 +1,4 @@
-# tarchetypes 0.7.6.9000 (development)
+# tarchetypes 0.7.7
 
 * Allow `format = "file_fast"` in target factories.
 
