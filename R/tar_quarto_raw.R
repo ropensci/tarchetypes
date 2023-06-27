@@ -135,7 +135,7 @@ tar_quarto_raw <- function(
   targets::tar_assert_path(path)
   targets::tar_assert_scalar(execute)
   targets::tar_assert_lgl(execute)
-  targets::tar_assert_lang(execute_params)
+  targets::tar_assert_lang(execute_params %|||% quote(x))
   targets::tar_assert_not_expr(execute_params)
   targets::tar_assert_scalar(cache %|||% TRUE)
   targets::tar_assert_lgl(cache %|||% TRUE)

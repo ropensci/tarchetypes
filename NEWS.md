@@ -1,6 +1,6 @@
 # tarchetypes 0.7.7.9000 (development)
 
-
+* Relax overly strict assertion on R Markdown / Quarto parameter lists (@rmgpanw, #152).
 
 # tarchetypes 0.7.7
 

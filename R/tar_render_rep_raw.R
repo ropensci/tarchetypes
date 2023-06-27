@@ -123,7 +123,7 @@ tar_render_rep_raw <- function(
   targets::tar_assert_chr(path)
   targets::tar_assert_path(path)
   targets::tar_assert_not_dirs(path)
-  targets::tar_assert_lang(params)
+  targets::tar_assert_lang(params %|||% quote(x))
   targets::tar_assert_dbl(batches %|||% 0L, "batches must be numeric.")
   targets::tar_assert_scalar(batches %|||% 0L, "batches must have length 1.")
   targets::tar_assert_list(args, "args must be a named list.")
