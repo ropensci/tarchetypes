@@ -15,7 +15,7 @@ targets::tar_test("tar_map2(): combine, columns, static branches", {
         random = sample.int(1e6, size = 1L)
       )
     }
-    tar_map2(
+    tarchetypes::tar_map2(
       x,
       command1 = f1(arg1),
       command2 = f2(arg1, arg2),
@@ -128,7 +128,7 @@ targets::tar_test("tar_map2(): no combine, no columns, static branches", {
         random = sample.int(1e6, size = 1L)
       )
     }
-    tar_map2(
+    tarchetypes::tar_map2(
       x,
       command1 = f1(arg1),
       command2 = f2(arg1, arg2),
@@ -229,7 +229,7 @@ targets::tar_test("tar_map2() columns1", {
         random = sample.int(1e6, size = 1L)
       )
     }
-    tar_map2(
+    tarchetypes::tar_map2(
       x,
       command1 = f1(arg1),
       command2 = f2(value_arg1, value_arg2),
@@ -293,7 +293,7 @@ targets::tar_test("tar_map2() columns2", {
         random = sample.int(1e6, size = 1L)
       )
     }
-    tar_map2(
+    tarchetypes::tar_map2(
       x,
       command1 = f1(arg1),
       command2 = f2(value_arg1, value_arg2),
@@ -355,7 +355,7 @@ targets::tar_test("tar_map2(): no static branches", {
         random = sample.int(1e6, size = 1L)
       )
     }
-    tar_map2(
+    tarchetypes::tar_map2(
       x,
       command1 = f1(arg1),
       command2 = f2(arg1, arg2),
@@ -438,7 +438,7 @@ targets::tar_test("tar_map2() column precedence", {
         fun2 = TRUE
       )
     }
-    tar_map2(
+    tarchetypes::tar_map2(
       x,
       command1 = f1(),
       command2 = f2(),
@@ -471,7 +471,7 @@ targets::tar_test("tar_map2() column precedence 2", {
         fun2 = TRUE
       )
     }
-    tar_map2(
+    tarchetypes::tar_map2(
       x,
       command1 = f1(),
       command2 = f2(),
@@ -504,7 +504,7 @@ targets::tar_test("tar_map2() column precedence 3", {
         fun2 = TRUE
       )
     }
-    tar_map2(
+    tarchetypes::tar_map2(
       x,
       command1 = f1(),
       command2 = f2(),
@@ -536,7 +536,7 @@ targets::tar_test("tar_map2() list columns from values", {
         fun2 = TRUE
       )
     }
-    tar_map2(
+    tarchetypes::tar_map2(
       x,
       command1 = f1(),
       command2 = f2(),
@@ -564,7 +564,7 @@ targets::tar_test("list column elements from values are selected", {
     f2 <- function(example) {
       tibble::tibble(length2 = length(example))
     }
-    tar_map2(
+    tarchetypes::tar_map2(
       x,
       command1 = f1(example),
       command2 = f2(example),
@@ -592,7 +592,7 @@ targets::tar_test("list column elements from command1 are selected", {
     f2 <- function(example2) {
       tibble::tibble(length2 = length(example2))
     }
-    tar_map2(
+    tarchetypes::tar_map2(
       x,
       command1 = f1(example),
       command2 = f2(example2),
@@ -628,7 +628,7 @@ targets::tar_test("tar_map2() seed resilience", {
         random = sample.int(1e6, size = 1L)
       )
     }
-    tar_map2(
+    tarchetypes::tar_map2(
       x,
       command1 = f1(arg1),
       command2 = f2(arg1, arg2),
@@ -659,7 +659,7 @@ targets::tar_test("tar_map2() seed resilience", {
         random = sample.int(1e6, size = 1L)
       )
     }
-    tar_map2(
+    tarchetypes::tar_map2(
       x,
       command1 = f1(arg1),
       command2 = f2(arg1, arg2),
@@ -697,7 +697,7 @@ targets::tar_test("tar_map2() seeds change with the seed option", {
         random = sample.int(1e6, size = 1L)
       )
     }
-    tar_map2(
+    tarchetypes::tar_map2(
       x,
       command1 = f1(arg1),
       command2 = f2(arg1, arg2),
@@ -729,7 +729,7 @@ targets::tar_test("tar_map2() seeds change with the seed option", {
         random = sample.int(1e6, size = 1L)
       )
     }
-    tar_map2(
+    tarchetypes::tar_map2(
       x,
       command1 = f1(arg1),
       command2 = f2(arg1, arg2),
@@ -758,7 +758,7 @@ targets::tar_test("tar_map2() seeds change with the seed option", {
         random = sample.int(1e6, size = 1L)
       )
     }
-    tar_map2(
+    tarchetypes::tar_map2(
       x,
       command1 = f1(arg1),
       command2 = f2(arg1, arg2),

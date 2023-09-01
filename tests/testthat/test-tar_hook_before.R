@@ -182,18 +182,18 @@ targets::tar_test("tar_hook_before() sets_deps = FALSE", {
 targets::tar_test("tar_hook_before(), set_deps = TRUE, deps arg", {
   targets::tar_script({
     tar_hook_before(
-    targets = list(
-      targets::tar_target_raw("upstream1", "I am upstream 1 running"),
-      targets::tar_target_raw("upstream2", "I am upstream 2 running"),
-      targets::tar_target_raw(
-        name = "downstream",
-        command = "I am downstream running",
-        deps = c("upstream1", "upstream2")
-      )
-    ),
-    hook = message("Running hook."),
-    set_deps = TRUE
-  )
+      targets = list(
+        targets::tar_target_raw("upstream1", "I am upstream 1 running"),
+        targets::tar_target_raw("upstream2", "I am upstream 2 running"),
+        targets::tar_target_raw(
+          name = "downstream",
+          command = "I am downstream running",
+          deps = c("upstream1", "upstream2")
+        )
+      ),
+      hook = message("Running hook."),
+      set_deps = TRUE
+    )
   })
   edges <- targets::tar_network(callr_function = NULL)$edges
   expect_equal(nrow(edges), 0L)
@@ -202,18 +202,18 @@ targets::tar_test("tar_hook_before(), set_deps = TRUE, deps arg", {
 targets::tar_test("tar_hook_before(), set_deps = FALSE, deps arg", {
   targets::tar_script({
     tar_hook_before(
-    targets = list(
-      targets::tar_target_raw("upstream1", "I am upstream 1 running"),
-      targets::tar_target_raw("upstream2", "I am upstream 2 running"),
-      targets::tar_target_raw(
-        name = "downstream",
-        command = "I am downstream running",
-        deps = c("upstream1", "upstream2")
-      )
-    ),
-    hook = message("Running hook."),
-    set_deps = FALSE
-  )
+      targets = list(
+        targets::tar_target_raw("upstream1", "I am upstream 1 running"),
+        targets::tar_target_raw("upstream2", "I am upstream 2 running"),
+        targets::tar_target_raw(
+          name = "downstream",
+          command = "I am downstream running",
+          deps = c("upstream1", "upstream2")
+        )
+      ),
+      hook = message("Running hook."),
+      set_deps = FALSE
+    )
   })
   edges <- targets::tar_network(callr_function = NULL)$edges
   expect_equal(nrow(edges), 2L)

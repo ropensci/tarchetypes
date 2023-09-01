@@ -1,4 +1,5 @@
 #' @title Batched dynamic-within-static branching for data frames.
+#' @export
 #' @keywords internal
 #' @family branching
 #' @description Define targets for batched
