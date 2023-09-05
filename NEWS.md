@@ -1,6 +1,6 @@
 # tarchetypes 0.7.8.9000 (development)
 
-* Deprecate the `packages` and `library` arguments of `tar_quarto()` and `tar_quarto_rep()` (#155, @svraka).
+* Deprecate the `packages` and `library` arguments of `tar_quarto()` and `tar_quarto_raw()` (#155, @svraka).
 
 # tarchetypes 0.7.8
 
