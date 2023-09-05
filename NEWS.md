@@ -1,3 +1,7 @@
+# tarchetypes 0.7.8.9000 (development)
+
+* Deprecate the `packages` and `library` arguments of `tar_quarto()` and `tar_quarto_rep()` (#155, @svraka).
+
 # tarchetypes 0.7.8
 
 * Relax overly strict assertion on R Markdown / Quarto parameter lists (@rmgpanw, #152).

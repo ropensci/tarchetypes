@@ -389,3 +389,23 @@ targets::tar_test("quarto profiles", {
   expect_false(file.exists(file.path("_output", "basic.html")))
   expect_true(file.exists(file.path("_output", "advanced.html")))
 })
+
+targets::tar_test("tar_quarto() deprecate packages", {
+  skip_on_cran()
+  skip_quarto()
+  lines <- c(
+    "---",
+    "title: report",
+    "output_format: html",
+    "---",
+    "",
+    "```{r}",
+    "targets::tar_read(data)",
+    "```"
+  )
+  writeLines(lines, "report.qmd")
+  expect_warning(
+    tar_quarto(report, path = "report.qmd", packages = "quarto"),
+    class = "tar_condition_deprecate"
+  )
+})

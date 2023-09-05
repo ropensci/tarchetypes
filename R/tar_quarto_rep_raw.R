@@ -199,8 +199,6 @@ tar_quarto_rep_raw <- function(
       rep_workers = rep_workers
     ),
     pattern = substitute(map(x), env = list(x = sym_params)),
-    packages = packages,
-    library = library,
     format = "file",
     repository = "local",
     iteration = iteration,

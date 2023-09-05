@@ -16,8 +16,8 @@ tar_quarto_raw(
   quiet = TRUE,
   pandoc_args = NULL,
   profile = NULL,
-  packages = targets::tar_option_get("packages"),
-  library = targets::tar_option_get("library"),
+  packages = NULL,
+  library = NULL,
   error = targets::tar_option_get("error"),
   memory = targets::tar_option_get("memory"),
   garbage_collection = targets::tar_option_get("garbage_collection"),
@@ -84,13 +84,11 @@ respectively for Rmd and Jupyter input files).}
 the default profile will be used. Requires Quarto version 1.2 or higher.
 See \url{https://quarto.org/docs/projects/profiles.html} for details.}
 
-\item{packages}{Character vector of packages to load right before
-the target builds or the output data is reloaded for
-downstream targets. Use \code{tar_option_set()} to set packages
-globally for all subsequent targets you define.}
+\item{packages}{Deprecated on 2023-09-05 (version 0.7.8.9000). Please
+load R packages inside the Quarto report itself.}
 
-\item{library}{Character vector of library paths to try
-when loading \code{packages}.}
+\item{library}{Deprecated on 2023-09-05 (version 0.7.8.9000). Please
+load R packages inside the Quarto report itself.}
 
 \item{error}{Character of length 1, what to do if the target
 stops and throws an error. Options:

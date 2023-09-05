@@ -44,6 +44,10 @@
 #' @param profile Character of length 1, Quarto profile. If `NULL`,
 #'   the default profile will be used. Requires Quarto version 1.2 or higher.
 #'   See <https://quarto.org/docs/projects/profiles.html> for details.
+#' @param packages Deprecated on 2023-09-05 (version 0.7.8.9000). Please
+#'   load R packages inside the Quarto report itself.
+#' @param library Deprecated on 2023-09-05 (version 0.7.8.9000). Please
+#'   load R packages inside the Quarto report itself.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({  # tar_dir() runs code from a temporary directory.
@@ -112,8 +116,8 @@ tar_quarto_raw <- function(
   quiet = TRUE,
   pandoc_args = NULL,
   profile = NULL,
-  packages = targets::tar_option_get("packages"),
-  library = targets::tar_option_get("library"),
+  packages = NULL,
+  library = NULL,
   error = targets::tar_option_get("error"),
   memory = targets::tar_option_get("memory"),
   garbage_collection = targets::tar_option_get("garbage_collection"),
@@ -153,6 +157,13 @@ tar_quarto_raw <- function(
   sources <- info$sources
   output <- info$output
   input <- sort(unique(c(info$input, extra_files)))
+  if (!is.null(packages) || !is.null(library)) {
+    targets::tar_warn_deprecate(
+      "Arguments packages and library of tar_quarto() were ",
+      "deprecated on 2023-09-05 (version 0.7.8.9000). Please ",
+      "load R packages inside the Quarto report itself."
+    )
+  }
   command <- tar_quarto_command(
     path = path,
     sources = sources,
@@ -170,8 +181,6 @@ tar_quarto_raw <- function(
   targets::tar_target_raw(
     name = name,
     command = command,
-    packages = packages,
-    library = library,
     format = "file",
     repository = "local",
     error = error,
