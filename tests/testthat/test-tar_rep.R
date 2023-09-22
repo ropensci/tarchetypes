@@ -217,3 +217,23 @@ targets::tar_test("tar_rep() seeds change with the seed option", {
   expect_false(out3 == out5)
   expect_false(out4 == out5)
 })
+
+targets::tar_test("correct RNG state", {
+  skip_on_cran()
+  targets::tar_script({
+    targets::tar_option_set(packages = c("digest", "tibble"))
+    tar_rep(
+      name = results,
+      command = tibble(seed_hash = digest(.Random.seed)),
+      batches = 1L,
+      reps = 3L,
+      rep_workers = 2L
+    )
+  })
+  targets::tar_make(callr_function = NULL)
+  out <- tar_read(results)
+  for (rep in seq_len(3L)) {
+    set.seed(seed = out$tar_seed[rep], kind = "default")
+    expect_equal(out$seed_hash[rep], digest::digest(.Random.seed))
+  }
+})

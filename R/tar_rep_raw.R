@@ -277,17 +277,12 @@ tar_rep_run_map <- function(expr, batch, reps, rep_workers) {
   seeds <- produce_batch_seeds(name = name, batch = batch, reps = reps)
   envir <- targets::tar_envir()
   if (rep_workers > 1L) {
-    plan_old <- future::plan()
-    on.exit(future::plan(plan_old, .cleanup = FALSE))
-    future::plan(future.callr::callr, workers = rep_workers, .cleanup = FALSE)
-    furrr::future_map(
-      .x = seq_len(reps),
-      .f = fun,
-      .options = furrr::furrr_options(
-        seed = 1L,
-        packages = targets::tar_definition()$command$packages,
-        globals = names(targets::tar_option_get("envir"))
-      ),
+    cluster <- make_psock_cluster(rep_workers)
+    on.exit(parallel::stopCluster(cl = cluster))
+    parallel::parLapply(
+      cl = cluster,
+      X = seq_len(reps),
+      fun = fun,
       expr = expr,
       batch = batch,
       seeds = seeds,

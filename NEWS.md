@@ -1,6 +1,7 @@
 # tarchetypes 0.7.8.9000 (development)
 
 * Deprecate the `packages` and `library` arguments of `tar_quarto()` and `tar_quarto_raw()` (#155, @svraka).
+* Switch to from `furrr` to `parallel` for `rep_workers` in `tar_rep()` etc. (#251, @solmos).
 
 # tarchetypes 0.7.8
 

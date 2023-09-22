@@ -270,23 +270,22 @@ tar_map2_run <- function(command, values, columns, rep_workers) {
   )
   fun <- eval(call, envir = targets::tar_option_get("envir"))
   if (rep_workers > 1L) {
-    plan_old <- future::plan()
-    on.exit(future::plan(plan_old, .cleanup = FALSE))
-    future::plan(future.callr::callr, workers = rep_workers, .cleanup = FALSE)
-    out <- furrr::future_map2(
+    cluster <- make_psock_cluster(rep_workers)
+    on.exit(parallel::stopCluster(cl = cluster))
+    out <- parallel::clusterMap(
+      cl = cluster,
+      fun = fun,
       .x = seq_along(splits),
       .y = splits,
-      .f = fun,
-      .options = furrr::furrr_options(
-        seed = 1L,
-        packages = targets::tar_definition()$command$packages,
-        globals = names(targets::tar_option_get("envir"))
+      MoreArgs = list(
+        command = as.expression(command),
+        batch = batch,
+        seeds = seeds,
+        columns = columns,
+        envir = envir
       ),
-      command = as.expression(command),
-      batch = batch,
-      seeds = seeds,
-      columns = columns,
-      envir = envir
+      SIMPLIFY = FALSE,
+      USE.NAMES = FALSE
     )
   } else {
     out <- map2(

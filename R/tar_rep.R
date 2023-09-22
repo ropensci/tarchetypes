@@ -77,9 +77,7 @@
 #' @param rep_workers Positive integer of length 1, number of local R
 #'   processes to use to run reps within batches in parallel. If 1,
 #'   then reps are run sequentially within each batch. If greater than 1,
-#'   then reps within batch are run in parallel using workers
-#'   created with `future::plan(future.callr::callr, workers = rep_workers)`
-#'   and invoked with `furrr::future_map()`.
+#'   then reps within batch are run in parallel using a PSOCK cluster.
 #' @param tidy_eval Whether to invoke tidy evaluation
 #'   (e.g. the `!!` operator from `rlang`) as soon as the target is defined
 #'   (before `tar_make()`). Applies to the `command` argument.
