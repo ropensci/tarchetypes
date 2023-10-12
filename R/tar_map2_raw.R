@@ -342,14 +342,8 @@ tar_map2_run_rep <- function(
       )
     }
   )
-  out <- if_any(
-    anyNA(seed),
-    eval(command, envir = envir),
-    withr::with_seed(
-      seed = seed,
-      code = eval(command, envir = envir)
-    )
-  )
+  if_any(anyNA(seed), NULL, targets::tar_seed_set(seed = seed))
+  out <- eval(command, envir = envir)
   out <- tar_append_static_values(out, values[, columns])
   out[["tar_batch"]] <- as.integer(batch)
   out[["tar_rep"]] <- as.integer(rep)

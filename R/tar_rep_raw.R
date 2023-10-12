@@ -314,14 +314,8 @@ tar_rep_run_map <- function(expr, batch, reps, rep_workers) {
 #' # See the examples of tar_rep().
 tar_rep_run_map_rep <- function(rep, expr, batch, seeds, envir) {
   seed <- as.integer(if_any(anyNA(seeds), NA_integer_, seeds[rep]))
-  out <- if_any(
-    anyNA(seed),
-    eval(expr, envir = envir),
-    withr::with_seed(
-      seed = seed,
-      code = eval(expr, envir = envir)
-    )
-  )
+  if_any(anyNA(seed), NULL, targets::tar_seed_set(seed = seed))
+  out <- eval(expr, envir = envir)
   if (is.list(out)) {
     out[["tar_batch"]] <- as.integer(batch)
     out[["tar_rep"]] <- as.integer(rep)
@@ -331,16 +325,8 @@ tar_rep_run_map_rep <- function(rep, expr, batch, seeds, envir) {
 }
 
 produce_batch_seeds <- function(name, batch, reps) {
-  seed <- if_any(
-    "seed" %in% names(formals(targets::tar_option_set)),
-    targets::tar_option_get("seed"),
-    0L
-  )
-  if (anyNA(seed)) {
-    return(NA_integer_)
-  }
   strings <- paste(name, as.character(seq_len(reps) + reps * (batch - 1)))
-  unname(map_int(x = strings, f = digest::digest2int, seed = seed))
+  unname(map_int(x = strings, f = targets::tar_seed_create))
 }
 
 tar_assert_rep_workers <- function(rep_workers) {

@@ -510,14 +510,8 @@ tar_quarto_rep_rep <- function(
   args$execute_params[["output_file"]] <- NULL
   args$execute_params[["tar_group"]] <- NULL
   seed <- as.integer(if_any(anyNA(seeds), NA_integer_, seeds[rep]))
-  if_any(
-    anyNA(seed),
-    do.call(quarto::quarto_render, args),
-    withr::with_seed(
-      seed = seed,
-      code = do.call(quarto::quarto_render, args)
-    )
-  )
+  if_any(anyNA(seed), NULL, targets::tar_seed_set(seed = seed))
+  result <- do.call(quarto::quarto_render, args)
   file.rename(temporary_file, destination_file)
   sort(as.character(fs::path_rel(unlist(destination_file))))
 }
