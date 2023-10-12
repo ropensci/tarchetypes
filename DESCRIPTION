@@ -9,7 +9,7 @@ Description: Function-oriented Make-like declarative pipelines for
   reproducible pipelines concisely and compactly.
   The methods in this package were influenced by the 'drake' R package
   by Will Landau (2018) <doi:10.21105/joss.00550>.
-Version: 0.7.8.9001
+Version: 0.7.9.9000
 License: MIT + file LICENSE
 URL: https://docs.ropensci.org/tarchetypes/, https://github.com/ropensci/tarchetypes
 BugReports: https://github.com/ropensci/tarchetypes/issues
@@ -18,7 +18,7 @@ Authors@R: c(
     given = c("William", "Michael"),
     family = "Landau",
     role = c("aut", "cre"),
-    email = "will.landau@gmail.com",
+    email = "will.landau.oss@gmail.com",
     comment = c(ORCID = "0000-0003-1878-3253")
   ),
   person(
