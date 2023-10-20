@@ -1,4 +1,4 @@
-# tarchetypes 0.7.8.9000 (development)
+# tarchetypes 0.7.9.9000 (development)
 
 * Use `tar_seed_create()` (https://github.com/ropensci/targets/issues/1139).
 
