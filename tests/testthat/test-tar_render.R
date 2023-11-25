@@ -172,9 +172,12 @@ targets::tar_test("tar_render() works with child documents", {
   expect_equal(sort(progress$name), sort(c("child", "main", "report")))
   out <- targets::tar_read(report)
   if (identical(tolower(Sys.info()[["sysname"]]), "windows")) {
-    expect_equal(basename(out), c("main.html", "main.Rmd"))
+    expect_equal(basename(out), c("main.html", "main.Rmd", "child.Rmd"))
   } else {
-    expect_equal(out, c("report/main.html", "report/main.Rmd"))
+    expect_equal(
+      out,
+      c("report/main.html", "report/main.Rmd", "report/child.Rmd")
+    )
   }
   # Should not rerun the report.
   suppressMessages(targets::tar_make(callr_function = NULL))
@@ -194,8 +197,11 @@ targets::tar_test("tar_render() works with child documents", {
   })
   suppressMessages(targets::tar_make(callr_function = NULL))
   expect_equal(
-    sort(targets::tar_progress()$name),
-    sort(c("child", "main", "report"))
+    targets::tar_progress(),
+    tibble::tibble(
+      name = c("child", "main", "report"),
+      progress = c("skipped", "built", "built")
+    )
   )
   # Should rerun the report.
   # Only the dependency in the child document is changed.
@@ -210,8 +216,11 @@ targets::tar_test("tar_render() works with child documents", {
   })
   suppressMessages(targets::tar_make(callr_function = NULL))
   expect_equal(
-    sort(targets::tar_progress()$name),
-    sort(c("child", "main", "report"))
+    targets::tar_progress(),
+    tibble::tibble(
+      name = c("child", "main", "report"),
+      progress = c("built", "skipped", "built")
+    )
   )
   # Should rerun the report.
   # Change the main file slightly (but not the code)
@@ -233,8 +242,11 @@ targets::tar_test("tar_render() works with child documents", {
   )
   suppressMessages(targets::tar_make(callr_function = NULL))
   expect_equal(
-    sort(targets::tar_progress()$name),
-    sort(c("child", "main", "report"))
+    targets::tar_progress(),
+    tibble::tibble(
+      name = c("child", "main", "report"),
+      progress = c("skipped", "skipped", "built")
+    )
   )
   # Should rerun the report.
   # Change the child file slightly (but not the code)
@@ -250,8 +262,11 @@ targets::tar_test("tar_render() works with child documents", {
   )
   suppressMessages(targets::tar_make(callr_function = NULL))
   expect_equal(
-    sort(targets::tar_progress()$name),
-    sort(c("child", "main", "report"))
+    targets::tar_progress(),
+    tibble::tibble(
+      name = c("child", "main", "report"),
+      progress = c("skipped", "skipped", "built")
+    )
   )
   # Detect whether `value_main_target_changed` and
   # `value_child_target_changed` are correctly print in HTML file

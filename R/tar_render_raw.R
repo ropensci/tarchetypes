@@ -135,7 +135,12 @@ tar_render_command <- function(path, args, quiet) {
 #' @keywords internal
 #' @return Character vector with the path to the R Markdown source file
 #'   and the relative path to the output. These paths depend on the input
-#'   source file path and have no defaults.
+#'   source file path and have no defaults. Additionally, the
+#'   `{output}_files` directory is added. Including the output file and the
+#'   `{output}_files` directory ensures that the report is rerun if one of the
+#'   output files has been changed (manually by the user). Finally, all child
+#'   documents of R Markdown source file are added. This way, changes in child
+#'   documents are also detected and rendered.
 #' @param path Path to the R Markdown source file.
 #' @param args A named list of arguments to `rmarkdown::render()`.
 #' @param deps An unnamed list of target dependencies of the R Markdown
@@ -157,5 +162,13 @@ tar_render_paths <- function(output, source) {
   source <- fs::path_rel(source)
   files <- paste0(fs::path_ext_remove(output[1]), "_files")
   files <- if_any(all(file.exists(files)), files, character(0))
-  c(sort(output), sort(source), files)
+  child_files <- knitr_lines(source)
+  child_files <- regexec(
+      pattern = "## ----child = \"(.*)\"",
+      text = child_files
+  ) |>
+    regmatches(x = child_files, m = _) |>
+    sapply(\(x) x[2]) |>
+    na.omit()
+  c(sort(output), sort(source), files, sort(child_files))
 }
