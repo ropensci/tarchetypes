@@ -128,6 +128,111 @@ targets::tar_test("tar_render() with a _files/ directory", {
 targets::tar_test("tar_render() works with child documents", {
   skip_on_cran()
   skip_rmarkdown()
+  # Create a main file and two child files in a subdirectory
+  dir.create("report")
+  writeLines(
+    text = c(
+      "---",
+      "title: report",
+      "output_format: html_document",
+      "---",
+      "",
+      "```{r, child = \"report/child1.Rmd\"}",
+      "```",
+      "",
+      "```{r, child = \"report/child2.Rmd\"}",
+      "```"
+    ),
+    con = "report/main.Rmd"
+  )
+  writeLines(
+    text = c(
+      "# Child Document 1",
+      "",
+      "```{r}",
+      "1 + 1",
+      "```"
+    ),
+    con = "report/child1.Rmd"
+  )
+  writeLines(
+    text = c(
+      "# Child Document 2",
+      "",
+      "```{r}",
+      "2 + 2",
+      "```"
+    ),
+    con = "report/child2.Rmd"
+  )
+  targets::tar_script({
+    library(targets)
+    library(tarchetypes)
+    list(
+      tar_render(report, "report/main.Rmd", quiet = TRUE)
+    )
+  })
+  # First run.
+  suppressMessages(targets::tar_make(callr_function = NULL))
+  progress <- targets::tar_progress()
+  progress <- progress[progress$progress != "skipped", ]
+  expect_equal(progress$name, "report")
+  out <- targets::tar_read(report)
+  if (identical(tolower(Sys.info()[["sysname"]]), "windows")) {
+    expect_equal(basename(out), c("main.html", "main.Rmd", "child1.Rmd", "child2.Rmd"))
+  } else {
+    expect_equal(
+      out,
+      c("report/main.html", "report/main.Rmd", "report/child1.Rmd", "report/child2.Rmd")
+    )
+  }
+  # Should not rerun the report.
+  suppressMessages(targets::tar_make(callr_function = NULL))
+  progress <- targets::tar_progress()
+  progress <- progress[progress$progress != "skipped", ]
+  expect_equal(nrow(progress), 0L)
+  # Should rerun the report.
+  # Change the main file slightly (no targets included)
+  writeLines(
+    text = c(
+      "---",
+      "title: A new report",
+      "output_format: html_document",
+      "---",
+      "",
+      "```{r, child = \"report/child1.Rmd\"}",
+      "```",
+      "",
+      "```{r, child = \"report/child2.Rmd\"}",
+      "```"
+    ),
+    con = "report/main.Rmd"
+  )
+  suppressMessages(targets::tar_make(callr_function = NULL))
+  progress <- targets::tar_progress()
+  progress <- progress[progress$progress != "skipped", ]
+  expect_equal(progress$name, "report")
+  # Should rerun the report.
+  # Change the child file slightly (no targets included)
+  writeLines(
+    text = c(
+      "# A New Child Document 1",
+      "",
+      "```{r}",
+      "1 + 1",
+      "```"
+    ),
+    con = "report/child1.Rmd"
+  )
+  suppressMessages(targets::tar_make(callr_function = NULL))
+  progress <- targets::tar_progress()
+  progress <- progress[progress$progress != "skipped", ]
+  expect_equal(progress$name, "report")
+})
+
+targets::tar_test("tar_render() detects target changes in child documents", {
+  skip_on_cran()
+  skip_rmarkdown()
   # Create a main file and a child file in a subdirectory
   dir.create("report")
   writeLines(
@@ -196,13 +301,9 @@ targets::tar_test("tar_render() works with child documents", {
     )
   })
   suppressMessages(targets::tar_make(callr_function = NULL))
-  expect_equal(
-    targets::tar_progress(),
-    tibble::tibble(
-      name = c("child", "main", "report"),
-      progress = c("skipped", "built", "built")
-    )
-  )
+  progress <- targets::tar_progress()
+  progress <- progress[progress$progress != "skipped", ]
+  expect_equal(sort(progress$name), sort(c("report", "main")))
   # Should rerun the report.
   # Only the dependency in the child document is changed.
   targets::tar_script({
@@ -215,59 +316,9 @@ targets::tar_test("tar_render() works with child documents", {
     )
   })
   suppressMessages(targets::tar_make(callr_function = NULL))
-  expect_equal(
-    targets::tar_progress(),
-    tibble::tibble(
-      name = c("child", "main", "report"),
-      progress = c("built", "skipped", "built")
-    )
-  )
-  # Should rerun the report.
-  # Change the main file slightly (but not the code)
-  writeLines(
-    text = c(
-      "---",
-      "title: A new report",
-      "output_format: html_document",
-      "---",
-      "",
-      "```{r, child = \"report/child.Rmd\"}",
-      "```",
-      "",
-      "```{r}",
-      "targets::tar_read(main)",
-      "```"
-    ),
-    con = "report/main.Rmd"
-  )
-  suppressMessages(targets::tar_make(callr_function = NULL))
-  expect_equal(
-    targets::tar_progress(),
-    tibble::tibble(
-      name = c("child", "main", "report"),
-      progress = c("skipped", "skipped", "built")
-    )
-  )
-  # Should rerun the report.
-  # Change the child file slightly (but not the code)
-  writeLines(
-    text = c(
-      "# A New Child Document",
-      "",
-      "```{r}",
-      "targets::tar_read(child)",
-      "```"
-    ),
-    con = "report/child.Rmd"
-  )
-  suppressMessages(targets::tar_make(callr_function = NULL))
-  expect_equal(
-    targets::tar_progress(),
-    tibble::tibble(
-      name = c("child", "main", "report"),
-      progress = c("skipped", "skipped", "built")
-    )
-  )
+  progress <- targets::tar_progress()
+  progress <- progress[progress$progress != "skipped", ]
+  expect_equal(sort(progress$name), sort(c("report", "child")))
   # Detect whether `value_main_target_changed` and
   # `value_child_target_changed` are correctly print in HTML file
   # (the values should occure once in the HTML file)
