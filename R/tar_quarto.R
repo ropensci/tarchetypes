@@ -27,6 +27,7 @@
 #'       instead of the working directory of the report.
 #'     5. Sets convenient default options such as `deployment = "main"`
 #'       in the target and `quiet = TRUE` in `quarto::quarto_render()`.
+#' @inheritSection tar_render Literate programming limitations
 #' @section Quarto troubleshooting:
 #'   If you encounter difficult errors, please read
 #'   <https://github.com/quarto-dev/quarto-r/issues/16>.

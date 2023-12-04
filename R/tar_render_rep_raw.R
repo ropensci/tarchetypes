@@ -42,6 +42,7 @@
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
 #' @inheritSection tar_rep Replicate-specific seeds
+#' @inheritSection tar_render Literate programming limitations
 #' @inheritParams targets::tar_target
 #' @inheritParams rmarkdown::render
 #' @inheritParams tar_rep

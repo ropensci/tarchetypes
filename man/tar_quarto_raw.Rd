@@ -201,6 +201,21 @@ and the design specification at
 details the structure and composition of target objects.
 }
 
+\section{Literate programming limitations}{
+
+Literate programming files are messy and variable,
+so functions like \code{\link[=tar_render]{tar_render()}} have limitations:
+* Child documents are not tracked for changes.
+* Upstream target dependencies are not detected if \code{\link[=tar_read]{tar_read()}}
+and/or \code{\link[=tar_load]{tar_load()}} are called from a user-defined function.
+In addition, single target names must be mentioned and they must
+be symbols. \code{tar_load("x")} and \code{tar_load(contains("x"))} may not
+detect target \code{x}.
+* Special/optional input/output files may not be detected in all cases.
+* \code{\link[=tar_render]{tar_render()}} and friends are for local files only. They do not
+integrate with the cloud storage capabilities of \code{targets}.
+}
+
 \section{Quarto troubleshooting}{
 
 If you encounter difficult errors, please read

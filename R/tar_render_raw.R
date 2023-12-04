@@ -17,6 +17,7 @@
 #'   without invalidating the target).
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
+#' @inheritSection tar_render Literate programming limitations
 #' @inheritParams tar_render
 #' @param name Character of length 1, name of the target.
 #' @param render_arguments Optional language object with a list

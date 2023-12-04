@@ -24,6 +24,18 @@
 #'       instead of the working directory of the report.
 #'     5. Sets convenient default options such as `deployment = "main"`
 #'       in the target and `quiet = TRUE` in `rmarkdown::render()`.
+#' @section Literate programming limitations:
+#'   Literate programming files are messy and variable,
+#'   so functions like [tar_render()] have limitations:
+#'     * Child documents are not tracked for changes.
+#'     * Upstream target dependencies are not detected if [tar_read()]
+#'       and/or [tar_load()] are called from a user-defined function.
+#'       In addition, single target names must be mentioned and they must
+#'       be symbols. `tar_load("x")` and `tar_load(contains("x"))` may not
+#'       detect target `x`.
+#'     * Special/optional input/output files may not be detected in all cases.
+#'     * [tar_render()] and friends are for local files only. They do not
+#'       integrate with the cloud storage capabilities of `targets`.
 #' @return A target object with `format = "file"`.
 #'   When this target runs, it returns a character vector
 #'   of file paths: the rendered document, the source file,

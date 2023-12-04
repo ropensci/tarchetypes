@@ -179,6 +179,21 @@ instead of the working directory of the report.
 5. Sets convenient default options such as \code{deployment = "main"}
 in the target and \code{quiet = TRUE} in \code{rmarkdown::render()}.
 }
+\section{Literate programming limitations}{
+
+Literate programming files are messy and variable,
+so functions like \code{\link[=tar_render]{tar_render()}} have limitations:
+* Child documents are not tracked for changes.
+* Upstream target dependencies are not detected if \code{\link[=tar_read]{tar_read()}}
+and/or \code{\link[=tar_load]{tar_load()}} are called from a user-defined function.
+In addition, single target names must be mentioned and they must
+be symbols. \code{tar_load("x")} and \code{tar_load(contains("x"))} may not
+detect target \code{x}.
+* Special/optional input/output files may not be detected in all cases.
+* \code{\link[=tar_render]{tar_render()}} and friends are for local files only. They do not
+integrate with the cloud storage capabilities of \code{targets}.
+}
+
 \section{Target objects}{
 
 Most \code{tarchetypes} functions are target factories,
