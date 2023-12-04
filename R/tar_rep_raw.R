@@ -314,7 +314,7 @@ tar_rep_run_map <- function(expr, batch, reps, rep_workers) {
 #' # See the examples of tar_rep().
 tar_rep_run_map_rep <- function(rep, expr, batch, seeds, envir) {
   seed <- as.integer(if_any(anyNA(seeds), NA_integer_, seeds[rep]))
-  if_any(anyNA(seed), NULL, tar_seed_set(seed = seed))
+  if_any(anyNA(seed), NULL, targets::tar_seed_set(seed = seed))
   out <- eval(expr, envir = envir)
   if (is.list(out)) {
     out[["tar_batch"]] <- as.integer(batch)
@@ -326,8 +326,7 @@ tar_rep_run_map_rep <- function(rep, expr, batch, seeds, envir) {
 
 produce_batch_seeds <- function(name, batch, reps) {
   strings <- paste(name, as.character(seq_len(reps) + reps * (batch - 1)))
-  # TODO: use targets::tar_seed_create() when CRAN targets has it.
-  unname(map_int(x = strings, f = tar_seed_create))
+  unname(map_int(x = strings, f = targets::tar_seed_create))
 }
 
 tar_assert_rep_workers <- function(rep_workers) {

@@ -33,8 +33,8 @@ running the same pipeline should get the same results,
 and no two targets in the same pipeline share the same seed.
 (Even dynamic branches have different names and thus different seeds.)
 You can recover the seed of a completed target
-with \code{tar_meta(your_target, seed)} and run \code{set.seed()} on the result
-to locally recreate the target's initial RNG state.}
+with \code{tar_meta(your_target, seed)} and run \code{\link[targets:tar_seed_set]{tar_seed_set()}}
+on the result to locally recreate the target's initial RNG state.}
 
 \item{files}{Nonempty character vector of known existing input files
 to track for changes.}
@@ -116,7 +116,7 @@ just before the target runs.}
 
 \item{priority}{Numeric of length 1 between 0 and 1. Controls which
 targets get deployed first when multiple competing targets are ready
-simultaneously. Targets with priorities closer to 1 get built earlier
+simultaneously. Targets with priorities closer to 1 get dispatched earlier
 (and polled earlier in \code{\link[targets:tar_make_future]{tar_make_future()}}).}
 
 \item{resources}{Object returned by \code{tar_resources()}

@@ -30,7 +30,7 @@
 #'   tar_cue tar_definition tar_deparse_language tar_deparse_safe
 #'   tar_dir tar_envir tar_exist_meta tar_group tar_load tar_meta
 #'   tar_option_get tar_option_set tar_path_target tar_read
-#'   tar_runtime_object tar_script
+#'   tar_runtime_object tar_script tar_seed_create tar_seed_set
 #'   tar_target tar_target_raw tar_test tar_tidy_eval
 #'   tar_throw_validate tar_warn_deprecate tar_warn_validate
 #' @importFrom tibble as_tibble

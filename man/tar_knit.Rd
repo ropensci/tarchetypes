@@ -36,8 +36,8 @@ running the same pipeline should get the same results,
 and no two targets in the same pipeline share the same seed.
 (Even dynamic branches have different names and thus different seeds.)
 You can recover the seed of a completed target
-with \code{tar_meta(your_target, seed)} and run \code{set.seed()} on the result
-to locally recreate the target's initial RNG state.}
+with \code{tar_meta(your_target, seed)} and run \code{\link[targets:tar_seed_set]{tar_seed_set()}}
+on the result to locally recreate the target's initial RNG state.}
 
 \item{path}{Character string, file path to the \code{knitr} source file.
 Must have length 1.}
@@ -48,7 +48,7 @@ when interpreting \code{command} and \code{pattern}. If \code{TRUE}, you can use
 the values of global objects.}
 
 \item{packages}{Character vector of packages to load right before
-the target builds or the output data is reloaded for
+the target runs or the output data is reloaded for
 downstream targets. Use \code{tar_option_set()} to set packages
 globally for all subsequent targets you define.}
 
@@ -94,12 +94,12 @@ just before the target runs.}
 
 \item{deployment}{Character of length 1, only relevant to
 \code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}} and \code{\link[targets:tar_make_future]{tar_make_future()}}. If \code{"worker"},
-the target builds on a parallel worker. If \code{"main"},
-the target builds on the host machine / process managing the pipeline.}
+the target runs on a parallel worker. If \code{"main"},
+the target runs on the host machine / process managing the pipeline.}
 
 \item{priority}{Numeric of length 1 between 0 and 1. Controls which
 targets get deployed first when multiple competing targets are ready
-simultaneously. Targets with priorities closer to 1 get built earlier
+simultaneously. Targets with priorities closer to 1 get dispatched earlier
 (and polled earlier in \code{\link[targets:tar_make_future]{tar_make_future()}}).}
 
 \item{resources}{Object returned by \code{tar_resources()}
@@ -113,7 +113,7 @@ See \code{tar_resources()} for details.}
 Must be one of the following values:
 \itemize{
 \item \code{"main"}: the target's dependencies are loaded on the host machine
-and sent to the worker before the target builds.
+and sent to the worker before the target runs.
 \item \code{"worker"}: the worker loads the targets dependencies.
 \item \code{"none"}: the dependencies are not loaded at all.
 This choice is almost never recommended. It is only for

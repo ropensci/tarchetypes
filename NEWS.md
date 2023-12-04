@@ -1,3 +1,7 @@
+# tarchetypes 0.7.10.9000 (development)
+
+* Use `tar_seed_create()` and `tar_seed_set()` from `targets`.
+
 # tarchetypes 0.7.10
 
 * Prepare to use `tar_seed_create()` and `tar_seed_set()` (https://github.com/ropensci/targets/issues/1139). Future versions of `tarchetypes` should use these package functions, but this version cannot because of the compatibility constraints of the release cycle.
