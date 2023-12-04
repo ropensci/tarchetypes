@@ -223,7 +223,7 @@ targets::tar_test("inner hook invalidates target", {
   progress <- targets::tar_progress()
   progress <- progress[progress$progress != "skipped", ]
   expect_equal(progress$name, "b")
-  expect_equal(progress$progress, "built")
+  expect_equal(progress$progress, status_completed())
 })
 
 targets::tar_test("tar_hook_inner() sets deps by default", {

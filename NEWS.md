@@ -1,6 +1,7 @@
-# tarchetypes 0.7.9.9000 (development)
+# tarchetypes 0.7.10
 
-* Use `tar_seed_create()` (https://github.com/ropensci/targets/issues/1139).
+* Prepare to use `tar_seed_create()` (https://github.com/ropensci/targets/issues/1139).
+* Migrate tests to `targets` >= 1.3.2.9004 progress statuses ("completed" instead of "built", "dispatched" instead of "started").
 
 # tarchetypes 0.7.9
 

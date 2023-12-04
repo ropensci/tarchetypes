@@ -201,7 +201,7 @@ tar_rep2_run <- function(command, batches, iteration, rep_workers) {
 #' # See the examples of tar_rep2().
 tar_rep2_run_rep <- function(rep, slice, command, batch, seeds, envir) {
   seed <- as.integer(if_any(anyNA(seeds), NA_integer_, seeds[rep]))
-  if_any(anyNA(seed), NULL, targets::tar_seed_set(seed = seed))
+  if_any(anyNA(seed), NULL, tar_seed_set(seed = seed))
   out <- eval(command, envir = slice, enclos = envir)
   out$tar_batch <- as.integer(batch)
   out$tar_rep <- as.integer(rep)

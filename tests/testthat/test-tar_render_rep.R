@@ -181,7 +181,7 @@ targets::tar_test("tar_render_rep() run", {
   out <- out[grepl("^report", out$name), ]
   expect_equal(nrow(out), 3)
   out <- out$progress[!(out$name %in% c("report", "report_params"))]
-  expect_equal(out, "built")
+  expect_equal(out, status_completed())
 })
 
 targets::tar_test("tar_render_rep() run with output_file specified", {

@@ -155,7 +155,7 @@ targets::tar_test("outer hook invalidates target", {
   targets::tar_make(callr_function = NULL)
   out <- targets::tar_progress()
   expect_equal(out$name, "a")
-  expect_equal(out$progress, "built")
+  expect_equal(out$progress, status_completed())
 })
 
 targets::tar_test("tar_hook_outer() sets deps by default", {

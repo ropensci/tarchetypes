@@ -40,8 +40,8 @@ running the same pipeline should get the same results,
 and no two targets in the same pipeline share the same seed.
 (Even dynamic branches have different names and thus different seeds.)
 You can recover the seed of a completed target
-with \code{tar_meta(your_target, seed)} and run \code{\link[targets:tar_seed_set]{tar_seed_set()}}
-on the result to locally recreate the target's initial RNG state.}
+with \code{tar_meta(your_target, seed)} and run \code{set.seed()} on the result
+to locally recreate the target's initial RNG state.}
 
 \item{urls}{Character vector of URLs to track and download.
 Must be known and declared before the pipeline runs.}
@@ -74,10 +74,10 @@ Must be known and declared before the pipeline runs.}
 \item{extra}{character vector of additional command-line arguments for
     the \code{"wget"} and \code{"curl"} methods.}
 
-\item{headers}{named character vector of HTTP headers to use in HTTP
-    requests.  It is ignored for non-HTTP URLs.  The \code{User-Agent}
-    header taken from the \code{HTTPUserAgent} option (see
-    \code{\link{options}}) is automatically used as the first header.}
+\item{headers}{named character vector of additional HTTP headers to
+    use in HTTP[S] requests.  It is ignored for non-HTTP[S] URLs.  The
+    \code{User-Agent} header taken from the \code{HTTPUserAgent} option
+    (see \code{\link{options}}) is automatically used as the first header.}
 
 \item{iteration}{Character of length 1, name of the iteration mode
 of the target. Choices:

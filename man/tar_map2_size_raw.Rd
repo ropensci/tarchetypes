@@ -48,8 +48,8 @@ running the same pipeline should get the same results,
 and no two targets in the same pipeline share the same seed.
 (Even dynamic branches have different names and thus different seeds.)
 You can recover the seed of a completed target
-with \code{tar_meta(your_target, seed)} and run \code{\link[targets:tar_seed_set]{tar_seed_set()}}
-on the result to locally recreate the target's initial RNG state.}
+with \code{tar_meta(your_target, seed)} and run \code{set.seed()} on the result
+to locally recreate the target's initial RNG state.}
 
 \item{command1}{Language object to create named arguments to \code{command2}.
 Must return a data frame with one row per call to \code{command2}.}

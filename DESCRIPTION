@@ -9,7 +9,7 @@ Description: Function-oriented Make-like declarative pipelines for
   reproducible pipelines concisely and compactly.
   The methods in this package were influenced by the 'drake' R package
   by Will Landau (2018) <doi:10.21105/joss.00550>.
-Version: 0.7.9.9000
+Version: 0.7.10
 License: MIT + file LICENSE
 URL: https://docs.ropensci.org/tarchetypes/, https://github.com/ropensci/tarchetypes
 BugReports: https://github.com/ropensci/tarchetypes/issues
@@ -45,7 +45,7 @@ Imports:
   fs (>= 1.4.2),
   parallel,
   rlang (>= 0.4.7),
-  targets (>= 1.3.2.9001),
+  targets (>= 1.3.2),
   tibble (>= 3.0.1),
   tidyselect (>= 1.1.0),
   utils,

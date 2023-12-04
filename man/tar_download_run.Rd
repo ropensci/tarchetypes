@@ -38,10 +38,10 @@ Must be known and declared before the pipeline runs.}
 \item{extra}{character vector of additional command-line arguments for
     the \code{"wget"} and \code{"curl"} methods.}
 
-\item{headers}{named character vector of HTTP headers to use in HTTP
-    requests.  It is ignored for non-HTTP URLs.  The \code{User-Agent}
-    header taken from the \code{HTTPUserAgent} option (see
-    \code{\link{options}}) is automatically used as the first header.}
+\item{headers}{named character vector of additional HTTP headers to
+    use in HTTP[S] requests.  It is ignored for non-HTTP[S] URLs.  The
+    \code{User-Agent} header taken from the \code{HTTPUserAgent} option
+    (see \code{\link{options}}) is automatically used as the first header.}
 }
 \value{
 A character vector of file paths where the URLs
