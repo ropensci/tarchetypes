@@ -1,5 +1,5 @@
 # TODO: use targets::tar_seed_create() when CRAN targets has it.
-tar_seed_create <- function (name, global_seed = NULL) {
+tar_seed_create <- function(name, global_seed = NULL) {
   if (is.null(global_seed)) {
     global_seed <- targets::tar_option_get("seed")
   }
@@ -10,7 +10,7 @@ tar_seed_create <- function (name, global_seed = NULL) {
   hash <- digest::digest(
     object = name,
     algo = "sha512",
-    serialize = FALSE, 
+    serialize = FALSE,
     file = FALSE,
     seed = 0L
   )
@@ -18,12 +18,12 @@ tar_seed_create <- function (name, global_seed = NULL) {
 }
 
 # TODO: same
-tar_seed_set <- function (seed) {
+tar_seed_set <- function(seed) {
   if (!is.null(seed) && !anyNA(seed)) {
     set.seed(
       seed = seed,
       kind = "default",
-      normal.kind = "default", 
+      normal.kind = "default",
       sample.kind = "default"
     )
   }
