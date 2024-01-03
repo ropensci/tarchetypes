@@ -2,6 +2,7 @@
 
 * Use `tar_seed_create()` and `tar_seed_set()` from `targets`.
 * Document limitations of literate programming target factories like `tar_render()` (#158).
+* Make `tar_rep2()` compatible with `tar_map()` (#165).
 
 # tarchetypes 0.7.10
 
