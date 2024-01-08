@@ -1,4 +1,4 @@
-# tarchetypes 0.7.10.9000 (development)
+# tarchetypes 0.7.11
 
 * Use `tar_seed_create()` and `tar_seed_set()` from `targets`.
 * Document limitations of literate programming target factories like `tar_render()` (#158).
