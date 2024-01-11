@@ -7,9 +7,9 @@
 Targetopia](https://img.shields.io/badge/R_Targetopia-member-blue?style=flat&labelColor=gray)](https://wlandau.github.io/targetopia/)
 [![CRAN](https://www.r-pkg.org/badges/version/tarchetypes)](https://CRAN.R-project.org/package=tarchetypes)
 [![status](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![check](https://github.com/ropensci/tarchetypes/workflows/check/badge.svg)](https://github.com/ropensci/tarchetypes/actions?query=workflow%3Acheck)
+[![check](https://github.com/ropensci/tarchetypes/actions/workflows/check.yaml/badge.svg)](https://github.com/ropensci/tarchetypes/actions?query=workflow%3Acheck)
 [![codecov](https://codecov.io/gh/ropensci/tarchetypes/branch/main/graph/badge.svg?token=3T5DlLwUVl)](https://app.codecov.io/gh/ropensci/tarchetypes)
-[![lint](https://github.com/ropensci/tarchetypes/workflows/lint/badge.svg)](https://github.com/ropensci/tarchetypes/actions?query=workflow%3Alint)
+[![lint](https://github.com/ropensci/tarchetypes/actions/workflows/lint.yaml/badge.svg)](https://github.com/ropensci/tarchetypes/actions?query=workflow%3Alint)
 
 The `tarchetypes` R package is a collection of target and pipeline
 archetypes for the [`targets`](https://github.com/ropensci/targets)
@@ -56,18 +56,18 @@ list(
 # R console:
 library(targets)
 tar_make()
-#> • start target data
-#> • built target data [0.023 seconds]
-#> • start branch group_b3d7d010
-#> • built branch group_b3d7d010 [0 seconds]
-#> • start branch group_6a76c5c0
-#> • built branch group_6a76c5c0 [0.001 seconds]
-#> • start branch group_164b16bf
-#> • built branch group_164b16bf [0 seconds]
-#> • start branch group_f5aae602
-#> • built branch group_f5aae602 [0 seconds]
-#> • built pattern group
-#> • end pipeline [0.155 seconds]
+#> ▶ dispatched target data
+#> ● completed target data [0.007 seconds]
+#> ▶ dispatched branch group_b3d7d010
+#> ● completed branch group_b3d7d010 [0 seconds]
+#> ▶ dispatched branch group_6a76c5c0
+#> ● completed branch group_6a76c5c0 [0 seconds]
+#> ▶ dispatched branch group_164b16bf
+#> ● completed branch group_164b16bf [0 seconds]
+#> ▶ dispatched branch group_f5aae602
+#> ● completed branch group_f5aae602 [0 seconds]
+#> ● completed pattern group
+#> ▶ completed pipeline [0.104 seconds]
 
 # First row group:
 tar_read(group, branches = 1)
@@ -216,7 +216,6 @@ Conduct](https://ropensci.org/code-of-conduct/).
 
 ``` r
 citation("tarchetypes")
-#> 
 #> To cite tarchetypes in publications use:
 #> 
 #>   William Michael Landau (2021). tarchetypes: Archetypes for Targets.
