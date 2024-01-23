@@ -1,12 +1,11 @@
 #' targets: Archetypes for Targets
-#' @docType package
 #' @description A pipeline toolkit for R, the `targets` package brings together
 #'   function-oriented programming and Make-like declarative pipelines for
 #'   Statistics and data science. The `tarchetypes` package provides
 #'   convenient helper functions to create specialized targets, making
 #'   pipelines in targets easier and cleaner to write and understand.
 #' @name tarchetypes-package
-#' @importFrom digest digest digest2int
+#' @importFrom digest digest
 #' @importFrom dplyr bind_rows mutate select
 #' @importFrom fs dir_create is_dir path_ext path_ext_remove
 #'   path_ext_set path_rel
