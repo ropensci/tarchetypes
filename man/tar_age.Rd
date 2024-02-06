@@ -246,8 +246,8 @@ targets::tar_make()
 }
 \seealso{
 Other cues: 
-\code{\link{tar_cue_age_raw}()},
 \code{\link{tar_cue_age}()},
+\code{\link{tar_cue_age_raw}()},
 \code{\link{tar_cue_force}()},
 \code{\link{tar_cue_skip}()}
 }

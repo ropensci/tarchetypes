@@ -297,22 +297,22 @@ Likewise with \code{\link[=tar_quarto_rep]{tar_quarto_rep()}} and the \code{exec
 
 \seealso{
 Other branching: 
-\code{\link{tar_combine_raw}()},
 \code{\link{tar_combine}()},
-\code{\link{tar_map2_count_raw}()},
-\code{\link{tar_map2_count}()},
-\code{\link{tar_map2_size_raw}()},
-\code{\link{tar_map2_size}()},
-\code{\link{tar_map2}()},
-\code{\link{tar_map_rep_raw}()},
-\code{\link{tar_map_rep}()},
+\code{\link{tar_combine_raw}()},
 \code{\link{tar_map}()},
-\code{\link{tar_rep2_raw}()},
+\code{\link{tar_map2}()},
+\code{\link{tar_map2_count}()},
+\code{\link{tar_map2_count_raw}()},
+\code{\link{tar_map2_size}()},
+\code{\link{tar_map2_size_raw}()},
+\code{\link{tar_map_rep}()},
+\code{\link{tar_map_rep_raw}()},
+\code{\link{tar_rep}()},
 \code{\link{tar_rep2}()},
-\code{\link{tar_rep_map_raw}()},
+\code{\link{tar_rep2_raw}()},
 \code{\link{tar_rep_map}()},
-\code{\link{tar_rep_raw}()},
-\code{\link{tar_rep}()}
+\code{\link{tar_rep_map_raw}()},
+\code{\link{tar_rep_raw}()}
 }
 \concept{branching}
 \keyword{internal}

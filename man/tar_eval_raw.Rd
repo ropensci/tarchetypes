@@ -77,7 +77,7 @@ list(
 \seealso{
 Other Metaprogramming utilities: 
 \code{\link{tar_eval}()},
-\code{\link{tar_sub_raw}()},
-\code{\link{tar_sub}()}
+\code{\link{tar_sub}()},
+\code{\link{tar_sub_raw}()}
 }
 \concept{Metaprogramming utilities}

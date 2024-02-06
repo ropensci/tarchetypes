@@ -198,8 +198,8 @@ targets::tar_read(x, branches = 1)
 }
 \seealso{
 Other Dynamic branching over files: 
+\code{\link{tar_files}()},
 \code{\link{tar_files_input}()},
-\code{\link{tar_files_raw}()},
-\code{\link{tar_files}()}
+\code{\link{tar_files_raw}()}
 }
 \concept{Dynamic branching over files}

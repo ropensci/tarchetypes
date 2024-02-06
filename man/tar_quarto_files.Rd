@@ -52,7 +52,7 @@ writeLines(lines, path)
 }
 \seealso{
 Other Literate programming utilities: 
-\code{\link{tar_knitr_deps_expr}()},
-\code{\link{tar_knitr_deps}()}
+\code{\link{tar_knitr_deps}()},
+\code{\link{tar_knitr_deps_expr}()}
 }
 \concept{Literate programming utilities}

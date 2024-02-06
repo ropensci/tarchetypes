@@ -107,7 +107,10 @@ aggregation happens with \code{vctrs::vec_c()}.
 \item \code{"list"}, branching happens with \verb{[[]]} and aggregation happens with
 \code{list()}.
 \item \code{"group"}: \code{dplyr::group_by()}-like functionality to branch over
-subsets of a data frame. The target's return value must be a data
+subsets of a non-dynamic data frame.
+For \code{iteration = "group"}, the target must not by dynamic
+(the \code{pattern} argument of \code{\link[targets:tar_target]{tar_target()}} must be left \code{NULL}).
+The target's return value must be a data
 frame with a special \code{tar_group} column of consecutive integers
 from 1 through the number of groups. Each integer designates a group,
 and a branch is created for each collection of rows in a group.
@@ -310,21 +313,21 @@ targets::tar_read(aggregate)
 }
 \seealso{
 Other branching: 
-\code{\link{tar_combine_raw}()},
 \code{\link{tar_combine}()},
-\code{\link{tar_map2_count_raw}()},
-\code{\link{tar_map2_count}()},
-\code{\link{tar_map2_raw}()},
-\code{\link{tar_map2_size_raw}()},
-\code{\link{tar_map2_size}()},
-\code{\link{tar_map2}()},
-\code{\link{tar_map_rep_raw}()},
-\code{\link{tar_map_rep}()},
+\code{\link{tar_combine_raw}()},
 \code{\link{tar_map}()},
+\code{\link{tar_map2}()},
+\code{\link{tar_map2_count}()},
+\code{\link{tar_map2_count_raw}()},
+\code{\link{tar_map2_raw}()},
+\code{\link{tar_map2_size}()},
+\code{\link{tar_map2_size_raw}()},
+\code{\link{tar_map_rep}()},
+\code{\link{tar_map_rep_raw}()},
+\code{\link{tar_rep}()},
 \code{\link{tar_rep2_raw}()},
-\code{\link{tar_rep_map_raw}()},
 \code{\link{tar_rep_map}()},
-\code{\link{tar_rep_raw}()},
-\code{\link{tar_rep}()}
+\code{\link{tar_rep_map_raw}()},
+\code{\link{tar_rep_raw}()}
 }
 \concept{branching}

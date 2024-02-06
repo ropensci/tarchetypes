@@ -85,7 +85,10 @@ aggregation happens with \code{vctrs::vec_c()}.
 \item \code{"list"}, branching happens with \verb{[[]]} and aggregation happens with
 \code{list()}.
 \item \code{"group"}: \code{dplyr::group_by()}-like functionality to branch over
-subsets of a data frame. The target's return value must be a data
+subsets of a non-dynamic data frame.
+For \code{iteration = "group"}, the target must not by dynamic
+(the \code{pattern} argument of \code{\link[targets:tar_target]{tar_target()}} must be left \code{NULL}).
+The target's return value must be a data
 frame with a special \code{tar_group} column of consecutive integers
 from 1 through the number of groups. Each integer designates a group,
 and a branch is created for each collection of rows in a group.
@@ -263,8 +266,8 @@ targets::tar_read(x)
 }
 \seealso{
 Other Dynamic branching over files: 
-\code{\link{tar_files_input_raw}()},
+\code{\link{tar_files}()},
 \code{\link{tar_files_input}()},
-\code{\link{tar_files}()}
+\code{\link{tar_files_input_raw}()}
 }
 \concept{Dynamic branching over files}

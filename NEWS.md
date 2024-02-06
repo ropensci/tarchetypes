@@ -1,6 +1,6 @@
-# tarcheytpes 0.7.11.9000 (development)
+# tarchetypes 0.7.11.9000 (development)
 
-
+* Adjust tests because group iteration is now explicitly prohibited for dynamic targets.
 
 # tarchetypes 0.7.11
 

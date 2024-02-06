@@ -90,34 +90,6 @@ targets::tar_test("tar_rep_raw(iteration = 'vector')", {
   expect_equiv(tar_read(x, branches = 2), out[seq_len(6) + 6, ])
 })
 
-targets::tar_test("tar_rep(iteration = 'group')", {
-  targets::tar_script({
-    list(
-      tarchetypes::tar_rep(
-        x,
-        data.frame(x = sample.int(1e4, 2), tar_group = 1),
-        batches = 2,
-        reps = 3,
-        iteration = "group"
-      )
-    )
-  })
-  targets::tar_make(callr_function = NULL)
-  out <- targets::tar_read(x)
-  expect_equal(dim(out), c(12L, 5L))
-  expect_equal(
-    sort(colnames(out)),
-    sort(c("x", "tar_batch", "tar_rep", "tar_seed", "tar_group"))
-  )
-  expect_true(is.integer(out$x))
-  expect_equal(out$tar_batch, rep(seq_len(2), each = 6))
-  expect_equal(out$tar_rep, rep(rep(seq_len(3), each = 2), times = 2))
-  expect_equal(out$tar_group, rep(1, 12))
-  expect_equal(length(tar_meta(x, fields = "children")$children[[1]]), 2L)
-  expect_equal(tar_read(x, branches = 1), out[seq_len(6), ])
-  expect_equiv(tar_read(x, branches = 2), out[seq_len(6) + 6, ])
-})
-
 targets::tar_test("tar_rep() with non-list output", {
   targets::tar_script({
     list(
