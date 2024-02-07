@@ -17,91 +17,91 @@ navbar:
 reference:
 - title: Help
   contents:
-  - '`tarchetypes-package`'
+  - 'tarchetypes-package'
 - title: Literate programming targets
   contents:
-  - '`tar_knit`'
-  - '`tar_knit_raw`'
-  - '`tar_quarto`'
-  - '`tar_quarto_raw`'
-  - '`tar_quarto_rep`'
-  - '`tar_quarto_rep_raw`'
-  - '`tar_render`'
-  - '`tar_render_raw`'
-  - '`tar_render_rep`'
-  - '`tar_render_rep_raw`'
+  - 'tar_knit'
+  - 'tar_knit_raw'
+  - 'tar_quarto'
+  - 'tar_quarto_raw'
+  - 'tar_quarto_rep'
+  - 'tar_quarto_rep_raw'
+  - 'tar_render'
+  - 'tar_render_raw'
+  - 'tar_render_rep'
+  - 'tar_render_rep_raw'
 - title: Literate programming utilities
   contents:
-  - '`tar_knitr_deps`'
-  - '`tar_knitr_deps_expr`'
-  - '`tar_quarto_files`'
+  - 'tar_knitr_deps'
+  - 'tar_knitr_deps_expr'
+  - 'tar_quarto_files'
 - title: Formats
   contents:
-  - '`tar_formats`'
+  - 'tar_formats'
 - title: Simple files
   contents:
-  - '`tar_file_read`'
+  - 'tar_file_read'
 - title: Static branching
   contents:
-  - '`tar_combine`'
-  - '`tar_combine_raw`'
-  - '`tar_map`'
+  - 'tar_combine'
+  - 'tar_combine_raw'
+  - 'tar_map'
 - title: Dynamic branching over files
   contents:
-  - '`tar_files`'
-  - '`tar_files_raw`'
-  - '`tar_files_input`'
-  - '`tar_files_input_raw`'
+  - 'tar_files'
+  - 'tar_files_raw'
+  - 'tar_files_input'
+  - 'tar_files_input_raw'
 - title: Dynamic grouped data frames
   contents:
-  - '`tar_group_by`'
-  - '`tar_group_count`'
-  - '`tar_group_select`'
-  - '`tar_group_size`'
+  - 'tar_group_by'
+  - 'tar_group_count'
+  - 'tar_group_select'
+  - 'tar_group_size'
 - title: Dynamic batched replication
   contents:
-  - '`tar_rep`'
-  - '`tar_rep_raw`'
-  - '`tar_rep2`'
-  - '`tar_rep2_raw`'
+  - 'tar_rep'
+  - 'tar_rep_raw'
+  - 'tar_rep2'
+  - 'tar_rep2_raw'
 - title: Dynamic batched replication within static branches for data frames
   contents:
-  - '`tar_map_rep`'
-  - '`tar_map_rep_raw`'
+  - 'tar_map_rep'
+  - 'tar_map_rep_raw'
 - title: Batched dynamic-within-static branching for data frames
   contents:
-  - '`tar_map2_count`'
-  - '`tar_map2_count_raw`'
-  - '`tar_map2_size`'
-  - '`tar_map2_size_raw`'
+  - 'tar_map2_count'
+  - 'tar_map2_count_raw'
+  - 'tar_map2_size'
+  - 'tar_map2_size_raw'
 - title: Target selection
   contents:
-  - '`tar_select_names`'
-  - '`tar_select_targets`'
+  - 'tar_select_names'
+  - 'tar_select_targets'
 - title: Targets with custom invalidation rules
   contents:
-  - '`tar_age`'
-  - '`tar_change`'
-  - '`tar_download`'
-  - '`tar_force`'
-  - '`tar_skip`'
+  - 'tar_age'
+  - 'tar_change'
+  - 'tar_download'
+  - 'tar_force'
+  - 'tar_skip'
 - title: Cues
   contents:
-  - '`tar_cue_age`'
-  - '`tar_cue_age_raw`'
-  - '`tar_cue_force`'
-  - '`tar_cue_skip`'
+  - 'tar_cue_age'
+  - 'tar_cue_age_raw'
+  - 'tar_cue_force'
+  - 'tar_cue_skip'
 - title: Hooks
   contents:
-  - '`tar_hook_before`'
-  - '`tar_hook_inner`'
-  - '`tar_hook_outer`'
+  - 'tar_hook_before'
+  - 'tar_hook_inner'
+  - 'tar_hook_outer'
 - title: Metaprogramming utilities
   contents:
-  - '`tar_eval`'
-  - '`tar_eval_raw`'
-  - '`tar_sub`'
-  - '`tar_sub_raw`'
+  - 'tar_eval'
+  - 'tar_eval_raw'
+  - 'tar_sub'
+  - 'tar_sub_raw'
 - title: Domain-specific languages for pipeline construction
   contents:
-  - '`tar_plan`'
+  - 'tar_plan'
