@@ -116,6 +116,7 @@ tar_render_rep_raw <- function(
   resources = targets::tar_option_get("resources"),
   retrieval = targets::tar_option_get("retrieval"),
   cue = targets::tar_option_get("cue"),
+  description = targets::tar_option_get("description"),
   quiet = TRUE,
   args = list()
 ) {
@@ -150,7 +151,8 @@ tar_render_rep_raw <- function(
     priority = priority,
     resources = resources,
     retrieval = retrieval,
-    cue = cue
+    cue = cue,
+    description = description
   )
   target <- targets::tar_target_raw(
     name = name,
@@ -168,7 +170,8 @@ tar_render_rep_raw <- function(
     priority = priority,
     resources = resources,
     retrieval = retrieval,
-    cue = cue
+    cue = cue,
+    description = description
   )
   out <- list(target_params, target)
   names(out) <- c(name_params, name)

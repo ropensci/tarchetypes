@@ -73,7 +73,8 @@ tar_rep_raw <- function(
   resources = targets::tar_option_get("resources"),
   storage = targets::tar_option_get("storage"),
   retrieval = targets::tar_option_get("retrieval"),
-  cue = targets::tar_option_get("cue")
+  cue = targets::tar_option_get("cue"),
+  description = targets::tar_option_get("description")
 ) {
   tar_assert_rep_workers(rep_workers)
   rep_workers <- as.integer(rep_workers)
@@ -87,7 +88,8 @@ tar_rep_raw <- function(
     memory = memory,
     garbage_collection = garbage_collection,
     priority = priority,
-    cue = cue
+    cue = cue,
+    description = description
   )
   target <- tar_rep_target(
     name = name,
@@ -109,7 +111,8 @@ tar_rep_raw <- function(
     resources = resources,
     storage = storage,
     retrieval = retrieval,
-    cue = cue
+    cue = cue,
+    description = description
   )
   list(batch, target)
 }
@@ -122,7 +125,8 @@ tar_rep_batch <- function(
   memory,
   garbage_collection,
   priority,
-  cue
+  cue,
+  description
 ) {
   targets::tar_target_raw(
     name = name_batch,
@@ -138,7 +142,8 @@ tar_rep_batch <- function(
     priority = priority,
     storage = "main",
     retrieval = "main",
-    cue = cue
+    cue = cue,
+    description = description
   )
 }
 
@@ -162,7 +167,8 @@ tar_rep_target <- function(
   resources,
   storage,
   retrieval,
-  cue
+  cue,
+  description
 ) {
   command <- tar_rep_command_target(
     command = command,
@@ -188,7 +194,8 @@ tar_rep_target <- function(
     resources = resources,
     storage = storage,
     retrieval = retrieval,
-    cue = cue
+    cue = cue,
+    description = description
   )
 }
 

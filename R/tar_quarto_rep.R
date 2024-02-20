@@ -117,7 +117,8 @@ tar_quarto_rep <- function(
   priority = targets::tar_option_get("priority"),
   resources = targets::tar_option_get("resources"),
   retrieval = targets::tar_option_get("retrieval"),
-  cue = targets::tar_option_get("cue")
+  cue = targets::tar_option_get("cue"),
+  description = targets::tar_option_get("description")
 ) {
   execute_params <- targets::tar_tidy_eval(
     substitute(execute_params),
@@ -148,6 +149,7 @@ tar_quarto_rep <- function(
     priority = priority,
     resources = resources,
     retrieval = retrieval,
-    cue = cue
+    cue = cue,
+    description = description
   )
 }

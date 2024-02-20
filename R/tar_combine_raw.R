@@ -48,7 +48,8 @@ tar_combine_raw <- function(
   resources = targets::tar_option_get("resources"),
   storage = targets::tar_option_get("storage"),
   retrieval = targets::tar_option_get("retrieval"),
-  cue = targets::tar_option_get("cue")
+  cue = targets::tar_option_get("cue"),
+  description = targets::tar_option_get("description")
 ) {
   tar_combine_impl(
     name = name,
@@ -69,7 +70,8 @@ tar_combine_raw <- function(
     resources = resources,
     storage = storage,
     retrieval = retrieval,
-    cue = cue
+    cue = cue,
+    description = description
   )
 }
 
@@ -92,7 +94,8 @@ tar_combine_impl <- function(
   resources,
   storage,
   retrieval,
-  cue
+  cue,
+  description
 ) {
   targets::tar_assert_chr(name)
   targets::tar_assert_target_list(targets)
@@ -123,6 +126,7 @@ tar_combine_impl <- function(
     resources = resources,
     storage = storage,
     retrieval = retrieval,
-    cue = cue
+    cue = cue,
+    description = description
   )
 }

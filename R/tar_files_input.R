@@ -65,7 +65,8 @@ tar_files_input <- function(
   garbage_collection = targets::tar_option_get("garbage_collection"),
   priority = targets::tar_option_get("priority"),
   resources = targets::tar_option_get("resources"),
-  cue = targets::tar_option_get("cue")
+  cue = targets::tar_option_get("cue"),
+  description = targets::tar_option_get("description")
 ) {
   name <- targets::tar_deparse_language(substitute(name))
   format <- match.arg(format)
@@ -81,6 +82,7 @@ tar_files_input <- function(
     garbage_collection = garbage_collection,
     priority = priority,
     resources = resources,
-    cue = cue
+    cue = cue,
+    description = description
   )
 }

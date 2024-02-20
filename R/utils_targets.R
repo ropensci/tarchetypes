@@ -31,7 +31,8 @@ tar_copy_target <- function(target) {
       format = target$cue$format,
       iteration = target$cue$iteration,
       file = target$cue$file
-    )
+    ),
+    description = target$settings$description
   )
 }
 

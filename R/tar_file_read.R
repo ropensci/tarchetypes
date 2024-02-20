@@ -43,7 +43,8 @@ tar_file_read <- function(
   resources = targets::tar_option_get("resources"),
   storage = targets::tar_option_get("storage"),
   retrieval = targets::tar_option_get("retrieval"),
-  cue = targets::tar_option_get("cue")
+  cue = targets::tar_option_get("cue"),
+  description = targets::tar_option_get("description")
 ) {
   format_file <- match.arg(format_file)
   name_read <- deparse(rlang::enexpr(name))
@@ -74,7 +75,8 @@ tar_file_read <- function(
       priority = priority,
       storage = storage,
       retrieval = retrieval,
-      cue = cue
+      cue = cue,
+      description = description
     ),
     targets::tar_target_raw(
       name = name_read,
@@ -91,7 +93,8 @@ tar_file_read <- function(
       resources = resources,
       storage = storage,
       retrieval = retrieval,
-      cue = cue
+      cue = cue,
+      description = description
     )
   )
 }

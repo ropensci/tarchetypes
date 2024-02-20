@@ -123,6 +123,7 @@ tar_render <- function(
   resources = targets::tar_option_get("resources"),
   retrieval = targets::tar_option_get("retrieval"),
   cue = targets::tar_option_get("cue"),
+  description = targets::tar_option_get("description"),
   quiet = TRUE,
   ...
 ) {
@@ -150,6 +151,7 @@ tar_render <- function(
     priority = priority,
     resources = resources,
     retrieval = retrieval,
-    cue = cue
+    cue = cue,
+    description = description
   )
 }

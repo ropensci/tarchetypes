@@ -73,7 +73,8 @@ tar_files_input_raw <- function(
   garbage_collection = targets::tar_option_get("garbage_collection"),
   priority = targets::tar_option_get("priority"),
   resources = targets::tar_option_get("resources"),
-  cue = targets::tar_option_get("cue")
+  cue = targets::tar_option_get("cue"),
+  description = targets::tar_option_get("description")
 ) {
   targets::tar_assert_chr(name, "name must be a character.")
   targets::tar_assert_scalar(name, "name must have length 1.")
@@ -100,7 +101,8 @@ tar_files_input_raw <- function(
     resources = resources,
     storage = "main",
     retrieval = "main",
-    cue = cue
+    cue = cue,
+    description = description
   )
   name_files_sym <- as.symbol(name_files)
   downstream <- targets::tar_target_raw(
@@ -119,7 +121,8 @@ tar_files_input_raw <- function(
     resources = resources,
     storage = "main",
     retrieval = "main",
-    cue = cue
+    cue = cue,
+    description = description
   )
   out <- list(upstream, downstream)
   names(out) <- c(name_files, name)

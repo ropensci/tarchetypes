@@ -16,7 +16,8 @@ tar_files_input_raw(
   garbage_collection = targets::tar_option_get("garbage_collection"),
   priority = targets::tar_option_get("priority"),
   resources = targets::tar_option_get("resources"),
-  cue = targets::tar_option_get("cue")
+  cue = targets::tar_option_get("cue"),
+  description = targets::tar_option_get("description")
 )
 }
 \arguments{
@@ -128,6 +129,15 @@ See \code{tar_resources()} for details.}
 \item{cue}{An optional object from \code{tar_cue()}
 to customize the rules that decide whether the target is up to date.
 Only applies to the downstream target. The upstream target always runs.}
+
+\item{description}{Character of length 1, a custom free-form human-readable
+text description of the target. Descriptions appear as target labels
+in functions like \code{\link[targets:tar_manifest]{tar_manifest()}} and \code{\link[targets:tar_visnetwork]{tar_visnetwork()}},
+and they let you select subsets of targets for the \code{names} argument of
+functions like \code{\link[targets:tar_make]{tar_make()}}. For example,
+\code{tar_manifest(names = tar_described_as(starts_with("survival model")))}
+lists all the targets whose descriptions start with the character
+string \code{"survival model"}.}
 }
 \value{
 A list of two targets, one upstream and one downstream.

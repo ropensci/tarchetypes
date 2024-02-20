@@ -64,7 +64,8 @@ tar_files_raw <- function(
   resources = targets::tar_option_get("resources"),
   storage = targets::tar_option_get("storage"),
   retrieval = targets::tar_option_get("retrieval"),
-  cue = targets::tar_option_get("cue")
+  cue = targets::tar_option_get("cue"),
+  description = targets::tar_option_get("description")
 ) {
   targets::tar_assert_chr(name, "name must be a character.")
   targets::tar_assert_scalar(name, "name must have length 1.")
@@ -88,7 +89,8 @@ tar_files_raw <- function(
     resources = resources,
     storage = storage,
     retrieval = retrieval,
-    cue = targets::tar_cue(mode = "always")
+    cue = targets::tar_cue(mode = "always"),
+    description = description
   )
   name_files_sym <- as.symbol(name_files)
   downstream <- targets::tar_target_raw(
@@ -108,7 +110,8 @@ tar_files_raw <- function(
     resources = resources,
     storage = "main",
     retrieval = "main",
-    cue = cue
+    cue = cue,
+    description = description
   )
   out <- list(upstream, downstream)
   names(out) <- c(name_files, name)

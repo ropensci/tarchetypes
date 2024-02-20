@@ -53,7 +53,8 @@ tar_download <- function(
   resources = targets::tar_option_get("resources"),
   storage = targets::tar_option_get("storage"),
   retrieval = targets::tar_option_get("retrieval"),
-  cue = targets::tar_option_get("cue")
+  cue = targets::tar_option_get("cue"),
+  description = targets::tar_option_get("description")
 ) {
   name <- targets::tar_deparse_language(substitute(name))
   name_url <- paste0(name, "_url")
@@ -109,7 +110,8 @@ tar_download <- function(
     resources = resources,
     storage = storage,
     retrieval = retrieval,
-    cue = cue
+    cue = cue,
+    description = description
   )
   target_download <- targets::tar_target_raw(
     name = name,
@@ -125,7 +127,8 @@ tar_download <- function(
     resources = resources,
     storage = storage,
     retrieval = retrieval,
-    cue = cue
+    cue = cue,
+    description = description
   )
   list(target_url, target_download)
 }

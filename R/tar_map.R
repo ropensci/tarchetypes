@@ -169,6 +169,7 @@ tar_map_iter <- function(values, target, command, pattern) {
       repository = target$cue$repository,
       iteration = target$cue$iteration,
       file = target$cue$file
-    )
+    ),
+    description = settings$description
   )
 }

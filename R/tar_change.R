@@ -58,7 +58,8 @@ tar_change <- function(
   resources = targets::tar_option_get("resources"),
   storage = targets::tar_option_get("storage"),
   retrieval = targets::tar_option_get("retrieval"),
-  cue = targets::tar_option_get("cue")
+  cue = targets::tar_option_get("cue"),
+  description = targets::tar_option_get("description")
 ) {
   name <- targets::tar_deparse_language(substitute(name))
   name_change <- paste0(name, "_change")
@@ -83,7 +84,8 @@ tar_change <- function(
     resources = resources,
     storage = storage,
     retrieval = retrieval,
-    cue = cue
+    cue = cue,
+    description = description
   )
 }
 
@@ -105,7 +107,8 @@ tar_change_raw <- function(
   resources,
   storage,
   retrieval,
-  cue
+  cue,
+  description
 ) {
   upstream <- targets::tar_target_raw(
     name = name_change,
@@ -124,7 +127,8 @@ tar_change_raw <- function(
     resources = resources,
     storage = storage,
     retrieval = retrieval,
-    cue = targets::tar_cue(mode = "always")
+    cue = targets::tar_cue(mode = "always"),
+    description = description
   )
   downstream <- targets::tar_target_raw(
     name = name,
@@ -143,7 +147,8 @@ tar_change_raw <- function(
     resources = resources,
     storage = storage,
     retrieval = retrieval,
-    cue = cue
+    cue = cue,
+    description = description
   )
   list(upstream, downstream)
 }

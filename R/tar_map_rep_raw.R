@@ -89,7 +89,8 @@ tar_map_rep_raw <- function(
   resources = targets::tar_option_get("resources"),
   storage = targets::tar_option_get("storage"),
   retrieval = targets::tar_option_get("retrieval"),
-  cue = targets::tar_option_get("cue")
+  cue = targets::tar_option_get("cue"),
+  description = targets::tar_option_get("description")
 ) {
   targets::tar_assert_scalar(name)
   targets::tar_assert_chr(name)
@@ -134,7 +135,8 @@ tar_map_rep_raw <- function(
     priority = priority,
     storage = "main",
     retrieval = "main",
-    cue = cue
+    cue = cue,
+    description = description
   )
   command_dynamic <- tar_rep_command_target(
     command = command,
@@ -160,7 +162,8 @@ tar_map_rep_raw <- function(
     resources = resources,
     storage = storage,
     retrieval = retrieval,
-    cue = cue
+    cue = cue,
+    description = description
   )
   target_static <- if_any(
     is.null(values),
@@ -187,7 +190,8 @@ tar_map_rep_raw <- function(
       garbage_collection = garbage_collection,
       deployment = "main",
       priority = priority,
-      cue = cue
+      cue = cue,
+      description = description
     )
   )
   unlist(list(target_batch, target_static, target_combine), recursive = TRUE)
