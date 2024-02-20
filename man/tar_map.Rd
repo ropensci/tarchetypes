@@ -24,8 +24,8 @@ Lists can be arbitrarily nested, as in \code{list()}.}
 
 \item{names}{Subset of \code{names(values)}
 used to generate the suffixes in the names of the new targets.
-You can supply symbols, a character vector,
-or tidyselect helpers like \code{\link[=starts_with]{starts_with()}}.}
+The value of \code{names} should be a \code{tidyselect} expression
+such as a call to \code{\link[=any_of]{any_of()}} or \code{\link[=starts_with]{starts_with()}}.}
 
 \item{unlist}{Logical, whether to flatten the returned list of targets.
 If \code{unlist = FALSE}, the list is nested and sub-lists

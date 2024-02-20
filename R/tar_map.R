@@ -41,8 +41,8 @@
 #'   Lists can be arbitrarily nested, as in `list()`.
 #' @param names Subset of `names(values)`
 #'   used to generate the suffixes in the names of the new targets.
-#'   You can supply symbols, a character vector,
-#'   or tidyselect helpers like [starts_with()].
+#'   The value of `names` should be a `tidyselect` expression
+#'   such as a call to [any_of()] or [starts_with()].
 #' @param unlist Logical, whether to flatten the returned list of targets.
 #'   If `unlist = FALSE`, the list is nested and sub-lists
 #'   are named and grouped by the original input targets.
