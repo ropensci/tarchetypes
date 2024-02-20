@@ -71,6 +71,7 @@ tar_map_rep_raw <- function(
   command,
   values = NULL,
   names = NULL,
+  descriptions = quote(tidyselect::everything()),
   columns = quote(tidyselect::everything()),
   batches = 1,
   reps = 1,
@@ -102,6 +103,9 @@ tar_map_rep_raw <- function(
   }
   if (!is.null(names)) {
     targets::tar_assert_lang(names)
+  }
+  if (!is.null(descriptions)) {
+    targets::tar_assert_lang(descriptions)
   }
   if (!is.null(columns)) {
     targets::tar_assert_lang(columns)
@@ -170,7 +174,12 @@ tar_map_rep_raw <- function(
     target_dynamic,
     do.call(
       tar_map,
-      args = list(target_dynamic, values = values, names = names)
+      args = list(
+        target_dynamic,
+        values = values,
+        names = names,
+        descriptions = descriptions
+      )
     )
   )
   target_combine <- if_any(

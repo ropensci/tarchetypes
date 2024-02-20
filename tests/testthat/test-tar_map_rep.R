@@ -19,6 +19,7 @@ targets::tar_test("tar_map_rep(): combine, columns, static branches", {
       command = f(sigma1, sigma2),
       values = hyperparameters,
       names = tidyselect::any_of("scenario"),
+      descriptions = tidyselect::any_of(c("scenario", "sigma2")),
       batches = 2,
       reps = 3
     )
@@ -44,6 +45,18 @@ targets::tar_test("tar_map_rep(): combine, columns, static branches", {
   expect_equal(
     out$name == "x",
     grepl("bind_rows", out$command)
+  )
+  expect_equal(
+    out$description[out$name == "x_diffuse"],
+    "diffuse 10"
+  )
+  expect_equal(
+    out$description[out$name == "x_medium"],
+    "medium 5"
+  )
+  expect_equal(
+    out$description[out$name == "x_tight"],
+    "tight 10"
   )
   # network
   out <- targets::tar_network(callr_function = NULL)$edges
