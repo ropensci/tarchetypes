@@ -209,3 +209,10 @@ targets::tar_test("correct RNG state", {
     expect_equal(out$seed_hash[rep], digest::digest(.Random.seed))
   }
 })
+
+targets::tar_test("tar_rep_bind() error handling", {
+  expect_error(
+    tar_rep_bind(out = "x", iteration = "none"),
+    class = "tar_condition_validate"
+  )
+})
