@@ -210,6 +210,16 @@ targets::tar_test("correct RNG state", {
   }
 })
 
+targets::tar_test("tar_rep_bind() group", {
+  out <- tar_rep_bind(
+    out = list(a = tibble::tibble(a = "x")),
+    iteration = "group"
+  )
+  expect_true(tibble::is_tibble(out))
+  expect_equal(colnames(out), "a")
+  expect_equal(out$a, "x")
+})
+
 targets::tar_test("tar_rep_bind() error handling", {
   expect_error(
     tar_rep_bind(out = "x", iteration = "none"),

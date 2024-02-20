@@ -72,7 +72,7 @@ targets::tar_test("tar_map() manifest", {
     )
   })
   out <- targets::tar_manifest(callr_function = NULL)
-  expect_equal(dim(out), c(4, 3))
+  expect_equal(dim(out), c(4, 4))
   names <- c("x_12_56", "x_34_78", "y_12_56", "y_34_78")
   expect_equal(sort(out$name), sort(c(names)))
   expect_equal(out$command[out$name == "x_12_56"], "12 + 56")
@@ -221,7 +221,8 @@ targets::tar_test("tar_map() description from values only", {
         name = letters[seq_len(4L)],
         blurb = as.character(seq_len(4L))
       ),
-      descriptions = "blurb",
+      names = tidyselect::any_of("name"),
+      descriptions = tidyselect::any_of("blurb"),
       tar_target(x, 1)
     )
   })
@@ -240,9 +241,11 @@ targets::tar_test("tar_map() description from both targets and values", {
     tar_map(
       values = list(
         name = letters[seq_len(4L)],
-        blurb = as.character(seq_len(4L))
+        blurb = as.character(seq_len(4L)),
+        blurb2 = c("w", "x", "y", "z")
       ),
-      descriptions = "blurb",
+      names = tidyselect::any_of("name"),
+      descriptions = tidyselect::any_of(c("blurb", "blurb2")),
       tar_target(x, 1, description = "info")
     )
   })
@@ -251,5 +254,8 @@ targets::tar_test("tar_map() description from both targets and values", {
     fields = tidyselect::any_of("description"),
     drop_missing = FALSE
   )
-  expect_equal(manifest$description, paste("info", seq_len(4L)))
+  expect_equal(
+    manifest$description,
+    paste("info", seq_len(4L), c("w", "x", "y", "z"))
+  )
 })
