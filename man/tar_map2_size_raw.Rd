@@ -11,6 +11,7 @@ tar_map2_size_raw(
   command2,
   values = NULL,
   names = NULL,
+  descriptions = quote(tidyselect::everything()),
   size = Inf,
   combine = TRUE,
   suffix1 = "1",
@@ -74,6 +75,11 @@ you define \code{values}, as shown at
 to select which columns of \code{values} to use to construct
 statically branched target names. If \code{NULL}, then
 short names are automatically generated.}
+
+\item{descriptions}{Names of a column in \code{values}
+to append to the custom description of each generated target.
+The value of \code{descriptions} should be a \code{tidyselect} expression
+such as a call to \code{\link[=any_of]{any_of()}} or \code{\link[=starts_with]{starts_with()}}.}
 
 \item{size}{Positive integer of length 1,
 maximum number of rows in each batch for

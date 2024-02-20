@@ -1,6 +1,7 @@
-# tarchetypes 0.7.12.9000 (development)
+# tarchetypes 0.7.12.9001 (development)
 
-
+* Expose the new `description` argument of `tar_target()` in `targets` 1.5.1.9001.
+* `tar_map()` and other static branching target factories now append values to the target descriptions. Use the `descriptions` argument of those functions to customize.
 
 # tarchetypes 0.7.12
 

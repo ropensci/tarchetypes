@@ -42,6 +42,7 @@ tar_map2_raw <- function(
   command2,
   values = NULL,
   names = NULL,
+  descriptions = quote(tidyselect::everything()),
   group = quote(rep(1L, nrow(as.data.frame(!!.x)))),
   combine = TRUE,
   columns1 = quote(tidyselect::everything()),
@@ -80,6 +81,9 @@ tar_map2_raw <- function(
   }
   if (!is.null(names)) {
     targets::tar_assert_lang(names)
+  }
+  if (!is.null(descriptions)) {
+    targets::tar_assert_lang(descriptions)
   }
   if (!is.null(columns1)) {
     targets::tar_assert_lang(columns1)
@@ -160,6 +164,7 @@ tar_map2_raw <- function(
         target_downstream,
         values = values,
         names = names,
+        descriptions = descriptions,
         unlist = FALSE
       )
     )

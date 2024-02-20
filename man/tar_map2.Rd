@@ -10,6 +10,7 @@ tar_map2(
   command2,
   values = NULL,
   names = NULL,
+  descriptions = tidyselect::everything(),
   group = rep(1L, nrow(as.data.frame(!!.x))),
   combine = TRUE,
   suffix1 = "1",
@@ -59,6 +60,11 @@ you define \code{values}, as shown at
 to select which columns of \code{values} to use to construct
 statically branched target names. If \code{NULL}, then
 short names are automatically generated.}
+
+\item{descriptions}{Names of a column in \code{values}
+to append to the custom description of each generated target.
+The value of \code{descriptions} should be a \code{tidyselect} expression
+such as a call to \code{\link[=any_of]{any_of()}} or \code{\link[=starts_with]{starts_with()}}.}
 
 \item{group}{Function on the data produced by \code{command1} to create the
 \code{tar_group} column that determines the batching structure for the
