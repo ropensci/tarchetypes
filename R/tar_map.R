@@ -43,6 +43,9 @@
 #'   used to generate the suffixes in the names of the new targets.
 #'   The value of `names` should be a `tidyselect` expression
 #'   such as a call to [any_of()] or [starts_with()].
+#' @param descriptions Character of length 1, name of a column in `values`
+#'   to append to the custom description of each generated target.
+#'   Set to `NULL` to omit.
 #' @param unlist Logical, whether to flatten the returned list of targets.
 #'   If `unlist = FALSE`, the list is nested and sub-lists
 #'   are named and grouped by the original input targets.
@@ -66,18 +69,27 @@
 tar_map <- function(
   values,
   ...,
-  names = tidyselect::everything(),
+  names = -tidyselect::any_of(descriptions),
+  descriptions = NULL,
   unlist = FALSE
 ) {
   targets <- unlist(list(...), recursive = TRUE) %|||% list()
   targets::tar_assert_target_list(targets)
+  targets::tar_assert_chr(descriptions %|||% "x")
+  targets::tar_assert_scalar(descriptions %|||% "x")
+  targets::tar_assert_in(descriptions, base::names(values))
   assert_values_list(values)
   names_quosure <- rlang::enquo(names)
   names <- eval_tidyselect(names_quosure, base::names(values))
   values <- tibble::as_tibble(values)
   values <- tar_map_process_values(values)
   values <- tar_map_extend_values(targets, values, names)
-  out <- lapply(targets, tar_map_target, values = values)
+  out <- lapply(
+    X = targets,
+    FUN = tar_map_target,
+    values = values,
+    descriptions = descriptions
+  )
   flat <- unlist(out, recursive = TRUE)
   if_any(
     unlist,
@@ -129,21 +141,28 @@ tar_map_default_suffixes <- function(values) {
   list(id = id)
 }
 
-tar_map_target <- function(target, values) {
+tar_map_target <- function(target, values, descriptions) {
   lapply(
-    transpose(values),
-    tar_map_iter,
+    X = transpose(values),
+    FUN = tar_map_iter,
     target = target,
     command = target$command$expr,
-    pattern = target$settings$pattern
+    pattern = target$settings$pattern,
+    descriptions = descriptions
   )
 }
 
-tar_map_iter <- function(values, target, command, pattern) {
+tar_map_iter <- function(values, target, command, pattern, descriptions) {
   settings <- target$settings
   name <- as.character(values[[settings$name]])
   command <- substitute_expr(command, values)
   pattern <- substitute_expr(pattern, values) %||% NULL
+  base_description <- as.character(settings$description)
+  description <- if_any(
+    length(descriptions) > 0L,
+    trimws(paste(base_description, values[[descriptions]])),
+    base_description
+  )
   targets::tar_target_raw(
     name = name,
     command = command,
@@ -170,6 +189,6 @@ tar_map_iter <- function(values, target, command, pattern) {
       iteration = target$cue$iteration,
       file = target$cue$file
     ),
-    description = settings$description
+    description = description
   )
 }

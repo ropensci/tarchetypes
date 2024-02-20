@@ -4,7 +4,13 @@
 \alias{tar_map}
 \title{Static branching.}
 \usage{
-tar_map(values, ..., names = tidyselect::everything(), unlist = FALSE)
+tar_map(
+  values,
+  ...,
+  names = -tidyselect::any_of(descriptions),
+  descriptions = NULL,
+  unlist = FALSE
+)
 }
 \arguments{
 \item{values}{Named list or data frame with values to iterate over.
@@ -26,6 +32,10 @@ Lists can be arbitrarily nested, as in \code{list()}.}
 used to generate the suffixes in the names of the new targets.
 The value of \code{names} should be a \code{tidyselect} expression
 such as a call to \code{\link[=any_of]{any_of()}} or \code{\link[=starts_with]{starts_with()}}.}
+
+\item{descriptions}{Character of length 1, name of a column in \code{values}
+to append to the custom description of each generated target.
+Set to \code{NULL} to omit.}
 
 \item{unlist}{Logical, whether to flatten the returned list of targets.
 If \code{unlist = FALSE}, the list is nested and sub-lists

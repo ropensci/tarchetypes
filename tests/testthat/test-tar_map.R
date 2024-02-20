@@ -171,3 +171,85 @@ targets::tar_test("tar_map() is not sensitive to ordering (#67)", {
   out <- targets::tar_progress()
   expect_equal(unique(out$progress), "skipped")
 })
+
+targets::tar_test("tar_map() default descriptions", {
+  skip_on_cran()
+  targets::tar_script({
+    library(targets)
+    tar_map(
+      values = list(
+        name = letters[seq_len(4L)]
+      ),
+      descriptions = NULL,
+      tar_target(x, 1)
+    )
+  })
+  manifest <- targets::tar_manifest(
+    callr_function = NULL,
+    fields = tidyselect::any_of("description"),
+    drop_missing = FALSE
+  )
+  expect_true(all(is.na(manifest$description)))
+})
+
+targets::tar_test("tar_map() description from target only", {
+  skip_on_cran()
+  targets::tar_script({
+    library(targets)
+    tar_map(
+      values = list(
+        name = letters[seq_len(4L)]
+      ),
+      descriptions = NULL,
+      tar_target(x, 1, description = "info")
+    )
+  })
+  manifest <- targets::tar_manifest(
+    callr_function = NULL,
+    fields = tidyselect::any_of("description"),
+    drop_missing = FALSE
+  )
+  expect_equal(manifest$description, rep("info", 4L))
+})
+
+targets::tar_test("tar_map() description from values only", {
+  skip_on_cran()
+  targets::tar_script({
+    library(targets)
+    tar_map(
+      values = list(
+        name = letters[seq_len(4L)],
+        blurb = as.character(seq_len(4L))
+      ),
+      descriptions = "blurb",
+      tar_target(x, 1)
+    )
+  })
+  manifest <- targets::tar_manifest(
+    callr_function = NULL,
+    fields = tidyselect::any_of("description"),
+    drop_missing = FALSE
+  )
+  expect_equal(manifest$description, as.character(seq_len(4L)))
+})
+
+targets::tar_test("tar_map() description from both targets and values", {
+  skip_on_cran()
+  targets::tar_script({
+    library(targets)
+    tar_map(
+      values = list(
+        name = letters[seq_len(4L)],
+        blurb = as.character(seq_len(4L))
+      ),
+      descriptions = "blurb",
+      tar_target(x, 1, description = "info")
+    )
+  })
+  manifest <- targets::tar_manifest(
+    callr_function = NULL,
+    fields = tidyselect::any_of("description"),
+    drop_missing = FALSE
+  )
+  expect_equal(manifest$description, paste("info", seq_len(4L)))
+})
