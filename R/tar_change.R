@@ -117,7 +117,7 @@ tar_change_raw <- function(
     packages = packages,
     library = library,
     format = "rds",
-    repository = "local",
+    repository = repository,
     iteration = iteration,
     error = error,
     memory = memory,
