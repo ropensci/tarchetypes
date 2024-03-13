@@ -45,7 +45,7 @@ Imports:
   fs (>= 1.4.2),
   parallel,
   rlang (>= 0.4.7),
-  targets (>= 1.5.1.9001),
+  targets (>= 1.6.0),
   tibble (>= 3.0.1),
   tidyselect (>= 1.1.0),
   utils,
