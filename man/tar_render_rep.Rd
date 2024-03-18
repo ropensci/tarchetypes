@@ -48,6 +48,17 @@ on the result to locally recreate the target's initial RNG state.}
 \item{path}{Character string, file path to the R Markdown source file.
 Must have length 1.}
 
+\item{working_directory}{Optional character string,
+path to the working directory
+to temporarily set when running the report.
+The default is \code{NULL}, which runs the report from the
+current working directory at the time the pipeline is run.
+This default is recommended in the vast majority of cases.
+To use anything other than \code{NULL}, you must manually set the value
+of the \code{store} argument relative to the working directory in all calls
+to \code{tar_read()} and \code{tar_load()} in the report. Otherwise,
+these functions will not know where to find the data.}
+
 \item{params}{Code to generate a data frame or \code{tibble}
 with one row per rendered report
 and one column per R Markdown parameter. You may also include an

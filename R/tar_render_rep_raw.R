@@ -46,6 +46,7 @@
 #' @inheritParams targets::tar_target
 #' @inheritParams rmarkdown::render
 #' @inheritParams tar_rep
+#' @inheritParams tar_render
 #' @param path Character string, file path to the R Markdown source file.
 #'   Must have length 1.
 #' @param params Expression object with code to generate

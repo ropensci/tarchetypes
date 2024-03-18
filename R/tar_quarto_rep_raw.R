@@ -49,6 +49,7 @@
 #' @inheritParams quarto::quarto_render
 #' @inheritParams targets::tar_target
 #' @inheritParams tar_quarto_rep_run
+#' @inheritParams tar_render
 #' @param path Character string, file path to the Quarto source file.
 #'   Must have length 1.
 #' @param execute_params Expression object with code to generate
