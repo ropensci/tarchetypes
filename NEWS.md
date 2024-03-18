@@ -3,6 +3,7 @@
 * Expose the new `description` argument of `tar_target()` in `targets` 1.5.1.9001.
 * `tar_map()` and other static branching target factories now append values to the target descriptions. Use the `descriptions` argument of those functions to customize.
 * Ensure consistent `repository` settings in `tar_change()` and `tar_map_rep()`.
+* `tar_knit()`, `tar_render()`, `tar_quarto()`, and their "rep" and "raw" versions all gain a `working_directory` argument to change the working directory the report knits from. Users who set `working_directory` need to supply the `store` argument of `tar_load()` and `tar_read()` relative to the working directory so the report knows where to find the data.
 
 # tarchetypes 0.7.12
 

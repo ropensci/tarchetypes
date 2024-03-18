@@ -56,9 +56,9 @@
 #'   The default is `NULL`, which runs the report from the
 #'   current working directory at the time the pipeline is run.
 #'   This default is recommended in the vast majority of cases.
-#'   To use anything other than `NULL`, you must manually set a value
-#'   for the `store` argument in all calls to
-#'   `tar_read()` and `tar_load()` in the report. Otherwise,
+#'   To use anything other than `NULL`, you must manually set the value
+#'   of the `store` argument relative to the working directory in all calls
+#'   to `tar_read()` and `tar_load()` in the report. Otherwise,
 #'   these functions will not know where to find the data.
 #' @param ... Named arguments to `rmarkdown::render()`.
 #'   These arguments are evaluated when the target actually runs in
