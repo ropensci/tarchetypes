@@ -156,4 +156,9 @@ targets::tar_test("tar_knit() custom output & working directory", {
   expect_true(file.exists(file.path("out", "here")))
   lines <- readLines(file.path("out", "report.md"))
   expect_true(any(grepl("UPSTREAM_SUCCEEDED", lines)))
+  expect_equal(
+    sort(targets::tar_read(report)),
+    sort(c(file.path("out", c("report.md", "report.Rmd"))))
+  )
+  expect_equal(targets::tar_outdated(callr_function = NULL), character(0L))
 })
