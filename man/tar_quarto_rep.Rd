@@ -16,6 +16,7 @@ tar_quarto_rep(
   cache_refresh = FALSE,
   debug = FALSE,
   quiet = TRUE,
+  quarto_args = NULL,
   pandoc_args = NULL,
   rep_workers = 1,
   tidy_eval = targets::tar_option_get("tidy_eval"),
@@ -91,6 +92,10 @@ respectively for Rmd and Jupyter input files).}
 \item{debug}{Leave intermediate files in place after render.}
 
 \item{quiet}{Suppress warning and other messages.}
+
+\item{quarto_args}{Character vector of other \code{quarto} CLI flag pass to the
+command. This is mainly for advanced usage, e.g it can be useful for new
+options added to quarto CLI and not yet supported as function argument.}
 
 \item{pandoc_args}{Additional command line options to pass to pandoc.}
 

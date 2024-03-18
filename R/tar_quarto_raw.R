@@ -117,6 +117,7 @@ tar_quarto_raw <- function(
   cache_refresh = FALSE,
   debug = FALSE,
   quiet = TRUE,
+  quarto_args = NULL,
   pandoc_args = NULL,
   profile = NULL,
   packages = NULL,
@@ -153,6 +154,7 @@ tar_quarto_raw <- function(
   targets::tar_assert_lgl(debug)
   targets::tar_assert_scalar(quiet)
   targets::tar_assert_lgl(quiet)
+  targets::tar_assert_chr(quarto_args %|||% ".")
   targets::tar_assert_chr(pandoc_args %|||% ".")
   targets::tar_assert_scalar(profile %|||% ".")
   targets::tar_assert_chr(profile %|||% ".")
@@ -180,6 +182,7 @@ tar_quarto_raw <- function(
     cache_refresh = cache_refresh,
     debug = debug,
     quiet = quiet,
+    quarto_args = quarto_args,
     pandoc_args = pandoc_args,
     profile = profile
   )
@@ -212,6 +215,7 @@ tar_quarto_command <- function(
   cache_refresh,
   debug,
   quiet,
+  quarto_args,
   pandoc_args,
   profile
 ) {
@@ -228,6 +232,7 @@ tar_quarto_command <- function(
       cache_refresh = cache_refresh,
       debug = debug,
       quiet = quiet,
+      quarto_args = quarto_args,
       pandoc_args = pandoc_args,
       as_job = FALSE
     ),
@@ -240,6 +245,7 @@ tar_quarto_command <- function(
       cache_refresh = cache_refresh,
       debug = debug,
       quiet = quiet,
+      quarto_args = quarto_args,
       pandoc_args = pandoc_args
     )
   )

@@ -1,10 +1,11 @@
-# tarchetypes 0.7.12.9002 (development)
+# tarchetypes 0.8.0
 
 * Expose the new `description` argument of `tar_target()` in `targets` 1.5.1.9001.
 * `tar_map()` and other static branching target factories now append values to the target descriptions. Use the `descriptions` argument of those functions to customize.
 * Ensure consistent `repository` settings in `tar_change()` and `tar_map_rep()`.
-* `tar_knit()`, `tar_render()`, `tar_quarto()`, and their "rep" and "raw" versions all gain a `working_directory` argument to change the working directory the report knits from. Users who set `working_directory` need to supply the `store` argument of `tar_load()` and `tar_read()` relative to the working directory so the report knows where to find the data.
+* `tar_knit()`, `tar_render()`, `tar_quarto()`, and their "rep" and "raw" versions all gain a `working_directory` argument to change the working directory the report knits from. Users who set `working_directory` need to supply the `store` argument of `tar_load()` and `tar_read()` relative to the working directory so the report knows where to find the data (#169).
 * `tar_knit()`, `tar_render()`, `tar_quarto()`, and their "raw" versions all gain an `output_file` argument to more conveniently set the file path to the rendered output file.
+* `tar_quarto()` and its "rep" and "raw" versions all gain a new `quarto_args` argument for advanced Quarto arguments (#166, @petrbouchal).
 
 # tarchetypes 0.7.12
 
