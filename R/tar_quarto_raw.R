@@ -109,6 +109,7 @@
 tar_quarto_raw <- function(
   name,
   path = ".",
+  output_file = NULL,
   working_directory = NULL,
   extra_files = character(0),
   execute = TRUE,
@@ -138,6 +139,9 @@ tar_quarto_raw <- function(
   targets::tar_assert_chr(extra_files)
   targets::tar_assert_nzchar(extra_files)
   targets::tar_assert_file(path)
+  targets::tar_assert_chr(output_file %|||% "x")
+  targets::tar_assert_scalar(output_file %|||% "x")
+  targets::tar_assert_nzchar(output_file %|||% "x")
   if (!is.null(working_directory)) {
     targets::tar_assert_file(working_directory)
   }
@@ -170,6 +174,7 @@ tar_quarto_raw <- function(
   }
   command <- tar_quarto_command(
     path = path,
+    output_file = output_file,
     working_directory = working_directory,
     sources = sources,
     output = output,
@@ -202,6 +207,7 @@ tar_quarto_raw <- function(
 
 tar_quarto_command <- function(
   path,
+  output_file,
   working_directory,
   sources,
   output,
@@ -218,6 +224,7 @@ tar_quarto_command <- function(
   args <- substitute(
     list(
       input = path,
+      output_file = output_file,
       execute = execute,
       execute_params = execute_params,
       execute_dir = execute_dir,
@@ -233,6 +240,7 @@ tar_quarto_command <- function(
     ),
     env = list(
       path = path,
+      output_file = output_file,
       execute = execute,
       execute_dir = working_directory %|||% quote(getwd()),
       execute_params = execute_params,

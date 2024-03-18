@@ -71,7 +71,7 @@
 tar_knit <- function(
   name,
   path,
-  output = NULL,
+  output_file = NULL,
   working_directory = NULL,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
@@ -90,8 +90,8 @@ tar_knit <- function(
 ) {
   targets::tar_assert_package("knitr")
   targets::tar_assert_file(path)
-  targets::tar_assert_chr(output %|||% "x")
-  targets::tar_assert_scalar(output %|||% "x")
+  targets::tar_assert_chr(output_file %|||% "x")
+  targets::tar_assert_scalar(output_file %|||% "x")
   if (!is.null(working_directory)) {
     targets::tar_assert_file(working_directory)
   }
@@ -103,7 +103,13 @@ tar_knit <- function(
   )
   targets::tar_target_raw(
     name = targets::tar_deparse_language(substitute(name)),
-    command = tar_knit_command(path, output, working_directory, args, quiet),
+    command = tar_knit_command(
+      path,
+      output_file,
+      working_directory,
+      args,
+      quiet
+    ),
     packages = packages,
     library = library,
     format = "file",
@@ -120,9 +126,15 @@ tar_knit <- function(
   )
 }
 
-tar_knit_command <- function(path, output, working_directory, args, quiet) {
+tar_knit_command <- function(
+  path,
+  output_file,
+  working_directory,
+  args,
+  quiet
+) {
   args$input <- path
-  args$output <- output
+  args$output <- output_file
   args$quiet <- quiet
   deps <- call_list(as_symbols(knitr_deps(path)))
   fun <- call_ns("tarchetypes", "tar_knit_run")

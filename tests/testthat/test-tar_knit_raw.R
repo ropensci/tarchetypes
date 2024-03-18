@@ -148,7 +148,7 @@ targets::tar_test("tar_knit_raw() custom output & working directory", {
         name = "report",
         path = "report.Rmd",
         working_directory = "out",
-        output = file.path("out", "report.md")
+        output_file = file.path("out", "report.md")
       )
     )
   })

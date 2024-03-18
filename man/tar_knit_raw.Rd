@@ -7,7 +7,7 @@
 tar_knit_raw(
   name,
   path,
-  output = NULL,
+  output_file = NULL,
   working_directory = NULL,
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -30,9 +30,7 @@ tar_knit_raw(
 \item{path}{Character string, file path to the \code{knitr} source file.
 Must have length 1.}
 
-\item{output}{Path to the output file for \code{knit()}. If \code{NULL}, this
-function will try to guess a default, which will be under the current
-working directory.}
+\item{output_file}{Character string, file path to the rendered output file.}
 
 \item{working_directory}{Optional character string,
 path to the working directory

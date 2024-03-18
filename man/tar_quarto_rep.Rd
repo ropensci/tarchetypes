@@ -92,7 +92,7 @@ respectively for Rmd and Jupyter input files).}
 
 \item{quiet}{Suppress warning and other messages.}
 
-\item{pandoc_args}{Additional command line arguments to pass on to Pandoc.}
+\item{pandoc_args}{Additional command line options to pass to pandoc.}
 
 \item{rep_workers}{Positive integer of length 1, number of local R
 processes to use to run reps within batches in parallel. If 1,
