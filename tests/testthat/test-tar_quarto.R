@@ -74,6 +74,48 @@ targets::tar_test("tar_quarto(nested) runs from the project root", {
   expect_false(file.exists(file.path("out_tar_quarto", "here")))
 })
 
+targets::tar_test("tar_quarto() custom working dir", {
+  skip_on_cran()
+  skip_rmarkdown()
+  lines <- c(
+    "---",
+    "title: report",
+    "output_format: html",
+    "---",
+    "",
+    "```{r}",
+    "targets::tar_read(upstream, store = '../_targets')",
+    "file.create(\"here\")",
+    "```"
+  )
+  dir.create("out_tar_quarto")
+  on.exit(unlink("out_tar_quarto", recursive = TRUE))
+  writeLines(lines, file.path("out_tar_quarto", "report.qmd"))
+  targets::tar_script({
+    library(tarchetypes)
+    list(
+      tar_target(upstream, "UPSTREAM_SUCCEEDED"),
+      tar_quarto(
+        name = report,
+        path = file.path("out_tar_quarto", "report.qmd"),
+        working_directory = "out_tar_quarto"
+      )
+    )
+  })
+  expect_false(file.exists("here"))
+  expect_false(file.exists(file.path("out_tar_quarto", "here")))
+  suppressMessages(targets::tar_make(callr_function = NULL))
+  expect_false(file.exists("here"))
+  expect_true(file.exists(file.path("out_tar_quarto", "here")))
+  lines <- readLines(file.path("out_tar_quarto", "report.html"), warn = FALSE)
+  expect_true(any(grepl("UPSTREAM_SUCCEEDED", lines)))
+  expect_equal(
+    sort(targets::tar_read(report)),
+    sort(c(file.path("out_tar_quarto", c("report.html", "report.qmd"))))
+  )
+  expect_equal(targets::tar_outdated(callr_function = NULL), character(0L))
+})
+
 targets::tar_test("tar_quarto() for parameterized reports", {
   skip_on_cran()
   skip_quarto()

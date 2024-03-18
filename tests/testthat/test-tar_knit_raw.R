@@ -123,7 +123,7 @@ targets::tar_test("tar_knit_raw(nested) runs from the project root", {
   expect_false(file.exists(file.path("out", "here")))
 })
 
-targets::tar_test("tar_knit_raw() custom output & working directory", {
+targets::tar_test("tar_knit_raw() custom output_file & working directory", {
   skip_on_cran()
   skip_rmarkdown()
   lines <- c(
@@ -147,8 +147,8 @@ targets::tar_test("tar_knit_raw() custom output & working directory", {
       tar_knit_raw(
         name = "report",
         path = "report.Rmd",
-        working_directory = "out",
-        output_file = file.path("out", "report.md")
+        output_file = file.path("out", "report.md"),
+        working_directory = "out"
       )
     )
   })

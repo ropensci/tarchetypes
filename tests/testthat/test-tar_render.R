@@ -69,7 +69,7 @@ targets::tar_test("tar_render(nested) runs from the project root", {
   expect_false(file.exists(file.path("out_tar_render", "here")))
 })
 
-targets::tar_test("tar_render() with custom output and working dir", {
+targets::tar_test("tar_render() with custom output_file and working dir", {
   skip_on_cran()
   skip_rmarkdown()
   lines <- c(
@@ -92,7 +92,7 @@ targets::tar_test("tar_render() with custom output and working dir", {
       tar_render(
         name = report,
         path = "report.Rmd",
-        output = file.path("out_tar_render", "report.html"),
+        output_file = file.path("out_tar_render", "report.html"),
         working_directory = "out_tar_render"
       )
     )
