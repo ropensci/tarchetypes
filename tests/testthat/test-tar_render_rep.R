@@ -269,6 +269,51 @@ targets::tar_test("tar_render_rep() with output_file and _files", {
   }
 })
 
+targets::tar_test("tar_render_rep() with custom working directory", {
+  skip_on_cran()
+  skip_rmarkdown()
+  lines <- c(
+    "---",
+    "title: report",
+    "output_format: html_document",
+    "params:",
+    "  par: \"default value\"",
+    "---",
+    "",
+    "```{r}",
+    "tar_read(upstream, store = '../_targets')",
+    "file.create(\"here\")",
+    "```"
+  )
+  writeLines(lines, "report.Rmd")
+  dir.create("out")
+  on.exit(unlink("out", recursive = TRUE))
+  targets::tar_script({
+    library(tarchetypes)
+    list(
+      tar_target(upstream, "UPSTREAM_SUCCEEDED"),
+      tar_render_rep(
+        report,
+        "report.Rmd",
+        params = data.frame(
+          par = "parval1",
+          stringsAsFactors = FALSE
+        ),
+        working_directory = "out",
+        batches = 1
+      )
+    )
+  })
+  expect_false(file.exists("here"))
+  expect_false(file.exists(file.path("out", "here")))
+  suppressMessages(targets::tar_make(callr_function = NULL))
+  expect_false(file.exists("here"))
+  expect_true(file.exists(file.path("out", "here")))
+  lines <- readLines(list.files(pattern = "html$")[1L])
+  expect_true(any(grepl("UPSTREAM_SUCCEEDED", lines)))
+  expect_equal(targets::tar_outdated(callr_function = NULL), character(0L))
+})
+
 targets::tar_test("tar_render_rep_run_params", {
   params <- tibble::tibble(param1 = letters[seq_len(4)])
   out <- tar_render_rep_run_params(params, 1)

@@ -79,7 +79,7 @@ targets::tar_test("tar_render() with custom output_file and working dir", {
     "---",
     "",
     "```{r}",
-    "tar_read(upstream, store = '../_targets')",
+    "targets::tar_read(upstream, store = '../_targets')",
     "file.create(\"here\")",
     "```"
   )

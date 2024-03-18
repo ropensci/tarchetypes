@@ -187,6 +187,51 @@ targets::tar_test("tar_quarto_rep() run", {
   expect_equal(out, status_completed())
 })
 
+targets::tar_test("tar_quarto_rep() with custom working directory", {
+  skip_on_cran()
+  skip_rmarkdown()
+  lines <- c(
+    "---",
+    "title: report",
+    "output_format: html",
+    "params:",
+    "  par: \"default value\"",
+    "---",
+    "",
+    "```{r}",
+    "targets::tar_read(upstream, store = '../_targets')",
+    "file.create(\"here\")",
+    "```"
+  )
+  writeLines(lines, "report.qmd")
+  dir.create("out")
+  on.exit(unlink("out", recursive = TRUE))
+  targets::tar_script({
+    library(tarchetypes)
+    list(
+      tar_target(upstream, "UPSTREAM_SUCCEEDED"),
+      tar_quarto_rep(
+        report,
+        "report.qmd",
+        execute_params = data.frame(
+          par = "parval1",
+          stringsAsFactors = FALSE
+        ),
+        working_directory = "out",
+        batches = 1
+      )
+    )
+  })
+  expect_false(file.exists("here"))
+  expect_false(file.exists(file.path("out", "here")))
+  suppressMessages(targets::tar_make(callr_function = NULL))
+  expect_false(file.exists("here"))
+  expect_true(file.exists(file.path("out", "here")))
+  lines <- suppressWarnings(readLines(list.files(pattern = "html$")[1L]))
+  expect_true(any(grepl("UPSTREAM_SUCCEEDED", lines)))
+  expect_equal(targets::tar_outdated(callr_function = NULL), character(0L))
+})
+
 targets::tar_test("tar_quarto_rep() run with output_file specified", {
   skip_on_cran()
   skip_quarto()
