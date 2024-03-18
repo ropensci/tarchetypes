@@ -57,6 +57,7 @@
 tar_knit_raw <- function(
   name,
   path,
+  output = NULL,
   working_directory = NULL,
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -75,6 +76,8 @@ tar_knit_raw <- function(
   targets::tar_assert_package("knitr")
   targets::tar_assert_file(path)
   targets::tar_assert_not_dirs(path)
+  targets::tar_assert_chr(output %|||% "x")
+  targets::tar_assert_scalar(output %|||% "x")
   if (!is.null(working_directory)) {
     targets::tar_assert_file(working_directory)
   }
@@ -84,6 +87,7 @@ tar_knit_raw <- function(
     name = name,
     command = tar_knit_command(
       path,
+      output,
       working_directory,
       knit_arguments,
       quiet

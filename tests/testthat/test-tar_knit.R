@@ -119,3 +119,41 @@ targets::tar_test("tar_knit(nested) runs from project root", {
   expect_true(file.exists("here"))
   expect_false(file.exists(file.path("out", "here")))
 })
+
+targets::tar_test("tar_knit() custom output & working directory", {
+  skip_on_cran()
+  skip_rmarkdown()
+  lines <- c(
+    "---",
+    "title: report",
+    "output_format: html_document",
+    "---",
+    "",
+    "```{r}",
+    "tar_read(upstream, store = '../_targets')",
+    "file.create(\"here\")",
+    "```"
+  )
+  dir.create("out")
+  on.exit(unlink("out", recursive = TRUE))
+  writeLines(lines, file.path("out", "report.Rmd"))
+  targets::tar_script({
+    library(tarchetypes)
+    list(
+      tar_target(upstream, "UPSTREAM_SUCCEEDED"),
+      tar_knit(
+        name = report,
+        path = file.path("out", "report.Rmd"),
+        output = file.path("out", "report.md"),
+        working_directory = "out"
+      )
+    )
+  })
+  expect_false(file.exists("here"))
+  expect_false(file.exists(file.path("out", "here")))
+  suppressMessages(targets::tar_make(callr_function = NULL))
+  expect_false(file.exists("here"))
+  expect_true(file.exists(file.path("out", "here")))
+  lines <- readLines(file.path("out", "report.md"))
+  expect_true(any(grepl("UPSTREAM_SUCCEEDED", lines)))
+})

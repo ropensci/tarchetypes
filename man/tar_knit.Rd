@@ -7,6 +7,7 @@
 tar_knit(
   name,
   path,
+  output = NULL,
   working_directory = NULL,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
@@ -43,6 +44,10 @@ on the result to locally recreate the target's initial RNG state.}
 
 \item{path}{Character string, file path to the \code{knitr} source file.
 Must have length 1.}
+
+\item{output}{Path to the output file for \code{knit()}. If \code{NULL}, this
+function will try to guess a default, which will be under the current
+working directory.}
 
 \item{working_directory}{Optional character string,
 path to the working directory
