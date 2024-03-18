@@ -7,6 +7,7 @@
 tar_render_rep_raw(
   name,
   path,
+  working_directory = NULL,
   params = expression(NULL),
   batches = NULL,
   rep_workers = 1,

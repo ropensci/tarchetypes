@@ -117,6 +117,7 @@
 tar_quarto <- function(
   name,
   path = ".",
+  working_directory = NULL,
   extra_files = character(0),
   execute = TRUE,
   execute_params = list(),
@@ -148,6 +149,7 @@ tar_quarto <- function(
   tar_quarto_raw(
     name = name,
     path = path,
+    working_directory = working_directory,
     extra_files = extra_files,
     execute = execute,
     execute_params = execute_params,

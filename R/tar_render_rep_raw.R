@@ -101,6 +101,7 @@
 tar_render_rep_raw <- function(
   name,
   path,
+  working_directory = NULL,
   params = expression(NULL),
   batches = NULL,
   rep_workers = 1,
@@ -121,10 +122,11 @@ tar_render_rep_raw <- function(
   args = list()
 ) {
   targets::tar_assert_package("rmarkdown")
-  targets::tar_assert_scalar(path)
-  targets::tar_assert_chr(path)
-  targets::tar_assert_path(path)
+  targets::tar_assert_file(path)
   targets::tar_assert_not_dirs(path)
+  if (!is.null(working_directory)) {
+    targets::tar_assert_file(working_directory)
+  }
   targets::tar_assert_lang(params %|||% quote(x))
   targets::tar_assert_dbl(batches %|||% 0L, "batches must be numeric.")
   targets::tar_assert_scalar(batches %|||% 0L, "batches must have length 1.")
@@ -156,7 +158,14 @@ tar_render_rep_raw <- function(
   )
   target <- targets::tar_target_raw(
     name = name,
-    command = tar_render_rep_command(name, path, quiet, args, rep_workers),
+    command = tar_render_rep_command(
+      name,
+      path,
+      working_directory,
+      quiet,
+      args,
+      rep_workers
+    ),
     pattern = substitute(map(x), env = list(x = sym_params)),
     packages = packages,
     library = library,
@@ -233,9 +242,16 @@ tar_render_rep_run_params <- function(params, batches) {
   params
 }
 
-tar_render_rep_command <- function(name, path, quiet, args, rep_workers) {
+tar_render_rep_command <- function(
+  name,
+  path,
+  working_directory,
+  quiet,
+  args,
+  rep_workers
+) {
   args$input <- path
-  args$knit_root_dir <- quote(getwd())
+  args$knit_root_dir <- working_directory %|||% quote(getwd())
   args$quiet <- quiet
   params <- as.symbol(paste0(name, "_params"))
   deps <- call_list(as_symbols(knitr_deps(path)))

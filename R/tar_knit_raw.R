@@ -57,6 +57,7 @@
 tar_knit_raw <- function(
   name,
   path,
+  working_directory = NULL,
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
   error = targets::tar_option_get("error"),
@@ -72,15 +73,21 @@ tar_knit_raw <- function(
   knit_arguments = quote(list())
 ) {
   targets::tar_assert_package("knitr")
-  targets::tar_assert_scalar(path)
-  targets::tar_assert_chr(path)
-  targets::tar_assert_path(path)
+  targets::tar_assert_file(path)
   targets::tar_assert_not_dirs(path)
+  if (!is.null(working_directory)) {
+    targets::tar_assert_file(working_directory)
+  }
   targets::tar_assert_lang(knit_arguments)
   targets::tar_assert_not_expr(knit_arguments)
   targets::tar_target_raw(
     name = name,
-    command = tar_knit_command(path, knit_arguments, quiet),
+    command = tar_knit_command(
+      path,
+      working_directory,
+      knit_arguments,
+      quiet
+    ),
     packages = packages,
     library = library,
     format = "file",

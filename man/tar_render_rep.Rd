@@ -7,6 +7,7 @@
 tar_render_rep(
   name,
   path,
+  working_directory = NULL,
   params = data.frame(),
   batches = NULL,
   rep_workers = 1,

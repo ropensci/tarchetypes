@@ -7,6 +7,7 @@
 tar_render(
   name,
   path,
+  working_directory = NULL,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -42,6 +43,17 @@ on the result to locally recreate the target's initial RNG state.}
 
 \item{path}{Character string, file path to the R Markdown source file.
 Must have length 1.}
+
+\item{working_directory}{Optional character string,
+path to the working directory
+to temporarily set when running the report.
+The default is \code{NULL}, which runs the report from the
+current working directory at the time the pipeline is run.
+This default is recommended in the vast majority of cases.
+To use anything other than \code{NULL}, you must manually set a value
+for the \code{store} argument in all calls to
+\code{tar_read()} and \code{tar_load()} in the report. Otherwise,
+these functions will not know where to find the data.}
 
 \item{tidy_eval}{Logical, whether to enable tidy evaluation
 when interpreting \code{command} and \code{pattern}. If \code{TRUE}, you can use the

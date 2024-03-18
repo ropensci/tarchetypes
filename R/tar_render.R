@@ -50,6 +50,16 @@
 #' @inheritParams rmarkdown::render
 #' @param path Character string, file path to the R Markdown source file.
 #'   Must have length 1.
+#' @param working_directory Optional character string,
+#'   path to the working directory
+#'   to temporarily set when running the report.
+#'   The default is `NULL`, which runs the report from the
+#'   current working directory at the time the pipeline is run.
+#'   This default is recommended in the vast majority of cases.
+#'   To use anything other than `NULL`, you must manually set a value
+#'   for the `store` argument in all calls to
+#'   `tar_read()` and `tar_load()` in the report. Otherwise,
+#'   these functions will not know where to find the data.
 #' @param ... Named arguments to `rmarkdown::render()`.
 #'   These arguments are evaluated when the target actually runs in
 #'   `tar_make()`, not when the target is defined. That means, for
@@ -112,6 +122,7 @@
 tar_render <- function(
   name,
   path,
+  working_directory = NULL,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -128,9 +139,10 @@ tar_render <- function(
   ...
 ) {
   targets::tar_assert_package("rmarkdown")
-  targets::tar_assert_scalar(path)
-  targets::tar_assert_chr(path)
-  targets::tar_assert_path(path)
+  targets::tar_assert_file(path)
+  if (!is.null(working_directory)) {
+    targets::tar_assert_file(working_directory)
+  }
   envir <- tar_option_get("envir")
   args <- targets::tar_tidy_eval(
     substitute(list(...)),
@@ -139,7 +151,7 @@ tar_render <- function(
   )
   targets::tar_target_raw(
     name = targets::tar_deparse_language(substitute(name)),
-    command = tar_render_command(path, args, quiet),
+    command = tar_render_command(path, working_directory, args, quiet),
     packages = packages,
     library = library,
     format = "file",

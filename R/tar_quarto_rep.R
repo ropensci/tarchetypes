@@ -95,6 +95,7 @@
 tar_quarto_rep <- function(
   name,
   path,
+  working_directory = NULL,
   execute_params = data.frame(),
   batches = NULL,
   extra_files = character(0),
@@ -128,6 +129,7 @@ tar_quarto_rep <- function(
   tar_quarto_rep_raw(
     name = targets::tar_deparse_language(substitute(name)),
     path = path,
+    working_directory = working_directory,
     execute_params = execute_params,
     batches = batches,
     extra_files = extra_files,

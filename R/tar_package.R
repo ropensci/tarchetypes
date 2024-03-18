@@ -15,7 +15,7 @@
 #'   inform is_missing quo_squash
 #' @importFrom targets tar_assert_chr tar_assert_dbl tar_assert_df
 #'   tar_assert_envir tar_assert_equal_lengths
-#'   tar_assert_expr tar_assert_flag
+#'   tar_assert_expr tar_assert_file tar_assert_flag
 #'   tar_assert_function tar_assert_ge tar_assert_identical
 #'   tar_assert_in tar_assert_not_dirs tar_assert_not_dir
 #'   tar_assert_not_in tar_assert_inherits tar_assert_int
@@ -37,7 +37,7 @@
 #'   last_col matches num_range one_of starts_with
 #' @importFrom utils download.file globalVariables head
 #' @importFrom vctrs vec_c vec_rbind
-#' @importFrom withr local_envvar local_options with_options
+#' @importFrom withr local_dir local_envvar local_options with_options
 NULL
 
 utils::globalVariables(".x")

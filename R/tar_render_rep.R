@@ -88,6 +88,7 @@
 tar_render_rep <- function(
   name,
   path,
+  working_directory = NULL,
   params = data.frame(),
   batches = NULL,
   rep_workers = 1,
@@ -110,6 +111,7 @@ tar_render_rep <- function(
   tar_render_rep_raw(
     name = targets::tar_deparse_language(substitute(name)),
     path = path,
+    working_directory = working_directory,
     params = substitute(params),
     batches = batches,
     rep_workers = rep_workers,

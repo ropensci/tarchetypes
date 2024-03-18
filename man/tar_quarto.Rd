@@ -7,6 +7,7 @@
 tar_quarto(
   name,
   path = ".",
+  working_directory = NULL,
   extra_files = character(0),
   execute = TRUE,
   execute_params = list(),
@@ -53,6 +54,17 @@ or a directory containing a Quarto project.
 Defaults to the working directory of the \code{targets} pipeline.
 Passed directly to the \code{input} argument of \code{quarto::quarto_render()}.}
 
+\item{working_directory}{Optional character string,
+path to the working directory
+to temporarily set when running the report.
+The default is \code{NULL}, which runs the report from the
+current working directory at the time the pipeline is run.
+This default is recommended in the vast majority of cases.
+To use anything other than \code{NULL}, you must manually set a value
+for the \code{store} argument in all calls to
+\code{tar_read()} and \code{tar_load()} in the report. Otherwise,
+these functions will not know where to find the data.}
+
 \item{extra_files}{Character vector of extra files and
 directories to track for changes. The target will be invalidated
 (rerun on the next \code{tar_make()}) if the contents of these files changes.
@@ -79,7 +91,7 @@ respectively for Rmd and Jupyter input files).}
 
 \item{quiet}{Suppress warning and other messages.}
 
-\item{pandoc_args}{Additional command line options to pass to pandoc.}
+\item{pandoc_args}{Additional command line arguments to pass on to Pandoc.}
 
 \item{profile}{Character of length 1, Quarto profile. If \code{NULL},
 the default profile will be used. Requires Quarto version 1.2 or higher.

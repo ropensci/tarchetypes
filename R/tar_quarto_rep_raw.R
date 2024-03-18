@@ -109,6 +109,7 @@
 tar_quarto_rep_raw <- function(
   name,
   path,
+  working_directory = NULL,
   execute_params = expression(NULL),
   batches = NULL,
   extra_files = character(0),
@@ -137,11 +138,11 @@ tar_quarto_rep_raw <- function(
   targets::tar_assert_scalar(name)
   targets::tar_assert_chr(name)
   targets::tar_assert_nzchar(name)
-  targets::tar_assert_scalar(path)
-  targets::tar_assert_chr(path)
-  targets::tar_assert_nzchar(path)
-  targets::tar_assert_path(path)
   targets::tar_assert_not_dirs(path)
+  targets::tar_assert_file(path)
+  if (!is.null(working_directory)) {
+    targets::tar_assert_file(working_directory)
+  }
   targets::tar_assert_lang(execute_params %|||% quote(x))
   targets::tar_assert_dbl(batches %|||% 0L, "batches must be numeric.")
   targets::tar_assert_scalar(batches %|||% 0L, "batches must have length 1.")
@@ -191,6 +192,7 @@ tar_quarto_rep_raw <- function(
     command = tar_quarto_rep_command(
       name = name,
       path = path,
+      working_directory = working_directory,
       extra_files = extra_files,
       execute = execute,
       cache = cache,
@@ -300,6 +302,7 @@ tar_quarto_rep_run_params <- function(
 tar_quarto_rep_command <- function(
   name,
   path,
+  working_directory,
   extra_files,
   execute,
   cache,
@@ -314,7 +317,7 @@ tar_quarto_rep_command <- function(
     list(
       input = path,
       execute = execute,
-      execute_dir = quote(getwd()),
+      execute_dir = execute_dir,
       execute_daemon = 0,
       execute_daemon_restart = FALSE,
       execute_debug = FALSE,
@@ -328,6 +331,7 @@ tar_quarto_rep_command <- function(
     env = list(
       path = path,
       execute = execute,
+      execute_dir = working_directory %|||% quote(getwd()),
       cache = cache,
       cache_refresh = cache_refresh,
       debug = debug,

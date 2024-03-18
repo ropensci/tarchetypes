@@ -7,6 +7,7 @@
 tar_quarto_rep_raw(
   name,
   path,
+  working_directory = NULL,
   execute_params = expression(NULL),
   batches = NULL,
   extra_files = character(0),
@@ -92,7 +93,7 @@ respectively for Rmd and Jupyter input files).}
 
 \item{quiet}{Suppress warning and other messages.}
 
-\item{pandoc_args}{Additional command line options to pass to pandoc.}
+\item{pandoc_args}{Additional command line arguments to pass on to Pandoc.}
 
 \item{rep_workers}{Positive integer of length 1, number of local R
 processes to use to run reps within batches in parallel. If 1,

@@ -36,6 +36,7 @@
 #' @inheritSection tar_map Target objects
 #' @inheritParams targets::tar_target
 #' @inheritParams knitr::knit
+#' @inheritParams tar_render
 #' @param path Character string, file path to the `knitr` source file.
 #'   Must have length 1.
 #' @param ... Named arguments to `knitr::knit()`.
@@ -70,6 +71,7 @@
 tar_knit <- function(
   name,
   path,
+  working_directory = NULL,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -86,9 +88,10 @@ tar_knit <- function(
   ...
 ) {
   targets::tar_assert_package("knitr")
-  targets::tar_assert_scalar(path)
-  targets::tar_assert_chr(path)
-  targets::tar_assert_path(path)
+  targets::tar_assert_file(path)
+  if (!is.null(working_directory)) {
+    targets::tar_assert_file(working_directory)
+  }
   envir <- tar_option_get("envir")
   args <- targets::tar_tidy_eval(
     substitute(list(...)),
@@ -97,7 +100,7 @@ tar_knit <- function(
   )
   targets::tar_target_raw(
     name = targets::tar_deparse_language(substitute(name)),
-    command = tar_knit_command(path, args, quiet),
+    command = tar_knit_command(path, working_directory, args, quiet),
     packages = packages,
     library = library,
     format = "file",
@@ -114,12 +117,18 @@ tar_knit <- function(
   )
 }
 
-tar_knit_command <- function(path, args, quiet) {
+tar_knit_command <- function(path, working_directory, args, quiet) {
   args$input <- path
   args$quiet <- quiet
   deps <- call_list(as_symbols(knitr_deps(path)))
   fun <- call_ns("tarchetypes", "tar_knit_run")
-  exprs <- list(fun, path = path, args = args, deps = deps)
+  exprs <- list(
+    fun,
+    path = path,
+    working_directory = working_directory,
+    args = args,
+    deps = deps
+  )
   as.expression(as.call(exprs))
 }
 
@@ -132,15 +141,15 @@ tar_knit_command <- function(path, args, quiet) {
 #'   and the relative path to the output `knitr` report.
 #'   The output path depends on the input path argument,
 #'   which has no default.
-#' @param path Path to the `knitr` source file.
+#' @inheritParams tar_knit
 #' @param args A named list of arguments to `knitr::knit()`.
 #' @param deps An unnamed list of target dependencies of the `knitr`
 #'   report, automatically created by `tar_knit()`.
-tar_knit_run <- function(path, args, deps) {
+tar_knit_run <- function(path, working_directory, args, deps) {
   targets::tar_assert_package("knitr")
   withr::local_options(list(crayon.enabled = NULL))
   opt <- knitr::opts_knit$get("root.dir")
-  knitr::opts_knit$set(root.dir = getwd())
+  knitr::opts_knit$set(root.dir = working_directory %|||% getwd())
   on.exit(knitr::opts_knit$set(root.dir = opt))
   envir <- parent.frame()
   args$envir <- args$envir %|||% targets::tar_envir(default = envir)
