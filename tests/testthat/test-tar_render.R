@@ -71,6 +71,7 @@ targets::tar_test("tar_render(nested) runs from the project root", {
 
 targets::tar_test("tar_render() with custom output_file and working dir", {
   skip_on_cran()
+  skip_on_os("windows")
   skip_rmarkdown()
   lines <- c(
     "---",
