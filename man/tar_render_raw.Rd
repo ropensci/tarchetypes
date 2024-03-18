@@ -7,6 +7,7 @@
 tar_render_raw(
   name,
   path,
+  output = NULL,
   working_directory = NULL,
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -26,6 +27,8 @@ tar_render_raw(
 
 \item{path}{Character string, file path to the R Markdown source file.
 Must have length 1.}
+
+\item{output}{Character string, file path to the rendered output file.}
 
 \item{working_directory}{Optional character string,
 path to the working directory

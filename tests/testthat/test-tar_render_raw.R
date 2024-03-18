@@ -71,6 +71,48 @@ targets::tar_test("tar_render_raw(nested) runs from project root", {
   expect_false(file.exists(file.path("out_tar_render", "here")))
 })
 
+targets::tar_test("tar_render_raw() with custom output and working dir", {
+  skip_on_cran()
+  skip_rmarkdown()
+  lines <- c(
+    "---",
+    "title: report",
+    "output_format: html_document",
+    "---",
+    "",
+    "```{r}",
+    "tar_read(upstream, store = '../_targets')",
+    "file.create(\"here\")",
+    "```"
+  )
+  dir.create("out_tar_render")
+  writeLines(lines, "report.Rmd")
+  targets::tar_script({
+    library(tarchetypes)
+    list(
+      tar_target(upstream, "UPSTREAM_SUCCEEDED"),
+      tar_render_raw(
+        name = "report",
+        path = "report.Rmd",
+        output = file.path("out_tar_render", "report.html"),
+        working_directory = "out_tar_render"
+      )
+    )
+  })
+  expect_false(file.exists("here"))
+  expect_false(file.exists(file.path("out_tar_render", "here")))
+  suppressMessages(targets::tar_make(callr_function = NULL))
+  expect_false(file.exists("here"))
+  expect_true(file.exists(file.path("out_tar_render", "here")))
+  lines <- readLines(file.path("out_tar_render", "report.html"))
+  expect_true(any(grepl("UPSTREAM_SUCCEEDED", lines)))
+  expect_equal(
+    sort(targets::tar_read(report)),
+    sort(c(file.path("out_tar_render", "report.html"), "report.Rmd"))
+  )
+  expect_equal(targets::tar_outdated(callr_function = NULL), character(0L))
+})
+
 targets::tar_test("tar_render_raw() for parameterized reports", {
   skip_rmarkdown()
   lines <- c(

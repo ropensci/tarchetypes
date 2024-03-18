@@ -84,6 +84,7 @@
 tar_render_raw <- function(
   name,
   path,
+  output = NULL,
   working_directory = NULL,
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -99,6 +100,9 @@ tar_render_raw <- function(
 ) {
   targets::tar_assert_package("rmarkdown")
   targets::tar_assert_file(path)
+  targets::tar_assert_chr(output %|||% "x")
+  targets::tar_assert_scalar(output %|||% "x")
+  targets::tar_assert_nzchar(output %|||% "x")
   if (!is.null(working_directory)) {
     targets::tar_assert_file(working_directory)
   }
@@ -108,6 +112,7 @@ tar_render_raw <- function(
     name = name,
     command = tar_render_command(
       path,
+      output,
       working_directory,
       render_arguments,
       quiet
@@ -127,8 +132,9 @@ tar_render_raw <- function(
 }
 
 
-tar_render_command <- function(path, working_directory, args, quiet) {
+tar_render_command <- function(path, output, working_directory, args, quiet) {
   args$input <- path
+  args$output_file <- output
   args$knit_root_dir <- working_directory %|||% quote(getwd())
   args$quiet <- quiet
   deps <- call_list(as_symbols(knitr_deps(path)))

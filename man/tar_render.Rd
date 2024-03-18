@@ -7,6 +7,7 @@
 tar_render(
   name,
   path,
+  output = NULL,
   working_directory = NULL,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
@@ -43,6 +44,8 @@ on the result to locally recreate the target's initial RNG state.}
 
 \item{path}{Character string, file path to the R Markdown source file.
 Must have length 1.}
+
+\item{output}{Character string, file path to the rendered output file.}
 
 \item{working_directory}{Optional character string,
 path to the working directory

@@ -50,6 +50,7 @@
 #' @inheritParams rmarkdown::render
 #' @param path Character string, file path to the R Markdown source file.
 #'   Must have length 1.
+#' @param output Character string, file path to the rendered output file.
 #' @param working_directory Optional character string,
 #'   path to the working directory
 #'   to temporarily set when running the report.
@@ -122,6 +123,7 @@
 tar_render <- function(
   name,
   path,
+  output = NULL,
   working_directory = NULL,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
@@ -151,7 +153,13 @@ tar_render <- function(
   )
   targets::tar_target_raw(
     name = targets::tar_deparse_language(substitute(name)),
-    command = tar_render_command(path, working_directory, args, quiet),
+    command = tar_render_command(
+      path,
+      output,
+      working_directory,
+      args,
+      quiet
+    ),
     packages = packages,
     library = library,
     format = "file",
