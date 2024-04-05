@@ -362,7 +362,7 @@ targets::tar_test("tar_map_rep() seeds are resilient to re-batching", {
   skip_on_cran()
   targets::tar_script({
     f <- function(x) {
-      out <- digest::digest(
+      out <- secretbase::siphash13(
         paste(c(x, sample.int(n = 1e9, size = 1000)), collapse = "_")
       )
       data.frame(x = out)
@@ -381,7 +381,7 @@ targets::tar_test("tar_map_rep() seeds are resilient to re-batching", {
   out1$tar_rep <- NULL
   targets::tar_script({
     f <- function(x) {
-      out <- digest::digest(
+      out <- secretbase::siphash13(
         paste(c(x, sample.int(n = 1e9, size = 1000)), collapse = "_")
       )
       data.frame(x = out)
@@ -400,7 +400,7 @@ targets::tar_test("tar_map_rep() seeds are resilient to re-batching", {
   out2$tar_rep <- NULL
   targets::tar_script({
     f <- function(x) {
-      out <- digest::digest(
+      out <- secretbase::siphash13(
         paste(c(x, sample.int(n = 1e9, size = 1000)), collapse = "_")
       )
       data.frame(x = out)
@@ -427,7 +427,7 @@ targets::tar_test("tar_map_rep() seeds change with the seed option", {
   targets::tar_script({
     tar_option_set(seed = 1L)
     f <- function(x) {
-      out <- digest::digest(
+      out <- secretbase::siphash13(
         paste(c(x, sample.int(n = 1e9, size = 1000)), collapse = "_")
       )
       data.frame(x = out)
@@ -448,7 +448,7 @@ targets::tar_test("tar_map_rep() seeds change with the seed option", {
   targets::tar_script({
     tar_option_set(seed = 2L)
     f <- function(x) {
-      out <- digest::digest(
+      out <- secretbase::siphash13(
         paste(c(x, sample.int(n = 1e9, size = 1000)), collapse = "_")
       )
       data.frame(x = out)
@@ -466,7 +466,7 @@ targets::tar_test("tar_map_rep() seeds change with the seed option", {
   targets::tar_script({
     tar_option_set(seed = NA)
     f <- function(x) {
-      out <- digest::digest(
+      out <- secretbase::siphash13(
         paste(c(x, sample.int(n = 1e9, size = 1000)), collapse = "_")
       )
       data.frame(x = out)

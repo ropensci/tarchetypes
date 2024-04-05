@@ -119,7 +119,9 @@ targets::tar_test("tar_rep() seeds are resilient to re-batching", {
   skip_on_cran()
   targets::tar_script({
     f <- function() {
-      digest::digest(paste(sample.int(n = 1e9, size = 1000), collapse = "_"))
+      secretbase::siphash13(
+        paste(sample.int(n = 1e9, size = 1000), collapse = "_")
+      )
     }
     tarchetypes::tar_rep(x, f(), batches = 1, reps = 4)
   })
@@ -127,7 +129,9 @@ targets::tar_test("tar_rep() seeds are resilient to re-batching", {
   out1 <- unname(targets::tar_read(x))
   targets::tar_script({
     f <- function() {
-      digest::digest(paste(sample.int(n = 1e9, size = 1000), collapse = "_"))
+      secretbase::siphash13(
+        paste(sample.int(n = 1e9, size = 1000), collapse = "_")
+      )
     }
     tarchetypes::tar_rep(x, f(), batches = 2, reps = 2)
   })
@@ -135,7 +139,9 @@ targets::tar_test("tar_rep() seeds are resilient to re-batching", {
   out2 <- unname(targets::tar_read(x))
   targets::tar_script({
     f <- function() {
-      digest::digest(paste(sample.int(n = 1e9, size = 1000), collapse = "_"))
+      secretbase::siphash13(
+        paste(sample.int(n = 1e9, size = 1000), collapse = "_")
+      )
     }
     tarchetypes::tar_rep(x, f(), batches = 4, reps = 1)
   })
@@ -151,7 +157,9 @@ targets::tar_test("tar_rep() seeds change with the seed option", {
   targets::tar_script({
     tar_option_set(seed = 1L)
     f <- function() {
-      digest::digest(paste(sample.int(n = 1e9, size = 1000), collapse = "_"))
+      secretbase::siphash13(
+        paste(sample.int(n = 1e9, size = 1000), collapse = "_")
+      )
     }
     tarchetypes::tar_rep(x, f(), batches = 2, reps = 2)
   })
@@ -163,7 +171,9 @@ targets::tar_test("tar_rep() seeds change with the seed option", {
   targets::tar_script({
     tar_option_set(seed = 2L)
     f <- function() {
-      digest::digest(paste(sample.int(n = 1e9, size = 1000), collapse = "_"))
+      secretbase::siphash13(
+        paste(sample.int(n = 1e9, size = 1000), collapse = "_")
+      )
     }
     tarchetypes::tar_rep(x, f(), batches = 2, reps = 2)
   })
@@ -172,7 +182,9 @@ targets::tar_test("tar_rep() seeds change with the seed option", {
   targets::tar_script({
     tar_option_set(seed = NA)
     f <- function() {
-      digest::digest(paste(sample.int(n = 1e9, size = 1000), collapse = "_"))
+      secretbase::siphash13(
+        paste(sample.int(n = 1e9, size = 1000), collapse = "_")
+      )
     }
     tarchetypes::tar_rep(x, f(), batches = 2, reps = 2)
   })
@@ -193,10 +205,10 @@ targets::tar_test("tar_rep() seeds change with the seed option", {
 targets::tar_test("correct RNG state", {
   skip_on_cran()
   targets::tar_script({
-    targets::tar_option_set(packages = c("digest", "tibble"))
+    targets::tar_option_set(packages = c("secretbase", "tibble"))
     tar_rep(
       name = results,
-      command = tibble(seed_hash = digest(.Random.seed)),
+      command = tibble(seed_hash = siphash13(.Random.seed)),
       batches = 1L,
       reps = 3L,
       rep_workers = 2L
@@ -206,7 +218,7 @@ targets::tar_test("correct RNG state", {
   out <- tar_read(results)
   for (rep in seq_len(3L)) {
     set.seed(seed = out$tar_seed[rep], kind = "default")
-    expect_equal(out$seed_hash[rep], digest::digest(.Random.seed))
+    expect_equal(out$seed_hash[rep], secretbase::siphash13(.Random.seed))
   }
 })
 

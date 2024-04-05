@@ -5,7 +5,6 @@
 #'   convenient helper functions to create specialized targets, making
 #'   pipelines in targets easier and cleaner to write and understand.
 #' @name tarchetypes-package
-#' @importFrom digest digest
 #' @importFrom dplyr bind_rows mutate select
 #' @importFrom fs dir_create is_dir path_ext path_ext_remove
 #'   path_ext_set path_rel
@@ -13,6 +12,7 @@
 #'   stopCluster
 #' @importFrom rlang as_function call2 check_installed enquo expr
 #'   inform is_missing quo_squash
+#' @importFrom secretbase siphash13
 #' @importFrom targets tar_assert_chr tar_assert_dbl tar_assert_df
 #'   tar_assert_envir tar_assert_equal_lengths
 #'   tar_assert_expr tar_assert_file tar_assert_flag

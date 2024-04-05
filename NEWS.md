@@ -1,6 +1,8 @@
-# tarchetypes 0.8.0.9000 (development)
+# tarchetypes 0.8.0.9001 (development)
 
+## Invalidating changes
 
+* To align with https://github.com/ropensci/targets/issues/1244 and https://github.com/ropensci/targets/pull/1262, switch the hashing functions from `digest::digest()` to `secretbase::siphash13()`.
 
 # tarchetypes 0.8.0
 

@@ -132,13 +132,7 @@ tar_map_produce_suffix <- function(values, names) {
 }
 
 tar_map_default_suffixes <- function(values) {
-  id <- apply(
-    X = values,
-    MARGIN = 1,
-    FUN = digest::digest,
-    algo = "xxhash32"
-  )
-  list(id = id)
+  list(id = apply(X = values, MARGIN = 1, FUN = hash_object))
 }
 
 tar_map_target <- function(target, values, descriptions) {

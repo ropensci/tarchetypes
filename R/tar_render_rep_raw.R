@@ -364,7 +364,5 @@ tar_render_rep_rep <- function(rep, params, args, path, seeds) {
 }
 
 tar_render_rep_default_path <- function(path, params) {
-  out <- fs::path_ext_remove(path)
-  hash <- digest::digest(params, algo = "xxhash32")
-  sprintf("%s_%s", out, hash)
+  sprintf("%s_%s", fs::path_ext_remove(path), hash_object(params))
 }

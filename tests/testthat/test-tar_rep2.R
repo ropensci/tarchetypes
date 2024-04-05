@@ -288,7 +288,7 @@ targets::tar_test("tar_rep2() seeds are resilient to re-batching", {
   targets::tar_script({
     f <- function() {
       tibble::tibble(
-        x = digest::digest(
+        x = secretbase::siphash13(
           paste(sample.int(n = 1e9, size = 1000), collapse = "_")
         )
       )
@@ -296,7 +296,7 @@ targets::tar_test("tar_rep2() seeds are resilient to re-batching", {
     g <- function(x) {
       x$x <- paste0(
         x$x,
-        digest::digest(
+        secretbase::siphash13(
           paste(sample.int(n = 1e9, size = 1000), collapse = "_")
         )
       )
@@ -314,7 +314,7 @@ targets::tar_test("tar_rep2() seeds are resilient to re-batching", {
   targets::tar_script({
     f <- function() {
       tibble::tibble(
-        x = digest::digest(
+        x = secretbase::siphash13(
           paste(sample.int(n = 1e9, size = 1000), collapse = "_")
         )
       )
@@ -322,7 +322,7 @@ targets::tar_test("tar_rep2() seeds are resilient to re-batching", {
     g <- function(x) {
       x$x <- paste0(
         x$x,
-        digest::digest(
+        secretbase::siphash13(
           paste(sample.int(n = 1e9, size = 1000), collapse = "_")
         )
       )
@@ -340,7 +340,7 @@ targets::tar_test("tar_rep2() seeds are resilient to re-batching", {
   targets::tar_script({
     f <- function() {
       tibble::tibble(
-        x = digest::digest(
+        x = secretbase::siphash13(
           paste(sample.int(n = 1e9, size = 1000), collapse = "_")
         )
       )
@@ -348,7 +348,7 @@ targets::tar_test("tar_rep2() seeds are resilient to re-batching", {
     g <- function(x) {
       x$x <- paste0(
         x$x,
-        digest::digest(
+        secretbase::siphash13(
           paste(sample.int(n = 1e9, size = 1000), collapse = "_")
         )
       )
@@ -374,7 +374,7 @@ targets::tar_test("tar_rep2() seeds change with the seed option", {
     tar_option_set(seed = 1L)
     f <- function() {
       tibble::tibble(
-        x = digest::digest(
+        x = secretbase::siphash13(
           paste(sample.int(n = 1e9, size = 1000), collapse = "_")
         )
       )
@@ -382,7 +382,7 @@ targets::tar_test("tar_rep2() seeds change with the seed option", {
     g <- function(x) {
       x$x <- paste0(
         x$x,
-        digest::digest(
+        secretbase::siphash13(
           paste(sample.int(n = 1e9, size = 1000), collapse = "_")
         )
       )
@@ -402,7 +402,7 @@ targets::tar_test("tar_rep2() seeds change with the seed option", {
     tar_option_set(seed = 2L)
     f <- function() {
       tibble::tibble(
-        x = digest::digest(
+        x = secretbase::siphash13(
           paste(sample.int(n = 1e9, size = 1000), collapse = "_")
         )
       )
@@ -410,7 +410,7 @@ targets::tar_test("tar_rep2() seeds change with the seed option", {
     g <- function(x) {
       x$x <- paste0(
         x$x,
-        digest::digest(
+        secretbase::siphash13(
           paste(sample.int(n = 1e9, size = 1000), collapse = "_")
         )
       )
@@ -427,7 +427,7 @@ targets::tar_test("tar_rep2() seeds change with the seed option", {
     tar_option_set(seed = NA)
     f <- function() {
       tibble::tibble(
-        x = digest::digest(
+        x = secretbase::siphash13(
           paste(sample.int(n = 1e9, size = 1000), collapse = "_")
         )
       )
@@ -435,7 +435,7 @@ targets::tar_test("tar_rep2() seeds change with the seed option", {
     g <- function(x) {
       x$x <- paste0(
         x$x,
-        digest::digest(
+        secretbase::siphash13(
           paste(sample.int(n = 1e9, size = 1000), collapse = "_")
         )
       )
