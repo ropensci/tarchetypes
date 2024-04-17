@@ -1,4 +1,4 @@
-# tarchetypes 0.8.0.9001 (development)
+# tarchetypes 0.9.0
 
 ## Invalidating changes
 
