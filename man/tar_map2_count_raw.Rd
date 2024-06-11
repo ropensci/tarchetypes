@@ -16,9 +16,10 @@ tar_map2_count_raw(
   combine = TRUE,
   suffix1 = "1",
   suffix2 = "2",
-  rep_workers = 1,
   columns1 = quote(tidyselect::everything()),
   columns2 = quote(tidyselect::everything()),
+  rep_workers = 1,
+  delimiter = "_",
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -71,10 +72,10 @@ For complicated objects, consider using \code{quote()} when
 you define \code{values}, as shown at
 \url{https://github.com/ropensci/tarchetypes/discussions/105}.}
 
-\item{names}{Language object with a tidyselect expression
-to select which columns of \code{values} to use to construct
-statically branched target names. If \code{NULL}, then
-short names are automatically generated.}
+\item{names}{Subset of \code{names(values)}
+used to generate the suffixes in the names of the new targets.
+The value of \code{names} should be a \code{tidyselect} expression
+such as a call to \code{\link[=any_of]{any_of()}} or \code{\link[=starts_with]{starts_with()}}.}
 
 \item{descriptions}{Names of a column in \code{values}
 to append to the custom description of each generated target.
@@ -97,11 +98,6 @@ them from the \code{command2} targets.}
 suffix to apply to the \code{command2} targets to distinguish
 them from the \code{command1} targets.}
 
-\item{rep_workers}{Positive integer of length 1, number of local R
-processes to use to run reps within batches in parallel. If 1,
-then reps are run sequentially within each batch. If greater than 1,
-then reps within batch are run in parallel using a PSOCK cluster.}
-
 \item{columns1}{Language object, a tidyselect expression
 to select which columns of \code{values}
 to append to the output of all targets.}
@@ -110,6 +106,14 @@ to append to the output of all targets.}
 to select which columns of \code{command1}
 output to append to \code{command2} output.
 In case of conflicts, \code{column1} takes precedence.}
+
+\item{rep_workers}{Positive integer of length 1, number of local R
+processes to use to run reps within batches in parallel. If 1,
+then reps are run sequentially within each batch. If greater than 1,
+then reps within batch are run in parallel using a PSOCK cluster.}
+
+\item{delimiter}{Character of length 1, string to insert between
+other strings when creating names of targets.}
 
 \item{tidy_eval}{Whether to invoke tidy evaluation
 (e.g. the \verb{!!} operator from \code{rlang}) as soon as the target is defined

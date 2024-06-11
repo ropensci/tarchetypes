@@ -11,6 +11,7 @@
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
 #' @inheritSection tar_rep Replicate-specific seeds
+#' @inheritParams tar_map
 #' @inheritParams tar_rep
 #' @param name Character of length 1, base name of the targets.
 #' @param command1 Language object to create named arguments to `command2`.
@@ -50,6 +51,7 @@ tar_map2_raw <- function(
   suffix1 = "1",
   suffix2 = "2",
   rep_workers = 1,
+  delimiter = "_",
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -95,6 +97,8 @@ tar_map2_raw <- function(
   targets::tar_assert_lgl(combine)
   targets::tar_assert_lang(group)
   tar_assert_rep_workers(rep_workers)
+  targets::tar_assert_chr(delimiter)
+  targets::tar_assert_scalar(delimiter)
   rep_workers <- as.integer(rep_workers)
   envir <- targets::tar_option_get("envir")
   command1 <- tar_raw_command(name, command1)
@@ -106,8 +110,8 @@ tar_map2_raw <- function(
     command1 <- tar_command_append_static_values(command1, columns1)
     command2 <- tar_command_append_static_values(command2, columns1)
   }
-  name_upstream <- paste(name, suffix1, sep = "_")
-  name_downstream <- paste(name, suffix2, sep = "_")
+  name_upstream <- paste(name, suffix1, sep = delimiter)
+  name_downstream <- paste(name, suffix2, sep = delimiter)
   sym_upstream <- as.symbol(name_upstream)
   sym_downstream <- as.symbol(name_downstream)
   target_upstream <- targets::tar_target_raw(
@@ -165,7 +169,8 @@ tar_map2_raw <- function(
         values = values,
         names = names,
         descriptions = descriptions,
-        unlist = FALSE
+        unlist = FALSE,
+        delimiter = delimiter
       )
     )
   )

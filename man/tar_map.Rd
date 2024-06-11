@@ -9,7 +9,8 @@ tar_map(
   ...,
   names = tidyselect::everything(),
   descriptions = tidyselect::everything(),
-  unlist = FALSE
+  unlist = FALSE,
+  delimiter = "_"
 )
 }
 \arguments{
@@ -43,6 +44,9 @@ If \code{unlist = FALSE}, the list is nested and sub-lists
 are named and grouped by the original input targets.
 If \code{unlist = TRUE}, the return value is a flat list of targets
 named by the new target names.}
+
+\item{delimiter}{Character of length 1, string to insert between
+other strings when creating names of targets.}
 }
 \value{
 A list of new target objects. If \code{unlist} is \code{FALSE},

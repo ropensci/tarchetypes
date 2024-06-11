@@ -52,6 +52,8 @@
 #'   are named and grouped by the original input targets.
 #'   If `unlist = TRUE`, the return value is a flat list of targets
 #'   named by the new target names.
+#' @param delimiter Character of length 1, string to insert between
+#'   other strings when creating names of targets.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
@@ -72,8 +74,11 @@ tar_map <- function(
   ...,
   names = tidyselect::everything(),
   descriptions = tidyselect::everything(),
-  unlist = FALSE
+  unlist = FALSE,
+  delimiter = "_"
 ) {
+  targets::tar_assert_chr(delimiter)
+  targets::tar_assert_scalar(delimiter)
   targets <- unlist(list(...), recursive = TRUE) %|||% list()
   targets::tar_assert_target_list(targets)
   assert_values_list(values)
@@ -83,7 +88,7 @@ tar_map <- function(
   descriptions <- eval_tidyselect(descriptions_quosure, base::names(values))
   values <- tibble::as_tibble(values)
   values <- tar_map_process_values(values)
-  values <- tar_map_extend_values(targets, values, names)
+  values <- tar_map_extend_values(targets, values, names, delimiter)
   out <- lapply(
     X = targets,
     FUN = tar_map_target,
@@ -108,8 +113,8 @@ tar_map_process_values <- function(values) {
   values
 }
 
-tar_map_extend_values <- function(targets, values, names) {
-  suffix <- tar_map_produce_suffix(values, names)
+tar_map_extend_values <- function(targets, values, names, delimiter) {
+  suffix <- tar_map_produce_suffix(values, names, delimiter)
   for (target in targets) {
     name <- target$settings$name
     targets::tar_assert_not_in(
@@ -117,18 +122,20 @@ tar_map_extend_values <- function(targets, values, names) {
       names(values),
       paste("target", name, "cannot be in names(values).")
     )
-    values[[name]] <- as_symbols(make.names(paste(name, suffix, sep = "_")))
+    values[[name]] <- as_symbols(
+      make.names(paste(name, suffix, sep = delimiter))
+    )
   }
   values
 }
 
-tar_map_produce_suffix <- function(values, names) {
+tar_map_produce_suffix <- function(values, names, delimiter) {
   data <- values[names] %||% tar_map_default_suffixes(values)
   data <- map(data, ~as.character(unlist(.x)))
-  out <- apply(as.data.frame(data), 1, paste, collapse = "_")
+  out <- apply(as.data.frame(data), 1, paste, collapse = delimiter)
   out <- gsub("'", "", out)
   out <- gsub("\"", "", out)
-  make.unique(out, sep = "_")
+  make.unique(out, sep = delimiter)
 }
 
 tar_map_default_suffixes <- function(values) {

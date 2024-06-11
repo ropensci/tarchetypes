@@ -19,6 +19,7 @@
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
 #' @inheritSection tar_rep Replicate-specific seeds
+#' @inheritParams tar_map
 #' @inheritParams tar_rep
 #' @param size Positive integer of length 1,
 #'   maximum number of rows in each batch for
@@ -66,6 +67,7 @@ tar_map2_size_raw <- function(
   columns1 = quote(tidyselect::everything()),
   columns2 = quote(tidyselect::everything()),
   rep_workers = 1,
+  delimiter = "_",
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -103,6 +105,7 @@ tar_map2_size_raw <- function(
     columns1 = columns1,
     columns2 = columns2,
     rep_workers = rep_workers,
+    delimiter = delimiter,
     tidy_eval = tidy_eval,
     packages = packages,
     library = library,

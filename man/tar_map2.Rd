@@ -18,6 +18,7 @@ tar_map2(
   columns1 = tidyselect::everything(),
   columns2 = tidyselect::everything(),
   rep_workers = 1,
+  delimiter = "_",
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -56,10 +57,10 @@ For complicated objects, consider using \code{quote()} when
 you define \code{values}, as shown at
 \url{https://github.com/ropensci/tarchetypes/discussions/105}.}
 
-\item{names}{Language object with a tidyselect expression
-to select which columns of \code{values} to use to construct
-statically branched target names. If \code{NULL}, then
-short names are automatically generated.}
+\item{names}{Subset of \code{names(values)}
+used to generate the suffixes in the names of the new targets.
+The value of \code{names} should be a \code{tidyselect} expression
+such as a call to \code{\link[=any_of]{any_of()}} or \code{\link[=starts_with]{starts_with()}}.}
 
 \item{descriptions}{Names of a column in \code{values}
 to append to the custom description of each generated target.
@@ -94,6 +95,9 @@ Columns already in the target output are not appended.
 processes to use to run reps within batches in parallel. If 1,
 then reps are run sequentially within each batch. If greater than 1,
 then reps within batch are run in parallel using a PSOCK cluster.}
+
+\item{delimiter}{Character of length 1, string to insert between
+other strings when creating names of targets.}
 
 \item{tidy_eval}{Whether to invoke tidy evaluation
 (e.g. the \verb{!!} operator from \code{rlang}) as soon as the target is defined

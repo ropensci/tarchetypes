@@ -16,6 +16,7 @@ tar_map_rep(
   reps = 1,
   rep_workers = 1,
   combine = TRUE,
+  delimiter = "_",
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -92,6 +93,9 @@ then reps within batch are run in parallel using a PSOCK cluster.}
 
 \item{combine}{Logical of length 1, whether to statically combine
 all the results into a single target downstream.}
+
+\item{delimiter}{Character of length 1, string to insert between
+other strings when creating names of targets.}
 
 \item{tidy_eval}{Whether to invoke tidy evaluation
 (e.g. the \verb{!!} operator from \code{rlang}) as soon as the target is defined

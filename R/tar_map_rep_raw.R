@@ -77,6 +77,7 @@ tar_map_rep_raw <- function(
   reps = 1,
   rep_workers = 1,
   combine = TRUE,
+  delimiter = "_",
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -117,6 +118,8 @@ tar_map_rep_raw <- function(
   targets::tar_assert_scalar(combine)
   targets::tar_assert_lgl(combine)
   tar_assert_rep_workers(rep_workers)
+  targets::tar_assert_chr(delimiter)
+  targets::tar_assert_scalar(delimiter)
   rep_workers <- as.integer(rep_workers)
   envir <- targets::tar_option_get("envir")
   command <- tar_raw_command(name, command)
@@ -125,7 +128,7 @@ tar_map_rep_raw <- function(
     columns <- targets::tar_tidyselect_eval(columns, colnames(values))
     command <- tar_command_append_static_values(command, columns)
   }
-  name_batch <- paste0(name, "_batch")
+  name_batch <- paste0(name, delimiter, "batch")
   target_batch <- targets::tar_target_raw(
     name = name_batch,
     command = substitute(seq_len(batches), env = list(batches = batches)),
@@ -179,7 +182,8 @@ tar_map_rep_raw <- function(
         target_dynamic,
         values = values,
         names = names,
-        descriptions = descriptions
+        descriptions = descriptions,
+        delimiter = delimiter
       )
     )
   )
