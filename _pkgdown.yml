@@ -1,19 +1,14 @@
+url: https://docs.ropensci.org/tarchetypes
 destination: docs/
 navbar:
-  title: tarchetypes
-  type: default
-  left:
-  - icon: fa-home fa-lg
-    href: index.html
-  - text: Functions
-    href: reference/index.html
-  - text: Targets
-    href: https://docs.ropensci.org/targets
-  - text: News
-    href: news/index.html
-  right:
-  - icon: fa-github fa-lg
-    href: https://github.com/ropensci/tarchetypes
+  components:
+    targets:
+      text: targets
+      href: https://docs.ropensci.org/targets
+  structure:
+    left:  [intro, reference, articles, targets, news]
+    right: [search, github, lightswitch]
+
 reference:
 - title: Help
   contents:
