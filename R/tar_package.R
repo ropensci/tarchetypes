@@ -10,7 +10,7 @@
 #'   path_ext_set path_rel
 #' @importFrom parallel clusterCall clusterMap makePSOCKcluster parLapply
 #'   stopCluster
-#' @importFrom rlang as_function call2 check_installed enquo expr
+#' @importFrom rlang as_function as_quosure call2 check_installed enquo expr
 #'   inform is_missing quo_squash
 #' @importFrom secretbase siphash13
 #' @importFrom targets tar_assert_chr tar_assert_dbl tar_assert_df

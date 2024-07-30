@@ -1,7 +1,9 @@
-#' @title Hook to wrap commands
+#' @title Hook to wrap commands (raw version)
 #' @export
 #' @family hooks
 #' @description Wrap the command of each target in an arbitrary R expression.
+#'   [tar_hook_outer_raw()] is like [tar_hook_outer()]
+#'   except that arguments `hook` and `names` are pre-quoted language objects.
 #' @details The expression you supply to `hook`
 #'   must contain the special placeholder symbol `.x`
 #'   so `tar_hook_outer()` knows where to insert the original command
@@ -31,16 +33,16 @@
 #'     targets::tar_target(x3, task3(x2)),
 #'     targets::tar_target(y1, task4(x3))
 #'   )
-#'   tarchetypes::tar_hook_outer(
+#'   tarchetypes::tar_hook_outer_raw(
 #'     targets = targets,
-#'     hook = postprocess(.x, arg = "value"),
-#'     names = starts_with("x")
+#'     hook = quote(postprocess(.x, arg = "value")),
+#'     names = quote(starts_with("x"))
 #'   )
 #' })
 #' targets::tar_manifest(fields = command)
 #' })
 #' }
-tar_hook_outer <- function(
+tar_hook_outer_raw <- function(
   targets,
   hook,
   names = NULL,
@@ -48,11 +50,26 @@ tar_hook_outer <- function(
   envir = parent.frame()
 ) {
   force(envir)
-  tar_hook_outer_raw(
+  targets::tar_assert_scalar(set_deps)
+  targets::tar_assert_lgl(set_deps)
+  targets::tar_assert_nonmissing(set_deps)
+  targets <- tar_copy_targets(targets)
+  targets::tar_assert_lang(hook)
+  assert_hook_placeholder(hook)
+  names_quosure <- rlang::as_quosure(names, env = envir)
+  walk_targets(
     targets = targets,
-    hook = substitute(hook),
-    names = substitute(names),
-    set_deps = set_deps,
-    envir = envir
+    names_quosure = names_quosure,
+    fun = tar_hook_outer_insert,
+    hook = hook,
+    set_deps = set_deps
   )
+  targets
+}
+
+tar_hook_outer_insert <- function(target, hook, set_deps) {
+  assert_hook_expr(target)
+  lang <- target$command$expr[[1]]
+  expr <- tar_sub_expr(hook, values = list(.x = lang))
+  tar_replace_command(target = target, expr = expr, set_deps = set_deps)
 }

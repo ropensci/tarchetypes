@@ -4,7 +4,13 @@
 \alias{tar_hook_outer}
 \title{Hook to wrap commands}
 \usage{
-tar_hook_outer(targets, hook, names = NULL, set_deps = TRUE)
+tar_hook_outer(
+  targets,
+  hook,
+  names = NULL,
+  set_deps = TRUE,
+  envir = parent.frame()
+)
 }
 \arguments{
 \item{targets}{A list of target objects. The input target list
@@ -23,6 +29,7 @@ to wrap it in \code{quote()}, \code{expression()}, or similar.}
 \item{names}{Name of targets in the target list
 to apply the hook. Supplied with \code{tidyselect} helpers like
 \code{\link[=starts_with]{starts_with()}}, as in \code{names = starts_with("your_prefix_")}.
+Set to \code{NULL} to include all targets supplied to the \code{targets} argument.
 Targets not included in \code{names} still remain in the target list,
 but they are not modified because the hook does not apply to them.}
 
@@ -30,8 +37,12 @@ but they are not modified because the hook does not apply to them.}
 of each modified target by scanning the newly generated
 target commands for dependencies. If \code{FALSE}, then the target will
 keep the original set of dependencies it had before the hook.
+Set to \code{NULL} to include all targets supplied to the \code{targets} argument.
 \code{TRUE} is recommended for nearly all situations. Only use \code{FALSE}
 if you have a specialized use case and you know what you are doing.}
+
+\item{envir}{Optional environment to construct the quosure for the \code{names}
+argument to select names.}
 }
 \value{
 A flattened list of target objects with the hooks applied.
@@ -93,6 +104,9 @@ targets::tar_manifest(fields = command)
 \seealso{
 Other hooks: 
 \code{\link{tar_hook_before}()},
-\code{\link{tar_hook_inner}()}
+\code{\link{tar_hook_before_raw}()},
+\code{\link{tar_hook_inner}()},
+\code{\link{tar_hook_inner_raw}()},
+\code{\link{tar_hook_outer_raw}()}
 }
 \concept{hooks}

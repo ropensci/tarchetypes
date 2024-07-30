@@ -89,8 +89,11 @@ reference:
 - title: Hooks
   contents:
   - 'tar_hook_before'
+  - 'tar_hook_before_raw'
   - 'tar_hook_inner'
+  - 'tar_hook_inner_raw'
   - 'tar_hook_outer'
+  - 'tar_hook_outer_raw'
 - title: Metaprogramming utilities
   contents:
   - 'tar_eval'
