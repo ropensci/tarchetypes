@@ -102,4 +102,5 @@ reference:
   - 'tar_sub_raw'
 - title: Domain-specific languages for pipeline construction
   contents:
+  - 'tar_assign'
   - 'tar_plan'
