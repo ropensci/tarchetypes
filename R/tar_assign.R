@@ -25,19 +25,19 @@
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
-#' readr::write_csv(airquality, "data.csv")
+#' write.csv(airquality, "data.csv", row.names = FALSE)
 #' targets::tar_script({
 #'   library(tarchetypes)
 #'   tar_option_set(packages = c("readr", "dplyr", "ggplot2"))
 #'   tar_assign({
 #'     file <- tar_target("data.csv", format = "file")
 #'
-#'     data <- read_csv(file, col_types = cols()) |> 
-#'       filter(!is.na(Ozone)) |> 
+#'     data <- read_csv(file, col_types = cols()) |>
+#'       filter(!is.na(Ozone)) |>
 #'       tar_target()
 #'
-#'     model <- lm(Ozone ~ Temp, data) |> 
-#'       coefficients() |> 
+#'     model <- lm(Ozone ~ Temp, data) |>
+#'       coefficients() |>
 #'       tar_target()
 #'
 #'     plot <- {
@@ -45,7 +45,7 @@
 #'           geom_point(aes(x = Temp, y = Ozone)) +
 #'           geom_abline(intercept = model[1], slope = model[2]) +
 #'           theme_gray(24)
-#'       } |> 
+#'       } |>
 #'         tar_target()
 #'   })
 #' })
