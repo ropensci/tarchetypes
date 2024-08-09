@@ -149,7 +149,7 @@ subsets of a data frame. The target's return value must be a data
 frame with a special \code{tar_group} column of consecutive integers
 from 1 through the number of groups. Each integer designates a group,
 and a branch is created for each collection of rows in a group.
-See the \code{\link[=tar_group]{tar_group()}} function to see how you can
+See the \code{\link[targets:tar_group]{targets::tar_group()}} function to see how you can
 create the special \code{tar_group} column with \code{dplyr::group_by()}.
 }}
 
@@ -330,8 +330,9 @@ Likewise with \code{\link[=tar_quarto_rep]{tar_quarto_rep()}} and the \code{exec
 Literate programming files are messy and variable,
 so functions like \code{\link[=tar_render]{tar_render()}} have limitations:
 * Child documents are not tracked for changes.
-* Upstream target dependencies are not detected if \code{\link[=tar_read]{tar_read()}}
-and/or \code{\link[=tar_load]{tar_load()}} are called from a user-defined function.
+* Upstream target dependencies are not detected if
+\code{\link[targets:tar_read]{targets::tar_read()}}
+and/or \code{\link[targets:tar_load]{targets::tar_load()}} are called from a user-defined function.
 In addition, single target names must be mentioned and they must
 be symbols. \code{tar_load("x")} and \code{tar_load(contains("x"))} may not
 detect target \code{x}.
