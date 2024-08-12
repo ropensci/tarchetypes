@@ -14,9 +14,9 @@
 #'   are as follows:
 #'   * The code supplied to [tar_assign()] must be enclosed in curly braces
 #'     beginning with `{` and `}` unless it only contains a
-#'     one-line statement.
+#'     one-line statement or uses `=` as the assignment.
 #'   * Each statement in the code block must be of the form
-#'     `x <- f()`, where `x` is the name of a target and
+#'     `x <- f()`, or `x = f()` where `x` is the name of a target and
 #'     `f()` is a function like `tar_target()` or [tar_quarto()]
 #'     which accepts a `name` argument.
 #'   * The native pipe operator `|>` is allowed because it lazily
@@ -36,7 +36,7 @@
 #'       filter(!is.na(Ozone)) |>
 #'       tar_target()
 #'
-#'     model <- lm(Ozone ~ Temp, data) |>
+#'     model = lm(Ozone ~ Temp, data) |>
 #'       coefficients() |>
 #'       tar_target()
 #'
@@ -59,12 +59,16 @@ tar_assign <- function(targets) {
     as.list(expr[-1L]),
     list(expr)
   )
+  check_assign <- function(x){
+    identical(x[[1L]], quote(`<-`)) || identical(x[[1L]], quote(`=`))
+  }
   targets::tar_assert_true(
-    all(map_lgl(statements, ~identical(.x[[1L]], quote(`<-`)))),
+    all(map_lgl(statements, check_assign)),
     msg = paste(
       "tar_assign() code must be enclosed in curly braces if",
       "it has multiple statements, and each statement",
-      "must be an assignment statement using the left arrow <-"
+      "must be an assignment statement using the left arrow <-",
+      "or equal sign ="
     )
   )
   envir <- targets::tar_option_get("envir")

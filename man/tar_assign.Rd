@@ -16,9 +16,9 @@ are as follows:
 \itemize{
 \item The code supplied to \code{\link[=tar_assign]{tar_assign()}} must be enclosed in curly braces
 beginning with \verb{\{} and \verb{\}} unless it only contains a
-one-line statement.
+one-line statement or uses \code{=} as the assignment.
 \item Each statement in the code block must be of the form
-\code{x <- f()}, where \code{x} is the name of a target and
+\code{x <- f()}, or \code{x = f()} where \code{x} is the name of a target and
 \code{f()} is a function like \code{tar_target()} or \code{\link[=tar_quarto]{tar_quarto()}}
 which accepts a \code{name} argument.
 \item The native pipe operator \verb{|>} is allowed because it lazily
@@ -67,7 +67,7 @@ targets::tar_script({
       filter(!is.na(Ozone)) |>
       tar_target()
 
-    model <- lm(Ozone ~ Temp, data) |>
+    model = lm(Ozone ~ Temp, data) |>
       coefficients() |>
       tar_target()
 
