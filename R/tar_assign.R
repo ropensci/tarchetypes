@@ -59,7 +59,7 @@ tar_assign <- function(targets) {
     as.list(expr[-1L]),
     list(expr)
   )
-  check_assign <- function(x){
+  check_assign <- function(x) {
     identical(x[[1L]], quote(`<-`)) || identical(x[[1L]], quote(`=`))
   }
   targets::tar_assert_true(
@@ -76,6 +76,14 @@ tar_assign <- function(targets) {
 }
 
 tar_assign_parse <- function(statement, envir) {
+  targets::tar_assert_true(
+    length(statement) > 2L && is.call(statement[[3L]]),
+    msg = paste0(
+      "tar_assign() failed to parse statement `",
+      tar_deparse_language(statement),
+      "` because the right-hand side is not a function call."
+    )
+  )
   call <- statement[[3L]]
   call$name <- statement[[2L]]
   eval(call, envir = envir)

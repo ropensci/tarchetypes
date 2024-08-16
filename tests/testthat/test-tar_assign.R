@@ -5,8 +5,7 @@ targets::tar_test("tar_assign() single statement", {
   expect_equal(out$command, "c(1L, 2L)")
   targets::tar_make(callr_function = NULL)
   expect_equal(targets::tar_read(x), c(1L, 2L))
-  
-  targets::tar_script(tar_assign({x = tar_target(c(1L, 2L))}))
+  targets::tar_script(tar_assign({x = tar_target(c(1L, 2L))})) # nolint
   out <- targets::tar_manifest(callr_function = NULL)
   expect_equal(out$name, "x")
   expect_equal(out$command, "c(1L, 2L)")
@@ -17,7 +16,7 @@ targets::tar_test("tar_assign() single statement", {
 targets::tar_test("tar_assign()", {
   targets::tar_script({
     tar_assign({
-      x = tar_target(c(1L, 2L))
+      x = tar_target(c(1L, 2L)) # nolint
       y <- tar_target(x + 1L, pattern = map(x))
       z <- tar_rep(TRUE, batches = 2L)
     })
@@ -43,4 +42,15 @@ targets::tar_test("tar_assign()", {
   expect_equal(unname(targets::tar_read(y, branches = 2L)), 3L)
   expect_equal(targets::tar_read(z_batch), c(1L, 2L))
   expect_equal(unname(targets::tar_read(z)), rep(TRUE, 2L))
+})
+
+targets::tar_test("tar_assign() non-calls", {
+  expect_error(
+    tar_assign({
+      x <- targets::tar_target(1)
+      y <- 3
+      z <- tar_target(x + y)
+    }),
+    class = "tar_condition_validate"
+  )
 })
