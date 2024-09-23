@@ -56,9 +56,9 @@
 #'   to run the command multiple times.
 #'   If the command returns a list or data frame, then
 #'   the targets from `tar_rep()` will try to append new elements/columns
-#'   `tar_batch` and `tar_rep` to the output
-#'   to denote the batch and rep-within-batch IDs, respectively.
-#'   See the "Target objects" section for background.
+#'   `tar_batch`, `tar_rep`, and `tar_seed` to the output
+#'   to denote the batch, rep-within-batch ID, and random number
+#'   generator seed, respectively.
 #'
 #'   `tar_read(your_target)` (on the downstream target with the actual work)
 #'   will return a list of lists, where the outer list has one element per

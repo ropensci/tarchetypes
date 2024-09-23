@@ -20,10 +20,21 @@
 #'   are aggregated with `list()`. If `"vector"`,
 #'   then `vctrs::vec_c()`. If `"group"`, then `vctrs::vec_rbind()`.
 #' @inheritSection tar_rep Replicate-specific seeds
-#' @return A list of two target objects, one upstream and one downstream.
-#'   The upstream one does some work and returns some file paths,
-#'   and the downstream target is a pattern that applies `format = "file"`.
-#'   See the "Target objects" section for background.
+#' @return A list of two targets, one upstream and one downstream.
+#'   The upstream target returns a numeric index of batch ids,
+#'   and the downstream one dynamically maps over the batch ids
+#'   to run the command multiple times.
+#'   If the command returns a list or data frame, then
+#'   the targets from `tar_rep()` will try to append new elements/columns
+#'   `tar_batch`, `tar_rep`, and `tar_seed` to the output
+#'   to denote the batch, rep-within-batch ID, and random number
+#'   generator seed, respectively.
+#'
+#'   `tar_read(your_target)` (on the downstream target with the actual work)
+#'   will return a list of lists, where the outer list has one element per
+#'   batch and each inner list has one element per rep within batch.
+#'   To un-batch this nested list, call
+#'   `tar_read(your_target, recursive = FALSE)`.
 #' @inheritSection tar_map Target objects
 #' @inheritParams targets::tar_target_raw
 #' @inheritParams tar_rep

@@ -93,6 +93,8 @@ for details for instructions.
 See the cloud storage section of
 \url{https://books.ropensci.org/targets/data.html}
 for details for instructions.
+\item A character string from \code{\link[targets:tar_repository_cas]{tar_repository_cas()}} for content-addressable
+storage.
 }
 
 Note: if \code{repository} is not \code{"local"} and \code{format} is \code{"file"}
@@ -125,13 +127,25 @@ stops and throws an error. Options:
 \itemize{
 \item \code{"stop"}: the whole pipeline stops and throws an error.
 \item \code{"continue"}: the whole pipeline keeps going.
-\item \code{"abridge"}: any currently running targets keep running,
-but no new targets launch after that.
-(Visit \url{https://books.ropensci.org/targets/debugging.html}
-to learn how to debug targets using saved workspaces.)
 \item \code{"null"}: The errored target continues and returns \code{NULL}.
 The data hash is deliberately wrong so the target is not
 up to date for the next run of the pipeline.
+\item \code{"abridge"}: any currently running targets keep running,
+but no new targets launch after that.
+\item \code{"trim"}: all currently running targets stay running. A queued
+target is allowed to start if:
+\enumerate{
+\item It is not downstream of the error, and
+\item It is not a sibling branch from the same \code{\link[targets:tar_target]{tar_target()}} call
+(if the error happened in a dynamic branch).
+}
+
+The idea is to avoid starting any new work that the immediate error
+impacts. \code{error = "trim"} is just like \code{error = "abridge"},
+but it allows potentially healthy regions of the dependency graph
+to begin running.
+(Visit \url{https://books.ropensci.org/targets/debugging.html}
+to learn how to debug targets using saved workspaces.)
 }}
 
 \item{memory}{Character of length 1, memory strategy.
@@ -232,10 +246,21 @@ lists all the targets whose descriptions start with the character
 string \code{"survival model"}.}
 }
 \value{
-A list of two target objects, one upstream and one downstream.
-The upstream one does some work and returns some file paths,
-and the downstream target is a pattern that applies \code{format = "file"}.
-See the "Target objects" section for background.
+A list of two targets, one upstream and one downstream.
+The upstream target returns a numeric index of batch ids,
+and the downstream one dynamically maps over the batch ids
+to run the command multiple times.
+If the command returns a list or data frame, then
+the targets from \code{tar_rep()} will try to append new elements/columns
+\code{tar_batch}, \code{tar_rep}, and \code{tar_seed} to the output
+to denote the batch, rep-within-batch ID, and random number
+generator seed, respectively.
+
+\code{tar_read(your_target)} (on the downstream target with the actual work)
+will return a list of lists, where the outer list has one element per
+batch and each inner list has one element per rep within batch.
+To un-batch this nested list, call
+\code{tar_read(your_target, recursive = FALSE)}.
 }
 \description{
 Batching is important for optimizing the efficiency
