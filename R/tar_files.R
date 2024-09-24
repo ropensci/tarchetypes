@@ -2,11 +2,16 @@
 #' @export
 #' @family Dynamic branching over files
 #' @description Dynamic branching over output or input files.
+#'   [tar_files()] expects a unevaluated symbol for the `name` argument
+#'   and an unevaluated expression for `command`, whereas
+#'   [tar_files_raw()] expects a character string for the `name` argument
+#'   and an evaluated expression object for `command`. See the examples
+#'   for a demo.
 #' @details `tar_files()` creates a pair of targets, one upstream
 #'   and one downstream. The upstream target does some work
 #'   and returns some file paths, and the downstream
-#'   target is a pattern that applies `format = "file"`,
-#'   `format = "file_fast"`, or `format = "url"`.
+#'   target is a pattern that applies `format = "file"`
+#'   or `format = "url"`.
 #'   (URLs are input-only, they must already exist beforehand.)
 #'   This is the correct way to dynamically
 #'   iterate over file/url targets. It makes sure any downstream patterns
@@ -16,22 +21,41 @@
 #'   <https://github.com/ropensci/drake/issues/1302>.
 #' @return A list of two targets, one upstream and one downstream.
 #'   The upstream one does some work and returns some file paths,
-#'   and the downstream target is a pattern that applies `format = "file"`,
-#'   `format = "file_fast"`, or `format = "url"`.
+#'   and the downstream target is a pattern that applies `format = "file"`
+#'   or `format = "url"`.
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
-#' @inheritParams tar_files_raw
 #' @inheritParams targets::tar_target
+#' @param name Name of the target.
+#'   [tar_files()] expects a unevaluated symbol for the `name` argument
+#'   and an unevaluated expression for `command`, whereas
+#'   [tar_files_raw()] expects a character string for the `name` argument
+#'   and an evaluated expression object for `command`. See the examples
+#'   for a demo.
+#' @param command R command for the target.
+#'   [tar_files()] expects a unevaluated symbol for the `name` argument
+#'   and an unevaluated expression for `command`, whereas
+#'   [tar_files_raw()] expects a character string for the `name` argument
+#'   and an evaluated expression object for `command`. See the examples
+#'   for a demo.
+#' @param format Character of length 1.
+#'   Must be `"file"`, `"url"`, or `"aws_file"`. See the `format`
+#'   argument of `targets::tar_target()` for details.
+#' @param cue An optional object from `tar_cue()`
+#'   to customize the rules that decide whether the target is up to date.
+#'   Only applies to the downstream target. The upstream target always runs.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
 #' targets::tar_script({
+#'   library(tarchetypes)
 #'   # Do not use temp files in real projects
 #'   # or else your targets will always rerun.
 #'   paths <- unlist(replicate(2, tempfile()))
 #'   file.create(paths)
 #'   list(
-#'     tarchetypes::tar_files(x, paths)
+#'     tar_files(name = x, command = paths),
+#'     tar_files_raw(name = "y", command = quote(paths))
 #'   )
 #' })
 #' targets::tar_make()

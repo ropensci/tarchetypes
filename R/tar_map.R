@@ -1,6 +1,6 @@
 #' @title Static branching.
 #' @export
-#' @family branching
+#' @family static branching
 #' @description Define multiple new targets based on existing target objects.
 #' @details `tar_map()` creates collections of new
 #'   targets by iterating over a list of arguments

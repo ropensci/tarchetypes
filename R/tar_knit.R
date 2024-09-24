@@ -3,6 +3,12 @@
 #' @family Literate programming targets
 #' @description Shorthand to include `knitr` document in a
 #'   `targets` pipeline.
+#'
+#'   [tar_knit()] expects an unevaluated symbol for the `name` argument,
+#'   and it supports named `...` arguments for `knitr::knit()` arguments.
+#'   [tar_knit_raw()] expects a character string for `name` and
+#'   supports an evaluated expression object
+#'   `knit_arguments` for `knitr::knit()` arguments.
 #' @details `tar_knit()` is an alternative to `tar_target()` for
 #'   `knitr` reports that depend on other targets. The `knitr` source
 #'   should mention dependency targets with `tar_load()` and `tar_read()`
@@ -37,15 +43,29 @@
 #' @inheritParams targets::tar_target
 #' @inheritParams knitr::knit
 #' @inheritParams tar_render
+#' @param name Name of the target.
+#'   [tar_knit()] expects an unevaluated symbol for the `name` argument,
+#'   whereas [tar_knit_raw()] expects a character string for `name`.
 #' @param path Character string, file path to the `knitr` source file.
 #'   Must have length 1.
 #' @param ... Named arguments to `knitr::knit()`.
-#'   These arguments are evaluated when the target actually runs in
+#'   These arguments are unevaluated when supplied to [tar_knit()].
+#'   They are only evaluated when the target actually runs in
 #'   `tar_make()`, not when the target is defined.
+#' @param knit_arguments Optional language object with a list
+#'   of named arguments to `knitr::knit()`.
+#'   Cannot be an expression object.
+#'   (Use `quote()`, not `expression()`.)
+#'   The reason for quoting is that these arguments may depend on
+#'   upstream targets whose values are not available at
+#'   the time the target is defined, and because `tar_knit_raw()`
+#'   is the "raw" version of a function, we want to avoid
+#'   all non-standard evaluation.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
 #' targets::tar_script({
+#'   library(tarchetypes)
 #'   # Ordinarily, you should create the report outside
 #'   # tar_script() and avoid temporary files.
 #'   lines <- c(
@@ -61,8 +81,9 @@
 #'   path <- tempfile()
 #'   writeLines(lines, path)
 #'   list(
-#'     targets::tar_target(data, data.frame(x = seq_len(26), y = letters)),
-#'     tarchetypes::tar_knit(report, path)
+#'     tar_target(data, data.frame(x = seq_len(26), y = letters)),
+#'     tar_knit(name = report, path = path),
+#'     tar_knit_raw(name = "report2", path = path)
 #'   )
 #' })
 #' targets::tar_make()

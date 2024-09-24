@@ -354,9 +354,6 @@ targets::tar_read(sensitivity_analysis)
 }
 \seealso{
 Other branching: 
-\code{\link{tar_combine}()},
-\code{\link{tar_combine_raw}()},
-\code{\link{tar_map}()},
 \code{\link{tar_map2}()},
 \code{\link{tar_map2_count}()},
 \code{\link{tar_map2_count_raw}()},

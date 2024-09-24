@@ -1,34 +1,55 @@
-#' @title Static aggregation.
+#' @title Static aggregation
 #' @export
-#' @family branching
+#' @family static branching
 #' @description Aggregate the results of upstream targets
 #'   into a new target.
+#'
+#'   [tar_combine()] expects unevaluated expressions for the `name`,
+#'   and `command` arguments, whereas [tar_combine_raw()]
+#'   uses a character string for `name` and an evaluated expression object
+#'   for `command`. See the examples for details.
 #' @return A new target object to combine the return values
 #'   from the upstream targets.
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
 #' @inheritParams targets::tar_target
-#' @param name Symbol, name of the new target.
+#' @param name Name of the new target.
+#'   [tar_combine()] expects unevaluated expressions for the `name`,
+#'   and `command` arguments, whereas [tar_combine_raw()]
+#'   uses a character string for `name` and an evaluated expression object
+#'   for `command`. See the examples for details.
 #' @param ... One or more target objects or list of target objects.
 #'   Lists can be arbitrarily nested, as in `list()`.
 #' @param command R command to aggregate the targets. Must contain
 #'   `!!!.x` where the arguments are to be inserted,
 #'   where `!!!` is the unquote splice operator from `rlang`.
+#'
+#'   [tar_combine()] expects unevaluated expressions for the `name`,
+#'   and `command` arguments, whereas [tar_combine_raw()]
+#'   uses a character string for `name` and an evaluated expression object
+#'   for `command`. See the examples for details.
 #' @param use_names Logical, whether to insert the names of the targets
 #'   into the command when splicing.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
 #' targets::tar_script({
-#'   target1 <- targets::tar_target(x, head(mtcars))
-#'   target2 <- targets::tar_target(y, tail(mtcars))
-#'   target3 <- tarchetypes::tar_combine(
-#'     new_target_name,
+#'   library(tarchetypes)
+#'   target1 <- tar_target(x, head(mtcars))
+#'   target2 <- tar_target(y, tail(mtcars))
+#'   target3 <- tar_combine(
+#'     name = new_target_name,
 #'     target1,
 #'     target2,
 #'     command = bind_rows(!!!.x)
 #'   )
-#'   list(target1, target2, target3)
+#'   target4 <- tar_combine(
+#'     name = "new_target_name2",
+#'     target1,
+#'     target2,
+#'     command = quote(bind_rows(!!!.x))
+#'   )
+#'   list(target1, target2, target3, target4)
 #' })
 #' targets::tar_manifest()
 #' })

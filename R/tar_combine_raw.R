@@ -1,34 +1,5 @@
-#' @title Static aggregation (raw version).
+#' @rdname tar_combine
 #' @export
-#' @family branching
-#' @description Like [tar_combine()] except the `name`, `command`,
-#'   and `pattern` arguments use standard evaluation.
-#' @return A new target object to combine the return values
-#'   from the upstream targets.
-#'   See the "Target objects" section for background.
-#' @inheritSection tar_map Target objects
-#' @inheritParams targets::tar_target_raw
-#' @param name Character, name of the new target.
-#' @param ... One or more target objects or list of target objects.
-#'   Lists can be arbitrarily nested, as in `list()`.
-#' @param command Expression object,
-#'   R command to aggregate the targets. Must contain
-#'   `!!!.x` where the arguments are to be inserted,
-#'   where `!!!` is the unquote splice operator from `rlang`.
-#' @param use_names Logical, whether to insert the names of the targets
-#'   into the command when splicing.
-#' @examples
-#' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
-#' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
-#' targets::tar_script({
-#'   target1 <- targets::tar_target(x, head(mtcars))
-#'   target2 <- targets::tar_target(y, tail(mtcars))
-#'   target3 <- tarchetypes::tar_combine(new_target_name, target1, target2)
-#'   list(target1, target2, target3)
-#' })
-#' targets::tar_manifest()
-#' })
-#' }
 tar_combine_raw <- function(
   name,
   ...,

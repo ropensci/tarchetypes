@@ -331,9 +331,6 @@ Likewise with \code{\link[=tar_quarto_rep]{tar_quarto_rep()}} and the \code{exec
 
 \seealso{
 Other branching: 
-\code{\link{tar_combine}()},
-\code{\link{tar_combine_raw}()},
-\code{\link{tar_map}()},
 \code{\link{tar_map2}()},
 \code{\link{tar_map2_count}()},
 \code{\link{tar_map2_count_raw}()},

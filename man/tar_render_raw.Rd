@@ -245,7 +245,6 @@ targets::tar_script({
 \seealso{
 Other Literate programming targets: 
 \code{\link{tar_knit}()},
-\code{\link{tar_knit_raw}()},
 \code{\link{tar_quarto}()},
 \code{\link{tar_quarto_raw}()},
 \code{\link{tar_quarto_rep}()},

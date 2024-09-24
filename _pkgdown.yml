@@ -16,7 +16,6 @@ reference:
 - title: Literate programming targets
   contents:
   - 'tar_knit'
-  - 'tar_knit_raw'
   - 'tar_quarto'
   - 'tar_quarto_raw'
   - 'tar_quarto_rep'
@@ -39,14 +38,11 @@ reference:
 - title: Static branching
   contents:
   - 'tar_combine'
-  - 'tar_combine_raw'
   - 'tar_map'
 - title: Dynamic branching over files
   contents:
   - 'tar_files'
-  - 'tar_files_raw'
   - 'tar_files_input'
-  - 'tar_files_input_raw'
 - title: Dynamic grouped data frames
   contents:
   - 'tar_group_by'
