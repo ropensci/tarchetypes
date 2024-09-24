@@ -127,11 +127,12 @@ respectively for Rmd and Jupyter input files).}
 
 \item{quiet}{Suppress warning and other messages.}
 
-\item{quarto_args}{Character vector of other \code{quarto} CLI flag pass to the
-command. This is mainly for advanced usage, e.g it can be useful for new
-options added to quarto CLI and not yet supported as function argument.}
+\item{quarto_args}{Character vector of other \code{quarto} CLI arguments to append
+to the Quarto command executed by this function. This is mainly intended for
+advanced usage and useful for CLI arguments which are not yet mirrored in a
+dedicated parameter of this \R function. See \verb{quarto render --help} for options.}
 
-\item{pandoc_args}{Additional command line options to pass to pandoc.}
+\item{pandoc_args}{Additional command line arguments to pass on to Pandoc.}
 
 \item{rep_workers}{Positive integer of length 1, number of local R
 processes to use to run reps within batches in parallel. If 1,

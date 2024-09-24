@@ -10,7 +10,6 @@
 #'   the return value is a simple list where each element is a target object.
 #'   All hook functions remove the nested structure of the input target list.
 #' @inheritSection tar_map Target objects
-#' @inheritParams tar_hook_before_raw
 #' @param hook R code to insert.
 #'   `tar_hook_before()` expects unevaluated expressions for the `hook` and
 #'   `names` arguments, whereas `tar_hook_before_raw()` expects

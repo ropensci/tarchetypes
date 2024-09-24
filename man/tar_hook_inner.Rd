@@ -148,7 +148,6 @@ targets::tar_script({
 \seealso{
 Other hooks: 
 \code{\link{tar_hook_before}()},
-\code{\link{tar_hook_outer}()},
-\code{\link{tar_hook_outer_raw}()}
+\code{\link{tar_hook_outer}()}
 }
 \concept{hooks}
