@@ -26,8 +26,13 @@ tar_render(
 )
 }
 \arguments{
-\item{name}{Symbol, name of the target. A target
-name must be a valid name for a symbol in R, and it
+\item{name}{Symbol, name of the target.
+In \code{\link[targets:tar_target]{tar_target()}}, \code{name} is an unevaluated symbol, e.g.
+\code{tar_target(name = data)}.
+In \code{\link[targets:tar_target_raw]{tar_target_raw()}}, \code{name} is a character string, e.g.
+\code{tar_target_raw(name = "data")}.
+
+A target name must be a valid name for a symbol in R, and it
 must not start with a dot. Subsequent targets
 can refer to this name symbolically to induce a dependency relationship:
 e.g. \code{tar_target(downstream_target, f(upstream_target))} is a

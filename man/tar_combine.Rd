@@ -40,8 +40,14 @@ where \verb{!!!} is the unquote splice operator from \code{rlang}.}
 \item{use_names}{Logical, whether to insert the names of the targets
 into the command when splicing.}
 
-\item{pattern}{Language to define branching for a target.
-For example, in a pipeline with numeric vector targets \code{x} and \code{y},
+\item{pattern}{Code to define a dynamic branching branching for a target.
+In \code{\link[targets:tar_target]{tar_target()}}, \code{pattern} is an unevaluated expression, e.g.
+\code{tar_target(pattern = map(data))}.
+In \code{\link[targets:tar_target_raw]{tar_target_raw()}}, \code{command} is an evaluated expression, e.g.
+\code{tar_target_raw(pattern = quote(map(data)))}.
+
+To demonstrate dynamic branching patterns, suppose we have
+a pipeline with numeric vector targets \code{x} and \code{y}. Then,
 \code{tar_target(z, x + y, pattern = map(x, y))} implicitly defines
 branches of \code{z} that each compute \code{x[1] + y[1]}, \code{x[2] + y[2]},
 and so on. See the user manual for details.}
@@ -287,9 +293,7 @@ Other branching:
 \code{\link{tar_map_rep_raw}()},
 \code{\link{tar_rep}()},
 \code{\link{tar_rep2}()},
-\code{\link{tar_rep2_raw}()},
 \code{\link{tar_rep_map}()},
-\code{\link{tar_rep_map_raw}()},
-\code{\link{tar_rep_raw}()}
+\code{\link{tar_rep_map_raw}()}
 }
 \concept{branching}

@@ -28,8 +28,13 @@ tar_rep_map_raw(
 )
 }
 \arguments{
-\item{name}{Symbol, name of the target. A target
-name must be a valid name for a symbol in R, and it
+\item{name}{Symbol, name of the target.
+In \code{\link[targets:tar_target]{tar_target()}}, \code{name} is an unevaluated symbol, e.g.
+\code{tar_target(name = data)}.
+In \code{\link[targets:tar_target_raw]{tar_target_raw()}}, \code{name} is a character string, e.g.
+\code{tar_target_raw(name = "data")}.
+
+A target name must be a valid name for a symbol in R, and it
 must not start with a dot. Subsequent targets
 can refer to this name symbolically to induce a dependency relationship:
 e.g. \code{tar_target(downstream_target, f(upstream_target))} is a
@@ -44,7 +49,11 @@ You can recover the seed of a completed target
 with \code{tar_meta(your_target, seed)} and run \code{\link[targets:tar_seed_set]{tar_seed_set()}}
 on the result to locally recreate the target's initial RNG state.}
 
-\item{command}{R code to run the target.}
+\item{command}{R code to run the target.
+In \code{\link[targets:tar_target]{tar_target()}}, \code{command} is an unevaluated expression, e.g.
+\code{tar_target(command = data)}.
+In \code{\link[targets:tar_target_raw]{tar_target_raw()}}, \code{command} is an evaluated expression, e.g.
+\code{tar_target_raw(command = quote(data))}.}
 
 \item{targets}{Character vector of names of upstream batched targets
 created by \code{\link[=tar_rep]{tar_rep()}}.
@@ -313,9 +322,7 @@ Other branching:
 \code{\link{tar_map_rep_raw}()},
 \code{\link{tar_rep}()},
 \code{\link{tar_rep2}()},
-\code{\link{tar_rep2_raw}()},
-\code{\link{tar_rep_map}()},
-\code{\link{tar_rep_raw}()}
+\code{\link{tar_rep_map}()}
 }
 \concept{branching}
 \keyword{internal}

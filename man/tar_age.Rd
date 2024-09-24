@@ -43,8 +43,14 @@ invalidation rules apply, and the target may or not rerun.
 If you want to force the target to run every 3 days,
 for example, set \code{age = as.difftime(3, units = "days")}.}
 
-\item{pattern}{Language to define branching for a target.
-For example, in a pipeline with numeric vector targets \code{x} and \code{y},
+\item{pattern}{Code to define a dynamic branching branching for a target.
+In \code{\link[targets:tar_target]{tar_target()}}, \code{pattern} is an unevaluated expression, e.g.
+\code{tar_target(pattern = map(data))}.
+In \code{\link[targets:tar_target_raw]{tar_target_raw()}}, \code{command} is an evaluated expression, e.g.
+\code{tar_target_raw(pattern = quote(map(data)))}.
+
+To demonstrate dynamic branching patterns, suppose we have
+a pipeline with numeric vector targets \code{x} and \code{y}. Then,
 \code{tar_target(z, x + y, pattern = map(x, y))} implicitly defines
 branches of \code{z} that each compute \code{x[1] + y[1]}, \code{x[2] + y[2]},
 and so on. See the user manual for details.}

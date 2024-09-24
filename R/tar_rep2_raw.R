@@ -1,55 +1,5 @@
-#' @title Dynamic batched computation downstream of [tar_rep()] (raw version).
+#' @rdname tar_rep2
 #' @export
-#' @family branching
-#' @keywords internal
-#' @description Batching is important for optimizing the efficiency
-#'   of heavily dynamically-branched workflows:
-#'   <https://books.ropensci.org/targets/dynamic.html#batching>.
-#'   `tar_rep2_raw()`
-#'   is just like [tar_rep2()] except it accepts a character
-#'   of length 1 for `name`, a language object for `command`,
-#'   and a character vector of the names of the upstream batched targets.
-#' @return A new target object to perform batched computation
-#'   downstream of [tar_rep()].
-#'   See the "Target objects" section for background.
-#' @inheritSection tar_map Target objects
-#' @inheritSection tar_rep Replicate-specific seeds
-#' @inheritParams targets::tar_target
-#' @inheritParams tar_rep
-#' @param targets Character vector of names of upstream batched targets
-#'   created by [tar_rep()].
-#'   If you supply more than one such target, all those targets must have the
-#'   same number of batches and reps per batch. And they must all return
-#'   either data frames or lists. List targets must use `iteration = "list"`
-#'   in [tar_rep()].
-#' @examples
-#' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
-#' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
-#' targets::tar_script({
-#'   list(
-#'     tarchetypes::tar_rep(
-#'       data1,
-#'       data.frame(value = rnorm(1)),
-#'       batches = 2,
-#'       reps = 3
-#'     ),
-#'     tarchetypes::tar_rep(
-#'       data2,
-#'       list(value = rnorm(1)),
-#'       batches = 2, reps = 3,
-#'       iteration = "list" # List iteration is important for batched lists.
-#'     ),
-#'     tarchetypes::tar_rep2_raw(
-#'       "aggregate",
-#'       quote(data.frame(value = data1$value + data2$value)),
-#'       targets = c("data1", "data2")
-#'     )
-#'   )
-#' })
-#' targets::tar_make()
-#' targets::tar_read(aggregate)
-#' })
-#' }
 tar_rep2_raw <- function(
   name,
   command,

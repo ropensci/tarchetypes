@@ -36,21 +36,12 @@ tar_quarto_rep(
 )
 }
 \arguments{
-\item{name}{Symbol, name of the target. A target
-name must be a valid name for a symbol in R, and it
-must not start with a dot. Subsequent targets
-can refer to this name symbolically to induce a dependency relationship:
-e.g. \code{tar_target(downstream_target, f(upstream_target))} is a
-target named \code{downstream_target} which depends on a target
-\code{upstream_target} and a function \code{f()}. In addition, a target's
-name determines its random number generator seed. In this way,
-each target runs with a reproducible seed so someone else
-running the same pipeline should get the same results,
-and no two targets in the same pipeline share the same seed.
-(Even dynamic branches have different names and thus different seeds.)
-You can recover the seed of a completed target
-with \code{tar_meta(your_target, seed)} and run \code{\link[targets:tar_seed_set]{tar_seed_set()}}
-on the result to locally recreate the target's initial RNG state.}
+\item{name}{Name of the target.
+\code{\link[=tar_rep]{tar_rep()}} expects unevaluated \code{name} and \code{command} arguments
+(e.g. \code{tar_rep(name = sim, command = simulate())})
+whereas \code{\link[=tar_rep_raw]{tar_rep_raw()}} expects an evaluated string for \code{name}
+and an evaluated expression object for \code{command}
+(e.g. \code{tar_rep_raw(name = "sim", command = quote(simulate()))}).}
 
 \item{path}{Character string, file path to the Quarto source file.
 Must have length 1.}

@@ -56,9 +56,7 @@ reference:
 - title: Dynamic batched replication
   contents:
   - 'tar_rep'
-  - 'tar_rep_raw'
   - 'tar_rep2'
-  - 'tar_rep2_raw'
 - title: Dynamic batched replication within static branches for data frames
   contents:
   - 'tar_map_rep'
