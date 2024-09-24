@@ -1,42 +1,6 @@
-#' @title Batched dynamic-within-static branching for data frames (raw version).
+#' @rdname tar_map2
+#' @export
 #' @keywords internal
-#' @family branching
-#' @description Define targets for batched
-#'   dynamic-within-static branching for data frames (raw version).
-#'   Not a user-side function. Do not invoke directly.
-#' @details Like `tar_map2()` except `name` is a character string
-#'   and `command1`, `command2`, `group`, `names`, `columns1`, and `columns2`
-#'   are language objects.
-#' @return A list of new target objects.
-#'   See the "Target objects" section for background.
-#' @inheritSection tar_map Target objects
-#' @inheritSection tar_rep Replicate-specific seeds
-#' @inheritParams tar_map
-#' @inheritParams tar_rep
-#' @param name Character of length 1, base name of the targets.
-#' @param command1 Language object to create named arguments to `command2`.
-#'   Must return a data frame with one row per call to `command2`.
-#' @param command2 Language object  to map over the data frame of arguments
-#'   produced by `command1`. Must return a data frame.
-#' @param columns1 Language object, a tidyselect expression
-#'   to select which columns of `values`
-#'   to append to the output of all targets.
-#' @param group Function on the data produced by `command1` to create the
-#'   `tar_group` column that determines the batching structure for the
-#'   `command2` targets.
-#' @param columns2 Language object, a tidyselect expression
-#'   to select which columns of `command1`
-#'   output to append to `command2` output.
-#'   In case of conflicts, `column1` takes precedence.
-#' @param suffix1 Character of length 1,
-#'   suffix to apply to the `command1` targets to distinguish
-#'   them from the `command2` targets.
-#' @param suffix2 Character of length 1,
-#'   suffix to apply to the `command2` targets to distinguish
-#'   them from the `command1` targets.
-#' @inheritParams tar_map_rep_raw
-#' @inheritParams tar_rep2
-#' @inheritParams tar_map
 tar_map2_raw <- function(
   name,
   command1,

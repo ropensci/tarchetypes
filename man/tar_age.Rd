@@ -28,7 +28,10 @@ tar_age(
 )
 }
 \arguments{
-\item{name}{Character of length 1, name of the target.}
+\item{name}{Name of the target.
+\code{tar_cue_age()} expects an unevaluated symbol for the \code{name}
+argument, whereas \code{tar_cue_age_raw()} expects a character string
+for \code{name}.}
 
 \item{command}{R code to run the target and return a value.}
 
@@ -275,7 +278,6 @@ targets::tar_make()
 \seealso{
 Other cues: 
 \code{\link{tar_cue_age}()},
-\code{\link{tar_cue_age_raw}()},
 \code{\link{tar_cue_force}()},
 \code{\link{tar_cue_skip}()}
 }

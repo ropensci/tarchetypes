@@ -27,11 +27,15 @@ The hook code is quoted (not evaluated) so there is no need
 to wrap it in \code{quote()}, \code{expression()}, or similar.}
 
 \item{names}{Name of targets in the target list
-to apply the hook. Supplied with \code{tidyselect} helpers like
+to apply the hook. Supplied using \code{tidyselect} helpers like
 \code{\link[=starts_with]{starts_with()}}, as in \code{names = starts_with("your_prefix_")}.
 Set to \code{NULL} to include all targets supplied to the \code{targets} argument.
 Targets not included in \code{names} still remain in the target list,
-but they are not modified because the hook does not apply to them.}
+but they are not modified because the hook does not apply to them.
+
+The regular hook functions expects unevaluated expressions for the \code{hook}
+and \code{names} arguments, whereas the \code{"_raw"} versions expect
+evaluated expression objects.}
 
 \item{set_deps}{Logical of length 1, whether to refresh the dependencies
 of each modified target by scanning the newly generated
@@ -106,9 +110,7 @@ targets::tar_manifest(fields = command)
 \seealso{
 Other hooks: 
 \code{\link{tar_hook_before}()},
-\code{\link{tar_hook_before_raw}()},
 \code{\link{tar_hook_inner}()},
-\code{\link{tar_hook_inner_raw}()},
 \code{\link{tar_hook_outer}()}
 }
 \concept{hooks}

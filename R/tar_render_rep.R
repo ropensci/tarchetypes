@@ -3,6 +3,13 @@
 #' @family Literate programming targets
 #' @description Targets to render a parameterized R Markdown report
 #'   with multiple sets of parameters.
+#'
+#'   [tar_render_rep()] expects an unevaluated symbol for the `name` argument,
+#'   and it supports named `...` arguments for `rmarkdown::render()`
+#'   arguments.
+#'   [tar_render_rep_raw()] expects a character string for `name` and
+#'   supports an evaluated expression object
+#'   `render_arguments` for `rmarkdown::render()` arguments.
 #' @details `tar_render_rep()` is an alternative to `tar_target()` for
 #'   parameterized R Markdown reports that depend on other targets.
 #'   Parameters must be given as a data frame with one row per
@@ -38,10 +45,14 @@
 #' @inheritSection tar_map Target objects
 #' @inheritSection tar_rep Replicate-specific seeds
 #' @inheritSection tar_render Literate programming limitations
+#' @inheritParams tar_render
 #' @inheritParams tar_rep
 #' @inheritParams targets::tar_target
 #' @inheritParams rmarkdown::render
-#' @inheritParams tar_render_rep_raw
+#' @param name Name of the target.
+#'   [tar_render_rep()] expects an unevaluated symbol for the `name` argument,
+#'   whereas
+#'   [tar_render_rep_raw()] expects a character string for `name`.
 #' @param path Character string, file path to the R Markdown source file.
 #'   Must have length 1.
 #' @param params Code to generate a data frame or `tibble`
@@ -55,6 +66,9 @@
 #'   is defined, not when it is run. (The only reason to delay evaluation
 #'   in [tar_render()] was to handle R Markdown parameters, and
 #'   `tar_render_rep()` handles them differently.)
+#' @param args Named list of other arguments to `rmarkdown::render()`.
+#'   Must not include `params` or `output_file`. Evaluated when the target
+#'   is defined.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
@@ -76,9 +90,14 @@
 #'   library(tarchetypes)
 #'   list(
 #'     tar_render_rep(
-#'       report,
+#'       name = report,
 #'       "report.Rmd",
 #'       params = tibble::tibble(par = c(1, 2))
+#'     ),
+#'     tar_render_rep_raw(
+#'       name = "report2",
+#'       "report.Rmd",
+#'       params = quote(tibble::tibble(par = c(1, 2)))
 #'     )
 #'   )
 #' }, ask = FALSE)

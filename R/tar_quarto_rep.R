@@ -3,6 +3,12 @@
 #' @family Literate programming targets
 #' @description Targets to render a parameterized Quarto document
 #'   with multiple sets of parameters.
+#'
+#'   [tar_quarto_rep()] expects an unevaluated symbol for the `name`
+#'   argument and an unevaluated expression for the `exectue_params` argument.
+#'   [tar_quarto_rep_raw()] expects a character string for the `name`
+#'   argument and an evaluated expression object
+#'   for the `exectue_params` argument.
 #' @details `tar_quarto_rep()` is an alternative to `tar_target()` for
 #'   a parameterized Quarto document that depends on other targets.
 #'   Parameters must be given as a data frame with one row per
@@ -40,17 +46,27 @@
 #' @inheritSection tar_rep Replicate-specific seeds
 #' @inheritSection tar_render Literate programming limitations
 #' @inheritSection tar_quarto Quarto troubleshooting
+#' @inheritParams tar_quarto
 #' @inheritParams tar_rep
 #' @inheritParams targets::tar_target
 #' @inheritParams quarto::quarto_render
-#' @inheritParams tar_quarto_rep_raw
 #' @param tidy_eval Logical of length 1, whether to use tidy evaluation
 #'   to resolve `execute_params`. Similar to the `tidy_eval`
 #'   argument of `targets::tar_target()`.
+#' @param name Name of the target.
+#'   [tar_quarto_rep()] expects an unevaluated symbol for the `name`
+#'   argument, and
+#'   [tar_quarto_rep_raw()] expects a character string for `name`.
 #' @param execute_params Code to generate
 #'   a data frame or `tibble` with one row per rendered report
-#'   and one column per Quarto parameter. You may also include an
-#'   `output_file` column to specify the path of each rendered report.
+#'   and one column per Quarto parameter.
+#'   [tar_quarto_rep()] expects an unevaluated expression for the
+#'   `exectue_params` argument, whereas
+#'   [tar_quarto_rep_raw()] expects an evaluated expression object.
+#'
+#'   You may also include an
+#'   `output_file` column in the parameters
+#'   to specify the path of each rendered report.
 #'   If included, the `output_file` column must be a character vector
 #'   with one and only one output file for each row of parameters.
 #'   If an `output_file` column is not included,
@@ -83,9 +99,14 @@
 #'   library(tarchetypes)
 #'   list(
 #'     tar_quarto_rep(
-#'       report,
+#'       name = report,
 #'       path = "report.qmd",
 #'       execute_params = tibble::tibble(par = c(1, 2))
+#'     ),
+#'     tar_quarto_rep_raw(
+#'       name = "report",
+#'       path = "report.qmd",
+#'       execute_params = quote(tibble::tibble(par = c(1, 2)))
 #'     )
 #'   )
 #' }, ask = FALSE)

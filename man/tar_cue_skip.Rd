@@ -102,7 +102,6 @@ targets::tar_make()
 Other cues: 
 \code{\link{tar_age}()},
 \code{\link{tar_cue_age}()},
-\code{\link{tar_cue_age_raw}()},
 \code{\link{tar_cue_force}()}
 }
 \concept{cues}

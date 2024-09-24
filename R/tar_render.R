@@ -3,6 +3,13 @@
 #' @family Literate programming targets
 #' @description Shorthand to include an R Markdown document in a
 #'   `targets` pipeline.
+#'
+#'   [tar_render()] expects an unevaluated symbol for the `name` argument,
+#'   and it supports named `...` arguments for `rmarkdown::render()`
+#'   arguments.
+#'   [tar_render_raw()] expects a character string for `name` and
+#'   supports an evaluated expression object
+#'   `render_arguments` for `rmarkdown::render()` arguments.
 #' @details `tar_render()` is an alternative to `tar_target()` for
 #'   R Markdown reports that depend on other targets. The R Markdown source
 #'   should mention dependency targets with `tar_load()` and `tar_read()`
@@ -48,6 +55,10 @@
 #' @inheritSection tar_map Target objects
 #' @inheritParams targets::tar_target
 #' @inheritParams rmarkdown::render
+#' @param name Name of the target.
+#'   [tar_render()] expects an unevaluated symbol for the `name` argument,
+#'   whereas
+#'   [tar_render_raw()] expects a character string for `name`.
 #' @param path Character string, file path to the R Markdown source file.
 #'   Must have length 1.
 #' @param output_file Character string, file path to the rendered output file.
@@ -71,7 +82,16 @@
 #'   For parameterized reports, it is recommended to supply a distinct
 #'   `output_file` argument to each `tar_render()` call
 #'   and set useful defaults for parameters in the R Markdown source.
-#'  See the examples section for a demonstration.
+#'    See the examples section for a demonstration.
+#' @param render_arguments Optional language object with a list
+#'   of named arguments to `rmarkdown::render()`.
+#'   Cannot be an expression object.
+#'   (Use `quote()`, not `expression()`.)
+#'   The reason for quoting is that these arguments may depend on
+#'   upstream targets whose values are not available at
+#'   the time the target is defined, and because `tar_render_raw()`
+#'   is the "raw" version of a function, we want to avoid
+#'   all non-standard evaluation.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({  # tar_dir() runs code from a temporary directory.
@@ -114,7 +134,16 @@
 #'   library(tarchetypes)
 #'   list(
 #'     tar_target(data, data.frame(x = seq_len(26), y = letters)),
-#'     tar_render(report, "report.Rmd", params = list(your_param = data))
+#'     tar_render(
+#'       name = report,
+#'       "report.Rmd",
+#'       params = list(your_param = data)
+#'     ),
+#'     tar_render_raw(
+#'       name = "report2",
+#'       "report.Rmd",
+#'       params = quote(list(your_param = data))
+#'     )
 #'   )
 #' }, ask = FALSE)
 #' })

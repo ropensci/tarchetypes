@@ -3,15 +3,26 @@
 #' @export
 #' @family branching
 #' @description Define targets for batched replication
-#'   within static branches for  data frames.
+#'   within static branches for data frames.
+#'
+#'   [tar_map_rep()] expects an unevaluated symbol for the `name` argument
+#'   and an unevaluated expression for `command`,
+#'   whereas [tar_map_rep_raw()] expects a character string for `name`
+#'   and an evaluated expression object for `command`.
 #' @return A list of new target objects.
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
 #' @inheritSection tar_rep Replicate-specific seeds
+#' @inheritParams tar_map
 #' @inheritParams tar_rep
-#' @inheritParams tar_map_rep_raw
+#' @param name Name of the target.
+#'   [tar_map_rep()] expects an unevaluated symbol for the `name` argument,
+#'   whereas [tar_map_rep_raw()] expects a character string for `name`.
 #' @param command R code for a single replicate. Must return
-#'   a data frame.
+#'   a data frame when run.
+#'   [tar_map_rep()] expects  an unevaluated expression for `command`,
+#'   whereas [tar_map_rep_raw()] expects
+#'   an evaluated expression object for `command`.
 #' @param columns A tidyselect expression to select which columns of `values`
 #'   to append to the output. Columns already in the target output
 #'   are not appended.
@@ -21,6 +32,7 @@
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
 #' targets::tar_script({
+#'   library(tarchetypes)
 #'   # Just a sketch of a Bayesian sensitivity analysis of hyperparameters:
 #'   assess_hyperparameters <- function(sigma1, sigma2) {
 #'     # data <- simulate_random_data() # user-defined function
@@ -38,14 +50,24 @@
 #'     sigma1 = c(10, 50, 50),
 #'     sigma2 = c(10, 5, 10)
 #'   )
-#'   tarchetypes::tar_map_rep(
-#'     sensitivity_analysis,
-#'     command = assess_hyperparameters(sigma1, sigma2),
-#'     values = hyperparameters,
-#'     names = tidyselect::any_of("scenario"),
-#'     batches = 2,
-#'     reps = 3
-#'    )
+#'   list(
+#'     tar_map_rep(
+#'       name = sensitivity_analysis,
+#'       command = assess_hyperparameters(sigma1, sigma2),
+#'       values = hyperparameters,
+#'       names = tidyselect::any_of("scenario"),
+#'       batches = 2,
+#'       reps = 3
+#'     ),
+#'     tar_map_rep_raw(
+#'       name = "sensitivity_analysis2",
+#'       command = quote(assess_hyperparameters(sigma1, sigma2)),
+#'       values = hyperparameters,
+#'       names = tidyselect::any_of("scenario"),
+#'       batches = 2,
+#'       reps = 3
+#'     )
+#'   )
 #' })
 #' targets::tar_make()
 #' targets::tar_read(sensitivity_analysis)

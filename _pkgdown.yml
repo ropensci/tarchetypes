@@ -17,13 +17,9 @@ reference:
   contents:
   - 'tar_knit'
   - 'tar_quarto'
-  - 'tar_quarto_raw'
   - 'tar_quarto_rep'
-  - 'tar_quarto_rep_raw'
   - 'tar_render'
-  - 'tar_render_raw'
   - 'tar_render_rep'
-  - 'tar_render_rep_raw'
 - title: Literate programming utilities
   contents:
   - 'tar_knitr_deps'
@@ -56,13 +52,10 @@ reference:
 - title: Dynamic batched replication within static branches for data frames
   contents:
   - 'tar_map_rep'
-  - 'tar_map_rep_raw'
 - title: Batched dynamic-within-static branching for data frames
   contents:
   - 'tar_map2_count'
-  - 'tar_map2_count_raw'
   - 'tar_map2_size'
-  - 'tar_map2_size_raw'
 - title: Target selection
   contents:
   - 'tar_select_names'
@@ -77,23 +70,17 @@ reference:
 - title: Cues
   contents:
   - 'tar_cue_age'
-  - 'tar_cue_age_raw'
   - 'tar_cue_force'
   - 'tar_cue_skip'
 - title: Hooks
   contents:
   - 'tar_hook_before'
-  - 'tar_hook_before_raw'
   - 'tar_hook_inner'
-  - 'tar_hook_inner_raw'
   - 'tar_hook_outer'
-  - 'tar_hook_outer_raw'
 - title: Metaprogramming utilities
   contents:
   - 'tar_eval'
-  - 'tar_eval_raw'
   - 'tar_sub'
-  - 'tar_sub_raw'
 - title: Domain-specific languages for pipeline construction
   contents:
   - 'tar_assign'

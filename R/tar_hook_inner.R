@@ -3,6 +3,10 @@
 #' @family hooks
 #' @description In the command of each target, wrap each mention of
 #'   each dependency target in an arbitrary R expression.
+#'
+#'   `tar_hook_inner()` expects unevaluated expressions for the `hook` and
+#'   `names` arguments, whereas `tar_hook_inner_raw()` expects
+#'   evaluated expression objects.
 #' @details The expression you supply to `hook`
 #'   must contain the special placeholder symbol `.x`
 #'   so `tar_hook_inner()` knows where to insert the original command
@@ -17,8 +21,10 @@
 #'   The hook must contain the special placeholder symbol `.x`
 #'   so `tar_hook_inner()` knows where to insert the code to wrap
 #'   mentions of dependencies.
-#'   The hook code is quoted (not evaluated) so there is no need
-#'   to wrap it in `quote()`, `expression()`, or similar.
+#'
+#'   `tar_hook_inner()` expects unevaluated expressions for the `hook` and
+#'   `names` arguments, whereas `tar_hook_inner_raw()` expects
+#'   evaluated expression objects.
 #' @param names_wrap Names of targets to wrap with the hook
 #'   where they appear as dependencies in the commands of other targets.
 #'   Use `tidyselect` helpers like [starts_with()], as in
@@ -43,6 +49,23 @@
 #'   )
 #' })
 #' targets::tar_manifest(fields = command)
+#' # With tar_hook_inner_raw():
+#' targets::tar_script({
+#'   targets <- list(
+#'     # Nested target lists work with hooks.
+#'     list(
+#'       targets::tar_target(x1, task1()),
+#'       targets::tar_target(x2, task2(x1))
+#'     ),
+#'     targets::tar_target(x3, task3(x2, x1)),
+#'     targets::tar_target(y1, task4(x3))
+#'   )
+#'   tarchetypes::tar_hook_inner_raw(
+#'     targets = targets,
+#'     hook = quote(fun(.x)),
+#'     names = quote(starts_with("x"))
+#'   )
+#' })
 #' })
 #' }
 tar_hook_inner <- function(

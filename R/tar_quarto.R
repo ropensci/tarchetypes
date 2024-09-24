@@ -3,6 +3,12 @@
 #' @family Literate programming targets
 #' @description Shorthand to include a Quarto project in a
 #'   `targets` pipeline.
+#'
+#'   [tar_quarto()] expects an unevaluated symbol for the `name`
+#'   argument and an unevaluated expression for the `exectue_params` argument.
+#'   [tar_quarto_raw()] expects a character string for the `name`
+#'   argument and an evaluated expression object
+#'   for the `exectue_params` argument.
 #' @details `tar_quarto()` is an alternative to `tar_target()` for
 #'   Quarto projects and standalone Quarto source documents
 #'   that depend on upstream targets. The Quarto
@@ -49,14 +55,27 @@
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
 #' @inheritParams targets::tar_target
-#' @inheritParams tar_quarto_raw
-#' @param execute_params Code, cannot be `NULL`.
-#'   `execute_params` evaluates to a named list of parameters
+#' @inheritParams quarto::quarto_render
+#' @inheritParams tar_render
+#' @param name Name of the target.
+#'   [tar_quarto()] expects an unevaluated symbol for the `name`
+#'   argument, and
+#'   [tar_quarto_raw()] expects a character string for `name`.
+#' @param path Character string, path to the Quarto source file.
+#' @param extra_files Character vector of extra files and
+#'   directories to track for changes. The target will be invalidated
+#'   (rerun on the next `tar_make()`) if the contents of these files changes.
+#'   No need to include anything already in the output of [tar_quarto_files()],
+#'   the list of file dependencies automatically detected through
+#'   `quarto::quarto_inspect()`.
+#' @param execute_params Named collection of parameters
 #'   for parameterized Quarto documents. These parameters override the custom
 #'   custom elements of the `params` list in the YAML front-matter of the
-#'   Quarto source files. The list is quoted
-#'   (not evaluated until the target runs)
-#'   so that upstream targets can serve as parameter values.
+#'   Quarto source files.
+#'
+#'   [tar_quarto()] expects an unevaluated expression for the
+#'   `exectue_params` argument, whereas
+#'   [tar_quarto_raw()] expects an evaluated expression object.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({  # tar_dir() runs code from a temporary directory.
@@ -78,7 +97,7 @@
 #'   library(tarchetypes)
 #'   list(
 #'     tar_target(data, data.frame(x = seq_len(26), y = letters)),
-#'     tar_quarto(report, path = "report.qmd")
+#'     tar_quarto(name = report, path = "report.qmd")
 #'   )
 #' }, ask = FALSE)
 #' # Then, run the pipeline as usual.
@@ -105,9 +124,14 @@
 #'   list(
 #'     tar_target(data, data.frame(x = seq_len(26), y = letters)),
 #'     tar_quarto(
-#'       report,
+#'       name = report,
 #'       path = "report.qmd",
 #'       execute_params = list(your_param = data)
+#'     ),
+#'     tar_quarto_raw(
+#'       name = "report2",
+#'       path = "report.qmd",
+#'       execute_params = quote(list(your_param = data))
 #'     )
 #'   )
 #' }, ask = FALSE)

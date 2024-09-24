@@ -5,6 +5,12 @@
 #' @description Define targets for batched
 #'   dynamic-within-static branching for data frames,
 #'   where the user sets the (maximum) size of each batch.
+#'
+#'   [tar_map2_size()] expects unevaluated language for arguments
+#'   `name`, `command1`, `command2`, `columns1`, and `columns2`.
+#'   [tar_map2_size_raw()] expects a character string for `name`
+#'   and an evaluated expression object  for each of
+#'   `command1`, `command2`, `columns1`, and `columns2`.
 #' @details Static branching creates one pair of targets
 #'   for each row in `values`. In each pair,
 #'   there is an upstream non-dynamic target that runs `command1`
@@ -18,7 +24,10 @@
 #' @inheritSection tar_rep Replicate-specific seeds
 #' @inheritParams tar_rep
 #' @inheritParams tar_map2
-#' @inheritParams tar_map2_size_raw
+#' @param size Positive integer of length 1,
+#'   maximum number of rows in each batch for
+#'   the downstream (`command2`) targets. Batches
+#'   are formed from row groups of the `command1` target output.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
@@ -40,6 +49,27 @@
 #' })
 #' targets::tar_make()
 #' targets::tar_read(x)
+#' # With tar_map2_size_raw():
+#' targets::tar_script({
+#'   tarchetypes::tar_map2_size_raw(
+#'     name = "x",
+#'     command1 = quote(
+#'       tibble::tibble(
+#'         arg1 = arg1,
+#'         arg2 = seq_len(6)
+#'       )
+#'     ),
+#'     command2 = quote(
+#'       tibble::tibble(
+#'         result = paste(arg1, arg2),
+#'         random = sample.int(1e9, size = 1),
+#'         length_input = length(arg1)
+#'       )
+#'     ),
+#'     values = tibble::tibble(arg1 = letters[seq_len(2)]),
+#'     size = 2
+#'    )
+#' })
 #' })
 #' }
 tar_map2_size <- function(

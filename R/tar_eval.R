@@ -4,15 +4,24 @@
 #' @description Loop over a grid of values, create an expression object
 #'   from each one, and then evaluate that expression.
 #'   Helps with general metaprogramming.
+#'
+#'   [tar_eval()] expects an unevaluated expression for
+#'   the `expr` object, whereas [tar_eval_raw()] expects an
+#'   evaluated expression object.
 #' @return A list of return values from the generated expression objects.
 #'   Often, these values are target objects.
 #'   See the "Target objects" section for background
 #'   on target objects specifically.
 #' @inheritSection tar_map Target objects
-#' @inheritParams tar_eval_raw
+#' @inheritParams tar_sub
 #' @param expr Starting expression. Values are iteratively substituted
 #'   in place of symbols in `expr` to create each new expression,
 #'   and then each new expression is evaluated.
+#'
+#'   [tar_eval()] expects an unevaluated expression for
+#'   the `expr` object, whereas [tar_eval_raw()] expects an
+#'   evaluated expression object.
+#' @param envir Environment in which to evaluate the new expressions.
 #' @examples
 #' # tar_map() is incompatible with tar_render() because the latter
 #' # operates on preexisting tar_target() objects. By contrast,
@@ -27,6 +36,7 @@
 #' path <- tempfile()
 #' file.create(path)
 #' str(tar_eval(tar_render(name, path), values = values))
+#' str(tar_eval_raw(quote(tar_render(name, path)), values = values))
 #' # So in your _targets.R file, you can define a pipeline like as below.
 #' # Just make sure to set a unique name for each target
 #' # (which tar_map() does automatically).

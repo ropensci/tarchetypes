@@ -2,6 +2,9 @@
 #' @export
 #' @family hooks
 #' @description Wrap the command of each target in an arbitrary R expression.
+#'   `tar_hook_outer()` expects unevaluated expressions for the `hook` and
+#'   `names` arguments, whereas `tar_hook_outer_raw()` expects
+#'   evaluated expression objects.
 #' @details The expression you supply to `hook`
 #'   must contain the special placeholder symbol `.x`
 #'   so `tar_hook_outer()` knows where to insert the original command
@@ -16,8 +19,10 @@
 #'   The hook must contain the special placeholder symbol `.x`
 #'   so `tar_hook_outer()` knows where to insert the original command
 #'   of the target.
-#'   The hook code is quoted (not evaluated) so there is no need
-#'   to wrap it in `quote()`, `expression()`, or similar.
+#'
+#'   `tar_hook_outer()` expects unevaluated expressions for the `hook` and
+#'   `names` arguments, whereas `tar_hook_outer_raw()` expects
+#'   evaluated expression objects.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
@@ -38,6 +43,23 @@
 #'   )
 #' })
 #' targets::tar_manifest(fields = command)
+#' # Using tar_hook_outer_raw():
+#' targets::tar_script({
+#'   targets <- list(
+#'     # Nested target lists work with hooks.
+#'     list(
+#'       targets::tar_target(x1, task1()),
+#'       targets::tar_target(x2, task2(x1))
+#'     ),
+#'     targets::tar_target(x3, task3(x2)),
+#'     targets::tar_target(y1, task4(x3))
+#'   )
+#'   tarchetypes::tar_hook_outer_raw(
+#'     targets = targets,
+#'     hook = quote(postprocess(.x, arg = "value")),
+#'     names = quote(starts_with("x"))
+#'   )
+#' })
 #' })
 #' }
 tar_hook_outer <- function(

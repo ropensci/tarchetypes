@@ -23,15 +23,21 @@ All hook functions remove the nested structure of the input target list.}
 The hook must contain the special placeholder symbol \code{.x}
 so \code{tar_hook_outer()} knows where to insert the original command
 of the target.
-The hook code is quoted (not evaluated) so there is no need
-to wrap it in \code{quote()}, \code{expression()}, or similar.}
+
+\code{tar_hook_outer()} expects unevaluated expressions for the \code{hook} and
+\code{names} arguments, whereas \code{tar_hook_outer_raw()} expects
+evaluated expression objects.}
 
 \item{names}{Name of targets in the target list
-to apply the hook. Supplied with \code{tidyselect} helpers like
+to apply the hook. Supplied using \code{tidyselect} helpers like
 \code{\link[=starts_with]{starts_with()}}, as in \code{names = starts_with("your_prefix_")}.
 Set to \code{NULL} to include all targets supplied to the \code{targets} argument.
 Targets not included in \code{names} still remain in the target list,
-but they are not modified because the hook does not apply to them.}
+but they are not modified because the hook does not apply to them.
+
+The regular hook functions expects unevaluated expressions for the \code{hook}
+and \code{names} arguments, whereas the \code{"_raw"} versions expect
+evaluated expression objects.}
 
 \item{set_deps}{Logical of length 1, whether to refresh the dependencies
 of each modified target by scanning the newly generated
@@ -52,6 +58,9 @@ All hook functions remove the nested structure of the input target list.
 }
 \description{
 Wrap the command of each target in an arbitrary R expression.
+\code{tar_hook_outer()} expects unevaluated expressions for the \code{hook} and
+\code{names} arguments, whereas \code{tar_hook_outer_raw()} expects
+evaluated expression objects.
 }
 \details{
 The expression you supply to \code{hook}
@@ -98,15 +107,30 @@ targets::tar_script({
   )
 })
 targets::tar_manifest(fields = command)
+# Using tar_hook_outer_raw():
+targets::tar_script({
+  targets <- list(
+    # Nested target lists work with hooks.
+    list(
+      targets::tar_target(x1, task1()),
+      targets::tar_target(x2, task2(x1))
+    ),
+    targets::tar_target(x3, task3(x2)),
+    targets::tar_target(y1, task4(x3))
+  )
+  tarchetypes::tar_hook_outer_raw(
+    targets = targets,
+    hook = quote(postprocess(.x, arg = "value")),
+    names = quote(starts_with("x"))
+  )
+})
 })
 }
 }
 \seealso{
 Other hooks: 
 \code{\link{tar_hook_before}()},
-\code{\link{tar_hook_before_raw}()},
 \code{\link{tar_hook_inner}()},
-\code{\link{tar_hook_inner_raw}()},
 \code{\link{tar_hook_outer_raw}()}
 }
 \concept{hooks}

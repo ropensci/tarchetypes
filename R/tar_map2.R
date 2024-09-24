@@ -5,13 +5,12 @@
 #' @description Define targets for batched
 #'   dynamic-within-static branching for data frames.
 #'   Not a user-side function. Do not invoke directly.
-#' @details Static branching creates one pair of targets
-#'   for each row in `values`. In each pair,
-#'   there is an upstream non-dynamic target that runs `command1`
-#'   and a downstream dynamic target that runs `command2`.
-#'   `command1` produces a data frame of arguments to
-#'   `command2`, and `command2` dynamically maps over
-#'   these arguments in batches.
+#'
+#'   [tar_map2()] expects unevaluated language for arguments
+#'   `name`, `command1`, `command2`, `columns1`, and `columns2`.
+#'   [tar_map2_raw()] expects a character string for `name`
+#'   and an evaluated expression object  for each of
+#'   `command1`, `command2`, `columns1`, and `columns2`.
 #' @details Static branching creates one pair of targets
 #'   for each row in `values`. In each pair,
 #'   there is an upstream non-dynamic target that runs `command1`
@@ -23,20 +22,53 @@
 #' @return A list of new target objects.
 #'   See the "Target objects" section for background.
 #' @inheritSection tar_map Target objects
-#' @inheritParams tar_map2_raw
+#' @inheritParams tar_map_rep
+#' @inheritParams tar_rep2
+#' @inheritParams tar_map
 #' @inheritParams tar_rep
-#' @param name Symbol, base name of the targets.
+#' @param name Base name of the targets.
+#'   In regular `tarchetypes` functions,
+#'   the `name` argument is an unevaluated symbol.
+#'   In the `"_raw"` versions
+#'   of functions, `name` is a character string.
 #' @param command1 R code to create named arguments to `command2`.
-#'   Must return a data frame with one row per call to `command2`.
+#'   Must return a data frame with one row per call to `command2` when run.
+#'
+#'   In regular `tarchetypes` functions,
+#'   the `command1` argument is an unevaluated expression.
+#'   In the `"_raw"` versions
+#'   of functions, `command1` is an evaluated expression object.
 #' @param command2 R code to map over the data frame of arguments
 #'   produced by `command1`. Must return a data frame.
+#'
+#'   In regular `tarchetypes` functions,
+#'   the `command2` argument is an unevaluated expression.
+#'   In the `"_raw"` versions
+#'   of functions, `command2` is an evaluated expression object.
 #' @param columns1 A tidyselect expression to select which columns of `values`
 #'   to append to the output of all targets.
 #'   Columns already in the target output are not appended.
-#' @param columns2 A tidyselect expression to select which columns of `command1`
+#'
+#'   In regular `tarchetypes` functions,
+#'   the `columns1` argument is an unevaluated expression.
+#'   In the `"_raw"` versions
+#'   of functions, `columns1` is an evaluated expression object.
+#' @param columns2 A tidyselect expression to select which columns of
+#'   `command1`
 #'   output to append to `command2` output.
 #'   Columns already in the target output are not appended.
 #'   `columns1` takes precedence over `columns2`.
+#'
+#'   In regular `tarchetypes` functions,
+#'   the `columns2` argument is an unevaluated expression.
+#'   In the `"_raw"` versions
+#'   of functions, `columns2` is an evaluated expression object.
+#' @param suffix1 Character of length 1,
+#'   suffix to apply to the `command1` targets to distinguish
+#'   them from the `command2` targets.
+#' @param suffix2 Character of length 1,
+#'   suffix to apply to the `command2` targets to distinguish
+#'   them from the `command1` targets.
 tar_map2 <- function(
   name,
   command1,

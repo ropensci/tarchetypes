@@ -285,12 +285,8 @@ targets::tar_make()
 \seealso{
 Other Literate programming targets: 
 \code{\link{tar_quarto}()},
-\code{\link{tar_quarto_raw}()},
 \code{\link{tar_quarto_rep}()},
-\code{\link{tar_quarto_rep_raw}()},
 \code{\link{tar_render}()},
-\code{\link{tar_render_raw}()},
-\code{\link{tar_render_rep}()},
-\code{\link{tar_render_rep_raw}()}
+\code{\link{tar_render_rep}()}
 }
 \concept{Literate programming targets}
