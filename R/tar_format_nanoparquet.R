@@ -23,7 +23,7 @@
 #'   list(
 #'     tar_target(
 #'       name = data,
-#'       command = airquality,
+#'       command = data.frame(x = 1),
 #'       format = tar_format_nanoparquet()
 #'     )
 #'   )
