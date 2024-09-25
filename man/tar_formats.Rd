@@ -540,4 +540,4 @@ targets::tar_make()
 })
 }
 }
-\concept{Formats}
+\concept{target factories for storage formats}

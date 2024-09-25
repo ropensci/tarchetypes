@@ -1,6 +1,6 @@
 #' @title Target factories for storage formats
 #' @name tar_formats
-#' @family Formats
+#' @family target factories for storage formats
 #' @description Target factories for targets with
 #'   specialized storage formats. For example,
 #'   `tar_qs(name = data, command = get_data())` is shorthand for
