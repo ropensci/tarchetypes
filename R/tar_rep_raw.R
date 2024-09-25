@@ -180,7 +180,7 @@ tar_rep_pattern <- function(name_batch) {
   substitute(map(x), env = list(x = as.symbol(name_batch)))
 }
 
-#' @title Run a batch in a `tar_rep()` archetype.
+#' @title Run a `tar_rep()` batch.
 #' @description Internal function needed for `tar_rep()`.
 #'   Users should not invoke it directly.
 #' @export

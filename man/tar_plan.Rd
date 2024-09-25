@@ -2,7 +2,7 @@
 % Please edit documentation in R/tar_plan.R
 \name{tar_plan}
 \alias{tar_plan}
-\title{A \code{drake}-plan-like pipeline archetype}
+\title{A \code{drake}-plan-like pipeline DSL}
 \usage{
 tar_plan(...)
 }
@@ -10,7 +10,7 @@ tar_plan(...)
 \item{...}{Named and unnamed targets. All named targets must follow
 the \code{drake}-plan-like \code{target = command} syntax, and all unnamed
 arguments must be explicit calls to create target objects,
-e.g. \code{tar_target()}, target archetypes like \code{\link[=tar_render]{tar_render()}}, or similar.}
+e.g. \code{tar_target()}, target factories like \code{\link[=tar_render]{tar_render()}}, or similar.}
 }
 \value{
 A list of \code{tar_target()} objects.

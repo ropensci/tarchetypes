@@ -2,7 +2,7 @@
 % Please edit documentation in R/tar_rep_raw.R
 \name{tar_rep_run}
 \alias{tar_rep_run}
-\title{Run a batch in a \code{tar_rep()} archetype.}
+\title{Run a \code{tar_rep()} batch.}
 \usage{
 tar_rep_run(command, batch, reps, iteration, rep_workers)
 }

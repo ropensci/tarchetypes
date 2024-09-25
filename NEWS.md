@@ -1,9 +1,11 @@
-# tarchetypes 0.9.1.9001 (development)
+# tarchetypes 0.9.1.9002 (development)
 
 * Add a `delimiter` argument to `tar_map()` etc. for customizing separators in target names (#177, @psychelzh).
 * Add "raw" hook functions (#185, @multimeric).
 * Add `tar_assign()` (#186, https://github.com/ropensci/targets/issues/1309, @hadley).
 * Merge help files of "_raw" functions (#191, @hadley).
+* Supersede `tar_format_feather()` in favor of `tar_arrow_feather()` (#190).
+* Supersede the `tar_aws_*()` target factories. They are obsolete because of the `repository` argument in `tar_target()`.
 
 # tarchetypes 0.9.0
 

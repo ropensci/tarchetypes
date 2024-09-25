@@ -1,4 +1,4 @@
-#' @title A `drake`-plan-like pipeline archetype
+#' @title A `drake`-plan-like pipeline DSL
 #' @export
 #' @family Pipeline factories
 #' @description Simplify target specification in pipelines.
@@ -15,7 +15,7 @@
 #' @param ... Named and unnamed targets. All named targets must follow
 #'   the `drake`-plan-like `target = command` syntax, and all unnamed
 #'   arguments must be explicit calls to create target objects,
-#'   e.g. `tar_target()`, target archetypes like [tar_render()], or similar.
+#'   e.g. `tar_target()`, target factories like [tar_render()], or similar.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({ # tar_dir() runs code from a temporary directory.

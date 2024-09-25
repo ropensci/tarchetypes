@@ -1,7 +1,14 @@
-#' @title Target formats
+#' @title Target factories for storage formats
 #' @name tar_formats
 #' @family Formats
-#' @description Target archetypes for specialized storage formats.
+#' @description Target factories for targets with
+#'   specialized storage formats. For example,
+#'   `tar_qs(name = data, command = get_data())` is shorthand for
+#'   `tar_target(name = data, command = get_data(), format = "qs")`.
+#'
+#'   [tar_format_feather()] is superseded in favor of [tar_arrow_feather()],
+#'   and all the `tar_aws_*()` functions are superseded because of the
+#'   introduction of the `aws` argument into [targets::tar_target()].
 #' @details These functions are shorthand for targets with specialized
 #'   storage formats. For example, `tar_qs(name, fun())` is equivalent to
 #'   `tar_target(name, fun(), format = "qs")`.
@@ -115,7 +122,7 @@ tar_torch <- tar_format_alias("torch")
 
 #' @export
 #' @rdname tar_formats
-tar_format_feather <- tar_format_alias("feather")
+tar_arrow_feather <- tar_format_alias("feather")
 
 #' @export
 #' @rdname tar_formats
@@ -133,42 +140,79 @@ tar_fst_dt <- tar_format_alias("fst_dt")
 #' @rdname tar_formats
 tar_fst_tbl <- tar_format_alias("fst_tbl")
 
+#' @title Superseded target factories for storage formats
+#' @name tar_formats_superseded
+#' @keywords internal
+#' @description Superseded target factories for targets with
+#'   specialized storage formats. For example,
+#'   `tar_qs(name = data, command = get_data())` is shorthand for
+#'   `tar_target(name = data, command = get_data(), format = "qs")`.
+#'
+#'   [tar_format_feather()] is superseded in favor of [tar_arrow_feather()],
+#'   and all the `tar_aws_*()` functions are superseded because of the
+#'   introduction of the `aws` argument into [targets::tar_target()].
+#' @details These functions are shorthand for targets with specialized
+#'   storage formats. For example, `tar_qs(name, fun())` is equivalent to
+#'   `tar_target(name, fun(), format = "qs")`.
+#'   For details on specialized storage formats, open the help file of the
+#'   `targets::tar_target()` function and read about the `format` argument.
+#' @return A `tar_target()` object with the eponymous storage format.
+#'   See the "Target objects" section for background.
+#' @inheritSection tar_map Target objects
+#' @inheritParams targets::tar_target
+#' @examples
+#' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
+#' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
+#' targets::tar_script(
+#'   list(
+#'     tarchetypes::tar_rds(x, 1)
+#'   )
+#' )
+#' targets::tar_make()
+#' })
+#' }
+NULL
+
 #' @export
-#' @rdname tar_formats
+#' @rdname tar_formats_superseded
 tar_aws_file <- tar_format_alias("aws_file")
 
 #' @export
-#' @rdname tar_formats
+#' @rdname tar_formats_superseded
 tar_aws_rds <- tar_format_alias("aws_rds")
 
 #' @export
-#' @rdname tar_formats
+#' @rdname tar_formats_superseded
 tar_aws_qs <- tar_format_alias("aws_qs")
 
 #' @export
-#' @rdname tar_formats
+#' @rdname tar_formats_superseded
 tar_aws_keras <- tar_format_alias("aws_keras")
 
 #' @export
-#' @rdname tar_formats
+#' @rdname tar_formats_superseded
 tar_aws_torch <- tar_format_alias("aws_torch")
 
 #' @export
-#' @rdname tar_formats
+#' @rdname tar_formats_superseded
 tar_format_aws_feather <- tar_format_alias("aws_feather")
 
 #' @export
-#' @rdname tar_formats
+#' @rdname tar_formats_superseded
 tar_aws_parquet <- tar_format_alias("aws_parquet")
 
 #' @export
-#' @rdname tar_formats
+#' @rdname tar_formats_superseded
 tar_aws_fst <- tar_format_alias("aws_fst")
 
 #' @export
-#' @rdname tar_formats
+#' @rdname tar_formats_superseded
 tar_aws_fst_dt <- tar_format_alias("aws_fst_dt")
 
 #' @export
-#' @rdname tar_formats
+#' @rdname tar_formats_superseded
 tar_aws_fst_tbl <- tar_format_alias("aws_fst_tbl")
+
+#' @export
+#' @rdname tar_formats_superseded
+tar_format_feather <- tar_format_alias("feather")

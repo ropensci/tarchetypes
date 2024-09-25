@@ -56,6 +56,12 @@ targets::tar_test("tar_format_feather()", {
   expect_equal(x$settings$format, "feather")
 })
 
+targets::tar_test("tar_arrow_feather()", {
+  x <- tar_arrow_feather(x, 0)
+  expect_true(inherits(x, "tar_target"))
+  expect_equal(x$settings$format, "feather")
+})
+
 targets::tar_test("tar_parquet()", {
   x <- tar_parquet(x, 0)
   expect_true(inherits(x, "tar_target"))
