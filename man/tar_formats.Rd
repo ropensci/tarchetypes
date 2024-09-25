@@ -14,6 +14,7 @@
 \alias{tar_fst}
 \alias{tar_fst_dt}
 \alias{tar_fst_tbl}
+\alias{tar_nanoparquet}
 \title{Target factories for storage formats}
 \usage{
 tar_url(
@@ -267,6 +268,29 @@ tar_fst_tbl(
   cue = targets::tar_option_get("cue"),
   description = targets::tar_option_get("description")
 )
+
+tar_nanoparquet(
+  name,
+  command,
+  pattern = NULL,
+  tidy_eval = targets::tar_option_get("tidy_eval"),
+  packages = targets::tar_option_get("packages"),
+  library = targets::tar_option_get("library"),
+  repository = targets::tar_option_get("repository"),
+  iteration = targets::tar_option_get("iteration"),
+  error = targets::tar_option_get("error"),
+  memory = targets::tar_option_get("memory"),
+  garbage_collection = targets::tar_option_get("garbage_collection"),
+  deployment = targets::tar_option_get("deployment"),
+  priority = targets::tar_option_get("priority"),
+  resources = targets::tar_option_get("resources"),
+  storage = targets::tar_option_get("storage"),
+  retrieval = targets::tar_option_get("retrieval"),
+  cue = targets::tar_option_get("cue"),
+  description = targets::tar_option_get("description"),
+  compression = "snappy",
+  class = "tbl"
+)
 }
 \arguments{
 \item{name}{Symbol, name of the target.
@@ -487,6 +511,13 @@ functions like \code{\link[targets:tar_make]{tar_make()}}. For example,
 \code{tar_manifest(names = tar_described_as(starts_with("survival model")))}
 lists all the targets whose descriptions start with the character
 string \code{"survival model"}.}
+
+\item{compression}{Character string, compression type for saving the
+data. See the \code{compression} argument of \code{\link[nanoparquet:write_parquet]{nanoparquet::write_parquet()}}
+for details.}
+
+\item{class}{Character vector with the data frame subclasses to assign.
+See the \code{class} argument of \code{\link[nanoparquet:parquet_options]{nanoparquet::parquet_options()}} for details.}
 }
 \value{
 A \code{tar_target()} object with the eponymous storage format.
@@ -497,6 +528,12 @@ Target factories for targets with
 specialized storage formats. For example,
 \code{tar_qs(name = data, command = get_data())} is shorthand for
 \code{tar_target(name = data, command = get_data(), format = "qs")}.
+
+Most of the formats are shorthand for built-in formats in \code{targets}.
+The only exception currently is the \code{nanoparquet} format:
+\code{tar_nanoparquet(data, get_data())} is shorthand for
+\verb{tar_target(data get_data(), format = tar_format_nanoparquet())},
+where \code{\link[=tar_format_nanoparquet]{tar_format_nanoparquet()}} resides in \code{tarchetypes}.
 
 \code{\link[=tar_format_feather]{tar_format_feather()}} is superseded in favor of \code{\link[=tar_arrow_feather]{tar_arrow_feather()}},
 and all the \verb{tar_aws_*()} functions are superseded because of the
@@ -531,13 +568,16 @@ details the structure and composition of target objects.
 \examples{
 if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({ # tar_dir() runs code from a temporary directory.
-targets::tar_script(
+targets::tar_script({
+  library(targets)
+  library(tarchetypes)
   list(
-    tarchetypes::tar_rds(x, 1)
+    tar_rds(name = x, command = 1),
+    tar_nanoparquet(name = y, command = data.frame(x = x))
   )
-)
+})
 targets::tar_make()
 })
 }
 }
-\concept{Formats}
+\concept{target factories for storage formats}

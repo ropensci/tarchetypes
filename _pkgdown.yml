@@ -28,6 +28,9 @@ reference:
 - title: Target factories for storage formats
   contents:
   - 'tar_formats'
+- title: Storage formats
+  contents:
+  - 'tar_format_nanoparquet'
 - title: Simple files
   contents:
   - 'tar_file_read'
