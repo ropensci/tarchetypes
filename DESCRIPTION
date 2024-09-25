@@ -54,6 +54,7 @@ Imports:
 Suggests:
   curl (>= 4.3),
   knitr (>= 1.28),
+  nanoparquet,
   quarto (>= 1.4),
   rmarkdown (>= 2.1),
   testthat (>= 3.0.0),
