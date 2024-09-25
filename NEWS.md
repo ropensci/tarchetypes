@@ -1,4 +1,4 @@
-# tarchetypes 0.9.1.9002 (development)
+# tarchetypes 0.10.0
 
 * Add a `delimiter` argument to `tar_map()` etc. for customizing separators in target names (#177, @psychelzh).
 * Add "raw" hook functions (#185, @multimeric).
