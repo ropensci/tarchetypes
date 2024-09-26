@@ -35,8 +35,8 @@
 #'   Literate programming files are messy and variable,
 #'   so functions like [tar_render()] have limitations:
 #'     * Child documents are not tracked for changes.
-#'     * Upstream target dependencies are not detected if [tar_read()]
-#'       and/or [tar_load()] are called from a user-defined function.
+#'     * Upstream target dependencies are not detected if `tar_read()`
+#'       and/or `tar_load()` are called from a user-defined function.
 #'       In addition, single target names must be mentioned and they must
 #'       be symbols. `tar_load("x")` and `tar_load(contains("x"))` may not
 #'       detect target `x`.
