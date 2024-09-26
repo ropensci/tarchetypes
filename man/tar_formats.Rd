@@ -360,7 +360,7 @@ for details for instructions.
 See the cloud storage section of
 \url{https://books.ropensci.org/targets/data.html}
 for details for instructions.
-\item A character string from \code{\link[targets:tar_repository_cas]{tar_repository_cas()}} for content-addressable
+\item A character string from \code{tar_repository_cas()} for content-addressable
 storage.
 }
 
