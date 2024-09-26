@@ -114,7 +114,7 @@
 #'     frame with a special `tar_group` column of consecutive integers
 #'     from 1 through the number of groups. Each integer designates a group,
 #'     and a branch is created for each collection of rows in a group.
-#'     See the [tar_group()] function to see how you can
+#'     See the `tar_group()` function in `targets` to see how you can
 #'     create the special `tar_group` column with `dplyr::group_by()`.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {

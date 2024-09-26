@@ -142,7 +142,7 @@ subsets of a data frame. The target's return value must be a data
 frame with a special \code{tar_group} column of consecutive integers
 from 1 through the number of groups. Each integer designates a group,
 and a branch is created for each collection of rows in a group.
-See the \code{\link[=tar_group]{tar_group()}} function to see how you can
+See the \code{tar_group()} function in \code{targets} to see how you can
 create the special \code{tar_group} column with \code{dplyr::group_by()}.
 }}
 
