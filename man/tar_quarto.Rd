@@ -8,6 +8,7 @@
 tar_quarto(
   name,
   path = ".",
+  output_file = NULL,
   working_directory = NULL,
   extra_files = character(0),
   execute = TRUE,
@@ -36,6 +37,7 @@ tar_quarto(
 tar_quarto_raw(
   name,
   path = ".",
+  output_file = NULL,
   working_directory = NULL,
   extra_files = character(0),
   execute = TRUE,
@@ -67,6 +69,11 @@ argument, and
 \code{\link[=tar_quarto_raw]{tar_quarto_raw()}} expects a character string for \code{name}.}
 
 \item{path}{Character string, path to the Quarto source file.}
+
+\item{output_file}{The name of the output file. If using \code{NULL}, the output
+filename will be based on the filename for the input file. \code{output_file} is
+mapped to the \code{--output} option flag of the \code{quarto} CLI. It is expected to
+be a filename only, not a path, relative or absolute.}
 
 \item{working_directory}{Optional character string,
 path to the working directory
