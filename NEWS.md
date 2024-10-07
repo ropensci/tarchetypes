@@ -1,6 +1,6 @@
-# tarchetypes 0.10.0.9000 (development)
+# tarchetypes 0.10.0.9001 (development)
 
-
+* Add an `output_file` argument to `tar_quarto()` and `tar_quarto_raw()` for single documents (#198, @mutlusun).
 
 # tarchetypes 0.10.0
 
