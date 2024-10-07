@@ -60,12 +60,31 @@ tar_quarto_files <- function(path = ".", profile = NULL) {
 tar_quarto_files_document <- function(path) {
   info <- quarto::quarto_inspect(input = path)
   out <- list(sources = path)
+
+  # Collect data about output files.
   for (format in info$formats) {
     out$output <- c(
       out$output,
       file.path(dirname(path), format$pandoc$`output-file`)
     )
   }
+
+  # Collect data about input files.
+  for (myfile in names(info$fileInformation)) {
+    out$input <- c(
+      out$input,
+      # `myfile` are relative paths starting from `path`.
+      myfile,
+      # `includeMap` contains relative paths starting from `myfile`.
+      file.path(
+        dirname(path),
+        info$fileInformation[[myfile]]$includeMap$target
+      )
+    )
+  }
+  # Input `path` is also part of `input`, thus remove it again.
+  out$input <- out$input[out$input != path]
+
   out
 }
 
@@ -79,12 +98,28 @@ tar_quarto_files_project <- function(path) {
       "quarto.org to learn how to set output-dir in _quarto.yml."
     )
   )
+
+  # Detect source files.
+  sources <- info$files$input[file.exists(info$files$input)]
+
+  # Detect input files.
   input <- info$files
-  input$input <- NULL
   input <- unlist(input)
   input <- input[file.exists(input)]
+  for (myfile in names(info$fileInformation)) {
+    input <- c(
+      input,
+      # `myfile` is an absolute path.
+      myfile,
+      # `includeMap` files are relative starting from `myfile`.
+      file.path(dirname(myfile), info$fileInformation[[myfile]]$includeMap$target)
+    )
+  }
+  # Source files are also part of input, thus remove them.
+  input <- input[!(input %in% sources)]
+
   list(
-    sources = info$files$input[file.exists(info$files$input)],
+    sources = sources,
     output = file.path(path, info$config$project$`output-dir`),
     input = input
   )
