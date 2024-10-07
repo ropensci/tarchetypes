@@ -451,3 +451,34 @@ targets::tar_test("tar_quarto() deprecate packages", {
     class = "tar_condition_deprecate"
   )
 })
+
+targets::tar_test("tar_quarto() creates custom output file", {
+  skip_quarto()
+  lines <- c(
+    "---",
+    "title: report",
+    "output_format: html",
+    "---",
+    "",
+    "```{r}",
+    "targets::tar_read(data)",
+    "```"
+  )
+  writeLines(lines, "report.qmd")
+  targets::tar_script({
+    library(tarchetypes)
+    list(
+      tar_target(data, data.frame(x = seq_len(26L), y = letters)),
+      tar_quarto(report, path = "report.qmd", output_file = "test.html")
+    )
+  })
+  suppressMessages(targets::tar_make(callr_function = NULL))
+  progress <- targets::tar_progress()
+  progress <- progress[progress$progress != "skipped", ]
+  expect_equal(sort(progress$name), sort(c("data", "report")))
+  out <- targets::tar_read(report)
+  out <- setdiff(out, "report_files")
+  expect_equal(sort(basename(out)), sort(c("test.html", "report.qmd")))
+  expect_false(file.exists(file.path("report.html")))
+  expect_true(file.exists(file.path("test.html")))
+})
