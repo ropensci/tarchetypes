@@ -82,8 +82,6 @@ tar_quarto_files_document <- function(path) {
       )
     )
   }
-  # Input `path` is also part of `input`, thus remove it again.
-  out$input <- out$input[out$input != path]
 
   out
 }
@@ -115,8 +113,6 @@ tar_quarto_files_project <- function(path) {
       file.path(dirname(myfile), info$fileInformation[[myfile]]$includeMap$target)
     )
   }
-  # Source files are also part of input, thus remove them.
-  input <- input[!(input %in% sources)]
 
   list(
     sources = sources,
