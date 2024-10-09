@@ -110,7 +110,10 @@ tar_quarto_files_project <- function(path) {
       # `myfile` is an absolute path.
       myfile,
       # `includeMap` files are relative starting from `myfile`.
-      file.path(dirname(myfile), info$fileInformation[[myfile]]$includeMap$target)
+      file.path(
+        dirname(myfile),
+        info$fileInformation[[myfile]]$includeMap$target
+      )
     )
   }
 
