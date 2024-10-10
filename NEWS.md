@@ -1,6 +1,7 @@
-# tarchetypes 0.10.0.9001 (development)
+# tarchetypes 0.10.0.9002 (development)
 
 * Add an `output_file` argument to `tar_quarto()` and `tar_quarto_raw()` for single documents (#198, @mutlusun).
+* Detect child quarto documents (#199, @mutlusun).
 
 # tarchetypes 0.10.0
 
