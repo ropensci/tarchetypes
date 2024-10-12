@@ -61,31 +61,8 @@ tar_quarto_files_document <- function(path) {
   info <- quarto::quarto_inspect(input = path)
   out <- list()
 
-  # Collect data about source files. `fileInformation` contains the main file
-  # and the respective `codeCells` entry contains all code cells from the files.
-  for (myfile in names(info$fileInformation)) {
-    df <- info$fileInformation[[myfile]]$codeCells
-
-    # If `codeCells` is empty, we get an empty list.
-    if (!is.data.frame(df)) {
-      next
-    }
-
-    # Check whether the codecells in `df` contain either `tar_read` or
-    # `tar_load`.
-    relevant_lines <- c(
-      grep("tar_read", df$source, fixed = TRUE),
-      grep("tar_load", df$source, fixed = TRUE)
-    ) |>
-      unique()
-
-    # Select corresponding files.
-    # codeCells paths are always absolute.
-    out$sources <- c(
-      out$sources,
-      df[relevant_lines, "file"]
-    )
-  }
+  # Collect data about source files.
+  out$sources <- tar_quarto_files_get_source_files(info$fileInformation)
 
   # Collect data about output files.
   for (format in info$formats) {
@@ -125,31 +102,8 @@ tar_quarto_files_project <- function(path) {
 
   out <- list(output = file.path(path, info$config$project$`output-dir`))
 
-  # Collect data about source files. `fileInformation` contains the main file
-  # and the respective `codeCells` entry contains all code cells from the files.
-  for (myfile in names(info$fileInformation)) {
-    df <- info$fileInformation[[myfile]]$codeCells
-
-    # If `codeCells` is empty, we get an empty list.
-    if (!is.data.frame(df)) {
-      next
-    }
-
-    # Check whether the codecells in `df` contain either `tar_read` or
-    # `tar_load`.
-    relevant_lines <- c(
-      grep("tar_read", df$source, fixed = TRUE),
-      grep("tar_load", df$source, fixed = TRUE)
-    ) |>
-      unique()
-
-    # Select corresponding files.
-    # codeCells paths are always absolute.
-    out$sources <- c(
-      out$sources,
-      df[relevant_lines, "file"]
-    )
-  }
+  # Collect data about source files.
+  out$sources <- tar_quarto_files_get_source_files(info$fileInformation)
 
   # Detect input files.
   out$input <- info$files
@@ -169,4 +123,41 @@ tar_quarto_files_project <- function(path) {
   }
 
   out
+}
+
+#' Get Source Files From Quarto Inspect
+#'
+#' @description Collects files with `tar_read` or `tar_load` from the
+#' `fileInformation` field.
+#'
+#' @details `fileInformation` contains the input files and the respective
+#' `codeCells` entry contains all code cells with corresponding included files.
+tar_quarto_files_get_source_files <- function(file_information) {
+  ret <- character(0)
+
+  for (myfile in names(file_information)) {
+    df <- file_information[[myfile]]$codeCells
+
+    # If `codeCells` is empty, we get an empty list.
+    if (!is.data.frame(df)) {
+      next
+    }
+
+    # Check whether the codecells in `df` contain either `tar_read` or
+    # `tar_load`.
+    relevant_lines <- c(
+      grep("tar_read", df$source, fixed = TRUE),
+      grep("tar_load", df$source, fixed = TRUE)
+    ) |>
+      unique()
+
+    # Select corresponding files.
+    # codeCells paths are always absolute.
+    ret <- c(
+      ret,
+      df[relevant_lines, "file"]
+    )
+  }
+
+  ret
 }
