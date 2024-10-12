@@ -59,7 +59,33 @@ tar_quarto_files <- function(path = ".", profile = NULL) {
 
 tar_quarto_files_document <- function(path) {
   info <- quarto::quarto_inspect(input = path)
-  out <- list(sources = path)
+  out <- list()
+
+  # Collect data about source files. `fileInformation` contains the main file
+  # and the respective `codeCells` entry contains all code cells from the files.
+  for (myfile in names(info$fileInformation)) {
+    df <- info$fileInformation[[myfile]]$codeCells
+
+    # If `codeCells` is empty, we get an empty list.
+    if (!is.data.frame(df)) {
+      next
+    }
+
+    # Check whether the codecells in `df` contain either `tar_read` or
+    # `tar_load`.
+    relevant_lines <- c(
+      grep("tar_read", df$source, fixed = TRUE),
+      grep("tar_load", df$source, fixed = TRUE)
+    ) |>
+      unique()
+
+    # Select corresponding files.
+    # codeCells paths are always absolute.
+    out$sources <- c(
+      out$sources,
+      df[relevant_lines, "file"]
+    )
+  }
 
   # Collect data about output files.
   for (format in info$formats) {
@@ -97,16 +123,41 @@ tar_quarto_files_project <- function(path) {
     )
   )
 
-  # Detect source files.
-  sources <- info$files$input[file.exists(info$files$input)]
+  out <- list(output = file.path(path, info$config$project$`output-dir`))
+
+  # Collect data about source files. `fileInformation` contains the main file
+  # and the respective `codeCells` entry contains all code cells from the files.
+  for (myfile in names(info$fileInformation)) {
+    df <- info$fileInformation[[myfile]]$codeCells
+
+    # If `codeCells` is empty, we get an empty list.
+    if (!is.data.frame(df)) {
+      next
+    }
+
+    # Check whether the codecells in `df` contain either `tar_read` or
+    # `tar_load`.
+    relevant_lines <- c(
+      grep("tar_read", df$source, fixed = TRUE),
+      grep("tar_load", df$source, fixed = TRUE)
+    ) |>
+      unique()
+
+    # Select corresponding files.
+    # codeCells paths are always absolute.
+    out$sources <- c(
+      out$sources,
+      df[relevant_lines, "file"]
+    )
+  }
 
   # Detect input files.
-  input <- info$files
-  input <- unlist(input)
-  input <- input[file.exists(input)]
+  out$input <- info$files
+  out$input <- unlist(out$input)
+  out$input <- out$input[file.exists(out$input)]
   for (myfile in names(info$fileInformation)) {
-    input <- c(
-      input,
+    out$input <- c(
+      out$input,
       # `myfile` is an absolute path.
       myfile,
       # `includeMap` files are relative starting from `myfile`.
@@ -117,9 +168,5 @@ tar_quarto_files_project <- function(path) {
     )
   }
 
-  list(
-    sources = sources,
-    output = file.path(path, info$config$project$`output-dir`),
-    input = input
-  )
+  out
 }
