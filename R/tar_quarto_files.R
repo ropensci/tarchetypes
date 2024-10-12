@@ -106,9 +106,7 @@ tar_quarto_files_project <- function(path) {
   out$sources <- tar_quarto_files_get_source_files(info$fileInformation)
 
   # Detect input files.
-  out$input <- info$files
-  out$input <- unlist(out$input)
-  out$input <- out$input[file.exists(out$input)]
+  out$input <- info$files$config
   for (myfile in names(info$fileInformation)) {
     out$input <- c(
       out$input,
