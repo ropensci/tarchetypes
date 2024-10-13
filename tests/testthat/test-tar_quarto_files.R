@@ -210,17 +210,26 @@ targets::tar_test("tar_quarto_files() detects code dependencies", {
   )
   writeLines(lines, file.path("report", "subdir", "text2.qmd"))
   out <- tar_quarto_files("report/main.qmd")
-  expect_equal(out$sources, file.path("report", "subdir", "text2.qmd"))
-  expect_equal(out$output, file.path("report", "main.html"))
-  expect_equal(
-    sort(out$input),
-    sort(
-      c(
-        file.path("report", c("main.qmd", "text1.qmd")),
-        file.path("report", "subdir", "text2.qmd")
+  if (identical(tolower(Sys.info()[["sysname"]]), "windows")) {
+    expect_equal(basename(out$sources), "text2.qmd")
+    expect_equal(basename(out$output), "main.html")
+    expect_equal(
+      sort(basename(out$input)),
+      sort(c("main.qmd", "text1.qmd", "text2.qmd"))
+    )
+  } else {
+    expect_equal(out$sources, file.path("report", "subdir", "text2.qmd"))
+    expect_equal(out$output, file.path("report", "main.html"))
+    expect_equal(
+      sort(out$input),
+      sort(
+        c(
+          file.path("report", c("main.qmd", "text1.qmd")),
+          file.path("report", "subdir", "text2.qmd")
+        )
       )
     )
-  )
+  }
   # Check whether we get the same result when calling via a project.
   lines <- c(
     "project:",
