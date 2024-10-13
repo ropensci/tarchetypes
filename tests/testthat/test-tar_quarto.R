@@ -482,3 +482,111 @@ targets::tar_test("tar_quarto() creates custom output file", {
   expect_false(file.exists(file.path("report.html")))
   expect_true(file.exists(file.path("test.html")))
 })
+
+targets::tar_test("tar_quarto() reruns if target changes in included file", {
+  skip_quarto()
+  lines <- c(
+    "---",
+    "title: main",
+    "output_format: html",
+    "---",
+    "",
+    "{{< include \"file1.qmd\" >}}"
+  )
+  writeLines(lines, "main.qmd")
+  lines <- c(
+    "# First File",
+    "",
+    "Contains a code cell with a target.",
+    "",
+    "```{r}",
+    "targets::tar_read(data)",
+    "```"
+  )
+  writeLines(lines, "file1.qmd")
+  targets::tar_script({
+    library(tarchetypes)
+    list(
+      tar_target(data, data.frame(x = seq_len(26L), y = letters)),
+      tar_quarto(report, path = "main.qmd")
+    )
+  })
+  # First run.
+  suppressMessages(targets::tar_make(callr_function = NULL))
+  progress <- targets::tar_progress()
+  progress <- progress[progress$progress != "skipped", ]
+  expect_equal(sort(progress$name), sort(c("data", "report")))
+  out <- targets::tar_read(report)
+  out <- setdiff(out, "main_files")
+  expect_equal(sort(basename(out)), sort(c("main.html", "main.qmd", "file1.qmd")))
+  # Should not rerun the report.
+  suppressMessages(targets::tar_make(callr_function = NULL))
+  progress <- targets::tar_progress()
+  progress <- progress[progress$progress != "skipped", ]
+  expect_equal(nrow(progress), 0L)
+  # Should rerun the report.
+  targets::tar_script({
+    library(tarchetypes)
+    list(
+      tar_target(data, data.frame(x = rev(seq_len(26L)), y = letters)),
+      tar_quarto(report, path = "main.qmd")
+    )
+  })
+  suppressMessages(targets::tar_make(callr_function = NULL))
+  expect_equal(sort(targets::tar_progress()$name), sort(c("data", "report")))
+})
+
+targets::tar_test("tar_quarto() reruns if an included file changes", {
+  skip_quarto()
+  lines <- c(
+    "---",
+    "title: main",
+    "output_format: html",
+    "---",
+    "",
+    "{{< include \"file1.qmd\" >}}"
+  )
+  writeLines(lines, "main.qmd")
+  lines <- c(
+    "# First File",
+    "",
+    "Includes another file.",
+    "",
+    "{{< include \"file2.qmd\" >}}"
+  )
+  writeLines(lines, "file1.qmd")
+  lines <- c(
+    "# Second File",
+    "",
+    "Does not include another file."
+  )
+  writeLines(lines, "file2.qmd")
+  targets::tar_script({
+    library(tarchetypes)
+    list(
+      tar_quarto(report, path = "main.qmd")
+    )
+  })
+  # First run.
+  suppressMessages(targets::tar_make(callr_function = NULL))
+  progress <- targets::tar_progress()
+  progress <- progress[progress$progress != "skipped", ]
+  expect_equal(sort(progress$name), sort(c("report")))
+  out <- targets::tar_read(report)
+  out <- setdiff(out, "main_files")
+  expect_equal(sort(basename(out)), sort(c("main.html", "main.qmd", "file1.qmd", "file2.qmd")))
+  # Should not rerun the report.
+  suppressMessages(targets::tar_make(callr_function = NULL))
+  progress <- targets::tar_progress()
+  progress <- progress[progress$progress != "skipped", ]
+  expect_equal(nrow(progress), 0L)
+  # Should rerun the report.
+  lines <- c(
+    "# Second File",
+    "",
+    "A change to the second file."
+  )
+  writeLines(lines, "file2.qmd")
+  suppressMessages(targets::tar_make(callr_function = NULL))
+  expect_equal(sort(targets::tar_progress()$name), sort(c("report")))
+})
