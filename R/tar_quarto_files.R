@@ -72,13 +72,17 @@ tar_quarto_files_document <- function(path) {
     )
   }
 
-  # Collect data about input files.
+  # Collect data about input files. It seems that quarto only puts the main
+  # rendering file (in this case `path`) into `fileInformation`. Even though
+  # included files might include other files, they still appear in
+  # `includeMap$target` and not as an own `fileInformation` entry.
   for (myfile in names(info$fileInformation)) {
     out$input <- c(
       out$input,
       # `myfile` are relative paths starting from `path`.
       myfile,
-      # `includeMap` contains relative paths starting from `myfile`.
+      # `includeMap` contains relative paths starting from `myfile`. We can use
+      # `dirname(path)` here as this is the directory of `myfile`.
       file.path(
         dirname(path),
         info$fileInformation[[myfile]]$includeMap$target

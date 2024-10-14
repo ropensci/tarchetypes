@@ -89,15 +89,15 @@ targets::tar_test("tar_quarto_files() detects non-code dependencies", {
     "output_format: html",
     "---",
     "",
-    "{{< include \"text1.qmd\" >}}",
-    "",
-    "{{< include \"subdir/text2.qmd\" >}}"
+    "{{< include \"text1.qmd\" >}}"
   )
   writeLines(lines, file.path("report", "main.qmd"))
   lines <- c(
     "# First File",
     "",
-    "Some text here."
+    "Some text here.",
+    "",
+    "{{< include \"subdir/text2.qmd\" >}}"
   )
   writeLines(lines, file.path("report", "text1.qmd"))
   lines <- c(
