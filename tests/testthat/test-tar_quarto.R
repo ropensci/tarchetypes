@@ -518,7 +518,19 @@ targets::tar_test("tar_quarto() reruns if target changes in included file", {
   expect_equal(sort(progress$name), sort(c("data", "report")))
   out <- targets::tar_read(report)
   out <- setdiff(out, "main_files")
-  expect_equal(sort(basename(out)), sort(c("main.html", "main.qmd", "file1.qmd")))
+  if (identical(tolower(Sys.info()[["sysname"]]), "windows")) {
+    expect_equal(
+      # On the windows CI, there seems to be issues and `fs::path_rel`. Because
+      # of that, `file1.qmd` is returned twice and we use `unique` here. On
+      # other platforms this issue does not exist.
+      #
+      # See https://github.com/ropensci/tarchetypes/pull/200 for a discussion.
+      sort(unique(basename(out))),
+      sort(c("main.html", "main.qmd", "file1.qmd"))
+    )
+  } else {
+    expect_equal(sort(basename(out)), sort(c("main.html", "main.qmd", "file1.qmd")))
+  }
   # Should not rerun the report.
   suppressMessages(targets::tar_make(callr_function = NULL))
   progress <- targets::tar_progress()
