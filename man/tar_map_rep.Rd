@@ -18,6 +18,7 @@ tar_map_rep(
   rep_workers = 1,
   combine = TRUE,
   delimiter = "_",
+  unlist = FALSE,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -47,6 +48,7 @@ tar_map_rep_raw(
   rep_workers = 1,
   combine = TRUE,
   delimiter = "_",
+  unlist = FALSE,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -118,6 +120,12 @@ all the results into a single target downstream.}
 \item{delimiter}{Character of length 1, string to insert between
 other strings when creating names of targets.}
 
+\item{unlist}{Logical, whether to flatten the returned list of targets.
+If \code{unlist = FALSE}, the list is nested and sub-lists
+are named and grouped by the original input targets.
+If \code{unlist = TRUE}, the return value is a flat list of targets
+named by the new target names.}
+
 \item{tidy_eval}{Whether to invoke tidy evaluation
 (e.g. the \verb{!!} operator from \code{rlang}) as soon as the target is defined
 (before \code{tar_make()}). Applies to the \code{command} argument.}
@@ -151,7 +159,7 @@ for details for instructions.
 See the cloud storage section of
 \url{https://books.ropensci.org/targets/data.html}
 for details for instructions.
-\item A character string from \code{tar_repository_cas()} for content-addressable
+\item A character string from \code{\link[targets:tar_repository_cas]{tar_repository_cas()}} for content-addressable
 storage.
 }
 
@@ -207,8 +215,17 @@ and \code{"transient"} means it gets deleted as soon as possible.
 The former conserves bandwidth,
 and the latter conserves local storage.}
 
-\item{garbage_collection}{Logical, whether to run \code{base::gc()}
-just before the target runs.}
+\item{garbage_collection}{Logical: \code{TRUE} to run \code{base::gc()}
+just before the target runs,
+\code{FALSE} to omit garbage collection.
+In the case of high-performance computing,
+\code{gc()} runs both locally and on the parallel worker.
+All this garbage collection is skipped if the actual target
+is skipped in the pipeline.
+Non-logical values of \code{garbage_collection} are converted to \code{TRUE} or
+\code{FALSE} using \code{isTRUE()}. In other words, non-logical values are
+converted \code{FALSE}. For example, \code{garbage_collection = 2}
+is equivalent to \code{garbage_collection = FALSE}.}
 
 \item{deployment}{Character of length 1. If \code{deployment} is
 \code{"main"}, then the target will run on the central controlling R process.

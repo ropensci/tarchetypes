@@ -12,6 +12,7 @@ tar_map_rep_raw <- function(
   rep_workers = 1,
   combine = TRUE,
   delimiter = "_",
+  unlist = FALSE,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -117,9 +118,10 @@ tar_map_rep_raw <- function(
         values = values,
         names = names,
         descriptions = descriptions,
-        delimiter = delimiter
+        delimiter = delimiter,
+        unlist = unlist
       )
-    )
+    )[[1L]]
   )
   target_combine <- if_any(
     is.null(values) || !combine,
@@ -142,7 +144,15 @@ tar_map_rep_raw <- function(
       description = description
     )
   )
-  unlist(list(target_batch, target_static, target_combine), recursive = TRUE)
+  out <- list(
+    batch_index = target_batch,
+    static_branches = target_static,
+    combine = target_combine
+  )
+  if (unlist) {
+    out <- unlist(out, recursive = TRUE)
+  }
+  out
 }
 
 tar_map_combine_command <- expression({

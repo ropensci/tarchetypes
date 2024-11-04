@@ -143,7 +143,7 @@ tar_map_default_suffixes <- function(values) {
 }
 
 tar_map_target <- function(target, values, descriptions) {
-  lapply(
+  out <- lapply(
     X = transpose(values),
     FUN = tar_map_iter,
     target = target,
@@ -151,6 +151,8 @@ tar_map_target <- function(target, values, descriptions) {
     pattern = target$settings$pattern,
     descriptions = descriptions
   )
+  names(out) <- map_chr(out, ~.x$settings$name)
+  out
 }
 
 tar_map_iter <- function(values, target, command, pattern, descriptions) {
