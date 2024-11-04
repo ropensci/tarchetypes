@@ -123,7 +123,7 @@ tar_map_rep_raw <- function(
       )
     )
   )
-  if (!unlist) {
+  if (!unlist && is.list(target_static)) {
     target_static <- target_static[[1L]]
   }
   target_combine <- if_any(
