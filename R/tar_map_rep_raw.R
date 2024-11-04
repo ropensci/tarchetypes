@@ -121,8 +121,11 @@ tar_map_rep_raw <- function(
         delimiter = delimiter,
         unlist = unlist
       )
-    )[[1L]]
+    )
   )
+  if (!unlist) {
+    target_static <- target_static[[1L]]
+  }
   target_combine <- if_any(
     is.null(values) || !combine,
     NULL,
@@ -151,6 +154,7 @@ tar_map_rep_raw <- function(
   )
   if (unlist) {
     out <- unlist(out, recursive = TRUE)
+    names(out) <- map_chr(out, ~.x$settings$name)
   }
   out
 }
