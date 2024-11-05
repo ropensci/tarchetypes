@@ -150,8 +150,8 @@ tar_quarto_files_get_source_files <- function(file_information) {
     relevant_lines <- c(
       grep("tar_read", df$source, fixed = TRUE),
       grep("tar_load", df$source, fixed = TRUE)
-    ) |>
-      unique()
+    )
+    relevant_lines <- unique(relevant_lines)
 
     # Select corresponding files.
     # codeCells paths are always absolute.
