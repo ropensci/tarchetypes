@@ -529,7 +529,10 @@ targets::tar_test("tar_quarto() reruns if target changes in included file", {
       sort(c("main.html", "main.qmd", "file1.qmd"))
     )
   } else {
-    expect_equal(sort(basename(out)), sort(c("main.html", "main.qmd", "file1.qmd")))
+    expect_equal(
+      sort(basename(out)),
+      sort(c("main.html", "main.qmd", "file1.qmd"))
+    )
   }
   # Should not rerun the report.
   suppressMessages(targets::tar_make(callr_function = NULL))
@@ -586,7 +589,10 @@ targets::tar_test("tar_quarto() reruns if an included file changes", {
   expect_equal(sort(progress$name), sort(c("report")))
   out <- targets::tar_read(report)
   out <- setdiff(out, "main_files")
-  expect_equal(sort(basename(out)), sort(c("main.html", "main.qmd", "file1.qmd", "file2.qmd")))
+  expect_equal(
+    sort(basename(out)),
+    sort(c("main.html", "main.qmd", "file1.qmd", "file2.qmd"))
+  )
   # Should not rerun the report.
   suppressMessages(targets::tar_make(callr_function = NULL))
   progress <- targets::tar_progress()
