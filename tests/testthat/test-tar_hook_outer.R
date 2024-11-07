@@ -1,4 +1,5 @@
 targets::tar_test("tar_hook_outer() deep-copies the targets", {
+  skip_on_cran()
   x <- targets::tar_target(x1, task1())
   y <- tar_hook_outer(x, f(.x))[[1]]
   y$cue$command <- FALSE
@@ -8,6 +9,7 @@ targets::tar_test("tar_hook_outer() deep-copies the targets", {
 })
 
 targets::tar_test("tar_hook_outer() requires .x", {
+  skip_on_cran()
   x <- tar_target(x, 1)
   expect_error(
     tar_hook_outer(x, f()),
@@ -16,6 +18,7 @@ targets::tar_test("tar_hook_outer() requires .x", {
 })
 
 targets::tar_test("tar_hook_outer() inserts code", {
+  skip_on_cran()
   targets::tar_script({
     targets <- list(
       list(
@@ -37,6 +40,7 @@ targets::tar_test("tar_hook_outer() inserts code", {
 })
 
 targets::tar_test("tar_hook_outer() with tidyselect", {
+  skip_on_cran()
   targets::tar_script({
     targets <- list(
       list(
@@ -108,12 +112,13 @@ targets::tar_test("tar_hook_outer() changes internals properly", {
     expect_equal(length(y$command[[field]]), 1L)
     expect_false(x$command[[field]] == y$command[[field]])
   }
-  expect_true("b" %in% x$command$deps)
-  expect_false("f" %in% x$command$deps)
-  expect_true(all(c("b", "f") %in% y$command$deps))
+  expect_true("b" %in% (x$deps %|||% x$command$deps))
+  expect_false("f" %in% (x$deps %|||% x$command$deps))
+  expect_true(all(c("b", "f") %in% (y$deps %|||% y$command$deps)))
 })
 
 targets::tar_test("outer hook runs", {
+  skip_on_cran()
   targets::tar_script({
     x <- targets::tar_target("a", "x1")
     tar_hook_outer(x, c(.x, "x2"))
@@ -123,6 +128,7 @@ targets::tar_test("outer hook runs", {
 })
 
 targets::tar_test("outer hook can work with an empty command", {
+  skip_on_cran()
   targets::tar_script({
     x <- targets::tar_target("a", NULL)
     tar_hook_outer(x, identity(.x))
@@ -132,6 +138,7 @@ targets::tar_test("outer hook can work with an empty command", {
 })
 
 targets::tar_test("outer hook can work with a symbol command", {
+  skip_on_cran()
   targets::tar_script({
     y <- "y123"
     x <- targets::tar_target("a", y)
@@ -142,6 +149,7 @@ targets::tar_test("outer hook can work with a symbol command", {
 })
 
 targets::tar_test("outer hook invalidates target", {
+  skip_on_cran()
   targets::tar_script({
     x <- targets::tar_target("a", "y")
   })
@@ -159,17 +167,19 @@ targets::tar_test("outer hook invalidates target", {
 })
 
 targets::tar_test("tar_hook_outer() sets deps by default", {
+  skip_on_cran()
   x <- targets::tar_target(x1, task1())
   y <- tar_hook_outer(x, f(.x))[[1]]
   expect_equal(y$command$string, "expression(f(task1()))")
-  expect_true("task1" %in% y$command$deps)
-  expect_true("f" %in% y$command$deps)
+  expect_true("task1" %in% (y$deps %|||% y$command$deps))
+  expect_true("f" %in% (y$deps %|||% y$command$deps))
 })
 
 targets::tar_test("tar_hook_outer() sets_deps = FALSE", {
+  skip_on_cran()
   x <- targets::tar_target(x1, task1())
   y <- tar_hook_outer(x, f(.x), set_deps = FALSE)[[1]]
   expect_equal(y$command$string, "expression(f(task1()))")
-  expect_true("task1" %in% y$command$deps)
-  expect_false("f" %in% y$command$deps)
+  expect_true("task1" %in% (y$deps %|||% y$command$deps))
+  expect_false("f" %in% (y$deps %|||% y$command$deps))
 })

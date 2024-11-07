@@ -1,4 +1,5 @@
 targets::tar_test("tar_hook_before() deep-copies the targets", {
+  skip_on_cran()
   x <- targets::tar_target(x1, task1())
   y <- tar_hook_before(x, f())[[1]]
   y$cue$command <- FALSE
@@ -8,6 +9,7 @@ targets::tar_test("tar_hook_before() deep-copies the targets", {
 })
 
 targets::tar_test("tar_hook_before() inserts code", {
+  skip_on_cran()
   targets::tar_script({
     targets <- list(
       list(
@@ -29,6 +31,7 @@ targets::tar_test("tar_hook_before() inserts code", {
 })
 
 targets::tar_test("tar_hook_before() with tidyselect", {
+  skip_on_cran()
   targets::tar_script({
     targets <- list(
       list(
@@ -100,21 +103,23 @@ targets::tar_test("tar_hook_before() changes internals properly", {
     expect_equal(length(y$command[[field]]), 1L)
     expect_false(x$command[[field]] == y$command[[field]])
   }
-  expect_true("b" %in% x$command$deps)
-  expect_false("f" %in% x$command$deps)
-  expect_true(all(c("b", "f") %in% y$command$deps))
+  expect_true("b" %in% (x$deps %|||% x$command$deps))
+  expect_false("f" %in% (x$deps %|||% x$command$deps))
+  expect_true(all(c("b", "f") %in% (y$deps %|||% y$command$deps)))
 })
 
 targets::tar_test("dep removed when global turns local", {
+  skip_on_cran()
   x <- targets::tar_target("a", b)
   y <- targets::tar_target("a", b)
   y <- tar_hook_before(y, b <- 1)
   y$command$expr
-  expect_true("b" %in% x$command$deps)
-  expect_false("b" %in% y$command$deps)
+  expect_true("b" %in% (x$deps %|||% x$command$deps))
+  expect_false("b" %in% (y$deps %|||% y$command$deps))
 })
 
 targets::tar_test("hook runs", {
+  skip_on_cran()
   targets::tar_script({
     x <- targets::tar_target("a", b)
     x
@@ -129,6 +134,7 @@ targets::tar_test("hook runs", {
 })
 
 targets::tar_test("hook can work with an empty command", {
+  skip_on_cran()
   targets::tar_script({
     x <- targets::tar_target("a", NULL)
     tar_hook_before(x, identity("x"))
@@ -138,6 +144,7 @@ targets::tar_test("hook can work with an empty command", {
 })
 
 targets::tar_test("hook can work with a symbol command", {
+  skip_on_cran()
   targets::tar_script({
     y <- "y123"
     x <- targets::tar_target("a", y)
@@ -148,6 +155,7 @@ targets::tar_test("hook can work with a symbol command", {
 })
 
 targets::tar_test("hook invalidates target", {
+  skip_on_cran()
   targets::tar_script({
     x <- targets::tar_target("a", "y")
     x
@@ -166,20 +174,23 @@ targets::tar_test("hook invalidates target", {
 })
 
 targets::tar_test("tar_hook_before() sets deps by default", {
+  skip_on_cran()
   x <- targets::tar_target(x1, task1())
   y <- tar_hook_before(x, f())[[1]]
-  expect_true("task1" %in% y$command$deps)
-  expect_true("f" %in% y$command$deps)
+  expect_true("task1" %in% (y$deps %|||% y$command$deps))
+  expect_true("f" %in% (y$deps %|||% y$command$deps))
 })
 
 targets::tar_test("tar_hook_before() sets_deps = FALSE", {
+  skip_on_cran()
   x <- targets::tar_target(x1, task1())
   y <- tar_hook_before(x, f(), set_deps = FALSE)[[1]]
-  expect_true("task1" %in% y$command$deps)
-  expect_false("f" %in% y$command$deps)
+  expect_true("task1" %in% (y$deps %|||% y$command$deps))
+  expect_false("f" %in% (y$deps %|||% y$command$deps))
 })
 
 targets::tar_test("tar_hook_before(), set_deps = TRUE, deps arg", {
+  skip_on_cran()
   targets::tar_script({
     tar_hook_before(
       targets = list(
@@ -200,6 +211,7 @@ targets::tar_test("tar_hook_before(), set_deps = TRUE, deps arg", {
 })
 
 targets::tar_test("tar_hook_before(), set_deps = FALSE, deps arg", {
+  skip_on_cran()
   targets::tar_script({
     tar_hook_before(
       targets = list(

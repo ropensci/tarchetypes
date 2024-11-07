@@ -19,8 +19,8 @@ See \url{https://quarto.org/docs/projects/profiles.html} for details.}
 \value{
 A named list of important file paths in a Quarto project or document:
 \itemize{
-\item \code{sources}: source files with \code{tar_load()}/\code{tar_read()}
-target dependencies in R code chunks.
+\item \code{sources}: source files which may reference upstream target
+dependencies in code chunks using \code{tar_load()}/\code{tar_read()}.
 \item \code{output}: output files that will be generated during
 \code{quarto::quarto_render()}.
 \item \code{input}: pre-existing files required to render the project or document,

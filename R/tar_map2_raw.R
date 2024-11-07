@@ -227,9 +227,9 @@ tar_map2_run <- function(command, values, columns, rep_workers) {
   columns <- substitute(columns)
   columns <- targets::tar_tidyselect_eval(columns, colnames(values))
   splits <- split(values, f = seq_len(nrow(values)))
-  pedigree <- targets::tar_definition()$pedigree
-  name <- pedigree$parent
-  batch <- pedigree$index
+  target <- targets::tar_definition()
+  name <- target$pedigree$parent %|||% target$settings$name
+  batch <- target$pedigree$index %|||% target$index
   reps <- length(splits)
   seeds <- produce_batch_seeds(name = name, batch = batch, reps = reps)
   envir <- targets::tar_envir()

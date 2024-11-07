@@ -11,7 +11,7 @@ tar_copy_target <- function(target) {
     pattern = target$settings$pattern,
     packages = target$command$packages,
     library = target$command$library,
-    deps = target$command$deps,
+    deps = target$command$deps %|||% target$deps,
     string = target$command$string,
     format = target$settings$format,
     repository = target$settings$repository,
@@ -43,9 +43,14 @@ tar_replace_command <- function(target, expr, set_deps) {
     packages = target$command$packages,
     library = target$command$library,
     pattern = target$settings$pattern,
-    deps = if_any(set_deps, NULL, target$command$deps)
+    deps = if_any(
+      set_deps,
+      NULL,
+      target$command$deps %|||% target$deps
+    )
   )
   target$command <- pilot$command
+  target$deps <- pilot$deps
   invisible()
 }
 

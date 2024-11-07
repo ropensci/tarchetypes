@@ -100,7 +100,7 @@ tar_force <- function(
 #' @param condition Logical, whether to run the downstream target
 #'   in [tar_force()].
 tar_force_change <- function(condition) {
-  name <- targets::tar_definition()$settings$name
+  name <- targets::tar_name()
   store <- targets::tar_runtime_object()$store
   path <- targets::tar_path_target(name = name, store = store)
   new <- basename(tempfile(pattern = ""))

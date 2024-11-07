@@ -90,9 +90,9 @@ tar_rep2_run <- function(command, batches, iteration, rep_workers) {
   names(batches) <- names
   assert_batches(batches)
   reps <- batch_count_reps(batches[[1]])
-  pedigree <- targets::tar_definition()$pedigree
-  name <- pedigree$parent
-  batch <- pedigree$index
+  target <- targets::tar_definition()
+  name <- target$pedigree$parent %|||% target$settings$name
+  batch <- target$pedigree$index %|||% target$index
   seeds <- produce_batch_seeds(name = name, batch = batch, reps = reps)
   envir <- targets::tar_envir()
   slices <- split_batches(batches = batches, reps = reps)

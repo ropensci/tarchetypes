@@ -1,4 +1,5 @@
 targets::tar_test("tar_hook_inner() deep-copies the targets", {
+  skip_on_cran()
   x <- targets::tar_target(x1, task1())
   y <- tar_hook_inner(x, f(.x))[[1]]
   y$cue$command <- FALSE
@@ -8,6 +9,7 @@ targets::tar_test("tar_hook_inner() deep-copies the targets", {
 })
 
 targets::tar_test("tar_hook_inner() requires .x", {
+  skip_on_cran()
   x <- tar_target(x, 1)
   expect_error(
     tar_hook_inner(x, f()),
@@ -16,6 +18,7 @@ targets::tar_test("tar_hook_inner() requires .x", {
 })
 
 targets::tar_test("tar_hook_inner() inserts code", {
+  skip_on_cran()
   targets::tar_script({
     targets <- list(
       list(
@@ -37,6 +40,7 @@ targets::tar_test("tar_hook_inner() inserts code", {
 })
 
 targets::tar_test("tar_hook_inner() with tidyselect", {
+  skip_on_cran()
   targets::tar_script({
     targets <- list(
       list(
@@ -61,6 +65,7 @@ targets::tar_test("tar_hook_inner() with tidyselect", {
 })
 
 targets::tar_test("tar_hook_inner() with tidyselect on names_wrap", {
+  skip_on_cran()
   targets::tar_script({
     targets <- list(
       list(
@@ -176,12 +181,13 @@ targets::tar_test("tar_hook_inner() changes internals properly", {
     expect_equal(length(y$command[[field]]), 1L)
     expect_false(x$command[[field]] == y$command[[field]])
   }
-  expect_true("b" %in% x$command$deps)
-  expect_false("f" %in% x$command$deps)
-  expect_true(all(c("b", "f") %in% y$command$deps))
+  expect_true("b" %in% (x$deps %|||% x$command$deps))
+  expect_false("f" %in% (x$deps %|||% x$command$deps))
+  expect_true(all(c("b", "f") %in% (y$deps %|||% y$command$deps)))
 })
 
 targets::tar_test("inner hook runs", {
+  skip_on_cran()
   targets::tar_script({
     x <- list(
       targets::tar_target(a, "x1"),
@@ -194,6 +200,7 @@ targets::tar_test("inner hook runs", {
 })
 
 targets::tar_test("inner hook can work with an empty command", {
+  skip_on_cran()
   targets::tar_script({
     x <- targets::tar_target("a", NULL)
     tar_hook_inner(x, identity(.x))
@@ -203,6 +210,7 @@ targets::tar_test("inner hook can work with an empty command", {
 })
 
 targets::tar_test("inner hook invalidates target", {
+  skip_on_cran()
   targets::tar_script({
     x <- list(
       targets::tar_target(a, "x1"),
@@ -227,6 +235,7 @@ targets::tar_test("inner hook invalidates target", {
 })
 
 targets::tar_test("tar_hook_inner() sets deps by default", {
+  skip_on_cran()
   x <- list(
     targets::tar_target(x1, task1()),
     targets::tar_target(x2, task2(x1))
@@ -236,11 +245,12 @@ targets::tar_test("tar_hook_inner() sets deps by default", {
     f(.x),
     names_wrap = tidyselect::starts_with("x")
   )[[2]]
-  expect_true("task2" %in% y$command$deps)
-  expect_true("f" %in% y$command$deps)
+  expect_true("task2" %in% (y$deps %|||% y$command$deps))
+  expect_true("f" %in% (y$deps %|||% y$command$deps))
 })
 
 targets::tar_test("tar_hook_inner() set_deps = FALSE", {
+  skip_on_cran()
   x <- list(
     targets::tar_target(x1, task1()),
     targets::tar_target(x2, task2(x1))
@@ -251,6 +261,6 @@ targets::tar_test("tar_hook_inner() set_deps = FALSE", {
     names_wrap = tidyselect::starts_with("x"),
     set_deps = FALSE
   )[[2]]
-  expect_true("task2" %in% y$command$deps)
-  expect_false("f" %in% y$command$deps)
+  expect_true("task2" %in% (y$deps %|||% y$command$deps))
+  expect_false("f" %in% (y$deps %|||% y$command$deps))
 })

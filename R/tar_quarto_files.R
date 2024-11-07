@@ -6,8 +6,8 @@
 #'   of `quarto::quarto_inspect()` and returns what `tarchetypes` needs to
 #'   know about the current Quarto project or document.
 #' @return A named list of important file paths in a Quarto project or document:
-#'   * `sources`: source files with `tar_load()`/`tar_read()`
-#'     target dependencies in R code chunks.
+#'   * `sources`: source files which may reference upstream target
+#'     dependencies in code chunks using `tar_load()`/`tar_read()`.
 #'   * `output`: output files that will be generated during
 #'     `quarto::quarto_render()`.
 #'   * `input`: pre-existing files required to render the project or document,

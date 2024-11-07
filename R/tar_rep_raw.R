@@ -227,7 +227,8 @@ tar_rep_run_map <- function(expr, batch, reps, rep_workers) {
     }
   )
   fun <- eval(call, envir = targets::tar_option_get("envir"))
-  name <- targets::tar_definition()$pedigree$parent
+  target <- targets::tar_definition()
+  name <- target$pedigree$parent %|||% target$settings$name
   seeds <- produce_batch_seeds(name = name, batch = batch, reps = reps)
   envir <- targets::tar_envir()
   if (rep_workers > 1L) {

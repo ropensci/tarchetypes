@@ -223,17 +223,8 @@ and \code{"transient"} means it gets deleted as soon as possible.
 The former conserves bandwidth,
 and the latter conserves local storage.}
 
-\item{garbage_collection}{Logical: \code{TRUE} to run \code{base::gc()}
-just before the target runs,
-\code{FALSE} to omit garbage collection.
-In the case of high-performance computing,
-\code{gc()} runs both locally and on the parallel worker.
-All this garbage collection is skipped if the actual target
-is skipped in the pipeline.
-Non-logical values of \code{garbage_collection} are converted to \code{TRUE} or
-\code{FALSE} using \code{isTRUE()}. In other words, non-logical values are
-converted \code{FALSE}. For example, \code{garbage_collection = 2}
-is equivalent to \code{garbage_collection = FALSE}.}
+\item{garbage_collection}{Logical, whether to run \code{base::gc()}
+just before the target runs.}
 
 \item{deployment}{Character of length 1. If \code{deployment} is
 \code{"main"}, then the target will run on the central controlling R process.

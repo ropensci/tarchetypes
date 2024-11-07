@@ -203,9 +203,9 @@ tar_render_rep_run <- function(path, params, args, deps, rep_workers) {
     }
   )
   fun <- eval(call, envir = targets::tar_option_get("envir"))
-  pedigree <- targets::tar_definition()$pedigree
-  name <- pedigree$parent
-  batch <- pedigree$index
+  target <- targets::tar_definition()
+  name <- target$pedigree$parent %|||% target$settings$name
+  batch <- target$pedigree$index %|||% target$index
   reps <- length(params)
   seeds <- produce_batch_seeds(name = name, batch = batch, reps = reps)
   if (rep_workers > 1L) {
