@@ -1,8 +1,9 @@
-# tarchetypes 0.10.0.9003 (development)
+# tarchetypes 0.10.0.9004 (development)
 
 * Add an `output_file` argument to `tar_quarto()` and `tar_quarto_raw()` for single documents (#198, @mutlusun).
 * Detect child quarto documents (#199, @mutlusun).
 * Improve reporting of static branch names from `tar_map()` and `tar_map_rep()` (#201, @kkmann).
+* Ensure compatibility with `targets` after https://github.com/ropensci/targets/issues/1368.
 
 # tarchetypes 0.10.0
 
