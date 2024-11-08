@@ -11,7 +11,7 @@
 #'   * `output`: output files that will be generated during
 #'     `quarto::quarto_render()`.
 #'   * `input`: pre-existing files required to render the project or document,
-#'     such as `_quarto.yml`.
+#'     such as `_quarto.yml` and quarto extensions.
 #' @param path Character of length 1, either the file path
 #'   to a Quarto source document or the directory path
 #'   to a Quarto project. Defaults to the Quarto project in the
@@ -72,22 +72,13 @@ tar_quarto_files_document <- function(path) {
     )
   }
 
-  # Collect data about input files. It seems that quarto only puts the main
-  # rendering file (in this case `path`) into `fileInformation`. Even though
-  # included files might include other files, they still appear in
-  # `includeMap$target` and not as an own `fileInformation` entry.
-  for (myfile in names(info$fileInformation)) {
-    out$input <- c(
-      out$input,
-      # `myfile` are relative paths starting from `path`.
-      myfile,
-      # `includeMap` contains relative paths starting from `myfile`. We can use
-      # `dirname(path)` here as this is the directory of `myfile`.
-      file.path(
-        dirname(path),
-        info$fileInformation[[myfile]]$includeMap$target
-      )
-    )
+  # Collect data about input files. As this is not a project, there doesn't
+  # exist the `info$files` key. However, we can include resources if present.
+  if (length(info$resources) > 0) {
+    out$input <- info$resources
+    out$input <- out$input[file.exists(out$input)]
+  } else {
+    out$input <- character()
   }
 
   out
@@ -109,20 +100,15 @@ tar_quarto_files_project <- function(path) {
   # Collect data about source files.
   out$sources <- tar_quarto_files_get_source_files(info$fileInformation)
 
-  # Detect input files.
-  out$input <- info$files$config
-  for (myfile in names(info$fileInformation)) {
-    out$input <- c(
-      out$input,
-      # `myfile` is an absolute path.
-      myfile,
-      # `includeMap` files are relative starting from `myfile`.
-      file.path(
-        dirname(myfile),
-        info$fileInformation[[myfile]]$includeMap$target
-      )
+  # Detect input files like the config file (`_quarto.yml`) and resources like
+  # quarto extensions. Make sure in the end that these files exist.
+  out$input <- unlist(
+    c(
+      info$files$config,
+      info$files$resources
     )
-  }
+  )
+  out$input <- out$input[file.exists(out$input)]
 
   out
 }
