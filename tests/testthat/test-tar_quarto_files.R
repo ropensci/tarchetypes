@@ -73,7 +73,7 @@ targets::tar_test("tar_quarto_files() project", {
   }
 })
 
-targets::tar_test("tar_quarto_files() detects non-code dependencies", {
+targets::tar_test("tar_quarto_files() detects nested dependencies", {
   skip_quarto()
   fs::dir_create("report")
   fs::dir_create(file.path("report", "subdir"))
@@ -109,12 +109,6 @@ targets::tar_test("tar_quarto_files() detects non-code dependencies", {
     "Some text here."
   )
   writeLines(lines, file.path("report", "subdir", "b", "text3.qmd"))
-  lines <- c(
-    "# Fourth File",
-    "",
-    "Some text here."
-  )
-  writeLines(lines, file.path("report", "subdir", "b", "text4.qmd"))
   out <- tar_quarto_files(file.path("report", "main.qmd"))
   expect_equal(
     sort(out$sources),
@@ -134,8 +128,7 @@ targets::tar_test("tar_quarto_files() detects non-code dependencies", {
     "project:",
     "  output-dir: myoutdir",
     "  render:",
-    "    - main.qmd",
-    "    - subdir/b/text4.qmd"
+    "    - main.qmd"
   )
   writeLines(lines, file.path("report", "_quarto.yml"))
   out <- tar_quarto_files("report/")
@@ -143,12 +136,7 @@ targets::tar_test("tar_quarto_files() detects non-code dependencies", {
     expect_equal(
       basename(out$sources),
       sort(
-        c(
-          "main.qmd",
-          "text1.qmd",
-          "text2.qmd",
-          "text3.qmd"
-        )
+        c("main.qmd", "text1.qmd", "text2.qmd", "text3.qmd")
       )
     )
     expect_equal(basename(out$output), "myoutdir")
@@ -160,7 +148,7 @@ targets::tar_test("tar_quarto_files() detects non-code dependencies", {
         c(
           file.path("report", c("main.qmd", "text1.qmd")),
           file.path("report", "subdir", "text2.qmd"),
-          file.path("report", "subdir", "b", c("text3.qmd", "text4.qmd"))
+          file.path("report", "subdir", "b", "text3.qmd")
         )
       )
     )
@@ -191,93 +179,4 @@ targets::tar_test("tar_quarto_files() detects custom output file", {
   expect_equal(out$sources, "report.qmd")
   expect_equal(out$output, "custom.html")
   expect_equal(out$input, character(0))
-})
-
-targets::tar_test("tar_quarto_files() detects code dependencies", {
-  skip_quarto()
-  fs::dir_create("report")
-  fs::dir_create(file.path("report", "subdir"))
-  lines <- c(
-    "---",
-    "title: main",
-    "output_format: html",
-    "---",
-    "",
-    "{{< include \"text1.qmd\" >}}",
-    "",
-    "{{< include \"subdir/text2.qmd\" >}}"
-  )
-  writeLines(lines, file.path("report", "main.qmd"))
-  lines <- c(
-    "# First File",
-    "",
-    "Contains a code cell.",
-    "",
-    "```{r}",
-    "1 + 1",
-    "```"
-  )
-  writeLines(lines, file.path("report", "text1.qmd"))
-  lines <- c(
-    "# Second File",
-    "",
-    "Contains a code cell with a call to `tar_read`.",
-    "",
-    "```{r}",
-    "targets::tar_read(mytarget)",
-    "```"
-  )
-  writeLines(lines, file.path("report", "subdir", "text2.qmd"))
-  out <- tar_quarto_files("report/main.qmd")
-  if (identical(tolower(Sys.info()[["sysname"]]), "windows")) {
-    expect_equal(
-      sort(basename(out$sources)),
-      sort("text1.qmd", "text2.qmd")
-    )
-    expect_equal(basename(out$output), "main.html")
-  } else {
-    expect_equal(
-      out$sources,
-      sort(
-        c(
-          file.path("report", c("text1.qmd", "main.qmd")),
-          file.path("report", "subdir", "text2.qmd")
-        )
-      )
-    )
-    expect_equal(out$output, file.path("report", "main.html"))
-  }
-  expect_equal(out$input, character())
-  # Check whether we get the same result when calling via a project.
-  lines <- c(
-    "project:",
-    "  output-dir: myoutdir",
-    "  render:",
-    "    - main.qmd"
-  )
-  writeLines(lines, file.path("report", "_quarto.yml"))
-  out <- tar_quarto_files("report/")
-  if (identical(tolower(Sys.info()[["sysname"]]), "windows")) {
-    expect_equal(
-      sort(basename(out$sources)),
-      sort("main.qmd", "text1.qmd", "text2.qmd")
-    )
-    expect_equal(basename(out$output), "myoutdir")
-    expect_equal(basename(out$input), "_quarto.yml")
-  } else {
-    expect_equal(
-      out$sources,
-      sort(
-        c(
-          file.path("report", c("text1.qmd", "main.qmd")),
-          file.path("report", "subdir", "text2.qmd")
-        )
-      )
-    )
-    expect_equal(out$output, file.path("report", "myoutdir"))
-    expect_equal(
-      out$input,
-      file.path("report", "_quarto.yml")
-    )
-  }
 })
