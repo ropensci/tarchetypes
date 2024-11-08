@@ -129,37 +129,38 @@ tar_quarto_files_project <- function(path) {
 
 #' Get Source Files From Quarto Inspect
 #'
-#' @description Collects files with `tar_read` or `tar_load` from the
-#' `fileInformation` field.
+#' @description Collects all files from the
+#' `fileInformation` field that are used in the current report.
 #'
-#' @details `fileInformation` contains the input files and the respective
-#' `codeCells` entry contains all code cells with corresponding included files.
+#' @details `fileInformation` contains a list of files. Each file entry contains
+#' two data frames. The first, `includeMap`, contains a `source` column (files
+#' that include other files, e.g. the main report file) and a `target` column
+#' (files that get included by the `source` files). The `codeCells` data frame
+#' contains all code cells from the files represented in `includeMap`.
 tar_quarto_files_get_source_files <- function(file_information) {
   ret <- character(0)
 
   for (myfile in names(file_information)) {
-    df <- file_information[[myfile]]$codeCells
-
-    # If `codeCells` is empty, we get an empty list.
-    if (!is.data.frame(df)) {
-      next
-    }
-
-    # Check whether the codecells in `df` contain either `tar_read` or
-    # `tar_load`.
-    relevant_lines <- c(
-      grep("tar_read", df$source, fixed = TRUE),
-      grep("tar_load", df$source, fixed = TRUE)
-    )
-    relevant_lines <- unique(relevant_lines)
-
-    # Select corresponding files.
-    # codeCells paths are always absolute.
+    # Collect relevant source files. The files in `includeMap$target` are always
+    # relative to the main entry point of the report. Thus, we need to add the
+    # corresponding paths to the entries.
+    #
+    # We don't need to include the `source` column as all files are also present
+    # in `target` or are `myfile`.
     ret <- c(
       ret,
-      df[relevant_lines, "file"]
+      myfile,
+      file.path(
+        dirname(myfile),
+        file_information[[myfile]]$includeMap$target
+      )
     )
   }
 
+  # Check that these files actually exist.
+  ret <- ret[file.exists(ret)]
+
+  # We don't need to call `unique` here on `ret` as this happens on the main
+  # function.
   ret
 }

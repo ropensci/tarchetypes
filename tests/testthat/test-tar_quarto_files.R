@@ -56,21 +56,14 @@ targets::tar_test("tar_quarto_files() project", {
   )
   writeLines(lines, file.path("x", "r2.qmd"))
   info <- tar_quarto_files("x")
+  expect_equal(info$sources, character())
   if (identical(tolower(Sys.info()[["sysname"]]), "windows")) {
-    expect_equal(
-      sort(basename(info$sources)),
-      sort(c("index.qmd", "r2.qmd"))
-    )
     expect_equal(basename(info$output), "_book")
     expect_equal(
       sort(basename(info$input)),
       sort(c("_quarto.yml", "index.qmd", "r2.qmd"))
     )
   } else {
-    expect_equal(
-      sort(info$sources),
-      sort(file.path("x", c("index.qmd", "r2.qmd")))
-    )
     expect_equal(info$output, file.path("x", "_book"))
     expect_equal(
       sort(info$input),
@@ -83,6 +76,7 @@ targets::tar_test("tar_quarto_files() detects non-code dependencies", {
   skip_quarto()
   fs::dir_create("report")
   fs::dir_create(file.path("report", "subdir"))
+  fs::dir_create(file.path("report", "subdir", "b"))
   lines <- c(
     "---",
     "title: main",
@@ -103,40 +97,83 @@ targets::tar_test("tar_quarto_files() detects non-code dependencies", {
   lines <- c(
     "# Second File",
     "",
-    "Some text here."
+    "Some text here.",
+    "",
+    "{{< include \"subdir/b/text3.qmd\" >}}"
   )
   writeLines(lines, file.path("report", "subdir", "text2.qmd"))
+  lines <- c(
+    "# Third File",
+    "",
+    "Some text here."
+  )
+  writeLines(lines, file.path("report", "subdir", "b", "text3.qmd"))
+  lines <- c(
+    "# Fourth File",
+    "",
+    "Some text here."
+  )
+  writeLines(lines, file.path("report", "subdir", "b", "text4.qmd"))
   out <- tar_quarto_files(file.path("report", "main.qmd"))
-  expect_equal(out$sources, character(0))
+  expect_equal(
+    sort(out$sources),
+    sort(
+      c(
+        file.path("report", "text1.qmd"),
+        file.path("report", "subdir", "text2.qmd"),
+        file.path("report", "subdir", "b", "text3.qmd")
+      )
+    )
+  )
   expect_equal(out$output, file.path("report", "main.html"))
   expect_equal(
     sort(out$input),
     sort(
       c(
         file.path("report", c("main.qmd", "text1.qmd")),
-        file.path("report", "subdir", "text2.qmd")
+        file.path("report", "subdir", "text2.qmd"),
+        file.path("report", "subdir", "b", "text3.qmd")
       )
     )
   )
   # Check whether we get the same result with a reference to the directory
-  # instead of the file.
+  # instead of the file (render a project).
   lines <- c(
     "project:",
     "  output-dir: myoutdir",
     "  render:",
-    "    - main.qmd"
+    "    - main.qmd",
+    "    - subdir/b/text4.qmd"
   )
   writeLines(lines, file.path("report", "_quarto.yml"))
   out <- tar_quarto_files("report/")
   if (identical(tolower(Sys.info()[["sysname"]]), "windows")) {
-    expect_equal(basename(out$sources), character(0))
+    expect_equal(
+      basename(out$sources),
+      sort(
+        c(
+          file.path("report", "text1.qmd"),
+          file.path("report", "subdir", "text2.qmd"),
+          file.path("report", "subdir", "b", "text3.qmd")
+        )
+      )
+    )
     expect_equal(basename(out$output), "myoutdir")
     expect_equal(
       sort(basename(out$input)),
       sort(c("_quarto.yml", "main.qmd", "text1.qmd", "text2.qmd"))
     )
   } else {
-    expect_equal(out$sources, character(0))
+    expect_equal(
+      out$sources,
+      sort(
+        c(
+          file.path("report", "text1.qmd"),
+          file.path("report", "subdir", "text2.qmd"),
+          file.path("report", "subdir", "b", "text3.qmd")
+        )
+      )
+    )
     expect_equal(out$output, file.path("report", "myoutdir"))
     expect_equal(
       sort(out$input),
@@ -211,14 +248,25 @@ targets::tar_test("tar_quarto_files() detects code dependencies", {
   writeLines(lines, file.path("report", "subdir", "text2.qmd"))
   out <- tar_quarto_files("report/main.qmd")
   if (identical(tolower(Sys.info()[["sysname"]]), "windows")) {
-    expect_equal(basename(out$sources), "text2.qmd")
+    expect_equal(
+      sort(basename(out$sources)),
+      sort("text1.qmd", "text2.qmd")
+    )
     expect_equal(basename(out$output), "main.html")
     expect_equal(
       sort(basename(out$input)),
       sort(c("main.qmd", "text1.qmd", "text2.qmd"))
     )
   } else {
-    expect_equal(out$sources, file.path("report", "subdir", "text2.qmd"))
+    expect_equal(
+      out$sources,
+      sort(
+        c(
+          file.path("report", "text1.qmd"),
+          file.path("report", "subdir", "text2.qmd")
+        )
+      )
+    )
     expect_equal(out$output, file.path("report", "main.html"))
     expect_equal(
       sort(out$input),
@@ -240,14 +288,25 @@ targets::tar_test("tar_quarto_files() detects code dependencies", {
   writeLines(lines, file.path("report", "_quarto.yml"))
   out <- tar_quarto_files("report/")
   if (identical(tolower(Sys.info()[["sysname"]]), "windows")) {
-    expect_equal(basename(out$sources), "text2.qmd")
+    expect_equal(
+      sort(basename(out$sources)),
+      sort("text1.qmd", "text2.qmd")
+    )
     expect_equal(basename(out$output), "myoutdir")
     expect_equal(
       sort(basename(out$input)),
       sort(c("_quarto.yml", "main.qmd", "text1.qmd", "text2.qmd"))
     )
   } else {
-    expect_equal(out$sources, file.path("report", "subdir", "text2.qmd"))
+    expect_equal(
+      out$sources,
+      sort(
+        c(
+          file.path("report", "text1.qmd"),
+          file.path("report", "subdir", "text2.qmd")
+        )
+      )
+    )
     expect_equal(out$output, file.path("report", "myoutdir"))
     expect_equal(
       sort(out$input),
