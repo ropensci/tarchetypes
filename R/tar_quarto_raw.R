@@ -58,7 +58,7 @@ tar_quarto_raw <- function(
   targets::tar_assert_scalar(profile %|||% ".")
   targets::tar_assert_chr(profile %|||% ".")
   targets::tar_assert_nzchar(profile %|||% ".")
-  info <- tar_quarto_files(path = path, profile = profile)
+  info <- tar_quarto_files(path = path, profile = profile, quiet = quiet)
   sources <- info$sources
   output <- info$output
   if (!is.null(output_file)) {

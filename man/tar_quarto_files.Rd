@@ -4,7 +4,7 @@
 \alias{tar_quarto_files}
 \title{Quarto file detection}
 \usage{
-tar_quarto_files(path = ".", profile = NULL)
+tar_quarto_files(path = ".", profile = NULL, quiet = TRUE)
 }
 \arguments{
 \item{path}{Character of length 1, either the file path
@@ -15,6 +15,8 @@ current working directory.}
 \item{profile}{Character of length 1, Quarto profile. If \code{NULL},
 the default profile will be used. Requires Quarto version 1.2 or higher.
 See \url{https://quarto.org/docs/projects/profiles.html} for details.}
+
+\item{quiet}{Suppress warning and other messages.}
 }
 \value{
 A named list of important file paths in a Quarto project or document:
@@ -24,7 +26,7 @@ dependencies in code chunks using \code{tar_load()}/\code{tar_read()}.
 \item \code{output}: output files that will be generated during
 \code{quarto::quarto_render()}.
 \item \code{input}: pre-existing files required to render the project or document,
-such as \verb{_quarto.yml}.
+such as \verb{_quarto.yml} and quarto extensions.
 }
 }
 \description{

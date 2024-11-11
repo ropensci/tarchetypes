@@ -4,6 +4,7 @@
 * Detect child quarto documents (#199, @mutlusun).
 * Improve reporting of static branch names from `tar_map()` and `tar_map_rep()` (#201, @kkmann).
 * Ensure compatibility with `targets` after https://github.com/ropensci/targets/issues/1368.
+* Improve detection of Quarto files in `tar_quarto_inspect()` (#200, @multusun).
 
 # tarchetypes 0.10.0
 

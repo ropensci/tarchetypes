@@ -11,7 +11,8 @@
 #'   * `output`: output files that will be generated during
 #'     `quarto::quarto_render()`.
 #'   * `input`: pre-existing files required to render the project or document,
-#'     such as `_quarto.yml`.
+#'     such as `_quarto.yml` and quarto extensions.
+#' @inheritParams quarto::quarto_render
 #' @param path Character of length 1, either the file path
 #'   to a Quarto source document or the directory path
 #'   to a Quarto project. Defaults to the Quarto project in the
@@ -33,7 +34,7 @@
 #' writeLines(lines, path)
 #' # If Quarto is installed, run:
 #' # tar_quarto_files(path)
-tar_quarto_files <- function(path = ".", profile = NULL) {
+tar_quarto_files <- function(path = ".", profile = NULL, quiet = TRUE) {
   assert_quarto()
   targets::tar_assert_scalar(path)
   targets::tar_assert_chr(path)
@@ -47,19 +48,22 @@ tar_quarto_files <- function(path = ".", profile = NULL) {
   }
   out <- if_any(
     fs::is_dir(path),
-    tar_quarto_files_project(path),
-    tar_quarto_files_document(path)
+    tar_quarto_files_project(path, quiet),
+    tar_quarto_files_document(path, quiet)
   )
   for (field in c("sources", "output", "input")) {
-    out[[field]] <- sort(fs::path_rel(unique(as.character(out[[field]]))))
-    out[[field]] <- as.character(out[[field]])
+    out[[field]] <- as.character(fs::path_rel(out[[field]]))
+    out[[field]] <- unique(sort(out[[field]]))
   }
   out
 }
 
-tar_quarto_files_document <- function(path) {
-  info <- quarto::quarto_inspect(input = path)
-  out <- list(sources = path)
+tar_quarto_files_document <- function(path, quiet) {
+  info <- quarto::quarto_inspect(input = path, quiet = quiet)
+  out <- list()
+
+  # Collect data about source files.
+  out$sources <- tar_quarto_files_get_source_files(info$fileInformation)
 
   # Collect data about output files.
   for (format in info$formats) {
@@ -69,25 +73,20 @@ tar_quarto_files_document <- function(path) {
     )
   }
 
-  # Collect data about input files.
-  for (myfile in names(info$fileInformation)) {
-    out$input <- c(
-      out$input,
-      # `myfile` are relative paths starting from `path`.
-      myfile,
-      # `includeMap` contains relative paths starting from `myfile`.
-      file.path(
-        dirname(path),
-        info$fileInformation[[myfile]]$includeMap$target
-      )
-    )
+  # Collect data about input files. As this is not a project, there doesn't
+  # exist the `info$files` key. However, we can include resources if present.
+  if (length(info$resources) > 0) {
+    out$input <- info$resources
+    out$input <- out$input[file.exists(out$input)]
+  } else {
+    out$input <- character(0L)
   }
 
   out
 }
 
-tar_quarto_files_project <- function(path) {
-  info <- quarto::quarto_inspect(input = path)
+tar_quarto_files_project <- function(path, quiet) {
+  info <- quarto::quarto_inspect(input = path, quiet)
   targets::tar_assert_nonempty(
     info$config$project$`output-dir`,
     paste(
@@ -97,29 +96,59 @@ tar_quarto_files_project <- function(path) {
     )
   )
 
-  # Detect source files.
-  sources <- info$files$input[file.exists(info$files$input)]
+  out <- list(output = file.path(path, info$config$project$`output-dir`))
 
-  # Detect input files.
-  input <- info$files
-  input <- unlist(input)
-  input <- input[file.exists(input)]
-  for (myfile in names(info$fileInformation)) {
-    input <- c(
-      input,
-      # `myfile` is an absolute path.
+  # Collect data about source files.
+  out$sources <- tar_quarto_files_get_source_files(info$fileInformation)
+
+  # Detect input files like the config file (`_quarto.yml`) and resources like
+  # quarto extensions. Make sure in the end that these files exist.
+  out$input <- unlist(
+    c(
+      info$files$config,
+      info$files$resources
+    )
+  )
+  out$input <- out$input[file.exists(out$input)]
+
+  out
+}
+
+#' @title Get Source Files From Quarto Inspect
+#' @description Collects all files from the
+#'   `fileInformation` field that are used in the current report.
+#' @details `fileInformation` contains a list of files. Each file entry contains
+#'   two data frames. The first, `includeMap`, contains a `source` column (files
+#'   that include other files, e.g. the main report file) and a `target` column
+#'   (files that get included by the `source` files). The `codeCells` data frame
+#'   contains all code cells from the files represented in `includeMap`.
+#' @return A character vector of Quarto source files.
+#' @param file_information The `fileInformation` element of the list
+#'   returned by `quarto::quarto_inspect()`.
+tar_quarto_files_get_source_files <- function(file_information) {
+  ret <- character(0)
+
+  for (myfile in names(file_information)) {
+    # Collect relevant source files. The files in `includeMap$target` are always
+    # relative to the main entry point of the report. Thus, we need to add the
+    # corresponding paths to the entries.
+    #
+    # We don't need to include the `source` column as all files are also present
+    # in `target` or are `myfile`.
+    ret <- c(
+      ret,
       myfile,
-      # `includeMap` files are relative starting from `myfile`.
       file.path(
         dirname(myfile),
-        info$fileInformation[[myfile]]$includeMap$target
+        file_information[[myfile]]$includeMap$target
       )
     )
   }
 
-  list(
-    sources = sources,
-    output = file.path(path, info$config$project$`output-dir`),
-    input = input
-  )
+  # Check that these files actually exist.
+  ret <- ret[file.exists(ret)]
+
+  # We don't need to call `unique` here on `ret` as this happens on the main
+  # function.
+  ret
 }
