@@ -78,7 +78,7 @@ tar_quarto_files_document <- function(path) {
     out$input <- info$resources
     out$input <- out$input[file.exists(out$input)]
   } else {
-    out$input <- character()
+    out$input <- character(0L)
   }
 
   out

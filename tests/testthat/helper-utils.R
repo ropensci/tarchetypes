@@ -6,9 +6,12 @@ expect_equiv <- function(object, expected, ...) {
 
 skip_quarto <- function() {
   skip_pandoc()
-  skip_if_not_installed("quarto")
-  if (is.null(quarto::quarto_path())) {
-    skip("Quarto not found.")
+  skip_if_not_installed("quarto", minimum_version = "1.4.4")
+  quarto_version <- as.character(quarto::quarto_version())
+  no_quarto <- is.null(quarto::quarto_path()) ||
+    utils::compareVersion(quarto_version, "1.6.33") < 0L
+  if (no_quarto) {
+    skip("Quarto >= 1.6.33 not found.")
   }
 }
 
