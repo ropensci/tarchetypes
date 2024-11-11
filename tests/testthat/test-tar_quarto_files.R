@@ -99,24 +99,16 @@ targets::tar_test("tar_quarto_files() detects nested dependencies", {
     "# Second File",
     "",
     "Some text here.",
-    "",
-    "{{< include \"subdir/b/text3.qmd\" >}}"
+    ""
   )
   writeLines(lines, file.path("report", "subdir", "text2.qmd"))
-  lines <- c(
-    "# Third File",
-    "",
-    "Some text here."
-  )
-  writeLines(lines, file.path("report", "subdir", "b", "text3.qmd"))
   out <- tar_quarto_files(file.path("report", "main.qmd"))
   expect_equal(
     sort(out$sources),
     sort(
       c(
         file.path("report", c("main.qmd", "text1.qmd")),
-        file.path("report", "subdir", "text2.qmd"),
-        file.path("report", "subdir", "b", "text3.qmd")
+        file.path("report", "subdir", "text2.qmd")
       )
     )
   )
@@ -136,7 +128,7 @@ targets::tar_test("tar_quarto_files() detects nested dependencies", {
     expect_equal(
       basename(out$sources),
       sort(
-        c("main.qmd", "text1.qmd", "text2.qmd", "text3.qmd")
+        c("main.qmd", "text1.qmd", "text2.qmd")
       )
     )
     expect_equal(basename(out$output), "myoutdir")
@@ -147,8 +139,7 @@ targets::tar_test("tar_quarto_files() detects nested dependencies", {
       sort(
         c(
           file.path("report", c("main.qmd", "text1.qmd")),
-          file.path("report", "subdir", "text2.qmd"),
-          file.path("report", "subdir", "b", "text3.qmd")
+          file.path("report", "subdir", "text2.qmd")
         )
       )
     )

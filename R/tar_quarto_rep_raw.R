@@ -59,7 +59,10 @@ tar_quarto_rep_raw <- function(
   rep_workers <- as.integer(rep_workers)
   name_params <- paste0(name, "_params")
   sym_params <- as.symbol(name_params)
-  default_output_file <- utils::head(tar_quarto_files(path)$output, n = 1L)
+  default_output_file <- utils::head(
+    tar_quarto_files(path, quiet = quiet)$output,
+    n = 1L
+  )
   default_output_file <- default_output_file %||%
     fs::path_ext_set(path, "html")
   target_params <- targets::tar_target_raw(

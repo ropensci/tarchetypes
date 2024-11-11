@@ -12,6 +12,7 @@
 #'     `quarto::quarto_render()`.
 #'   * `input`: pre-existing files required to render the project or document,
 #'     such as `_quarto.yml` and quarto extensions.
+#' @inheritParams quarto::quarto_render
 #' @param path Character of length 1, either the file path
 #'   to a Quarto source document or the directory path
 #'   to a Quarto project. Defaults to the Quarto project in the
@@ -33,7 +34,7 @@
 #' writeLines(lines, path)
 #' # If Quarto is installed, run:
 #' # tar_quarto_files(path)
-tar_quarto_files <- function(path = ".", profile = NULL) {
+tar_quarto_files <- function(path = ".", profile = NULL, quiet = TRUE) {
   assert_quarto()
   targets::tar_assert_scalar(path)
   targets::tar_assert_chr(path)
@@ -47,8 +48,8 @@ tar_quarto_files <- function(path = ".", profile = NULL) {
   }
   out <- if_any(
     fs::is_dir(path),
-    tar_quarto_files_project(path),
-    tar_quarto_files_document(path)
+    tar_quarto_files_project(path, quiet),
+    tar_quarto_files_document(path, quiet)
   )
   for (field in c("sources", "output", "input")) {
     out[[field]] <- as.character(fs::path_rel(out[[field]]))
@@ -57,8 +58,8 @@ tar_quarto_files <- function(path = ".", profile = NULL) {
   out
 }
 
-tar_quarto_files_document <- function(path) {
-  info <- quarto::quarto_inspect(input = path)
+tar_quarto_files_document <- function(path, quiet) {
+  info <- quarto::quarto_inspect(input = path, quiet = quiet)
   out <- list()
 
   # Collect data about source files.
@@ -84,8 +85,8 @@ tar_quarto_files_document <- function(path) {
   out
 }
 
-tar_quarto_files_project <- function(path) {
-  info <- quarto::quarto_inspect(input = path)
+tar_quarto_files_project <- function(path, quiet) {
+  info <- quarto::quarto_inspect(input = path, quiet)
   targets::tar_assert_nonempty(
     info$config$project$`output-dir`,
     paste(
