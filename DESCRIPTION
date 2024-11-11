@@ -36,6 +36,12 @@ Authors@R: c(
   person(
     family = "Eli Lilly and Company",
     role = c("cph", "fnd")
+  ),
+  person(
+    given = "Rudolf",
+    family = "Siegel",
+    role = "ctb",
+    comment = c(ORCID = "0000-0002-6021-804X")
   ))
 Depends:
   R (>= 3.5.0)
