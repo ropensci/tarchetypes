@@ -114,16 +114,17 @@ tar_quarto_files_project <- function(path, quiet) {
   out
 }
 
-#' Get Source Files From Quarto Inspect
-#'
+#' @title Get Source Files From Quarto Inspect
 #' @description Collects all files from the
-#' `fileInformation` field that are used in the current report.
-#'
+#'   `fileInformation` field that are used in the current report.
 #' @details `fileInformation` contains a list of files. Each file entry contains
-#' two data frames. The first, `includeMap`, contains a `source` column (files
-#' that include other files, e.g. the main report file) and a `target` column
-#' (files that get included by the `source` files). The `codeCells` data frame
-#' contains all code cells from the files represented in `includeMap`.
+#'   two data frames. The first, `includeMap`, contains a `source` column (files
+#'   that include other files, e.g. the main report file) and a `target` column
+#'   (files that get included by the `source` files). The `codeCells` data frame
+#'   contains all code cells from the files represented in `includeMap`.
+#' @return A character vector of Quarto source files.
+#' @param file_information The `fileInformation` element of the list
+#'   returned by `quarto::quarto_inspect()`.
 tar_quarto_files_get_source_files <- function(file_information) {
   ret <- character(0)
 

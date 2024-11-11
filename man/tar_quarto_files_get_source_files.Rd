@@ -6,6 +6,13 @@
 \usage{
 tar_quarto_files_get_source_files(file_information)
 }
+\arguments{
+\item{file_information}{The \code{fileInformation} element of the list
+returned by \code{quarto::quarto_inspect()}.}
+}
+\value{
+A character vector of Quarto source files.
+}
 \description{
 Collects all files from the
 \code{fileInformation} field that are used in the current report.
