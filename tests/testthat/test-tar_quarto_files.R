@@ -24,6 +24,7 @@ targets::tar_test("tar_quarto_files() project", {
   skip_on_cran()
   skip_quarto()
   fs::dir_create("x")
+  on.exit(unlink("x", recursive = TRUE))
   lines <- c(
     "project:",
     "  type: book",
@@ -55,7 +56,7 @@ targets::tar_test("tar_quarto_files() project", {
     "```"
   )
   writeLines(lines, file.path("x", "r2.qmd"))
-  info <- tar_quarto_files("x")
+  info <- tar_quarto_files("x", profile = "example_profile")
   if (identical(tolower(Sys.info()[["sysname"]]), "windows")) {
     expect_equal(
       sort(basename(info$sources)),
