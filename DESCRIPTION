@@ -7,9 +7,9 @@ Description: Function-oriented Make-like declarative pipelines for
   By establishing reusable archetypes for common kinds of
   targets and pipelines, these functions help express complicated
   reproducible pipelines concisely and compactly.
-  The methods in this package were influenced by the 'drake' R package
+  The methods in this package were influenced by the 'targets' R package.
   by Will Landau (2018) <doi:10.21105/joss.00550>.
-Version: 0.10.0.9004
+Version: 0.11.0
 License: MIT + file LICENSE
 URL: https://docs.ropensci.org/tarchetypes/, https://github.com/ropensci/tarchetypes
 BugReports: https://github.com/ropensci/tarchetypes/issues
@@ -20,6 +20,12 @@ Authors@R: c(
     role = c("aut", "cre"),
     email = "will.landau.oss@gmail.com",
     comment = c(ORCID = "0000-0003-1878-3253")
+  ),
+  person(
+    given = "Rudolf",
+    family = "Siegel",
+    role = "ctb",
+    comment = c(ORCID = "0000-0002-6021-804X")
   ),
   person(
     given = "Samantha",
@@ -36,12 +42,6 @@ Authors@R: c(
   person(
     family = "Eli Lilly and Company",
     role = c("cph", "fnd")
-  ),
-  person(
-    given = "Rudolf",
-    family = "Siegel",
-    role = "ctb",
-    comment = c(ORCID = "0000-0002-6021-804X")
   ))
 Depends:
   R (>= 3.5.0)

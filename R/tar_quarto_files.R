@@ -61,10 +61,8 @@ tar_quarto_files <- function(path = ".", profile = NULL, quiet = TRUE) {
 tar_quarto_files_document <- function(path, quiet) {
   info <- quarto::quarto_inspect(input = path, quiet = quiet)
   out <- list()
-
   # Collect data about source files.
   out$sources <- tar_quarto_files_get_source_files(info$fileInformation)
-
   # Collect data about output files.
   for (format in info$formats) {
     out$output <- c(
@@ -72,16 +70,10 @@ tar_quarto_files_document <- function(path, quiet) {
       file.path(dirname(path), format$pandoc$`output-file`)
     )
   }
-
   # Collect data about input files. As this is not a project, there doesn't
   # exist the `info$files` key. However, we can include resources if present.
-  if (length(info$resources) > 0) {
-    out$input <- info$resources
-    out$input <- out$input[file.exists(out$input)]
-  } else {
-    out$input <- character(0L)
-  }
-
+  out$input <- as.character(info$resources)
+  out$input <- out$input[file.exists(out$input)]
   out
 }
 
@@ -95,22 +87,13 @@ tar_quarto_files_project <- function(path, quiet) {
       "quarto.org to learn how to set output-dir in _quarto.yml."
     )
   )
-
   out <- list(output = file.path(path, info$config$project$`output-dir`))
-
   # Collect data about source files.
   out$sources <- tar_quarto_files_get_source_files(info$fileInformation)
-
   # Detect input files like the config file (`_quarto.yml`) and resources like
   # quarto extensions. Make sure in the end that these files exist.
-  out$input <- unlist(
-    c(
-      info$files$config,
-      info$files$resources
-    )
-  )
+  out$input <- unlist(c(info$files$config, info$files$resources))
   out$input <- out$input[file.exists(out$input)]
-
   out
 }
 
@@ -126,8 +109,7 @@ tar_quarto_files_project <- function(path, quiet) {
 #' @param file_information The `fileInformation` element of the list
 #'   returned by `quarto::quarto_inspect()`.
 tar_quarto_files_get_source_files <- function(file_information) {
-  ret <- character(0)
-
+  out <- character(0)
   for (myfile in names(file_information)) {
     # Collect relevant source files. The files in `includeMap$target` are always
     # relative to the main entry point of the report. Thus, we need to add the
@@ -135,8 +117,8 @@ tar_quarto_files_get_source_files <- function(file_information) {
     #
     # We don't need to include the `source` column as all files are also present
     # in `target` or are `myfile`.
-    ret <- c(
-      ret,
+    out <- c(
+      out,
       myfile,
       file.path(
         dirname(myfile),
@@ -144,11 +126,9 @@ tar_quarto_files_get_source_files <- function(file_information) {
       )
     )
   }
-
   # Check that these files actually exist.
-  ret <- ret[file.exists(ret)]
-
-  # We don't need to call `unique` here on `ret` as this happens on the main
+  out <- out[file.exists(out)]
+  # We don't need to call `unique` here on `out` as this happens on the main
   # function.
-  ret
+  out
 }

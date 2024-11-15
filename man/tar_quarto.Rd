@@ -222,17 +222,19 @@ functionality, alternative data storage formats,
 and other optional capabilities of \code{targets}.
 See \code{tar_resources()} for details.}
 
-\item{retrieval}{Character of length 1, only relevant to
-\code{\link[targets:tar_make_clustermq]{tar_make_clustermq()}} and \code{\link[targets:tar_make_future]{tar_make_future()}}.
+\item{retrieval}{Character string to control when the current target
+loads its dependencies into memory before running.
+(Here, a "dependency" is another target upstream that the current one
+depends on.) Only relevant when using \code{targets}
+with parallel workers (\url{https://books.ropensci.org/targets/crew.html}).
 Must be one of the following values:
 \itemize{
 \item \code{"main"}: the target's dependencies are loaded on the host machine
 and sent to the worker before the target runs.
-\item \code{"worker"}: the worker loads the targets dependencies.
-\item \code{"none"}: the dependencies are not loaded at all.
-This choice is almost never recommended. It is only for
-niche situations, e.g. the data needs to be loaded
-explicitly from another language.
+\item \code{"worker"}: the worker loads the target's dependencies.
+\item \code{"none"}: \code{targets} makes no attempt to load its
+dependencies. With \code{retrieval = "none"}, loading dependencies
+is the responsibility of the user. Use with caution.
 }}
 
 \item{cue}{An optional object from \code{tar_cue()} to customize the
