@@ -24,3 +24,4 @@ that include other files, e.g. the main report file) and a \code{target} column
 (files that get included by the \code{source} files). The \code{codeCells} data frame
 contains all code cells from the files represented in \code{includeMap}.
 }
+\keyword{internal}

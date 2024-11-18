@@ -98,6 +98,7 @@ tar_quarto_files_project <- function(path, quiet) {
 }
 
 #' @title Get Source Files From Quarto Inspect
+#' @keywords internal
 #' @description Collects all files from the
 #'   `fileInformation` field that are used in the current report.
 #' @details `fileInformation` contains a list of files. Each file entry contains
