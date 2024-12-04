@@ -1,6 +1,6 @@
-# tarchetypes 0.11.0.9000
+# tarchetypes 0.11.0.9001
 
-
+* Fix `tar_combine()` help file examples (#206, @weberse2).
 
 # tarchetypes 0.11.0
 

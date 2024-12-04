@@ -41,17 +41,17 @@
 #'     name = new_target_name,
 #'     target1,
 #'     target2,
-#'     command = bind_rows(!!!.x)
+#'     command = dplyr::bind_rows(!!!.x)
 #'   )
 #'   target4 <- tar_combine(
-#'     name = "new_target_name2",
+#'     name = new_target_name2,
 #'     target1,
 #'     target2,
-#'     command = quote(bind_rows(!!!.x))
+#'     command = dplyr::bind_rows(!!!.x)
 #'   )
 #'   list(target1, target2, target3, target4)
 #' })
-#' targets::tar_manifest()
+#' targets::tar_make()
 #' })
 #' }
 tar_combine <- function(
