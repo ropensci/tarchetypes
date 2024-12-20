@@ -64,10 +64,15 @@ tar_quarto_files_document <- function(path, quiet) {
   # Collect data about source files.
   out$sources <- tar_quarto_files_get_source_files(info$fileInformation)
   # Collect data about output files.
+  output_dir <- info$project$config$project$`output-dir`
   for (format in info$formats) {
     out$output <- c(
       out$output,
-      file.path(dirname(path), format$pandoc$`output-file`)
+      if_any(
+        is.null(output_dir),
+        file.path(dirname(path), format$pandoc$`output-file`),
+        file.path(output_dir, dirname(path), format$pandoc$`output-file`)
+      )
     )
   }
   # Collect data about input files. As this is not a project, there doesn't
@@ -115,7 +120,6 @@ tar_quarto_files_get_source_files <- function(file_information) {
     # Collect relevant source files. The files in `includeMap$target` are always
     # relative to the main entry point of the report. Thus, we need to add the
     # corresponding paths to the entries.
-    #
     # We don't need to include the `source` column as all files are also present
     # in `target` or are `myfile`.
     out <- c(

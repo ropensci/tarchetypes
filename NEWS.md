@@ -1,6 +1,7 @@
-# tarchetypes 0.11.0.9001
+# tarchetypes 0.11.0.9002
 
 * Fix `tar_combine()` help file examples (#206, @weberse2).
+* Account for project-level `output_dir` in non-project `tar_quarto()` calls (#207, @brndngrhm).
 
 # tarchetypes 0.11.0
 
