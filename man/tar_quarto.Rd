@@ -68,7 +68,9 @@ tar_quarto_raw(
 argument, and
 \code{\link[=tar_quarto_raw]{tar_quarto_raw()}} expects a character string for \code{name}.}
 
-\item{path}{Character string, path to the Quarto source file.}
+\item{path}{Character string, path to the Quarto source file if rendering
+a single file, or the path to the root of the project if rendering
+a whole Quarto project.}
 
 \item{output_file}{The name of the output file. If using \code{NULL}, the output
 filename will be based on the filename for the input file. \code{output_file} is

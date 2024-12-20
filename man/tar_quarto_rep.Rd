@@ -72,7 +72,9 @@ tar_quarto_rep_raw(
 argument, and
 \code{\link[=tar_quarto_rep_raw]{tar_quarto_rep_raw()}} expects a character string for \code{name}.}
 
-\item{path}{Character string, path to the Quarto source file.}
+\item{path}{Character string, path to the Quarto source file if rendering
+a single file, or the path to the root of the project if rendering
+a whole Quarto project.}
 
 \item{working_directory}{Optional character string,
 path to the working directory

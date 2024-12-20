@@ -61,7 +61,9 @@
 #'   [tar_quarto()] expects an unevaluated symbol for the `name`
 #'   argument, and
 #'   [tar_quarto_raw()] expects a character string for `name`.
-#' @param path Character string, path to the Quarto source file.
+#' @param path Character string, path to the Quarto source file if rendering
+#'   a single file, or the path to the root of the project if rendering
+#'   a whole Quarto project.
 #' @param extra_files Character vector of extra files and
 #'   directories to track for changes. The target will be invalidated
 #'   (rerun on the next `tar_make()`) if the contents of these files changes.
