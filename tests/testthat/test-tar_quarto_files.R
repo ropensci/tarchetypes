@@ -127,7 +127,7 @@ targets::tar_test("tar_quarto_files() detects nested dependencies", {
   out <- tar_quarto_files("report/")
   if (identical(tolower(Sys.info()[["sysname"]]), "windows")) {
     expect_equal(
-      basename(out$sources),
+      sort(basename(out$sources)),
       sort(
         c("main.qmd", "text1.qmd", "text2.qmd")
       )
@@ -136,7 +136,7 @@ targets::tar_test("tar_quarto_files() detects nested dependencies", {
     expect_equal(basename(out$input), "_quarto.yml")
   } else {
     expect_equal(
-      out$sources,
+      sort(out$sources),
       sort(
         c(
           file.path("report", c("main.qmd", "text1.qmd")),
