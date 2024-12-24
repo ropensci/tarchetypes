@@ -1,7 +1,9 @@
-# tarchetypes 0.11.0.9002
+# tarchetypes 0.11.0.9003
 
 * Fix `tar_combine()` help file examples (#206, @weberse2).
 * Account for project-level `output_dir` in non-project `tar_quarto()` calls (#207, @brndngrhm).
+* Use name when passing the `quiet` argument to `quarto_inspect()` (#208, @yusuke-sasaki-jprep).
+* Explicitly pass the `profile` argument to `quarto_inspect()` and `quarto_render()`. Requires R package `quarto >= 1.4`, which is already in the `DESCIRPTION`.
 
 # tarchetypes 0.11.0
 

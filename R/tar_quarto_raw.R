@@ -139,6 +139,7 @@ tar_quarto_command <- function(
       quiet = quiet,
       quarto_args = quarto_args,
       pandoc_args = pandoc_args,
+      profile = profile,
       as_job = FALSE
     ),
     env = list(
@@ -152,7 +153,8 @@ tar_quarto_command <- function(
       debug = debug,
       quiet = quiet,
       quarto_args = quarto_args,
-      pandoc_args = pandoc_args
+      pandoc_args = pandoc_args,
+      profile = profile
     )
   )
   deps <- sort(unique(unlist(map(sources, ~knitr_deps(.x)))))
@@ -164,8 +166,7 @@ tar_quarto_command <- function(
     deps = deps,
     sources = sources,
     output = output,
-    input = input,
-    profile = profile
+    input = input
   )
   as.expression(as.call(expr))
 }
@@ -184,7 +185,6 @@ tar_quarto_command <- function(
 #' @param output Character vector of Quarto output files and directories.
 #' @param input Character vector of non-source Quarto input files
 #'   and directories.
-#' @param profile Quarto profile.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({  # tar_dir() runs code from a temporary directory.
@@ -207,13 +207,10 @@ tar_quarto_command <- function(
 #' file.exists(files)
 #' })
 #' }
-tar_quarto_run <- function(args, deps, sources, output, input, profile) {
+tar_quarto_run <- function(args, deps, sources, output, input) {
   rm(deps)
   gc()
   assert_quarto()
-  if (!is.null(profile)) {
-    withr::local_envvar(.new = c(QUARTO_PROFILE = profile))
-  }
   args <- args[!map_lgl(args, is.null)]
   do.call(what = quarto::quarto_render, args = args)
   support <- sprintf("%s_files", fs::path_ext_remove(basename(args$input)))

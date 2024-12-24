@@ -43,13 +43,10 @@ tar_quarto_files <- function(path = ".", profile = NULL, quiet = TRUE) {
   targets::tar_assert_scalar(profile %|||% ".")
   targets::tar_assert_chr(profile %|||% ".")
   targets::tar_assert_nzchar(profile %|||% ".")
-  if (!is.null(profile)) {
-    withr::local_envvar(.new = c(QUARTO_PROFILE = profile))
-  }
   out <- if_any(
     fs::is_dir(path),
-    tar_quarto_files_project(path, quiet),
-    tar_quarto_files_document(path, quiet)
+    tar_quarto_files_project(path, profile, quiet),
+    tar_quarto_files_document(path, profile, quiet)
   )
   for (field in c("sources", "output", "input")) {
     out[[field]] <- as.character(fs::path_rel(out[[field]]))
@@ -58,8 +55,12 @@ tar_quarto_files <- function(path = ".", profile = NULL, quiet = TRUE) {
   out
 }
 
-tar_quarto_files_document <- function(path, quiet) {
-  info <- quarto::quarto_inspect(input = path, quiet = quiet)
+tar_quarto_files_document <- function(path, profile, quiet) {
+  info <- quarto::quarto_inspect(
+    input = path,
+    profile = profile,
+    quiet = quiet
+  )
   out <- list()
   # Collect data about source files.
   out$sources <- tar_quarto_files_get_source_files(info$fileInformation)
@@ -82,8 +83,12 @@ tar_quarto_files_document <- function(path, quiet) {
   out
 }
 
-tar_quarto_files_project <- function(path, quiet) {
-  info <- quarto::quarto_inspect(input = path, quiet)
+tar_quarto_files_project <- function(path, profile, quiet) {
+  info <- quarto::quarto_inspect(
+    input = path,
+    profile = profile,
+    quiet = quiet
+  )
   targets::tar_assert_nonempty(
     info$config$project$`output-dir`,
     paste(
