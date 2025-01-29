@@ -26,8 +26,14 @@
 #' @param columns A tidyselect expression to select which columns of `values`
 #'   to append to the output. Columns already in the target output
 #'   are not appended.
-#' @param combine Logical of length 1, whether to statically combine
-#'   all the results into a single target downstream.
+#' @param combine Logical of length 1, whether to create additional downstream
+#'   targets to combine the results of static branches.
+#'   The `values` argument must not be `NULL`
+#'   for this combining to take effect.
+#'   If `combine` is `TRUE` and `values` is not `NULL`,
+#'   then separate targets aggregate all dynamic branches within each
+#'   static branch, and then a final target combines all
+#'   the static branches together.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({ # tar_dir() runs code from a temporary directory.

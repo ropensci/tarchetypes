@@ -121,8 +121,14 @@ maximum number of batches (dynamic branches within static branches)
 of the downstream (\code{command2}) targets. Batches
 are formed from row groups of the \code{command1} target output.}
 
-\item{combine}{Logical of length 1, whether to statically combine
-all the results into a single target downstream.}
+\item{combine}{Logical of length 1, whether to create additional downstream
+targets to combine the results of static branches.
+The \code{values} argument must not be \code{NULL}
+for this combining to take effect.
+If \code{combine} is \code{TRUE} and \code{values} is not \code{NULL},
+then separate targets aggregate all dynamic branches within each
+static branch, and then a final target combines all
+the static branches together.}
 
 \item{suffix1}{Character of length 1,
 suffix to apply to the \code{command1} targets to distinguish
@@ -211,7 +217,7 @@ stops and throws an error. Options:
 \item \code{"null"}: The errored target continues and returns \code{NULL}.
 The data hash is deliberately wrong so the target is not
 up to date for the next run of the pipeline. In addition,
-as of version 1.8.0.9011, a value of \code{NULL} is given
+as of \code{targets} version 1.8.0.9011, a value of \code{NULL} is given
 to upstream dependencies with \code{error = "null"} if loading fails.
 \item \code{"abridge"}: any currently running targets keep running,
 but no new targets launch after that.

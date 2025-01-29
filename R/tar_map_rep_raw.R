@@ -112,7 +112,7 @@ tar_map_rep_raw <- function(
     is.null(values),
     target_dynamic,
     do.call(
-      tar_map,
+      what = tar_map,
       args = list(
         target_dynamic,
         values = values,
@@ -126,12 +126,58 @@ tar_map_rep_raw <- function(
   if (!unlist && is.list(target_static)) {
     target_static <- target_static[[1L]]
   }
-  target_combine <- if_any(
-    is.null(values) || !combine,
-    NULL,
-    tar_combine_raw(
+  target_combine <- NULL
+  target_combine_dynamic <- NULL
+  if (combine && !is.null(values)) {
+    expr <- substitute(
+      targets::tar_target_raw(
+        name = paste0(name, "_combine"),
+        command = as.symbol(name),
+        packages = packages,
+        library = library,
+        format = format,
+        repository = repository,
+        iteration = "vector",
+        error = error,
+        memory = memory,
+        garbage_collection = garbage_collection,
+        deployment = deployment,
+        priority = priority,
+        resources = resources,
+        storage = storage,
+        retrieval = retrieval,
+        cue = cue,
+        description = description
+      ),
+      env = list(
+        packages = packages,
+        library = library,
+        format = format,
+        repository = repository,
+        iteration = "vector",
+        error = error,
+        memory = memory,
+        garbage_collection = garbage_collection,
+        deployment = deployment,
+        priority = priority,
+        resources = resources,
+        storage = storage,
+        retrieval = retrieval,
+        cue = cue,
+        description = description
+      )
+    )
+    target_combine_dynamic <- tar_eval_raw(
+      expr = expr,
+      values = list(name = map_chr(target_static, ~.x$settings$name))
+    )
+    names(target_combine_dynamic) <- map_chr(
+      target_combine_dynamic,
+      ~.x$settings$name
+    )
+    target_combine <- tar_combine_raw(
       name = name,
-      target_static,
+      target_combine_dynamic,
       command = tar_map_combine_command,
       use_names = TRUE,
       packages = character(0),
@@ -141,15 +187,16 @@ tar_map_rep_raw <- function(
       error = error,
       memory = memory,
       garbage_collection = garbage_collection,
-      deployment = "main",
+      deployment = deployment,
       priority = priority,
       cue = cue,
       description = description
     )
-  )
+  }
   out <- list(
     batch_index = target_batch,
     static_branches = target_static,
+    combine_dynamic = target_combine_dynamic,
     combine = target_combine
   )
   if (unlist) {
