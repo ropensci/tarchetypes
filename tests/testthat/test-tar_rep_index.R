@@ -1,10 +1,13 @@
 targets::tar_test("tar_rep_index() without a pipeline", {
   skip_on_cran()
+  step_reset(step_tar_rep)
+  on.exit(step_reset(step_tar_rep))
   expect_error(tar_rep_index(), class = "tar_condition_run")
 })
 
 targets::tar_test("tar_rep_index() in tar_rep()", {
   skip_on_cran()
+  step_reset(step_tar_rep)
   on.exit(step_reset(step_tar_rep))
   targets::tar_script(
     tar_rep(x, data.frame(index = tar_rep_index()), batches = 2L, reps = 3L)
@@ -19,6 +22,7 @@ targets::tar_test("tar_rep_index() in tar_rep()", {
 
 targets::tar_test("tar_rep_index() in tar_rep2()", {
   skip_on_cran()
+  step_reset(step_tar_rep)
   on.exit(step_reset(step_tar_rep))
   targets::tar_script({
     list(
@@ -46,6 +50,7 @@ targets::tar_test("tar_rep_index() in tar_rep2()", {
 
 targets::tar_test("tar_rep_index() in tar_map_rep()", {
   skip_on_cran()
+  step_reset(step_tar_rep)
   on.exit(step_reset(step_tar_rep))
   targets::tar_script(
     tar_map_rep(
@@ -67,6 +72,7 @@ targets::tar_test("tar_rep_index() in tar_map_rep()", {
 
 targets::tar_test("tar_rep_index() in tar_map2_count()", {
   skip_on_cran()
+  step_reset(step_tar_rep)
   on.exit(step_reset(step_tar_rep))
   targets::tar_script({
     f1 <- function(arg1) {
@@ -106,6 +112,7 @@ targets::tar_test("tar_rep_index() in tar_map2_count()", {
 
 targets::tar_test("tar_rep_index() in tar_map2_count()", {
   skip_on_cran()
+  step_reset(step_tar_rep)
   on.exit(step_reset(step_tar_rep))
   targets::tar_script({
     f1 <- function(arg1) {
