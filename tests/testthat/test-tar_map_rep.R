@@ -32,16 +32,28 @@ targets::tar_test("tar_map_rep(): combine, columns, static branches", {
     expect_equal(
       sort(out$name),
       sort(
-        paste0("x", c("_batch", "_tight", "_medium", "_diffuse", ""))
+        paste0(
+          "x",
+          c(
+            "_batch",
+            "_tight",
+            "_medium",
+            "_diffuse",
+            "_tight_combine",
+            "_medium_combine",
+            "_diffuse_combine",
+            ""
+          )
+        )
       )
     )
     expect_equal(out$command[out$name == "x_batch"], "seq_len(2)")
     expect_equal(
-      grepl("diffuse|medium|tight", out$name),
+      grepl("diffuse$|medium$|tight$", out$name),
       grepl("tar_rep_run", out$command)
     )
     expect_equal(
-      grepl("diffuse|medium|tight", out$name),
+      grepl("diffuse$|medium$|tight$", out$name),
       !is.na(out$pattern)
     )
     expect_equal(
@@ -71,14 +83,18 @@ targets::tar_test("tar_map_rep(): combine, columns, static branches", {
       "x_batch", "x_diffuse",
       "x_batch", "x_medium",
       "x_batch", "x_tight",
-      "x_diffuse", "x",
-      "x_medium", "x",
-      "x_tight", "x"
+      "x_diffuse", "x_diffuse_combine",
+      "x_medium", "x_medium_combine",
+      "x_tight", "x_tight_combine",
+      "x_diffuse_combine", "x",
+      "x_medium_combine", "x",
+      "x_tight_combine", "x"
     )
     exp <- dplyr::arrange(exp, from, to)
     expect_equal(out, exp)
     # output
     targets::tar_make(callr_function = NULL)
+    expect_equal(nrow(targets::tar_read(x_diffuse_combine)), 6L)
     out <- dplyr::arrange(targets::tar_read(x), tar_batch, tar_rep, scenario)
     d <- dplyr::distinct(out, tar_group, tar_batch, tar_rep)
     expect_equal(nrow(out), nrow(d))
@@ -201,16 +217,28 @@ targets::tar_test("tar_map_rep(): combine, no cols, static branches", {
   expect_equal(
     sort(out$name),
     sort(
-      paste0("x", c("_batch", "_tight", "_medium", "_diffuse", ""))
+      paste0(
+        "x",
+        c(
+          "_batch",
+          "_tight",
+          "_medium",
+          "_diffuse",
+          "_tight_combine",
+          "_medium_combine",
+          "_diffuse_combine",
+          ""
+        )
+      )
     )
   )
   expect_equal(out$command[out$name == "x_batch"], "seq_len(2)")
   expect_equal(
-    grepl("diffuse|medium|tight", out$name),
+    grepl("diffuse$|medium$|tight$", out$name),
     grepl("tar_rep_run", out$command)
   )
   expect_equal(
-    grepl("diffuse|medium|tight", out$name),
+    grepl("diffuse$|medium$|tight$", out$name),
     !is.na(out$pattern)
   )
   expect_equal(
@@ -228,9 +256,12 @@ targets::tar_test("tar_map_rep(): combine, no cols, static branches", {
     "x_batch", "x_diffuse",
     "x_batch", "x_medium",
     "x_batch", "x_tight",
-    "x_diffuse", "x",
-    "x_medium", "x",
-    "x_tight", "x"
+    "x_diffuse", "x_diffuse_combine",
+    "x_medium", "x_medium_combine",
+    "x_tight", "x_tight_combine",
+    "x_diffuse_combine", "x",
+    "x_medium_combine", "x",
+    "x_tight_combine", "x"
   )
   exp <- dplyr::arrange(exp, from, to)
   expect_equal(out, exp)

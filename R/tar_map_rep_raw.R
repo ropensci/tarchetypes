@@ -74,10 +74,10 @@ tar_map_rep_raw <- function(
     error = error,
     memory = memory,
     garbage_collection = garbage_collection,
-    deployment = "main",
+    deployment = deployment,
     priority = priority,
-    storage = "main",
-    retrieval = "main",
+    storage = storage,
+    retrieval = retrieval,
     cue = cue,
     description = description
   )
