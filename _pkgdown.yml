@@ -59,6 +59,9 @@ reference:
   contents:
   - 'tar_map2_count'
   - 'tar_map2_size'
+- title: Dynamic batched replication indexing
+  contents:
+  - 'tar_rep_index'
 - title: Target selection
   contents:
   - 'tar_select_names'

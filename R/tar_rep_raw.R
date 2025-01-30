@@ -270,6 +270,12 @@ tar_rep_run_map <- function(expr, batch, reps, rep_workers) {
 tar_rep_run_map_rep <- function(rep, expr, batch, seeds, envir) {
   seed <- as.integer(if_any(anyNA(seeds), NA_integer_, seeds[rep]))
   if_any(anyNA(seed), NULL, targets::tar_seed_set(seed = seed))
+  step_set(
+    step = step_tar_rep,
+    batch = batch,
+    rep = rep,
+    reps = length(seeds)
+  )
   out <- eval(expr, envir = envir)
   if (is.list(out)) {
     out[["tar_batch"]] <- as.integer(batch)
