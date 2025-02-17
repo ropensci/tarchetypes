@@ -91,7 +91,7 @@ these functions will not know where to find the data.}
 a data frame or \code{tibble} with one row per rendered report
 and one column per Quarto parameter.
 \code{\link[=tar_quarto_rep]{tar_quarto_rep()}} expects an unevaluated expression for the
-\code{exectue_params} argument, whereas
+\code{execute_params} argument, whereas
 \code{\link[=tar_quarto_rep_raw]{tar_quarto_rep_raw()}} expects an evaluated expression object.
 
 You may also include an
@@ -303,10 +303,10 @@ Targets to render a parameterized Quarto document
 with multiple sets of parameters.
 
 \code{\link[=tar_quarto_rep]{tar_quarto_rep()}} expects an unevaluated symbol for the \code{name}
-argument and an unevaluated expression for the \code{exectue_params} argument.
+argument and an unevaluated expression for the \code{execute_params} argument.
 \code{\link[=tar_quarto_rep_raw]{tar_quarto_rep_raw()}} expects a character string for the \code{name}
 argument and an evaluated expression object
-for the \code{exectue_params} argument.
+for the \code{execute_params} argument.
 }
 \details{
 \code{tar_quarto_rep()} is an alternative to \code{tar_target()} for
