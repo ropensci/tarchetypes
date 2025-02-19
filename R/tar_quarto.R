@@ -5,10 +5,10 @@
 #'   `targets` pipeline.
 #'
 #'   [tar_quarto()] expects an unevaluated symbol for the `name`
-#'   argument and an unevaluated expression for the `exectue_params` argument.
+#'   argument and an unevaluated expression for the `execute_params` argument.
 #'   [tar_quarto_raw()] expects a character string for the `name`
 #'   argument and an evaluated expression object
-#'   for the `exectue_params` argument.
+#'   for the `execute_params` argument.
 #' @details `tar_quarto()` is an alternative to `tar_target()` for
 #'   Quarto projects and standalone Quarto source documents
 #'   that depend on upstream targets. The Quarto
@@ -76,7 +76,7 @@
 #'   Quarto source files.
 #'
 #'   [tar_quarto()] expects an unevaluated expression for the
-#'   `exectue_params` argument, whereas
+#'   `execute_params` argument, whereas
 #'   [tar_quarto_raw()] expects an evaluated expression object.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {

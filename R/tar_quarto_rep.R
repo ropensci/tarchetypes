@@ -5,10 +5,10 @@
 #'   with multiple sets of parameters.
 #'
 #'   [tar_quarto_rep()] expects an unevaluated symbol for the `name`
-#'   argument and an unevaluated expression for the `exectue_params` argument.
+#'   argument and an unevaluated expression for the `execute_params` argument.
 #'   [tar_quarto_rep_raw()] expects a character string for the `name`
 #'   argument and an evaluated expression object
-#'   for the `exectue_params` argument.
+#'   for the `execute_params` argument.
 #' @details `tar_quarto_rep()` is an alternative to `tar_target()` for
 #'   a parameterized Quarto document that depends on other targets.
 #'   Parameters must be given as a data frame with one row per
@@ -61,7 +61,7 @@
 #'   a data frame or `tibble` with one row per rendered report
 #'   and one column per Quarto parameter.
 #'   [tar_quarto_rep()] expects an unevaluated expression for the
-#'   `exectue_params` argument, whereas
+#'   `execute_params` argument, whereas
 #'   [tar_quarto_rep_raw()] expects an evaluated expression object.
 #'
 #'   You may also include an

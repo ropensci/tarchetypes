@@ -103,7 +103,7 @@ custom elements of the \code{params} list in the YAML front-matter of the
 Quarto source files.
 
 \code{\link[=tar_quarto]{tar_quarto()}} expects an unevaluated expression for the
-\code{exectue_params} argument, whereas
+\code{execute_params} argument, whereas
 \code{\link[=tar_quarto_raw]{tar_quarto_raw()}} expects an evaluated expression object.}
 
 \item{cache}{Cache execution output (uses knitr cache and jupyter-cache
@@ -146,7 +146,7 @@ stops and throws an error. Options:
 \item \code{"null"}: The errored target continues and returns \code{NULL}.
 The data hash is deliberately wrong so the target is not
 up to date for the next run of the pipeline. In addition,
-as of \code{targets} version 1.8.0.9011, a value of \code{NULL} is given
+as of version 1.8.0.9011, a value of \code{NULL} is given
 to upstream dependencies with \code{error = "null"} if loading fails.
 \item \code{"abridge"}: any currently running targets keep running,
 but no new targets launch after that.
@@ -270,10 +270,10 @@ Shorthand to include a Quarto project in a
 \code{targets} pipeline.
 
 \code{\link[=tar_quarto]{tar_quarto()}} expects an unevaluated symbol for the \code{name}
-argument and an unevaluated expression for the \code{exectue_params} argument.
+argument and an unevaluated expression for the \code{execute_params} argument.
 \code{\link[=tar_quarto_raw]{tar_quarto_raw()}} expects a character string for the \code{name}
 argument and an evaluated expression object
-for the \code{exectue_params} argument.
+for the \code{execute_params} argument.
 }
 \details{
 \code{tar_quarto()} is an alternative to \code{tar_target()} for
