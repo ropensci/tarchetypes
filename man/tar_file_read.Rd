@@ -38,7 +38,15 @@ must not start with a dot. Subsequent targets
 can refer to this name symbolically to induce a dependency relationship:
 e.g. \code{tar_target(downstream_target, f(upstream_target))} is a
 target named \code{downstream_target} which depends on a target
-\code{upstream_target} and a function \code{f()}. In addition, a target's
+\code{upstream_target} and a function \code{f()}.
+
+In most cases, The target name is the name of its local data file
+in storage. Some file systems are not case sensitive, which means
+converting a name to a different case may overwrite a different target.
+Please ensure all target names have unique names when converted to
+lower case.
+
+In addition, a target's
 name determines its random number generator seed. In this way,
 each target runs with a reproducible seed so someone else
 running the same pipeline should get the same results,
@@ -110,7 +118,7 @@ stops and throws an error. Options:
 \item \code{"null"}: The errored target continues and returns \code{NULL}.
 The data hash is deliberately wrong so the target is not
 up to date for the next run of the pipeline. In addition,
-as of version 1.8.0.9011, a value of \code{NULL} is given
+as of \code{targets} version 1.8.0.9011, a value of \code{NULL} is given
 to upstream dependencies with \code{error = "null"} if loading fails.
 \item \code{"abridge"}: any currently running targets keep running,
 but no new targets launch after that.
