@@ -6,7 +6,7 @@
 #'   pipelines in targets easier and cleaner to write and understand.
 #' @name tarchetypes-package
 #' @importFrom dplyr bind_rows mutate select
-#' @importFrom fs dir_create is_dir path_ext path_ext_remove
+#' @importFrom fs dir_create file_move is_dir path_ext path_ext_remove
 #'   path_ext_set path_rel
 #' @importFrom parallel clusterCall clusterMap makePSOCKcluster parLapply
 #'   stopCluster

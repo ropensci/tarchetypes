@@ -412,18 +412,20 @@ tar_quarto_rep_rep <- function(
   seeds
 ) {
   withr::local_options(list(crayon.enabled = NULL))
-  destination_file <- execute_params[["output_file"]]
-  fs::dir_create(dirname(destination_file))
+  directory <- dirname(default_output_file)
+  fs::dir_create(directory)
+  destination <- basename(execute_params[["output_file"]])
+  destination_file <- file.path(directory, destination)
   extension <- paste0(".", fs::path_ext(destination_file))
-  temporary_file <- basename(tempfile(fileext = extension))
-  args$output_file <- temporary_file
+  temporary_basename <- basename(tempfile(fileext = extension))
+  args$output_file <- temporary_basename
   args$execute_params <- execute_params
   args$execute_params[["output_file"]] <- NULL
   args$execute_params[["tar_group"]] <- NULL
   seed <- as.integer(if_any(anyNA(seeds), NA_integer_, seeds[rep]))
   if_any(anyNA(seed), NULL, targets::tar_seed_set(seed = seed))
   result <- do.call(quarto::quarto_render, args)
-  file.rename(temporary_file, destination_file)
+  fs::file_move(file.path(directory, temporary_basename), destination_file)
   sort(as.character(fs::path_rel(unlist(destination_file))))
 }
 
