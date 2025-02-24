@@ -33,6 +33,7 @@ tar_skip <- function(
   name,
   command,
   skip,
+  pattern = NULL,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -59,7 +60,7 @@ tar_skip <- function(
   targets::tar_target_raw(
     name = name,
     command = command,
-    pattern = NULL,
+    pattern = pattern,
     packages = packages,
     library = library,
     format = format,

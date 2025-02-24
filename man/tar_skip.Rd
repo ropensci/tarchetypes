@@ -8,6 +8,7 @@ tar_skip(
   name,
   command,
   skip,
+  pattern = NULL,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -64,6 +65,18 @@ In \code{\link[targets:tar_target_raw]{tar_target_raw()}}, \code{command} is an 
 
 \item{skip}{R code for the skipping condition. If it evaluates to \code{TRUE}
 during \code{tar_make()}, the target will cancel itself.}
+
+\item{pattern}{Code to define a dynamic branching branching for a target.
+In \code{\link[targets:tar_target]{tar_target()}}, \code{pattern} is an unevaluated expression, e.g.
+\code{tar_target(pattern = map(data))}.
+In \code{\link[targets:tar_target_raw]{tar_target_raw()}}, \code{command} is an evaluated expression, e.g.
+\code{tar_target_raw(pattern = quote(map(data)))}.
+
+To demonstrate dynamic branching patterns, suppose we have
+a pipeline with numeric vector targets \code{x} and \code{y}. Then,
+\code{tar_target(z, x + y, pattern = map(x, y))} implicitly defines
+branches of \code{z} that each compute \code{x[1] + y[1]}, \code{x[2] + y[2]},
+and so on. See the user manual for details.}
 
 \item{tidy_eval}{Whether to invoke tidy evaluation
 (e.g. the \verb{!!} operator from \code{rlang}) as soon as the target is defined
