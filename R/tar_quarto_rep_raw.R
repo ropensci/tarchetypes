@@ -356,7 +356,11 @@ tar_quarto_rep_run <- function(
   reps <- length(execute_params)
   seeds <- produce_batch_seeds(name = name, batch = batch, reps = reps)
   if (rep_workers > 1L) {
-    cluster <- make_psock_cluster(rep_workers)
+    cluster <- make_psock_cluster(
+      rep_workers,
+      # Quarto can't access the globals in the calling R process anyway.
+      export = FALSE
+    )
     on.exit(parallel::stopCluster(cl = cluster))
     out <- parallel::clusterMap(
       cl = cluster,
