@@ -305,10 +305,11 @@ tar_map2_run <- function(command, values, columns, rep_workers) {
       )
     }
   )
-  fun <- eval(call, envir = targets::tar_option_get("envir"))
+  fun <- eval(call, envir = envir)
   if (rep_workers > 1L) {
     cluster <- make_psock_cluster(rep_workers)
     on.exit(parallel::stopCluster(cl = cluster))
+    
     out <- parallel::clusterMap(
       cl = cluster,
       fun = fun,

@@ -10,5 +10,11 @@ make_psock_cluster <- function(workers) {
     packages = targets::tar_definition()$command$packages,
     library = targets::tar_definition()$command$library
   )
+  envir <- targets::tar_option_get("envir")
+  parallel::clusterExport(
+    cl = cluster,
+    varlist = names(envir),
+    envir = envir
+  )
   cluster
 }
