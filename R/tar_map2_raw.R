@@ -16,6 +16,7 @@ tar_map2_raw <- function(
   suffix2 = "2",
   rep_workers = 1,
   delimiter = "_",
+  unlist = FALSE,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -133,17 +134,66 @@ tar_map2_raw <- function(
         values = values,
         names = names,
         descriptions = descriptions,
-        unlist = FALSE,
+        unlist = unlist,
         delimiter = delimiter
       )
     )
   )
-  target_combine <- if_any(
-    is.null(values) || !combine,
-    NULL,
-    tar_combine_raw(
+  if (!unlist && is.list(target_static)) {
+    target_static <- target_static[[1L]]
+  }
+target_combine <- NULL
+  target_combine_dynamic <- NULL
+  if (combine && !is.null(values)) {
+    expr <- substitute(
+      targets::tar_target_raw(
+        name = paste0(name, "_combine"),
+        command = as.symbol(name),
+        packages = packages,
+        library = library,
+        format = format,
+        repository = repository,
+        iteration = "vector",
+        error = error,
+        memory = memory,
+        garbage_collection = garbage_collection,
+        deployment = deployment,
+        priority = priority,
+        resources = resources,
+        storage = storage,
+        retrieval = retrieval,
+        cue = cue,
+        description = description
+      ),
+      env = list(
+        packages = packages,
+        library = library,
+        format = format,
+        repository = repository,
+        iteration = "vector",
+        error = error,
+        memory = memory,
+        garbage_collection = garbage_collection,
+        deployment = deployment,
+        priority = priority,
+        resources = resources,
+        storage = storage,
+        retrieval = retrieval,
+        cue = cue,
+        description = description
+      )
+    )
+    target_combine_dynamic <- tar_eval_raw(
+      expr = expr,
+      values = list(name = map_chr(target_static, ~.x$settings$name))
+    )
+    names(target_combine_dynamic) <- map_chr(
+      target_combine_dynamic,
+      ~.x$settings$name
+    )
+    target_combine <- tar_combine_raw(
       name = name,
-      target_static[[name_downstream]],
+      target_combine_dynamic,
       command = tar_map_combine_command,
       use_names = TRUE,
       packages = character(0),
@@ -153,13 +203,23 @@ tar_map2_raw <- function(
       error = error,
       memory = memory,
       garbage_collection = garbage_collection,
-      deployment = "main",
+      deployment = deployment,
       priority = priority,
       cue = cue,
       description = description
     )
+  }
+  out <- list(
+    batch_index = target_batch,
+    static_branches = target_static,
+    combine_dynamic = target_combine_dynamic,
+    combine = target_combine
   )
-  unlist(list(target_static, target_combine), recursive = TRUE)
+  if (unlist) {
+    out <- unlist(out, recursive = TRUE)
+    names(out) <- map_chr(out, ~.x$settings$name)
+  }
+  out
 }
 
 tar_map2_command_upstream <- function(command, group) {

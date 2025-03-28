@@ -20,6 +20,7 @@ tar_map2(
   columns2 = tidyselect::everything(),
   rep_workers = 1,
   delimiter = "_",
+  unlist = FALSE,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -52,6 +53,7 @@ tar_map2_raw(
   suffix2 = "2",
   rep_workers = 1,
   delimiter = "_",
+  unlist = FALSE,
   tidy_eval = targets::tar_option_get("tidy_eval"),
   packages = targets::tar_option_get("packages"),
   library = targets::tar_option_get("library"),
@@ -158,6 +160,12 @@ then reps within batch are run in parallel using a PSOCK cluster.}
 
 \item{delimiter}{Character of length 1, string to insert between
 other strings when creating names of targets.}
+
+\item{unlist}{Logical, whether to flatten the returned list of targets.
+If \code{unlist = FALSE}, the list is nested and sub-lists
+are named and grouped by the original input targets.
+If \code{unlist = TRUE}, the return value is a flat list of targets
+named by the new target names.}
 
 \item{tidy_eval}{Whether to invoke tidy evaluation
 (e.g. the \verb{!!} operator from \code{rlang}) as soon as the target is defined
