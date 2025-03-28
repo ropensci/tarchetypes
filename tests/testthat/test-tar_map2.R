@@ -1,3 +1,41 @@
+targets::tar_test("tar_map2() list vs unlist", {
+  out <- tar_map2(
+    x,
+    command1 = f1(arg1),
+    command2 = f2(arg1, arg2),
+    values = tibble::tibble(arg1 = letters[seq_len(2)]),
+    names = arg1,
+    suffix1 = "i",
+    suffix2 = "ii",
+    group = rep(LETTERS[seq_len(2)], each = nrow(!!.x) / 2),
+    unlist = TRUE
+  )
+  expect_equal(
+    sort(names(out)),
+    sort(
+      c(
+        "x_i_a", "x_i_b", "x_ii_a", "x_ii_b",
+        "x_ii_a_combine", "x_ii_b_combine", "x"
+      )
+    )
+  )
+  out <- tar_map2(
+    x,
+    command1 = f1(arg1),
+    command2 = f2(arg1, arg2),
+    values = tibble::tibble(arg1 = letters[seq_len(2)]),
+    names = arg1,
+    suffix1 = "i",
+    suffix2 = "ii",
+    group = rep(LETTERS[seq_len(2)], each = nrow(!!.x) / 2),
+    unlist = FALSE
+  )
+  expect_equal(
+    sort(names(out)),
+    sort(c("combine", "combine_dynamic", "static_branches"))
+  )
+})
+
 targets::tar_test("tar_map2(): combine, columns, static branches", {
   skip_if_not_installed("dplyr")
   targets::tar_script({
