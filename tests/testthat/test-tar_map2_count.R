@@ -33,7 +33,13 @@ targets::tar_test("tar_map2_count()", {
   expect_equal(
     sort(out$name),
     sort(
-      paste0("x", c("_i_a", "_i_b", "_ii_a", "_ii_b", ""))
+      paste0(
+        "x",
+        c(
+          "_i_a", "_i_b", "_ii_a", "_ii_a_combine",
+          "_ii_b", "_ii_b_combine", ""
+        )
+      )
     )
   )
   expect_equal(
@@ -41,16 +47,12 @@ targets::tar_test("tar_map2_count()", {
     grepl("tar_map2_group", out$command)
   )
   expect_equal(
-    grepl("_ii_", out$name),
+    grepl("_ii_a|_ii_b", out$name) & !grepl("combine", out$name),
     grepl("tar_map2_run", out$command)
   )
   expect_equal(
-    grepl("^x$|^x_i_", out$name),
+    !(out$name %in% c("x_ii_a", "x_ii_b")),
     is.na(out$pattern)
-  )
-  expect_equal(
-    grepl("^x_ii", out$name),
-    !is.na(out$pattern)
   )
   expect_equal(
     out$name == "x",
@@ -67,8 +69,10 @@ targets::tar_test("tar_map2_count()", {
     "f2", "x_ii_b",
     "x_i_a", "x_ii_a",
     "x_i_b", "x_ii_b",
-    "x_ii_a", "x",
-    "x_ii_b", "x"
+    "x_ii_a", "x_ii_a_combine",
+    "x_ii_b", "x_ii_b_combine",
+    "x_ii_a_combine", "x",
+    "x_ii_b_combine", "x"
   )
   exp <- dplyr::arrange(exp, from, to)
   expect_equal(out, exp)
