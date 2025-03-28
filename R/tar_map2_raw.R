@@ -134,15 +134,13 @@ tar_map2_raw <- function(
         values = values,
         names = names,
         descriptions = descriptions,
-        unlist = unlist,
+        # Need to map over target_downstream branches and then unlist later.
+        unlist = FALSE,
         delimiter = delimiter
       )
     )
   )
-  if (!unlist && is.list(target_static)) {
-    target_static <- target_static[[1L]]
-  }
-target_combine <- NULL
+  target_combine <- NULL
   target_combine_dynamic <- NULL
   if (combine && !is.null(values)) {
     expr <- substitute(
@@ -185,7 +183,9 @@ target_combine <- NULL
     )
     target_combine_dynamic <- tar_eval_raw(
       expr = expr,
-      values = list(name = map_chr(target_static, ~.x$settings$name))
+      values = list(
+        name = map_chr(target_static[[2L]], ~.x$settings$name)
+      )
     )
     names(target_combine_dynamic) <- map_chr(
       target_combine_dynamic,
@@ -210,7 +210,6 @@ target_combine <- NULL
     )
   }
   out <- list(
-    batch_index = target_batch,
     static_branches = target_static,
     combine_dynamic = target_combine_dynamic,
     combine = target_combine
