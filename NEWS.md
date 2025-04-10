@@ -1,4 +1,4 @@
-# tarchetypes 0.12.0.9003 (development)
+# tarchetypes 0.13.0
 
 * Support `pattern` in `tar_skip()` (#212, @CorradoLanera).
 * Allow `tar_quarto_rep()` to write reports to subdirectories with the help of a project-level `_quarto.yml` (#211, @lgaborini).
