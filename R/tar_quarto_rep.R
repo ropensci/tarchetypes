@@ -3,6 +3,7 @@
 #' @family Literate programming targets
 #' @description Targets to render a parameterized Quarto document
 #'   with multiple sets of parameters.
+#'   Assumes you do not specify `output-dir` in `_quarto.yml`.
 #'
 #'   [tar_quarto_rep()] expects an unevaluated symbol for the `name`
 #'   argument and an unevaluated expression for the `execute_params` argument.
