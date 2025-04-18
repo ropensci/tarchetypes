@@ -1,6 +1,7 @@
-# tarchetypes 0.13.0.9001 (development)
+# tarchetypes 0.13.0.9002 (development)
 
 * Restore custom output files in `tar_quarto_rep()` (#217, @arcruz0). For #211, users should write relative paths to output files in the `output_file` column of `execute_params`, and they should avoid writing a `_quarto.yml` with an `output-dir` field.
+* Set `deployment = targets::tar_option_get("deployment")` in `tar_render()` and `tar_quarto()`.
 
 # tarchetypes 0.13.0
 
