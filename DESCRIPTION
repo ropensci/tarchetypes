@@ -9,7 +9,7 @@ Description: Function-oriented Make-like declarative pipelines for
   reproducible pipelines concisely and compactly.
   The methods in this package were influenced by the 'targets' R package.
   by Will Landau (2018) <doi:10.21105/joss.00550>.
-Version: 0.13.0.9002
+Version: 0.13.0.9003
 License: MIT + file LICENSE
 URL: https://docs.ropensci.org/tarchetypes/, https://github.com/ropensci/tarchetypes
 BugReports: https://github.com/ropensci/tarchetypes/issues

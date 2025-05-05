@@ -415,7 +415,6 @@ tar_quarto_rep_rep <- function(
   default_output_file,
   seeds
 ) {
-  withr::local_options(list(crayon.enabled = NULL))
   temporary_directory <- dirname(default_output_file)
   destination_directory <- dirname(
     execute_params[["output_file"]] %|||% default_output_file
