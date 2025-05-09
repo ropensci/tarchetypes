@@ -77,6 +77,10 @@ tar_render_command <- function(path, output, working_directory, args, quiet) {
 tar_render_run <- function(path, args, deps) {
   targets::tar_assert_package("rmarkdown")
   withr::local_options(list(cli.num_colors = 1L, cli.dynamic = FALSE))
+  tar_runtime <- targets::tar_runtime_object()
+  progress_bar <- tar_runtime$progress_bar
+  on.exit(tar_runtime$progress_bar <- progress_bar)
+  tar_runtime$progress_bar <- FALSE
   rm(deps)
   gc()
   envir <- parent.frame()

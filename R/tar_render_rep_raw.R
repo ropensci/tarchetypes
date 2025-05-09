@@ -251,6 +251,10 @@ tar_render_rep_run <- function(path, params, args, deps, rep_workers) {
 #' # See the examples of tar_quarto_rep().
 tar_render_rep_rep <- function(rep, params, args, path, seeds) {
   withr::local_options(list(cli.num_colors = 1L, cli.dynamic = FALSE))
+  tar_runtime <- targets::tar_runtime_object()
+  progress_bar <- tar_runtime$progress_bar
+  on.exit(tar_runtime$progress_bar <- progress_bar)
+  tar_runtime$progress_bar <- FALSE
   default_path <- tar_render_rep_default_path(path, params)
   args$output_file <- params[["output_file"]] %|||% default_path
   fs::dir_create(dirname(args$output_file))
