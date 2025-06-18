@@ -44,7 +44,7 @@ tar_render_rep_raw <- function(
   target_params <- targets::tar_target_raw(
     name = name_params,
     command = tar_render_rep_params_command(params, batches),
-    packages = packages,
+    packages = c(packages, "rmarkdown"), # for tar_renv()
     library = library,
     format = format,
     iteration = "group",

@@ -92,6 +92,7 @@ tar_quarto_raw <- function(
   targets::tar_target_raw(
     name = name,
     command = command,
+    packages = "quarto", # for tar_renv()
     format = "file",
     repository = "local",
     error = error,

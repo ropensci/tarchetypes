@@ -36,7 +36,7 @@ tar_render_raw <- function(
       render_arguments,
       quiet
     ),
-    packages = packages,
+    packages = c(packages, "rmarkdown"), # for tar_renv()
     library = library,
     format = "file",
     repository = "local",

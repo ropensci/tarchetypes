@@ -72,7 +72,7 @@ tar_quarto_rep_raw <- function(
       batches = batches,
       default_output_file = default_output_file
     ),
-    packages = packages,
+    packages = c(packages, "quarto"), # for tar_renv()
     library = library,
     format = format,
     iteration = "group",
