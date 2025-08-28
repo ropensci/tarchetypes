@@ -158,7 +158,7 @@ tar_quarto_command <- function(
       profile = profile
     )
   )
-  deps <- sort(unique(unlist(map(sources, ~knitr_deps(.x)))))
+  deps <- sort(unique(unlist(map(sources, ~ knitr_deps(.x)))))
   deps <- call_list(as_symbols(deps))
   fun <- call_ns("tarchetypes", "tar_quarto_run")
   expr <- list(

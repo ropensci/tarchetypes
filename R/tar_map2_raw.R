@@ -184,12 +184,12 @@ tar_map2_raw <- function(
     target_combine_dynamic <- tar_eval_raw(
       expr = expr,
       values = list(
-        name = map_chr(target_static[[2L]], ~.x$settings$name)
+        name = map_chr(target_static[[2L]], ~ .x$settings$name)
       )
     )
     names(target_combine_dynamic) <- map_chr(
       target_combine_dynamic,
-      ~.x$settings$name
+      ~ .x$settings$name
     )
     target_combine <- tar_combine_raw(
       name = name,
@@ -216,7 +216,7 @@ tar_map2_raw <- function(
   )
   if (unlist) {
     out <- unlist(out, recursive = TRUE)
-    names(out) <- map_chr(out, ~.x$settings$name)
+    names(out) <- map_chr(out, ~ .x$settings$name)
   }
   out
 }

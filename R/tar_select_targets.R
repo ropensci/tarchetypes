@@ -26,7 +26,7 @@
 #' }
 tar_select_targets <- function(targets, ...) {
   targets <- unlist(list(targets), recursive = TRUE)
-  names(targets) <- map_chr(targets, ~.x$settings$name)
+  names(targets) <- map_chr(targets, ~ .x$settings$name)
   out <- tidyselect::eval_select(
     rlang::expr(c(...)),
     data = targets,

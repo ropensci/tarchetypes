@@ -98,8 +98,8 @@ tar_map <- function(
   flat <- unlist(out, recursive = TRUE)
   if_any(
     unlist,
-    set_names(flat, map_chr(flat, ~.x$settings$name)),
-    set_names(out, map_chr(targets, ~.x$settings$name))
+    set_names(flat, map_chr(flat, ~ .x$settings$name)),
+    set_names(out, map_chr(targets, ~ .x$settings$name))
   )
 }
 
@@ -107,7 +107,7 @@ tar_map_process_values <- function(values) {
   for (name in names(values)) {
     values[[name]] <- map(
       values[[name]],
-      ~parse(text = targets::tar_deparse_safe(.x))[[1]]
+      ~ parse(text = targets::tar_deparse_safe(.x))[[1]]
     )
   }
   values
@@ -131,7 +131,7 @@ tar_map_extend_values <- function(targets, values, names, delimiter) {
 
 tar_map_produce_suffix <- function(values, names, delimiter) {
   data <- values[names] %||% tar_map_default_suffixes(values)
-  data <- map(data, ~as.character(unlist(.x)))
+  data <- map(data, ~ as.character(unlist(.x)))
   out <- apply(as.data.frame(data), 1, paste, collapse = delimiter)
   out <- gsub("'", "", out)
   out <- gsub("\"", "", out)
@@ -151,7 +151,7 @@ tar_map_target <- function(target, values, descriptions) {
     pattern = target$settings$pattern,
     descriptions = descriptions
   )
-  names(out) <- map_chr(out, ~.x$settings$name)
+  names(out) <- map_chr(out, ~ .x$settings$name)
   out
 }
 

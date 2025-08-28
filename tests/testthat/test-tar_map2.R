@@ -14,8 +14,13 @@ targets::tar_test("tar_map2() list vs unlist", {
     sort(names(out)),
     sort(
       c(
-        "x_i_a", "x_i_b", "x_ii_a", "x_ii_b",
-        "x_ii_a_combine", "x_ii_b_combine", "x"
+        "x_i_a",
+        "x_i_b",
+        "x_ii_a",
+        "x_ii_b",
+        "x_ii_a_combine",
+        "x_ii_b_combine",
+        "x"
       )
     )
   )
@@ -74,8 +79,13 @@ targets::tar_test("tar_map2(): combine, columns, static branches", {
       paste0(
         "x",
         c(
-          "_i_a", "_i_b", "_ii_a", "_ii_a_combine",
-          "_ii_b", "_ii_b_combine", ""
+          "_i_a",
+          "_i_b",
+          "_ii_a",
+          "_ii_a_combine",
+          "_ii_b",
+          "_ii_b_combine",
+          ""
         )
       )
     )
@@ -100,17 +110,28 @@ targets::tar_test("tar_map2(): combine, columns, static branches", {
   out <- targets::tar_network(callr_function = NULL)$edges
   out <- dplyr::arrange(out, from, to)
   exp <- tibble::tribble(
-    ~from, ~to,
-    "f1", "x_i_a",
-    "f1", "x_i_b",
-    "f2", "x_ii_a",
-    "f2", "x_ii_b",
-    "x_i_a", "x_ii_a",
-    "x_i_b", "x_ii_b",
-    "x_ii_a", "x_ii_a_combine",
-    "x_ii_b", "x_ii_b_combine",
-    "x_ii_a_combine", "x",
-    "x_ii_b_combine", "x"
+    ~from,
+    ~to,
+    "f1",
+    "x_i_a",
+    "f1",
+    "x_i_b",
+    "f2",
+    "x_ii_a",
+    "f2",
+    "x_ii_b",
+    "x_i_a",
+    "x_ii_a",
+    "x_i_b",
+    "x_ii_b",
+    "x_ii_a",
+    "x_ii_a_combine",
+    "x_ii_b",
+    "x_ii_b_combine",
+    "x_ii_a_combine",
+    "x",
+    "x_ii_b_combine",
+    "x"
   )
   exp <- dplyr::arrange(exp, from, to)
   expect_equal(out, exp)
@@ -213,13 +234,20 @@ targets::tar_test("tar_map2(): no combine, no columns, static branches", {
   out <- targets::tar_network(callr_function = NULL)$edges
   out <- dplyr::arrange(out, from, to)
   exp <- tibble::tribble(
-    ~from, ~to,
-    "f1", "x_1_a",
-    "f1", "x_1_b",
-    "f2", "x_2_a",
-    "f2", "x_2_b",
-    "x_1_a", "x_2_a",
-    "x_1_b", "x_2_b",
+    ~from,
+    ~to,
+    "f1",
+    "x_1_a",
+    "f1",
+    "x_1_b",
+    "f2",
+    "x_2_a",
+    "f2",
+    "x_2_b",
+    "x_1_a",
+    "x_2_a",
+    "x_1_b",
+    "x_2_b",
   )
   exp <- dplyr::arrange(exp, from, to)
   expect_equal(out, exp)
@@ -439,10 +467,14 @@ targets::tar_test("tar_map2(): no static branches", {
   out <- targets::tar_network(callr_function = NULL)$edges
   out <- dplyr::arrange(out, from, to)
   exp <- tibble::tribble(
-    ~from, ~to,
-    "f1", "x_i",
-    "f2", "x_ii",
-    "x_i", "x_ii"
+    ~from,
+    ~to,
+    "f1",
+    "x_i",
+    "f2",
+    "x_ii",
+    "x_i",
+    "x_ii"
   )
   exp <- dplyr::arrange(exp, from, to)
   expect_equal(out, exp)

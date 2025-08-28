@@ -311,7 +311,7 @@ targets::tar_test("tar_render() works with child documents", {
   # Check that the dependency graph is correct of our targets. `report` should
   # depend on `main` and `child`.
   edges <- tar_network(callr_function = NULL)$edges
-  edges <- edges[edges$to == "report",, drop = FALSE] # nolint
+  edges <- edges[edges$to == "report", , drop = FALSE] # nolint
   expect_identical(
     edges,
     tibble::tibble(

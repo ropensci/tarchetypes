@@ -43,40 +43,43 @@ NULL
 
 tar_format_alias <- function(format) {
   out <- tar_format_api
-  body(out) <- substitute({
-    name <- targets::tar_deparse_language(substitute(name))
-    envir <- tar_option_get("envir")
-    command <- targets::tar_tidy_eval(
-      as.expression(substitute(command)),
-      envir,
-      tidy_eval
-    )
-    pattern <- targets::tar_tidy_eval(
-      as.expression(substitute(pattern)),
-      envir,
-      tidy_eval
-    )
-    targets::tar_target_raw(
-      name = name,
-      command = command,
-      pattern = pattern,
-      packages = packages,
-      library = library,
-      format = format,
-      repository = repository,
-      iteration = iteration,
-      error = error,
-      memory = memory,
-      garbage_collection = garbage_collection,
-      deployment = deployment,
-      priority = priority,
-      resources = resources,
-      storage = storage,
-      retrieval = retrieval,
-      cue = cue,
-      description = description
-    )
-  }, env = list(format = format))
+  body(out) <- substitute(
+    {
+      name <- targets::tar_deparse_language(substitute(name))
+      envir <- tar_option_get("envir")
+      command <- targets::tar_tidy_eval(
+        as.expression(substitute(command)),
+        envir,
+        tidy_eval
+      )
+      pattern <- targets::tar_tidy_eval(
+        as.expression(substitute(pattern)),
+        envir,
+        tidy_eval
+      )
+      targets::tar_target_raw(
+        name = name,
+        command = command,
+        pattern = pattern,
+        packages = packages,
+        library = library,
+        format = format,
+        repository = repository,
+        iteration = iteration,
+        error = error,
+        memory = memory,
+        garbage_collection = garbage_collection,
+        deployment = deployment,
+        priority = priority,
+        resources = resources,
+        storage = storage,
+        retrieval = retrieval,
+        cue = cue,
+        description = description
+      )
+    },
+    env = list(format = format)
+  )
   out
 }
 
@@ -99,8 +102,7 @@ tar_format_api <- function(
   retrieval = targets::tar_option_get("retrieval"),
   cue = targets::tar_option_get("cue"),
   description = targets::tar_option_get("description")
-) {
-}
+) {}
 
 #' @export
 #' @rdname tar_formats

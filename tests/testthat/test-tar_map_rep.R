@@ -76,19 +76,32 @@ targets::tar_test("tar_map_rep(): combine, columns, static branches", {
     out <- targets::tar_network(callr_function = NULL)$edges
     out <- dplyr::arrange(out, from, to)
     exp <- tibble::tribble(
-      ~from, ~to,
-      "f", "x_diffuse",
-      "f", "x_medium",
-      "f", "x_tight",
-      "x_batch", "x_diffuse",
-      "x_batch", "x_medium",
-      "x_batch", "x_tight",
-      "x_diffuse", "x_diffuse_combine",
-      "x_medium", "x_medium_combine",
-      "x_tight", "x_tight_combine",
-      "x_diffuse_combine", "x",
-      "x_medium_combine", "x",
-      "x_tight_combine", "x"
+      ~from,
+      ~to,
+      "f",
+      "x_diffuse",
+      "f",
+      "x_medium",
+      "f",
+      "x_tight",
+      "x_batch",
+      "x_diffuse",
+      "x_batch",
+      "x_medium",
+      "x_batch",
+      "x_tight",
+      "x_diffuse",
+      "x_diffuse_combine",
+      "x_medium",
+      "x_medium_combine",
+      "x_tight",
+      "x_tight_combine",
+      "x_diffuse_combine",
+      "x",
+      "x_medium_combine",
+      "x",
+      "x_tight_combine",
+      "x"
     )
     exp <- dplyr::arrange(exp, from, to)
     expect_equal(out, exp)
@@ -158,13 +171,20 @@ targets::tar_test("tar_map_rep(): no combine, 1 col, static branches", {
   out <- targets::tar_network(callr_function = NULL)$edges
   out <- dplyr::arrange(out, from, to)
   exp <- tibble::tribble(
-    ~from, ~to,
-    "f", "x_diffuse",
-    "f", "x_medium",
-    "f", "x_tight",
-    "x_batch", "x_diffuse",
-    "x_batch", "x_medium",
-    "x_batch", "x_tight"
+    ~from,
+    ~to,
+    "f",
+    "x_diffuse",
+    "f",
+    "x_medium",
+    "f",
+    "x_tight",
+    "x_batch",
+    "x_diffuse",
+    "x_batch",
+    "x_medium",
+    "x_batch",
+    "x_tight"
   )
   exp <- dplyr::arrange(exp, from, to)
   expect_equal(out, exp)
@@ -249,19 +269,32 @@ targets::tar_test("tar_map_rep(): combine, no cols, static branches", {
   out <- targets::tar_network(callr_function = NULL)$edges
   out <- dplyr::arrange(out, from, to)
   exp <- tibble::tribble(
-    ~from, ~to,
-    "f", "x_diffuse",
-    "f", "x_medium",
-    "f", "x_tight",
-    "x_batch", "x_diffuse",
-    "x_batch", "x_medium",
-    "x_batch", "x_tight",
-    "x_diffuse", "x_diffuse_combine",
-    "x_medium", "x_medium_combine",
-    "x_tight", "x_tight_combine",
-    "x_diffuse_combine", "x",
-    "x_medium_combine", "x",
-    "x_tight_combine", "x"
+    ~from,
+    ~to,
+    "f",
+    "x_diffuse",
+    "f",
+    "x_medium",
+    "f",
+    "x_tight",
+    "x_batch",
+    "x_diffuse",
+    "x_batch",
+    "x_medium",
+    "x_batch",
+    "x_tight",
+    "x_diffuse",
+    "x_diffuse_combine",
+    "x_medium",
+    "x_medium_combine",
+    "x_tight",
+    "x_tight_combine",
+    "x_diffuse_combine",
+    "x",
+    "x_medium_combine",
+    "x",
+    "x_tight_combine",
+    "x"
   )
   exp <- dplyr::arrange(exp, from, to)
   expect_equal(out, exp)
@@ -318,9 +351,12 @@ targets::tar_test("tar_map_rep(): no static branches", {
   out <- targets::tar_network(callr_function = NULL)$edges
   out <- dplyr::arrange(out, from, to)
   exp <- tibble::tribble(
-    ~from, ~to,
-    "f", "x",
-    "x_batch", "x"
+    ~from,
+    ~to,
+    "f",
+    "x",
+    "x_batch",
+    "x"
   )
   exp <- dplyr::arrange(exp, from, to)
   expect_equal(out, exp)

@@ -60,7 +60,7 @@ tar_assign <- function(targets) {
     list(expr)
   )
   targets::tar_assert_true(
-    all(map_lgl(statements, ~rlang::is_call(.x, c("<-", "=")))),
+    all(map_lgl(statements, ~ rlang::is_call(.x, c("<-", "=")))),
     msg = paste(
       "tar_assign() code must be enclosed in curly braces if",
       "it has multiple statements, and each statement",

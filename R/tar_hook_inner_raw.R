@@ -35,11 +35,11 @@ tar_hook_inner_raw <- function(
 tar_hook_inner_env <- function(targets, hook, names_wrap_quosure) {
   choices_wrap <- map_chr(
     unlist(list(targets), recursive = TRUE),
-    ~.x$settings$name
+    ~ .x$settings$name
   )
   names_wrap <- eval_tidyselect(names_wrap_quosure, choices_wrap) %|||%
     choices_wrap
-  out <- map(names_wrap, ~tar_hook_inner_env_elt(name = .x, hook = hook))
+  out <- map(names_wrap, ~ tar_hook_inner_env_elt(name = .x, hook = hook))
   names(out) <- names_wrap
   out
 }

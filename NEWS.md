@@ -1,7 +1,8 @@
-# tarchetypes 0.13.1.9002 (development)
+# tarchetypes 0.13.1.9003 (development)
 
 * Disable `targets` internal processing progress bars in `tar_render()` and `tar_render_rep()`.
 * Add `quarto` and `rmarkdown` to `packages` for `targets::tar_renv()` (https://github.com/ropensci/targets/issues/1506, @valentingar).
+* Set `deployment = "main"` in the batch target of `tar_map_rep()`.
 
 # tarchetypes 0.13.1
 

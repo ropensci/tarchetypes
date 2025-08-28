@@ -32,7 +32,8 @@ assert_batch <- function(batch, name) {
 #' @export
 assert_batch.default <- function(batch, name) {
   targets::tar_throw_validate(
-    "invalid tar_rep_map() dependency ", name,
+    "invalid tar_rep_map() dependency ",
+    name,
     ". Upstream tar_rep() targets must be lists ",
     "with iteration = \"list\" or data frames."
   )
@@ -44,7 +45,9 @@ assert_batch.list <- function(batch, name) {
     batch,
     targets::tar_assert_list,
     msg = paste(
-      "Invalid batched list target", name, "for tar_rep_map().",
+      "Invalid batched list target",
+      name,
+      "for tar_rep_map().",
       "Batched list target deps",
       "need iteration = \"list\" in tar_rep()."
     )
@@ -63,7 +66,10 @@ assert_reps <- function(rep, name) {
     targets::tar_assert_dbl(
       rep[[elt]],
       paste(
-        "in batched target ", name, " supplied to tar_rep_map(), ", elt,
+        "in batched target ",
+        name,
+        " supplied to tar_rep_map(), ",
+        elt,
         ", must be an integer element of upstream batched targets"
       )
     )

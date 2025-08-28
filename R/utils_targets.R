@@ -57,7 +57,7 @@ tar_replace_command <- function(target, expr, set_deps) {
 walk_targets <- function(targets, names_quosure, fun, ...) {
   flat <- unlist(list(targets), recursive = TRUE)
   targets::tar_assert_target_list(flat)
-  names <- map_chr(flat, ~.x$settings$name)
+  names <- map_chr(flat, ~ .x$settings$name)
   names <- eval_tidyselect(names_quosure, names) %|||% names
   counter <- counter_init(names = names)
   recurse_targets(

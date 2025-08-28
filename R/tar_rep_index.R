@@ -41,7 +41,7 @@
 tar_rep_index <- function() {
   index <- .subset2(step_tar_rep, "index")
   if (is.null(index)) {
-    message <-  paste(
+    message <- paste(
       "tar_rep_index() can only run inside the R command of a target",
       "actively running in a pipeline, and it is only compatible with",
       "these specific target factories:",

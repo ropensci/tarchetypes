@@ -5,10 +5,13 @@ targets::tar_test("tar_download()", {
   urls <- c("https://httpbin.org/etag/test", "https://www.r-project.org")
   handle <- curl::new_handle(nobody = TRUE)
   for (url in urls) {
-    exists <- tryCatch({
-      req <- curl::curl_fetch_memory(as.character(url), handle = handle)
-      identical(as.integer(req$status_code), 200L)
-    }, error = function(e) FALSE)
+    exists <- tryCatch(
+      {
+        req <- curl::curl_fetch_memory(as.character(url), handle = handle)
+        identical(as.integer(req$status_code), 200L)
+      },
+      error = function(e) FALSE
+    )
     if (!exists) {
       skip("test URL does not exist")
     }

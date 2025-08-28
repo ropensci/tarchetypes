@@ -289,7 +289,7 @@ targets::tar_test("tar_quarto() works with child documents", {
   # Check that the dependency graph is correct of our targets. `report` should
   # depend on `main` and `child`.
   edges <- tar_network(callr_function = NULL)$edges
-  edges <- edges[edges$to == "report",, drop = FALSE] # nolint
+  edges <- edges[edges$to == "report", , drop = FALSE] # nolint
   expect_identical(
     edges,
     tibble::tibble(
@@ -333,14 +333,17 @@ targets::tar_test("quarto projects", {
     "```"
   )
   writeLines(lines, "r2.qmd")
-  targets::tar_script({
-    library(tarchetypes)
-    list(
-      tar_target(r1, "r1_value"),
-      tar_target(r2, "r2_value"),
-      tar_quarto(project)
-    )
-  }, ask = FALSE)
+  targets::tar_script(
+    {
+      library(tarchetypes)
+      list(
+        tar_target(r1, "r1_value"),
+        tar_target(r2, "r2_value"),
+        tar_quarto(project)
+      )
+    },
+    ask = FALSE
+  )
   edges <- targets::tar_network(callr_function = NULL)$edges
   expect_equal(sort(edges$from), sort(c("r1", "r2")))
   expect_equal(edges$to, c("project", "project"))
@@ -354,14 +357,17 @@ targets::tar_test("quarto projects", {
   expect_equal(targets::tar_outdated(callr_function = NULL), "project")
   targets::tar_make(callr_function = NULL)
   expect_equal(targets::tar_outdated(callr_function = NULL), character(0))
-  targets::tar_script({
-    library(tarchetypes)
-    list(
-      tar_target(r1, "r1_value"),
-      tar_target(r2, "r2_value2"),
-      tar_quarto(project)
-    )
-  }, ask = FALSE)
+  targets::tar_script(
+    {
+      library(tarchetypes)
+      list(
+        tar_target(r1, "r1_value"),
+        tar_target(r2, "r2_value2"),
+        tar_quarto(project)
+      )
+    },
+    ask = FALSE
+  )
   expect_equal(
     sort(targets::tar_outdated(callr_function = NULL)),
     sort(c("project", "r2"))
@@ -382,12 +388,7 @@ targets::tar_test("quarto profiles", {
     "testing.qmd"
   )
   writeLines(
-    c("project:",
-      "  output-dir: _output",
-      "",
-      "profile:",
-      "  default: basic"
-    ),
+    c("project:", "  output-dir: _output", "", "profile:", "  default: basic"),
     "_quarto.yml"
   )
   writeLines(

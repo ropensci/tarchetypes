@@ -30,7 +30,8 @@ targets_1.3.2.9004 <- function() {
   utils::compareVersion(
     a = as.character(packageVersion("targets")),
     b = "1.3.2.9004"
-  ) > -1L
+  ) >
+    -1L
 }
 
 status_completed <- function() {

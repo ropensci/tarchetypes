@@ -70,7 +70,7 @@ tar_combine_impl <- function(
 ) {
   targets::tar_assert_chr(name)
   targets::tar_assert_target_list(targets)
-  names_chr <- map_chr(targets, ~.x$settings$name)
+  names_chr <- map_chr(targets, ~ .x$settings$name)
   names_sym <- as_symbols(names_chr)
   if (use_names) {
     names(names_sym) <- names_chr

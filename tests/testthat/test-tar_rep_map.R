@@ -128,16 +128,26 @@ targets::tar_test("tar_rep_map() graph", {
     out <- targets::tar_network(callr_function = NULL)
   )
   exp <- tibble::tribble(
-    ~from, ~to,
-    "data1", "aggregate1",
-    "data2", "aggregate1",
-    "label", "aggregate1",
-    "data1", "aggregate2",
-    "data2", "aggregate2",
-    "aggregate1", "aggregate3",
-    "aggregate2", "aggregate3",
-    "data1_batch", "data1",
-    "data2_batch", "data2"
+    ~from,
+    ~to,
+    "data1",
+    "aggregate1",
+    "data2",
+    "aggregate1",
+    "label",
+    "aggregate1",
+    "data1",
+    "aggregate2",
+    "data2",
+    "aggregate2",
+    "aggregate1",
+    "aggregate3",
+    "aggregate2",
+    "aggregate3",
+    "data1_batch",
+    "data1",
+    "data2_batch",
+    "data2"
   )
   skip_if_not_installed("dplyr")
   expect_equal(dplyr::arrange(out$edges, from), dplyr::arrange(exp, from))

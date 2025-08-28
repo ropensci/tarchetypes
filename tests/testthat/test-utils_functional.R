@@ -4,7 +4,7 @@ targets::tar_test("map()", {
 
 targets::tar_test("map2()", {
   expect_equal(
-    as.numeric(map2(seq_len(4), seq_len(4), ~.x + .y)),
+    as.numeric(map2(seq_len(4), seq_len(4), ~ .x + .y)),
     seq_len(4) * 2
   )
 })
@@ -14,7 +14,7 @@ targets::tar_test("map_chr()", {
 })
 
 targets::tar_test("map_int()", {
-  expect_equal(unname(map_int(letters, ~length(.x))), rep(1, length(letters)))
+  expect_equal(unname(map_int(letters, ~ length(.x))), rep(1, length(letters)))
 })
 
 targets::tar_test("map_lgl()", {

@@ -5,7 +5,9 @@ targets::tar_test("tar_assign() single statement", {
   expect_equal(out$command, "c(1L, 2L)")
   targets::tar_make(callr_function = NULL)
   expect_equal(targets::tar_read(x), c(1L, 2L))
-  targets::tar_script(tar_assign({x = tar_target(c(1L, 2L))})) # nolint
+  targets::tar_script(tar_assign({
+    x = tar_target(c(1L, 2L))
+  })) # nolint
   out <- targets::tar_manifest(callr_function = NULL)
   expect_equal(out$name, "x")
   expect_equal(out$command, "c(1L, 2L)")

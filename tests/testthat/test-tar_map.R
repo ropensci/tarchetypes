@@ -16,7 +16,7 @@ targets::tar_test("tar_map() return value with unlist = TRUE", {
     unlist = TRUE
   )
   expect_equal(length(out), 4)
-  map(out, ~expect_true(inherits(.x, "tar_target")))
+  map(out, ~ expect_true(inherits(.x, "tar_target")))
 })
 
 targets::tar_test("tar_map() return value with unlist = FALSE", {
@@ -29,8 +29,8 @@ targets::tar_test("tar_map() return value with unlist = FALSE", {
   expect_equal(length(out), 2)
   expect_equal(length(out[[1]]), 2)
   expect_equal(length(out[[2]]), 2)
-  map(out[[1]], ~expect_true(inherits(.x, "tar_target")))
-  map(out[[2]], ~expect_true(inherits(.x, "tar_target")))
+  map(out[[1]], ~ expect_true(inherits(.x, "tar_target")))
+  map(out[[2]], ~ expect_true(inherits(.x, "tar_target")))
 })
 
 targets::tar_test("tar_map() with names turned off", {
@@ -41,7 +41,7 @@ targets::tar_test("tar_map() with names turned off", {
     names = NULL,
     unlist = TRUE
   )
-  names <- unname(map_chr(out, ~.x$settings$name))
+  names <- unname(map_chr(out, ~ .x$settings$name))
   expect_equal(length(names), 4L)
   expect_equal(length(grep("^x_", names)), 2L)
   expect_equal(length(grep("^y_", names)), 2L)
@@ -55,7 +55,7 @@ targets::tar_test("tar_map() with names misspecified", {
     names = "z",
     unlist = TRUE
   )
-  names <- unname(map_chr(out, ~.x$settings$name))
+  names <- unname(map_chr(out, ~ .x$settings$name))
   expect_equal(length(names), 4L)
   expect_equal(length(grep("^x_", names)), 2L)
   expect_equal(length(grep("^y_", names)), 2L)
@@ -109,7 +109,7 @@ targets::tar_test("tar_map(unlist = TRUE) names", {
     targets::tar_target(y, x + a, pattern = map(x)),
     unlist = TRUE
   )
-  exp <- unname(map_chr(out, ~.x$settings$name))
+  exp <- unname(map_chr(out, ~ .x$settings$name))
   expect_equal(names(out), exp)
 })
 
@@ -121,8 +121,8 @@ targets::tar_test("tar_map(unlist = FALSE) names", {
     unlist = FALSE
   )
   expect_equal(sort(names(out)), sort(c("x", "y")))
-  names_x <- unname(map_chr(out$x, ~.x$settings$name))
-  names_y <- unname(map_chr(out$y, ~.x$settings$name))
+  names_x <- unname(map_chr(out$x, ~ .x$settings$name))
+  names_y <- unname(map_chr(out$y, ~ .x$settings$name))
   expect_equal(length(names_x), length(names_y))
   expect_true(all(grepl("^x_", names_x)))
   expect_true(all(grepl("^y_", names_y)))

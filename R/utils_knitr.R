@@ -125,7 +125,9 @@ walk_tidyselect <- function(expr, counter) {
     name <- targets::tar_deparse_safe(expr[[1]], backtick = FALSE)
     if (name %in% tidyselect_names()) {
       targets::tar_warn_validate(
-        "found ", name, "() from tidyselect in a call to tar_load() or ",
+        "found ",
+        name,
+        "() from tidyselect in a call to tar_load() or ",
         "tar_read() in a knitr / R Markdown code chunk. These dependencies ",
         "cannot be detected statically, so they will be ignored."
       )
