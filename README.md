@@ -9,7 +9,6 @@ Targetopia](https://img.shields.io/badge/R_Targetopia-member-blue?style=flat&lab
 [![status](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![check](https://github.com/ropensci/tarchetypes/actions/workflows/check.yaml/badge.svg)](https://github.com/ropensci/tarchetypes/actions?query=workflow%3Acheck)
 [![codecov](https://codecov.io/gh/ropensci/tarchetypes/branch/main/graph/badge.svg?token=3T5DlLwUVl)](https://app.codecov.io/gh/ropensci/tarchetypes)
-[![lint](https://github.com/ropensci/tarchetypes/actions/workflows/lint.yaml/badge.svg)](https://github.com/ropensci/tarchetypes/actions?query=workflow%3Alint)
 
 The `tarchetypes` R package is a collection of target and pipeline
 archetypes for the [`targets`](https://github.com/ropensci/targets)
