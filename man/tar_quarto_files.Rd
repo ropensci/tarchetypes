@@ -16,7 +16,13 @@ current working directory.}
 the default profile will be used. Requires Quarto version 1.2 or higher.
 See \url{https://quarto.org/docs/projects/profiles.html} for details.}
 
-\item{quiet}{Suppress warning and other messages.}
+\item{quiet}{Suppress warning and other messages, from R and also Quarto CLI
+(i.e \code{--quiet} is passed as command line).
+
+\code{quarto.quiet} \R option or \code{R_QUARTO_QUIET} environment variable can be used to globally override a function call
+(This can be useful to debug tool that calls \verb{quarto_*} functions directly).
+
+On Github Actions, it will always be \code{quiet = FALSE}.}
 }
 \value{
 A named list of important file paths in a Quarto project or document:
