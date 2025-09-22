@@ -433,7 +433,14 @@ tar_quarto_rep_rep <- function(
   seed <- as.integer(if_any(anyNA(seeds), NA_integer_, seeds[rep]))
   if_any(anyNA(seed), NULL, targets::tar_seed_set(seed = seed))
   result <- do.call(quarto::quarto_render, args)
-  fs::file_move(temporary_basename, destination_file)
+  # Not the best policy, but it's hard to align Quarto's working directory
+  # policy with that of {targets}.
+  temporary_file <- if_any(
+    file.exists(temporary_file),
+    temporary_file,
+    temporary_basename
+  )
+  fs::file_move(temporary_file, destination_file)
   sort(as.character(fs::path_rel(unlist(destination_file))))
 }
 
