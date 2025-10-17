@@ -11,6 +11,10 @@
 #'   This code must use assignment operators `<-`, `=`, or `->` at the
 #'   top level, but it need not call any functions in `targets`.
 #'   See the example for details.
+#' @param ... Named list of arguments to [targets::tar_target()]
+#'   except for `name` and `command`.
+#'   `tar_translate()` applies these arguments to all targets
+#'   it generates from `code`.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({ # tar_dir() runs code from a temporary directory.

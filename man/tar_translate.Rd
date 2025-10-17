@@ -12,6 +12,11 @@ values to variables.
 This code must use assignment operators \verb{<-}, \code{=}, or \verb{->} at the
 top level, but it need not call any functions in \code{targets}.
 See the example for details.}
+
+\item{...}{Named list of arguments to \code{\link[targets:tar_target]{targets::tar_target()}}
+except for \code{name} and \code{command}.
+\code{tar_translate()} applies these arguments to all targets
+it generates from \code{code}.}
 }
 \value{
 A list of \code{tar_target()} objects.
