@@ -1,5 +1,41 @@
+#' @title Translate expression to pipeline
 #' @export
 #' @family Domain-specific languages for pipeline construction
+#' @description Translate an ordinary non-`targets` imperative expression
+#'   into a declarative list of targets for a pipeline.
+#' @return A list of `tar_target()` objects.
+#'   See the "Target objects" section for background.
+#' @inheritSection tar_map Target objects
+#' @param code An expression with ordinary R statements that assign
+#'   values to variables.
+#'   This code must use assignment operators `<-`, `=`, or `->` at the
+#'   top level, but it need not call any functions in `targets`.
+#'   See the example for details.
+#' @examples
+#' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
+#' targets::tar_dir({ # tar_dir() runs code from a temporary directory.
+#' write.csv(airquality, "data.csv", row.names = FALSE)
+#' targets::tar_script({
+#'   library(tarchetypes)
+#'   tar_option_set(packages = c("readr", "dplyr", "ggplot2"))
+#'   tar_translate({
+#'     data <- airquality |>
+#'       filter(!is.na(Ozone)) |>
+#'       tar_target()
+#'
+#'     model = lm(Ozone ~ Temp, data) |>
+#'       coefficients() |>
+#'       tar_target()
+#'
+#'     plot <- ggplot(data) +
+#'           geom_point(aes(x = Temp, y = Ozone)) +
+#'           geom_abline(intercept = model[1], slope = model[2]) +
+#'           theme_gray(24)
+#'   }, memory = "transient")
+#' })
+#' targets::tar_make()
+#' })
+#' }
 tar_translate <- function(code, ...) {
   statements <- tar_translate_statements(match.call()$code)
   envir <- targets::tar_option_get("envir")
