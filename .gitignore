@@ -19,3 +19,5 @@ report.Rmd
 .quarto
 /.quarto/
 revdep
+
+**/*.quarto_ipynb
