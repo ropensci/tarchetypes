@@ -16,6 +16,7 @@ targets::tar_test("tar_tangle() manifest", {
   expect_equal(sort(manifest$name), sort(c("file", "data", "model")))
   expect_equal(manifest$format[manifest$name == "file"], "file")
   expect_equal(manifest$format[manifest$name == "model"], "qs")
+  expect_true(grepl("^format_custom", manifest$format[manifest$name == "data"]))
   expect_equal(manifest$deployment[manifest$name == "model"], "worker")
   expect_equal(manifest$deployment[manifest$name != "model"], rep("main", 2L))
   expect_equal(manifest$storage[manifest$name == "data"], "worker")

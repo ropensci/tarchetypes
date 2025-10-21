@@ -20,7 +20,8 @@ abcde
 #| deployment: main
 #| storage: worker
 #| cue: tar_cue(mode = "never", file = FALSE)
-data <- read.csv(file)
+#| format: tar_format()
+read.csv(file) -> data
 ```
 
 ```{python}
