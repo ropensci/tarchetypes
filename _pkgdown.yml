@@ -91,3 +91,4 @@ reference:
   contents:
   - 'tar_assign'
   - 'tar_plan'
+  - 'tar_tangle'
