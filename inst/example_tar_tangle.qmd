@@ -11,7 +11,7 @@ library(tarchetypes)
 #| format: file
 #| deployment: main
 #| storage: main
-file <- "data.csv"
+file = "data.csv"
 ```
 
 abcde

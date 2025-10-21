@@ -122,8 +122,8 @@ tar_tangle_target <- function(name, commands, options) {
 tar_tangle_commands <- function(code) {
   code <- as.list(parse(text = code))
   code <- code[vapply(code, tar_tangle_valid, FUN.VALUE = logical(1L))]
-  commands <- lapply(code, tar_tangle_command)
-  names(commands) <- lapply(code, tar_tangle_name)
+  commands <- lapply(code, function(x) x[[3L]])
+  names(commands) <- lapply(code, function(x) x[[2L]])
   commands
 }
 
@@ -132,25 +132,7 @@ tar_tangle_valid <- function(statement) {
   is.character(operator) &&
     length(operator) == 1L &&
     !anyNA(operator) &&
-    operator %in% c("<-", "=", "->")
-}
-
-tar_tangle_name <- function(statement) {
-  operator <- as.character(statement[[1L]])
-  if (operator %in% c("<-", "=")) {
-    statement[[2L]]
-  } else {
-    statement[[3L]]
-  }
-}
-
-tar_tangle_command <- function(statement) {
-  operator <- as.character(statement[[1L]])
-  if (operator %in% c("<-", "=")) {
-    statement[[3L]]
-  } else {
-    statement[[2L]]
-  }
+    operator %in% c("<-", "=")
 }
 
 tar_tangle_options <- function(options) {
