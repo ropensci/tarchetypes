@@ -49,7 +49,7 @@ named by the new target names.}
 other strings when creating names of targets.}
 }
 \value{
-A list of new target objects. If \code{unlist} is \code{FALSE},
+A list of new target definition objects. If \code{unlist} is \code{FALSE},
 the list is nested and sub-lists are named and grouped by the original
 input targets. If \code{unlist = TRUE}, the return value is a flat list of
 targets named by the new target names.

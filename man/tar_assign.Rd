@@ -86,6 +86,7 @@ targets::tar_make()
 }
 \seealso{
 Other Domain-specific languages for pipeline construction: 
+\code{\link{tar_tangle}()},
 \code{\link{tar_translate}()}
 }
 \concept{Domain-specific languages for pipeline construction}
