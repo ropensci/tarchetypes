@@ -48,7 +48,7 @@
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 #' targets::tar_dir({  # tar_dir() runs code from a temporary directory.
-#' readr::write_csv(airquality, "data.csv")
+#' write.csv(airquality, "data.csv")
 #' lines <- c(
 #'   "---",
 #'   "title: \"Example pipeline\"",

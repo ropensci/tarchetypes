@@ -59,7 +59,7 @@ See the example in this help file for a demonstration.
 \examples{
 if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {
 targets::tar_dir({  # tar_dir() runs code from a temporary directory.
-readr::write_csv(airquality, "data.csv")
+write.csv(airquality, "data.csv")
 lines <- c(
   "---",
   "title: \"Example pipeline\"",
@@ -109,7 +109,6 @@ The Computer Journal. 27 (2). British Computer Society: 97-11.
 }
 \seealso{
 Other Domain-specific languages for pipeline construction: 
-\code{\link{tar_assign}()},
-\code{\link{tar_translate}()}
+\code{\link{tar_assign}()}
 }
 \concept{Domain-specific languages for pipeline construction}
