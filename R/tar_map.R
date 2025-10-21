@@ -21,7 +21,7 @@
 #'   and the design specification at
 #'   <https://books.ropensci.org/targets-design/>
 #'   details the structure and composition of target objects.
-#' @return A list of new target objects. If `unlist` is `FALSE`,
+#' @return A list of new target definition objects. If `unlist` is `FALSE`,
 #'   the list is nested and sub-lists are named and grouped by the original
 #'   input targets. If `unlist = TRUE`, the return value is a flat list of
 #'   targets named by the new target names.

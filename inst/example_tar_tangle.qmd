@@ -1,0 +1,38 @@
+---
+title: "Example pipeline"
+---
+
+```{r}
+library(targets)
+library(tarchetypes)
+```
+
+```{r}
+#| format: file
+#| deployment: main
+#| storage: main
+file = "data.csv"
+```
+
+abcde
+```{r}
+#| packages: [targets, rlang]
+#| deployment: main
+#| storage: worker
+#| cue: tar_cue(mode = "never", file = FALSE)
+#| format: tar_format()
+read.csv(file) -> data
+```
+
+```{python}
+1 + 1
+```
+
+```{r, format="qs"}
+#| deployment: worker
+#| storage: main
+model <- {
+  out <- stats::lm(Ozone ~ Temp, data)
+  stats::coefficients(out)
+}
+```
