@@ -15,12 +15,19 @@
 #'   To invalidate dynamic branches at regular intervals,
 #'   it is recommended to use `targets::tar_older()` in combination
 #'   with `targets::tar_invalidate()` right before calling `tar_make()`.
-#'   For example,
-#'   `tar_invalidate(any_of(tar_older(Sys.time - as.difftime(1, units = "weeks"))))` # nolint
+#'   For example, the call:
+#'
+#'       tar_invalidate(
+#'         any_of(
+#'           tar_older(Sys.time - as.difftime(1, units = "weeks"))
+#'         )
+#'       )
+#'
 #'   invalidates all targets more than a week old. Then, the next `tar_make()`
 #'   will rerun those targets.
-#' @return A target object. See the "Target objects" section for background.
-#' @inheritSection tar_map Target objects
+#' @return A target definition object.
+#'   See the "Target definition objects" section for background.
+#' @inheritSection tar_map Target definition objects
 #' @inheritParams tar_cue_age_raw
 #' @inheritParams targets::tar_target
 #' @param command R code to run the target and return a value.

@@ -4,10 +4,10 @@
 #' @description Create a pair of targets: one to
 #'   track a file with `format = "file"`, and another
 #'   to read the file.
-#' @return A list of two new target objects to track a file
+#' @return A list of two new target definition objects to track a file
 #'   and read the contents.
-#'   See the "Target objects" section for background.
-#' @inheritSection tar_map Target objects
+#'   See the "Target definition objects" section for background.
+#' @inheritSection tar_map Target definition objects
 #' @inheritParams targets::tar_target
 #' @param command R code that runs in the `format = "file"` target
 #'   and returns the file to be tracked.

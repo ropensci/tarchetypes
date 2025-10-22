@@ -5,16 +5,22 @@
 #' @details Allows targets with just targets and commands
 #'   to be written in the pipeline as `target = command` instead of
 #'   `tar_target(target, command)`. Also supports ordinary
-#'   target objects if they are unnamed.
+#'   target definition objects if they are unnamed.
 #'   `tar_plan(x = 1, y = 2, tar_target(z, 3), tar_render(r, "r.Rmd"))`
-#'   is equivalent to
-#'   `list(tar_target(x, 1), tar_target(y, 2), tar_target(z, 3), tar_render(r, "r.Rmd"))`. # nolint
+#'   is equivalent to:
+#'
+#'       list(
+#'         tar_target(x, 1),
+#'         tar_target(y, 2),
+#'         tar_target(z, 3),
+#'         tar_render(r, "r.Rmd")
+#'       )
 #' @return A list of `tar_target()` objects.
-#'   See the "Target objects" section for background.
-#' @inheritSection tar_map Target objects
+#'   See the "Target definition objects" section for background.
+#' @inheritSection tar_map Target definition objects
 #' @param ... Named and unnamed targets. All named targets must follow
 #'   the `drake`-plan-like `target = command` syntax, and all unnamed
-#'   arguments must be explicit calls to create target objects,
+#'   arguments must be explicit calls to create target definition objects,
 #'   e.g. `tar_target()`, target factories like [tar_render()], or similar.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {

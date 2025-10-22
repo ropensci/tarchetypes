@@ -9,9 +9,9 @@
 #'   and an unevaluated expression for `command`,
 #'   whereas [tar_map_rep_raw()] expects a character string for `name`
 #'   and an evaluated expression object for `command`.
-#' @return A list of new target objects.
-#'   See the "Target objects" section for background.
-#' @inheritSection tar_map Target objects
+#' @return A list of new target definition objects.
+#'   See the "Target definition objects" section for background.
+#' @inheritSection tar_map Target definition objects
 #' @inheritSection tar_rep Replicate-specific seeds
 #' @inheritParams tar_map
 #' @inheritParams tar_rep

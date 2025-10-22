@@ -41,7 +41,7 @@
 #'   `quarto::quarto_render("your_report.qmd", execute_dir = getwd())`
 #'   without using `targets` at all. Isolating errors this way
 #'   makes them much easier to solve.
-#' @return A target object with `format = "file"`.
+#' @return A target definition object with `format = "file"`.
 #'   When this target runs, it returns a character vector
 #'   of file paths: the rendered documents, the Quarto source files,
 #'   and other input and output files.
@@ -52,8 +52,8 @@
 #'   All returned paths are *relative* paths to ensure portability
 #'   (so that the project can be moved from one file system to another
 #'   without invalidating the target).
-#'   See the "Target objects" section for background.
-#' @inheritSection tar_map Target objects
+#'   See the "Target definition objects" section for background.
+#' @inheritSection tar_map Target definition objects
 #' @inheritParams targets::tar_target
 #' @inheritParams quarto::quarto_render
 #' @inheritParams tar_render

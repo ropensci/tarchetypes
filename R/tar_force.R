@@ -18,8 +18,8 @@
 #' @return A list of 2 targets objects: one to indicate whether the custom
 #'   condition is met, and another to respond to it and do your
 #'   actual work.
-#'   See the "Target objects" section for background.
-#' @inheritSection tar_map Target objects
+#'   See the "Target definition objects" section for background.
+#' @inheritSection tar_map Target definition objects
 #' @inheritParams targets::tar_target
 #' @param force R code for the condition that forces a build.
 #'   If it evaluates to `TRUE`, then your work will run during `tar_make()`.

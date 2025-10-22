@@ -75,8 +75,8 @@
 #'   It is always good practice to check your pipeline with
 #'   [targets::tar_manifest()] and [targets::tar_visnetwork()]
 #'   before running it with [targets::tar_make()].
-#' @return A list of new target objects.
-#'   See the "Target objects" section for background.
+#' @return A list of new target definition objects.
+#'   See the "Target definition objects" section for background.
 #' @param path File path to the literate programming source file.
 #'   The file can be a Quarto or R Markdown document.
 #' @references

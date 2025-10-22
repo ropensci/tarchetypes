@@ -21,8 +21,8 @@
 #'   For details on specialized storage formats, open the help file of the
 #'   `targets::tar_target()` function and read about the `format` argument.
 #' @return A `tar_target()` object with the eponymous storage format.
-#'   See the "Target objects" section for background.
-#' @inheritSection tar_map Target objects
+#'   See the "Target definition objects" section for background.
+#' @inheritSection tar_map Target definition objects
 #' @inheritParams targets::tar_target
 #' @inheritParams tar_format_nanoparquet
 #' @examples
@@ -230,8 +230,8 @@ tar_nanoparquet <- function(
 #'   For details on specialized storage formats, open the help file of the
 #'   `targets::tar_target()` function and read about the `format` argument.
 #' @return A `tar_target()` object with the eponymous storage format.
-#'   See the "Target objects" section for background.
-#' @inheritSection tar_map Target objects
+#'   See the "Target definition objects" section for background.
+#' @inheritSection tar_map Target definition objects
 #' @inheritParams targets::tar_target
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {

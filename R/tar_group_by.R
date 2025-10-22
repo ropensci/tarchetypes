@@ -4,11 +4,11 @@
 #' @description Create a target that outputs a grouped data frame
 #'   with `dplyr::group_by()` and `targets::tar_group()`. Downstream
 #'   dynamic branching targets will iterate over the groups of rows.
-#' @return A target object to generate a grouped data frame
+#' @return A target definition object to generate a grouped data frame
 #'   to allows downstream dynamic targets to branch over the
 #'   groups of rows.
-#'   See the "Target objects" section for background.
-#' @inheritSection tar_map Target objects
+#'   See the "Target definition objects" section for background.
+#' @inheritSection tar_map Target definition objects
 #' @inheritParams targets::tar_target
 #' @param ... Symbols, variables in the output data frame to group by.
 #' @examples

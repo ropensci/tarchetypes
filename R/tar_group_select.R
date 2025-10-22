@@ -6,11 +6,11 @@
 #'   Unlike `tar_group_by()`, `tar_group_select()`
 #'   expects you to select grouping variables using `tidyselect` semantics.
 #'   Downstream dynamic branching targets will iterate over the groups of rows.
-#' @return A target object to generate a grouped data frame
+#' @return A target definition object to generate a grouped data frame
 #'   to allows downstream dynamic targets to branch over the
 #'   groups of rows.
-#'   See the "Target objects" section for background.
-#' @inheritSection tar_map Target objects
+#'   See the "Target definition objects" section for background.
+#' @inheritSection tar_map Target definition objects
 #' @inheritParams targets::tar_target
 #' @param by Tidyselect semantics to specify variables to group over.
 #'   Alternatively, you can supply a character vector.

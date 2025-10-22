@@ -5,11 +5,12 @@
 #'   `tar_hook_before()` expects unevaluated expressions for the `hook` and
 #'   `names` arguments, whereas `tar_hook_before_raw()` expects
 #'   evaluated expression objects.
-#' @return A flattened list of target objects with the hooks applied.
+#' @return A flattened list of target definition objects with the hooks applied.
 #'   Even if the input target list had a nested structure,
-#'   the return value is a simple list where each element is a target object.
+#'   the return value is a simple list where each
+#'   element is a target definition object.
 #'   All hook functions remove the nested structure of the input target list.
-#' @inheritSection tar_map Target objects
+#' @inheritSection tar_map Target definition objects
 #' @param hook R code to insert.
 #'   `tar_hook_before()` expects unevaluated expressions for the `hook` and
 #'   `names` arguments, whereas `tar_hook_before_raw()` expects
@@ -33,10 +34,10 @@
 #'   if you have a specialized use case and you know what you are doing.
 #' @param envir Optional environment to construct the quosure for the `names`
 #'   argument to select names.
-#' @param targets A list of target objects. The input target list
+#' @param targets A list of target definition objects. The input target list
 #'   can be arbitrarily nested, but it must consist entirely of target
 #'   objects. In addition, the return value is a simple list
-#'   where each element is a target object.
+#'   where each element is a target definition object.
 #'   All hook functions remove the nested structure of the input target list.
 #' @examples
 #' if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {

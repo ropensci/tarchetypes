@@ -19,9 +19,9 @@
 #'   `command2`, and `command2` dynamically maps over
 #'   these arguments in batches.
 #' @inheritSection tar_rep Replicate-specific seeds
-#' @return A list of new target objects.
-#'   See the "Target objects" section for background.
-#' @inheritSection tar_map Target objects
+#' @return A list of new target definition objects.
+#'   See the "Target definition objects" section for background.
+#' @inheritSection tar_map Target definition objects
 #' @inheritParams tar_map_rep
 #' @inheritParams tar_rep2
 #' @inheritParams tar_map

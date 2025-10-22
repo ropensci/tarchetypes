@@ -43,7 +43,7 @@
 #'     * Special/optional input/output files may not be detected in all cases.
 #'     * [tar_render()] and friends are for local files only. They do not
 #'       integrate with the cloud storage capabilities of `targets`.
-#' @return A target object with `format = "file"`.
+#' @return A target definition object with `format = "file"`.
 #'   When this target runs, it returns a character vector
 #'   of file paths: the rendered document, the source file,
 #'   and then the `*_files/` directory if it exists.
@@ -51,8 +51,8 @@
 #'   all returned paths are *relative* paths to ensure portability
 #'   (so that the project can be moved from one file system to another
 #'   without invalidating the target).
-#'   See the "Target objects" section for background.
-#' @inheritSection tar_map Target objects
+#'   See the "Target definition objects" section for background.
+#' @inheritSection tar_map Target definition objects
 #' @inheritParams targets::tar_target
 #' @inheritParams rmarkdown::render
 #' @param name Name of the target.
@@ -77,8 +77,21 @@
 #'   `tar_make()`, not when the target is defined. That means, for
 #'   example, you can use upstream targets as parameters of
 #'   parameterized R Markdown reports.
-#'   `tar_render(your_target, "your_report.Rmd", params = list(your_param = your_target))` # nolint
-#'   will run `rmarkdown::render("your_report.Rmd", params = list(your_param = your_target))`. # nolint
+#'   The target:
+#'
+#'       tar_render(
+#'         your_target,
+#'        "your_report.Rmd",
+#'         params = list(your_param = your_target)
+#'       )
+#'
+#'   will run:
+#'
+#'       rmarkdown::render(
+#'         "your_report.Rmd",
+#'         params = list(your_param = your_target)
+#'       )
+#'
 #'   For parameterized reports, it is recommended to supply a distinct
 #'   `output_file` argument to each `tar_render()` call
 #'   and set useful defaults for parameters in the R Markdown source.

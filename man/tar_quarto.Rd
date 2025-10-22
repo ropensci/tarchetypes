@@ -270,7 +270,7 @@ lists all the targets whose descriptions start with the character
 string \code{"survival model"}.}
 }
 \value{
-A target object with \code{format = "file"}.
+A target definition object with \code{format = "file"}.
 When this target runs, it returns a character vector
 of file paths: the rendered documents, the Quarto source files,
 and other input and output files.
@@ -281,7 +281,7 @@ and you can see these files with \code{\link[=tar_quarto_files]{tar_quarto_files
 All returned paths are \emph{relative} paths to ensure portability
 (so that the project can be moved from one file system to another
 without invalidating the target).
-See the "Target objects" section for background.
+See the "Target definition objects" section for background.
 }
 \description{
 Shorthand to include a Quarto project in a
@@ -344,23 +344,25 @@ detect target \code{x}.
 integrate with the cloud storage capabilities of \code{targets}.
 }
 
-\section{Target objects}{
+\section{Target definition objects}{
 
 Most \code{tarchetypes} functions are target factories,
-which means they return target objects
-or lists of target objects.
-Target objects represent skippable steps of the analysis pipeline
+which means they return target definition objects
+or lists of target definition objects.
+target definition objects represent
+skippable steps of the analysis pipeline
 as described at \url{https://books.ropensci.org/targets/}.
 Please read the walkthrough at
 \url{https://books.ropensci.org/targets/walkthrough.html}
-to understand the role of target objects in analysis pipelines.
+to understand the role of target definition
+objects in analysis pipelines.
 
 For developers,
 \url{https://wlandau.github.io/targetopia/contributing.html#target-factories}
 explains target factories (functions like this one which generate targets)
 and the design specification at
 \url{https://books.ropensci.org/targets-design/}
-details the structure and composition of target objects.
+details the structure and composition of target definition objects.
 }
 
 \examples{

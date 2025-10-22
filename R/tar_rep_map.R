@@ -4,9 +4,9 @@
 #' @family branching
 #' @description Use [tar_rep2()] instead.
 #' @details Deprecated in version 0.4.0, 2021-12-06.
-#' @return A new target object to perform batched computation.
-#'   See the "Target objects" section for background.
-#' @inheritSection tar_map Target objects
+#' @return A new target definition object to perform batched computation.
+#'   See the "Target definition objects" section for background.
+#' @inheritSection tar_map Target definition objects
 #' @inheritParams targets::tar_target
 #' @param ... Symbols to name one or more upstream batched targets
 #'   created by [tar_rep()].

@@ -26,7 +26,8 @@ For complicated objects, consider using \code{quote()} when
 you define \code{values}, as shown at
 \url{https://github.com/ropensci/tarchetypes/discussions/105}.}
 
-\item{...}{One or more target objects or list of target objects.
+\item{...}{One or more target definition objects or
+list of target definition objects.
 Lists can be arbitrarily nested, as in \code{list()}.}
 
 \item{names}{Subset of \code{names(values)}
@@ -53,33 +54,36 @@ A list of new target definition objects. If \code{unlist} is \code{FALSE},
 the list is nested and sub-lists are named and grouped by the original
 input targets. If \code{unlist = TRUE}, the return value is a flat list of
 targets named by the new target names.
-See the "Target objects" section for background.
+See the "target definition objects" section for background.
 }
 \description{
-Define multiple new targets based on existing target objects.
+Define multiple new targets based on
+existing target definition objects.
 }
 \details{
 \code{tar_map()} creates collections of new
 targets by iterating over a list of arguments
 and substituting symbols into commands and pattern statements.
 }
-\section{Target objects}{
+\section{Target definition objects}{
 
 Most \code{tarchetypes} functions are target factories,
-which means they return target objects
-or lists of target objects.
-Target objects represent skippable steps of the analysis pipeline
+which means they return target definition objects
+or lists of target definition objects.
+target definition objects represent
+skippable steps of the analysis pipeline
 as described at \url{https://books.ropensci.org/targets/}.
 Please read the walkthrough at
 \url{https://books.ropensci.org/targets/walkthrough.html}
-to understand the role of target objects in analysis pipelines.
+to understand the role of target definition
+objects in analysis pipelines.
 
 For developers,
 \url{https://wlandau.github.io/targetopia/contributing.html#target-factories}
 explains target factories (functions like this one which generate targets)
 and the design specification at
 \url{https://books.ropensci.org/targets-design/}
-details the structure and composition of target objects.
+details the structure and composition of target definition objects.
 }
 
 \examples{

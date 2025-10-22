@@ -3,9 +3,9 @@
 #' @family Domain-specific languages for pipeline construction
 #' @description An assignment-based domain-specific language for pipeline
 #'   construction.
-#' @return A list of `tar_target()` objects.
-#'   See the "Target objects" section for background.
-#' @inheritSection tar_map Target objects
+#' @return A list of target definition objects.
+#'   See the "Target definition objects" section for background.
+#' @inheritSection tar_map Target definition objects
 #' @param targets An expression with special syntax to define a
 #'   collection of targets in a pipeline.
 #'   Example: `tar_assign(x <- tar_target(get_data()))` is equivalent

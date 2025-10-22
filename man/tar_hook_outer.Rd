@@ -22,10 +22,10 @@ tar_hook_outer_raw(
 )
 }
 \arguments{
-\item{targets}{A list of target objects. The input target list
+\item{targets}{A list of target definition objects. The input target list
 can be arbitrarily nested, but it must consist entirely of target
 objects. In addition, the return value is a simple list
-where each element is a target object.
+where each element is a target definition object.
 All hook functions remove the nested structure of the input target list.}
 
 \item{hook}{R code to wrap each target's command.
@@ -60,9 +60,10 @@ if you have a specialized use case and you know what you are doing.}
 argument to select names.}
 }
 \value{
-A flattened list of target objects with the hooks applied.
+A flattened list of target definition objects with the hooks applied.
 Even if the input target list had a nested structure,
-the return value is a simple list where each element is a target object.
+the return value is a simple list where each element
+is a target definition object.
 All hook functions remove the nested structure of the input target list.
 }
 \description{
@@ -77,23 +78,25 @@ must contain the special placeholder symbol \code{.x}
 so \code{tar_hook_outer()} knows where to insert the original command
 of the target.
 }
-\section{Target objects}{
+\section{Target definition objects}{
 
 Most \code{tarchetypes} functions are target factories,
-which means they return target objects
-or lists of target objects.
-Target objects represent skippable steps of the analysis pipeline
+which means they return target definition objects
+or lists of target definition objects.
+target definition objects represent
+skippable steps of the analysis pipeline
 as described at \url{https://books.ropensci.org/targets/}.
 Please read the walkthrough at
 \url{https://books.ropensci.org/targets/walkthrough.html}
-to understand the role of target objects in analysis pipelines.
+to understand the role of target definition
+objects in analysis pipelines.
 
 For developers,
 \url{https://wlandau.github.io/targetopia/contributing.html#target-factories}
 explains target factories (functions like this one which generate targets)
 and the design specification at
 \url{https://books.ropensci.org/targets-design/}
-details the structure and composition of target objects.
+details the structure and composition of target definition objects.
 }
 
 \examples{

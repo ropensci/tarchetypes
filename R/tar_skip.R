@@ -9,10 +9,10 @@
 #'   even if the target does not exist yet. This behavior differs from
 #'   `tar_cue(mode = "never")`, which still runs if the target does not exist.
 #' @inheritParams targets::tar_target
-#' @return A target object with `targets::tar_cancel(your_condition)` inserted
-#'   into the command.
-#'   See the "Target objects" section for background.
-#' @inheritSection tar_map Target objects
+#' @return A target definition object with
+#'   `targets::tar_cancel(your_condition)` inserted into the command.
+#'   See the "Target definition objects" section for background.
+#' @inheritSection tar_map Target definition objects
 #' @param skip R code for the skipping condition. If it evaluates to `TRUE`
 #'   during `tar_make()`, the target will cancel itself.
 #' @param tidy_eval Whether to invoke tidy evaluation

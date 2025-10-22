@@ -11,8 +11,8 @@ tar_tangle(path)
 The file can be a Quarto or R Markdown document.}
 }
 \value{
-A list of new target objects.
-See the "Target objects" section for background.
+A list of new target definition objects.
+See the "Target definition objects" section for background.
 }
 \description{
 Convert a literate programming source file

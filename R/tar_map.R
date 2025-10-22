@@ -1,31 +1,34 @@
 #' @title Static branching.
 #' @export
 #' @family static branching
-#' @description Define multiple new targets based on existing target objects.
+#' @description Define multiple new targets based on
+#'   existing target definition objects.
 #' @details `tar_map()` creates collections of new
 #'   targets by iterating over a list of arguments
 #'   and substituting symbols into commands and pattern statements.
-#' @section Target objects:
+#' @section Target definition objects:
 #'   Most `tarchetypes` functions are target factories,
-#'   which means they return target objects
-#'   or lists of target objects.
-#'   Target objects represent skippable steps of the analysis pipeline
+#'   which means they return target definition objects
+#'   or lists of target definition objects.
+#'   target definition objects represent
+#'   skippable steps of the analysis pipeline
 #'   as described at <https://books.ropensci.org/targets/>.
 #'   Please read the walkthrough at
 #'   <https://books.ropensci.org/targets/walkthrough.html>
-#'   to understand the role of target objects in analysis pipelines.
+#'   to understand the role of target definition
+#'   objects in analysis pipelines.
 #'
 #'   For developers,
 #'   <https://wlandau.github.io/targetopia/contributing.html#target-factories>
 #'   explains target factories (functions like this one which generate targets)
 #'   and the design specification at
 #'   <https://books.ropensci.org/targets-design/>
-#'   details the structure and composition of target objects.
+#'   details the structure and composition of target definition objects.
 #' @return A list of new target definition objects. If `unlist` is `FALSE`,
 #'   the list is nested and sub-lists are named and grouped by the original
 #'   input targets. If `unlist = TRUE`, the return value is a flat list of
 #'   targets named by the new target names.
-#'   See the "Target objects" section for background.
+#'   See the "target definition objects" section for background.
 #' @param values Named list or data frame with values to iterate over.
 #'   The names are the names of symbols in the commands and pattern
 #'   statements, and the elements are values that get substituted
@@ -37,7 +40,8 @@
 #'   For complicated objects, consider using `quote()` when
 #'   you define `values`, as shown at
 #'   <https://github.com/ropensci/tarchetypes/discussions/105>.
-#' @param ... One or more target objects or list of target objects.
+#' @param ... One or more target definition objects or
+#'   list of target definition objects.
 #'   Lists can be arbitrarily nested, as in `list()`.
 #' @param names Subset of `names(values)`
 #'   used to generate the suffixes in the names of the new targets.

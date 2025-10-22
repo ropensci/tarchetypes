@@ -8,17 +8,18 @@
 #'   and `command` arguments, whereas [tar_combine_raw()]
 #'   uses a character string for `name` and an evaluated expression object
 #'   for `command`. See the examples for details.
-#' @return A new target object to combine the return values
+#' @return A new target definition object to combine the return values
 #'   from the upstream targets.
-#'   See the "Target objects" section for background.
-#' @inheritSection tar_map Target objects
+#'   See the "Target definition objects" section for background.
+#' @inheritSection tar_map Target definition objects
 #' @inheritParams targets::tar_target
 #' @param name Name of the new target.
 #'   [tar_combine()] expects unevaluated expressions for the `name`,
 #'   and `command` arguments, whereas [tar_combine_raw()]
 #'   uses a character string for `name` and an evaluated expression object
 #'   for `command`. See the examples for details.
-#' @param ... One or more target objects or list of target objects.
+#' @param ... One or more target definition objects or
+#'   list of target definition objects.
 #'   Lists can be arbitrarily nested, as in `list()`.
 #' @param command R command to aggregate the targets. Must contain
 #'   `!!!.x` where the arguments are to be inserted,

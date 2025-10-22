@@ -58,7 +58,8 @@ and \code{command} arguments, whereas \code{\link[=tar_combine_raw]{tar_combine_
 uses a character string for \code{name} and an evaluated expression object
 for \code{command}. See the examples for details.}
 
-\item{...}{One or more target objects or list of target objects.
+\item{...}{One or more target definition objects or
+list of target definition objects.
 Lists can be arbitrarily nested, as in \code{list()}.}
 
 \item{command}{R command to aggregate the targets. Must contain
@@ -284,9 +285,9 @@ lists all the targets whose descriptions start with the character
 string \code{"survival model"}.}
 }
 \value{
-A new target object to combine the return values
+A new target definition object to combine the return values
 from the upstream targets.
-See the "Target objects" section for background.
+See the "Target definition objects" section for background.
 }
 \description{
 Aggregate the results of upstream targets
@@ -297,23 +298,25 @@ and \code{command} arguments, whereas \code{\link[=tar_combine_raw]{tar_combine_
 uses a character string for \code{name} and an evaluated expression object
 for \code{command}. See the examples for details.
 }
-\section{Target objects}{
+\section{Target definition objects}{
 
 Most \code{tarchetypes} functions are target factories,
-which means they return target objects
-or lists of target objects.
-Target objects represent skippable steps of the analysis pipeline
+which means they return target definition objects
+or lists of target definition objects.
+target definition objects represent
+skippable steps of the analysis pipeline
 as described at \url{https://books.ropensci.org/targets/}.
 Please read the walkthrough at
 \url{https://books.ropensci.org/targets/walkthrough.html}
-to understand the role of target objects in analysis pipelines.
+to understand the role of target definition
+objects in analysis pipelines.
 
 For developers,
 \url{https://wlandau.github.io/targetopia/contributing.html#target-factories}
 explains target factories (functions like this one which generate targets)
 and the design specification at
 \url{https://books.ropensci.org/targets-design/}
-details the structure and composition of target objects.
+details the structure and composition of target definition objects.
 }
 
 \examples{

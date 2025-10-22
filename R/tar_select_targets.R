@@ -1,12 +1,12 @@
-#' @title Select target objects from a target list
+#' @title Select target definition objects from a target list
 #' @export
 #' @family target selection
-#' @description Select target objects from a target list.
-#' @return A list of target objects. See the "Target objects" section
-#'   of this help file.
-#' @inheritSection tar_map Target objects
-#' @param targets A list of target objects as described in the
-#'   "Target objects" section. It does not matter how nested
+#' @description Select target definition objects from a target list.
+#' @return A list of target definition objects.
+#'   See the "Target definition objects" section of this help file.
+#' @inheritSection tar_map Target definition objects
+#' @param targets A list of target definition objects as described in the
+#'   "Target definition objects" section. It does not matter how nested
 #'   the list is as long as the only leaf nodes are targets.
 #' @param ... One or more comma-separated `tidyselect` expressions,
 #'   e.g. `starts_with("prefix")`. Just like `...` in `dplyr::select()`.

@@ -7,11 +7,11 @@
 #'   the number of rows you supply to `size` (plus the remainder
 #'   in a group of its own, if applicable.) The total number of groups
 #'   varies.
-#' @return A target object to generate a grouped data frame
+#' @return A target definition object to generate a grouped data frame
 #'   to allows downstream dynamic targets to branch over the
 #'   groups of rows.
-#'   See the "Target objects" section for background.
-#' @inheritSection tar_map Target objects
+#'   See the "Target definition objects" section for background.
+#' @inheritSection tar_map Target definition objects
 #' @inheritParams targets::tar_target
 #' @param size Positive integer, maximum number of rows in each group.
 #' @examples

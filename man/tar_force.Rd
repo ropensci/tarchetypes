@@ -272,7 +272,7 @@ string \code{"survival model"}.}
 A list of 2 targets objects: one to indicate whether the custom
 condition is met, and another to respond to it and do your
 actual work.
-See the "Target objects" section for background.
+See the "Target definition objects" section for background.
 }
 \description{
 Create a target that always runs if a user-defined
@@ -292,23 +292,25 @@ Because the upstream target always runs,
 show both targets as outdated. However, \code{tar_make()} will still
 skip the downstream one if the upstream custom condition is not met.
 }
-\section{Target objects}{
+\section{Target definition objects}{
 
 Most \code{tarchetypes} functions are target factories,
-which means they return target objects
-or lists of target objects.
-Target objects represent skippable steps of the analysis pipeline
+which means they return target definition objects
+or lists of target definition objects.
+target definition objects represent
+skippable steps of the analysis pipeline
 as described at \url{https://books.ropensci.org/targets/}.
 Please read the walkthrough at
 \url{https://books.ropensci.org/targets/walkthrough.html}
-to understand the role of target objects in analysis pipelines.
+to understand the role of target definition
+objects in analysis pipelines.
 
 For developers,
 \url{https://wlandau.github.io/targetopia/contributing.html#target-factories}
 explains target factories (functions like this one which generate targets)
 and the design specification at
 \url{https://books.ropensci.org/targets-design/}
-details the structure and composition of target objects.
+details the structure and composition of target definition objects.
 }
 
 \examples{

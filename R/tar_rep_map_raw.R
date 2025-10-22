@@ -5,10 +5,10 @@
 #' @keywords internal
 #' @description Deprecated. Use [tar_rep2_raw()] instead.
 #' @details Deprecated in version 0.4.0, 2021-12-06.
-#' @return A new target object to perform batched computation
+#' @return A new target definition object to perform batched computation
 #'   downstream of [tar_rep()].
-#'   See the "Target objects" section for background.
-#' @inheritSection tar_map Target objects
+#'   See the "Target definition objects" section for background.
+#' @inheritSection tar_map Target definition objects
 #' @inheritParams targets::tar_target
 #' @param targets Character vector of names of upstream batched targets
 #'   created by [tar_rep()].

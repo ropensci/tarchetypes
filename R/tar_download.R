@@ -11,11 +11,12 @@
 #'   or last-modified time stamps change. The downstream target
 #'   depends on the upstream one, downloads the files,
 #'   and tracks them using `format = "file"`.
-#' @return A list of two target objects, one upstream and one downstream.
+#' @return A list of two target definition objects,
+#'   one upstream and one downstream.
 #'   The upstream one watches a URL for changes, and the downstream one
 #'   downloads it.
-#'   See the "Target objects" section for background.
-#' @inheritSection tar_map Target objects
+#'   See the "Target definition objects" section for background.
+#' @inheritSection tar_map Target definition objects
 #' @inheritParams targets::tar_target
 #' @inheritParams tar_download_run
 #' @examples

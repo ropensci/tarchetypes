@@ -3,9 +3,9 @@
 #' @family target selection
 #' @description Select the names of targets from a target list.
 #' @return A character vector of target names.
-#' @inheritSection tar_map Target objects
-#' @param targets A list of target objects as described in the
-#'   "Target objects" section. It does not matter how nested
+#' @inheritSection tar_map Target definition objects
+#' @param targets A list of target definition objects as described in the
+#'   "Target definition objects" section. It does not matter how nested
 #'   the list is as long as the only leaf nodes are targets.
 #' @param ... One or more comma-separated `tidyselect` expressions,
 #'   e.g. `starts_with("prefix")`. Just like `...` in `dplyr::select()`.

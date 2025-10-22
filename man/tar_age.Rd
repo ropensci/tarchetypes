@@ -227,7 +227,8 @@ lists all the targets whose descriptions start with the character
 string \code{"survival model"}.}
 }
 \value{
-A target object. See the "Target objects" section for background.
+A target definition object.
+See the "Target definition objects" section for background.
 }
 \description{
 \code{tar_age()} creates a target that reruns
@@ -248,29 +249,38 @@ so \code{tar_age()} is not a good fit for dynamic branching.
 To invalidate dynamic branches at regular intervals,
 it is recommended to use \code{targets::tar_older()} in combination
 with \code{targets::tar_invalidate()} right before calling \code{tar_make()}.
-For example,
-\code{tar_invalidate(any_of(tar_older(Sys.time - as.difftime(1, units = "weeks"))))} # nolint
+For example, the call:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{  tar_invalidate(
+    any_of(
+      tar_older(Sys.time - as.difftime(1, units = "weeks"))
+    )
+  )
+}\if{html}{\out{</div>}}
+
 invalidates all targets more than a week old. Then, the next \code{tar_make()}
 will rerun those targets.
 }
 
-\section{Target objects}{
+\section{Target definition objects}{
 
 Most \code{tarchetypes} functions are target factories,
-which means they return target objects
-or lists of target objects.
-Target objects represent skippable steps of the analysis pipeline
+which means they return target definition objects
+or lists of target definition objects.
+target definition objects represent
+skippable steps of the analysis pipeline
 as described at \url{https://books.ropensci.org/targets/}.
 Please read the walkthrough at
 \url{https://books.ropensci.org/targets/walkthrough.html}
-to understand the role of target objects in analysis pipelines.
+to understand the role of target definition
+objects in analysis pipelines.
 
 For developers,
 \url{https://wlandau.github.io/targetopia/contributing.html#target-factories}
 explains target factories (functions like this one which generate targets)
 and the design specification at
 \url{https://books.ropensci.org/targets-design/}
-details the structure and composition of target objects.
+details the structure and composition of target definition objects.
 }
 
 \examples{

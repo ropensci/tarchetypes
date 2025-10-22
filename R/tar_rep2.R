@@ -15,9 +15,9 @@
 #'   and a character vector for `targets`
 #'   (e.g.
 #'   `tar_rep2_raw("sim", quote(simulate(x, y)), targets = c("x', "y"))`).
-#' @return A new target object to perform batched computation.
-#'   See the "Target objects" section for background.
-#' @inheritSection tar_map Target objects
+#' @return A new target definition object to perform batched computation.
+#'   See the "Target definition objects" section for background.
+#' @inheritSection tar_map Target definition objects
 #' @inheritSection tar_rep Replicate-specific seeds
 #' @inheritParams targets::tar_target
 #' @inheritParams tar_rep

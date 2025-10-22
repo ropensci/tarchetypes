@@ -25,9 +25,9 @@ the expressions. All elements of \code{values} must have the same length.}
 }
 \value{
 A list of return values from the generated expression objects.
-Often, these values are target objects.
-See the "Target objects" section for background
-on target objects specifically.
+Often, these values are target definition objects.
+See the "Target definition objects" section for background
+on target definition objects specifically.
 }
 \description{
 Loop over a grid of values, create an expression object
@@ -38,23 +38,25 @@ Helps with general metaprogramming.
 the \code{expr} object, whereas \code{\link[=tar_eval_raw]{tar_eval_raw()}} expects an
 evaluated expression object.
 }
-\section{Target objects}{
+\section{Target definition objects}{
 
 Most \code{tarchetypes} functions are target factories,
-which means they return target objects
-or lists of target objects.
-Target objects represent skippable steps of the analysis pipeline
+which means they return target definition objects
+or lists of target definition objects.
+target definition objects represent
+skippable steps of the analysis pipeline
 as described at \url{https://books.ropensci.org/targets/}.
 Please read the walkthrough at
 \url{https://books.ropensci.org/targets/walkthrough.html}
-to understand the role of target objects in analysis pipelines.
+to understand the role of target definition
+objects in analysis pipelines.
 
 For developers,
 \url{https://wlandau.github.io/targetopia/contributing.html#target-factories}
 explains target factories (functions like this one which generate targets)
 and the design specification at
 \url{https://books.ropensci.org/targets-design/}
-details the structure and composition of target objects.
+details the structure and composition of target definition objects.
 }
 
 \examples{

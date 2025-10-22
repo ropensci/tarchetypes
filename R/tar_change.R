@@ -15,11 +15,12 @@
 #'   show both targets as outdated. However, `tar_make()` will still
 #'   skip the downstream one if the upstream target
 #'   did not detect a change.
-#' @return A list of two target objects, one upstream and one downstream.
+#' @return A list of two target definition objects,
+#'   one upstream and one downstream.
 #'   The upstream one triggers the change, and the downstream one
 #'   responds to it.
-#'   See the "Target objects" section for background.
-#' @inheritSection tar_map Target objects
+#'   See the "Target definition objects" section for background.
+#' @inheritSection tar_map Target definition objects
 #' @inheritParams targets::tar_target
 #' @param change R code for the upstream change-inducing target.
 #' @param tidy_eval Whether to invoke tidy evaluation

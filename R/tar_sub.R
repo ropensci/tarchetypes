@@ -8,9 +8,9 @@
 #'   the `expr` object, whereas [tar_sub_raw()] expects an
 #'   evaluated expression object.
 #' @return A list of expression objects. Often, these expression objects
-#'   evaluate to target objects (but not necessarily).
-#'   See the "Target objects" section for background.
-#' @inheritSection tar_map Target objects
+#'   evaluate to target definition objects (but not necessarily).
+#'   See the "Target definition objects" section for background.
+#' @inheritSection tar_map Target definition objects
 #' @param expr Starting expression. Values are iteratively substituted
 #'   in place of symbols in `expr` to create each new expression.
 #'

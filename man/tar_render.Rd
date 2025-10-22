@@ -215,8 +215,23 @@ These arguments are evaluated when the target actually runs in
 \code{tar_make()}, not when the target is defined. That means, for
 example, you can use upstream targets as parameters of
 parameterized R Markdown reports.
-\code{tar_render(your_target, "your_report.Rmd", params = list(your_param = your_target))} # nolint
-will run \code{rmarkdown::render("your_report.Rmd", params = list(your_param = your_target))}. # nolint
+The target:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{  tar_render(
+    your_target,
+   "your_report.Rmd",
+    params = list(your_param = your_target)
+  )
+}\if{html}{\out{</div>}}
+
+will run:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{  rmarkdown::render(
+    "your_report.Rmd",
+    params = list(your_param = your_target)
+  )
+}\if{html}{\out{</div>}}
+
 For parameterized reports, it is recommended to supply a distinct
 \code{output_file} argument to each \code{tar_render()} call
 and set useful defaults for parameters in the R Markdown source.
@@ -233,7 +248,7 @@ is the "raw" version of a function, we want to avoid
 all non-standard evaluation.}
 }
 \value{
-A target object with \code{format = "file"}.
+A target definition object with \code{format = "file"}.
 When this target runs, it returns a character vector
 of file paths: the rendered document, the source file,
 and then the \verb{*_files/} directory if it exists.
@@ -241,7 +256,7 @@ Unlike \code{rmarkdown::render()},
 all returned paths are \emph{relative} paths to ensure portability
 (so that the project can be moved from one file system to another
 without invalidating the target).
-See the "Target objects" section for background.
+See the "Target definition objects" section for background.
 }
 \description{
 Shorthand to include an R Markdown document in a
@@ -292,23 +307,25 @@ detect target \code{x}.
 integrate with the cloud storage capabilities of \code{targets}.
 }
 
-\section{Target objects}{
+\section{Target definition objects}{
 
 Most \code{tarchetypes} functions are target factories,
-which means they return target objects
-or lists of target objects.
-Target objects represent skippable steps of the analysis pipeline
+which means they return target definition objects
+or lists of target definition objects.
+target definition objects represent
+skippable steps of the analysis pipeline
 as described at \url{https://books.ropensci.org/targets/}.
 Please read the walkthrough at
 \url{https://books.ropensci.org/targets/walkthrough.html}
-to understand the role of target objects in analysis pipelines.
+to understand the role of target definition
+objects in analysis pipelines.
 
 For developers,
 \url{https://wlandau.github.io/targetopia/contributing.html#target-factories}
 explains target factories (functions like this one which generate targets)
 and the design specification at
 \url{https://books.ropensci.org/targets-design/}
-details the structure and composition of target objects.
+details the structure and composition of target definition objects.
 }
 
 \examples{

@@ -27,7 +27,7 @@
 #'   in the `iteration` argument. If `"list"`, reps and batches
 #'   are aggregated with `list()`. If `"vector"`,
 #'   then `vctrs::vec_c()`. If `"group"`, then `vctrs::vec_rbind()`.
-#' @inheritSection tar_map Target objects
+#' @inheritSection tar_map Target definition objects
 #' @section Replicate-specific seeds:
 #'   In ordinary pipelines, each target has its own unique deterministic
 #'   pseudo-random number generator seed derived from its target name.

@@ -9,11 +9,12 @@
 #'   must contain the special placeholder symbol `.x`
 #'   so `tar_hook_outer()` knows where to insert the original command
 #'   of the target.
-#' @return A flattened list of target objects with the hooks applied.
+#' @return A flattened list of target definition objects with the hooks applied.
 #'   Even if the input target list had a nested structure,
-#'   the return value is a simple list where each element is a target object.
+#'   the return value is a simple list where each element
+#'   is a target definition object.
 #'   All hook functions remove the nested structure of the input target list.
-#' @inheritSection tar_map Target objects
+#' @inheritSection tar_map Target definition objects
 #' @inheritParams tar_hook_before
 #' @param hook R code to wrap each target's command.
 #'   The hook must contain the special placeholder symbol `.x`
