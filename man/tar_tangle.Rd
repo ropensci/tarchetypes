@@ -21,28 +21,31 @@ into a \code{targets} pipeline.
 \details{
 The word "tangle" comes from the early days of literate
 programming (see Knuth 1984).
-Tangling is the process of converting a literate
-programming source document into machine-readable code.
-For example, both \code{knitr::knit(tangle = TRUE)} and \code{\link[knitr:knit]{knitr::purl()}}
-accept an \code{.Rmd} file and return an imperative R script with just
-the code from the R chunks.
+To "tangle" means to convert a literate programming source document
+into pure code: code that a human may find cryptic
+but a machine can run.
+For example, \code{knitr::knit(tangle = TRUE)} (and \code{\link[knitr:knit]{knitr::purl()}})
+accepts an \code{.Rmd} file and returns an R script with all the
+R code chunks pasted together.
 
 \code{tar_tangle()} is similar, but for a \code{targets} pipeline.
-It accepts an R Markdown or Quarto source file as input,
+It accepts a Quarto or R Markdown source file as input,
 and it returns a list of target definition objects.
 Each target definition object comes from evaluating
 \code{\link[targets:tar_target]{targets::tar_target()}} on the each of the assignment statements
-in each R code chunk in the file. A chunk can look like:
+in each R code chunk in the file.
+
+For example, consider the following code chunk:
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{  ```\{r, deployment = "main"\}
   #| pattern: map(data)
   #| format: qs
   #| cue: tar_cue(mode = "always")
-  target_name <- command_to_run(data)
+  data <- get_data(data)
   ```
 }\if{html}{\out{</div>}}
 
-And \code{tar_tangle()} will insert this target into the pipeline:
+\code{tar_tangle()} converts this chunk into:
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{  tar_target(
     name = target_name,
@@ -54,7 +57,44 @@ And \code{tar_tangle()} will insert this target into the pipeline:
   )
 }\if{html}{\out{</div>}}
 
-See the example in this help file for a demonstration.
+To put it all together, suppose our \verb{_targets.R} script
+for the pipeline looks like this:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{  library(targets)
+  tar_source()
+  list(
+    tar_tangle("example.qmd"),
+    tar_target(model, fit_model(data))
+  )
+}\if{html}{\out{</div>}}
+
+The pipeline above is equivalent to:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{  library(targets)
+  tar_source()
+  list(
+    tar_target(
+      name = target_name,
+      command = command_to_run(data),
+      pattern = map(data),
+      format = "qs",
+      deployment = "main",
+      cue = tar_cue(mode = "always")
+    ),
+    tar_target(model, fit_model(data))
+  )
+}\if{html}{\out{</div>}}
+
+See the "Examples" section in this help file for a
+runnable demonstration with multiple code chunks.
+
+Each code chunk can have more than one top-level assignment statement
+(with \verb{<-}, \code{=}, or \verb{->}), and each assignment statement gets
+converted into its own target. Non-assignment statements such as
+\code{library(dplyr)} are ignored.
+It is always good practice to check your pipeline with
+\code{\link[targets:tar_manifest]{targets::tar_manifest()}} and \code{\link[targets:tar_visnetwork]{targets::tar_visnetwork()}}
+before running it with \code{\link[targets:tar_make]{targets::tar_make()}}.
 }
 \examples{
 if (identical(Sys.getenv("TAR_LONG_EXAMPLES"), "true")) {

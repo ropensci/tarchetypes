@@ -5,27 +5,30 @@
 #'   into a `targets` pipeline.
 #' @details The word "tangle" comes from the early days of literate
 #'   programming (see Knuth 1984).
-#'   Tangling is the process of converting a literate
-#'   programming source document into machine-readable code.
-#'   For example, both `knitr::knit(tangle = TRUE)` and [knitr::purl()]
-#'   accept an `.Rmd` file and return an imperative R script with just
-#'   the code from the R chunks.
+#'   To "tangle" means to convert a literate programming source document
+#'   into pure code: code that a human may find cryptic
+#'   but a machine can run.
+#'   For example, `knitr::knit(tangle = TRUE)` (and [knitr::purl()])
+#'   accepts an `.Rmd` file and returns an R script with all the
+#'   R code chunks pasted together.
 #'
 #'   `tar_tangle()` is similar, but for a `targets` pipeline.
-#'   It accepts an R Markdown or Quarto source file as input,
+#'   It accepts a Quarto or R Markdown source file as input,
 #'   and it returns a list of target definition objects.
 #'   Each target definition object comes from evaluating
 #'   [targets::tar_target()] on the each of the assignment statements
-#'   in each R code chunk in the file. A chunk can look like:
+#'   in each R code chunk in the file.
+#'
+#'   For example, consider the following code chunk:
 #'
 #'       ```{r, deployment = "main"}
 #'       #| pattern: map(data)
 #'       #| format: qs
 #'       #| cue: tar_cue(mode = "always")
-#'       target_name <- command_to_run(data)
+#'       data <- get_data(data)
 #'       ```
 #'
-#'   And `tar_tangle()` will insert this target into the pipeline:
+#'   `tar_tangle()` converts this chunk into:
 #'
 #'       tar_target(
 #'         name = target_name,
@@ -36,7 +39,42 @@
 #'         cue = tar_cue(mode = "always")
 #'       )
 #'
-#'   See the example in this help file for a demonstration.
+#'   To put it all together, suppose our `_targets.R` script
+#'   for the pipeline looks like this:
+#'
+#'       library(targets)
+#'       tar_source()
+#'       list(
+#'         tar_tangle("example.qmd"),
+#'         tar_target(model, fit_model(data))
+#'       )
+#'
+#'   The pipeline above is equivalent to:
+#'
+#'       library(targets)
+#'       tar_source()
+#'       list(
+#'         tar_target(
+#'           name = target_name,
+#'           command = command_to_run(data),
+#'           pattern = map(data),
+#'           format = "qs",
+#'           deployment = "main",
+#'           cue = tar_cue(mode = "always")
+#'         ),
+#'         tar_target(model, fit_model(data))
+#'       )
+#'
+#'   See the "Examples" section in this help file for a
+#'   runnable demonstration with multiple code chunks.
+#'
+#'   Each code chunk can have more than one top-level assignment statement
+#'   (with `<-`, `=`, or `->`), and each assignment statement gets
+#'   converted into its own target. Non-assignment statements such as
+#'   `library(dplyr)` are ignored.
+#'   It is always good practice to check your pipeline with
+#'   [targets::tar_manifest()] and [targets::tar_visnetwork()]
+#'   before running it with [targets::tar_make()].
 #' @return A list of new target objects.
 #'   See the "Target objects" section for background.
 #' @param path File path to the literate programming source file.
