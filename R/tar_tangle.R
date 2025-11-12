@@ -65,6 +65,18 @@
 #'         tar_target(model, fit_model(data))
 #'       )
 #'
+#'   This pattern is a nice compromise between
+#'   interactivity and automation:
+#'   you can run the whole pipeline with [tar_make()],
+#'   or you can explore individual code chunks in the report
+#'   using an IDE like RStudio, Positron, or VSCode.
+#'   However, there is a chance other tools like
+#'   Quarto or `pkgdown` may automatically detect the report and
+#'   inappropriately try to run the whole thing from end to end.
+#'   To prevent this, you may wish to write
+#'   `knitr::opts_chunk$set(eval = FALSE)`
+#'   in a code chunk at the top of the report.
+#'
 #'   See the "Examples" section in this help file for a
 #'   runnable demonstration with multiple code chunks.
 #'
@@ -91,6 +103,10 @@
 #'   "---",
 #'   "title: \"Example pipeline\"",
 #'   "---",
+#'   "",
+#'   "```{r}",
+#'   "knitr::opts_chunk$set(eval = FALSE)",
+#'   "```",
 #'   "",
 #'   "```{r}",
 #'   "#| format: file",

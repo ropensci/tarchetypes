@@ -85,6 +85,18 @@ The pipeline above is equivalent to:
   )
 }\if{html}{\out{</div>}}
 
+This pattern is a nice compromise between
+interactivity and automation:
+you can run the whole pipeline with \code{\link[targets:tar_make]{targets::tar_make()}},
+or you can explore individual code chunks in the report
+using an IDE like RStudio, Positron, or VSCode.
+However, there is a chance other tools like
+Quarto or \code{pkgdown} may automatically detect the report and
+inappropriately try to run the whole thing from end to end.
+To prevent this, you may wish to write
+\code{knitr::opts_chunk$set(eval = FALSE)}
+in a code chunk at the top of the report.
+
 See the "Examples" section in this help file for a
 runnable demonstration with multiple code chunks.
 
@@ -104,6 +116,10 @@ lines <- c(
   "---",
   "title: \"Example pipeline\"",
   "---",
+  "",
+  "```{r}",
+  "knitr::opts_chunk$set(eval = FALSE)",
+  "```",
   "",
   "```{r}",
   "#| format: file",
