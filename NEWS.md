@@ -1,7 +1,8 @@
-# tarchetypes 0.13.2.9002 (development)
+# tarchetypes 0.13.2.9004 (development)
 
 * Try different paths to look for output files in `tar_quarto_rep()` (#217). Hard to tell if Quarto uses the current working directory or the directory of the source file as the destination for the output, and their policy may have changed in a different version of Quarto.
 * Add `tar_tangle()` (#226).
+* Avoid Quarto parallel rendering bug with a workaround in `tar_quarto_rep()` (#230, @ant-durrant).
 
 # tarchetypes 0.13.2
 

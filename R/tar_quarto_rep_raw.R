@@ -426,6 +426,14 @@ tar_quarto_rep_rep <- function(
   extension <- paste0(".", fs::path_ext(destination_basename))
   temporary_basename <- basename(tempfile(fileext = extension))
   temporary_file <- file.path(temporary_directory, temporary_basename)
+  # https://github.com/quarto-dev/quarto-cli/issues/6116
+  temporary_source <- file.path(
+    dirname(args$input),
+    basename(tempfile(fileext = paste0(".", fs::path_ext(args$input))))
+  )
+  file.copy(args$input, temporary_source)
+  on.exit(unlink(temporary_source))
+  args$input <- temporary_source
   args$output_file <- temporary_basename
   args$execute_params <- execute_params
   args$execute_params[["output_file"]] <- NULL
