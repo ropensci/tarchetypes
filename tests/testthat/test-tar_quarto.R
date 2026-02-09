@@ -76,7 +76,7 @@ targets::tar_test("tar_quarto(nested) runs from the project root", {
 
 targets::tar_test("tar_quarto() custom working dir", {
   skip_on_cran()
-  skip_rmarkdown()
+  skip_quarto()
   lines <- c(
     "---",
     "title: report",

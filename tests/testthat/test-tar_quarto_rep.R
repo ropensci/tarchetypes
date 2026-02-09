@@ -189,6 +189,7 @@ targets::tar_test("tar_quarto_rep() run", {
 
 targets::tar_test("tar_quarto_rep() with custom working directory", {
   skip_on_cran()
+  skip_quarto()
   skip_rmarkdown()
   lines <- c(
     "---",

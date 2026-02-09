@@ -1,4 +1,5 @@
 targets::tar_test("tar_tangle() manifest", {
+  skip_if_not_installed("parsermd")
   tar_script(
     tarchetypes::tar_tangle(
       system.file(
@@ -25,6 +26,7 @@ targets::tar_test("tar_tangle() manifest", {
 
 targets::tar_test("tar_tangle() network", {
   skip_on_cran()
+  skip_if_not_installed("parsermd")
   tar_script(
     tarchetypes::tar_tangle(
       system.file(
@@ -47,6 +49,7 @@ targets::tar_test("tar_tangle() network", {
 
 targets::tar_test("tar_tangle() results", {
   skip_on_cran()
+  skip_if_not_installed("parsermd")
   skip_if_not_installed("qs2")
   tar_script(
     tarchetypes::tar_tangle(
