@@ -184,10 +184,11 @@ tar_knit_command <- function(
 #'   report, automatically created by `tar_knit()`.
 tar_knit_run <- function(path, working_directory, args, deps) {
   targets::tar_assert_package("knitr")
+  local_tar_ask()
   withr::local_options(list(crayon.enabled = NULL))
   opt <- knitr::opts_knit$get("root.dir")
   knitr::opts_knit$set(root.dir = working_directory %|||% getwd())
-  on.exit(knitr::opts_knit$set(root.dir = opt))
+  on.exit(knitr::opts_knit$set(root.dir = opt), add = TRUE)
   envir <- parent.frame()
   args$envir <- args$envir %|||% targets::tar_envir(default = envir)
   force(args$envir)

@@ -185,6 +185,7 @@ tar_render_rep_command <- function(
 #'   report, automatically created by `tar_render_rep()`.
 tar_render_rep_run <- function(path, params, args, deps, rep_workers) {
   targets::tar_assert_package("rmarkdown")
+  local_tar_ask()
   rm(deps)
   gc()
   envir <- parent.frame()
@@ -210,7 +211,7 @@ tar_render_rep_run <- function(path, params, args, deps, rep_workers) {
   seeds <- produce_batch_seeds(name = name, batch = batch, reps = reps)
   if (rep_workers > 1L) {
     cluster <- make_psock_cluster(rep_workers)
-    on.exit(parallel::stopCluster(cl = cluster))
+    on.exit(parallel::stopCluster(cl = cluster), add = TRUE)
     out <- parallel::clusterMap(
       cl = cluster,
       fun = fun,
@@ -250,10 +251,11 @@ tar_render_rep_run <- function(path, params, args, deps, rep_workers) {
 #' @examples
 #' # See the examples of tar_quarto_rep().
 tar_render_rep_rep <- function(rep, params, args, path, seeds) {
+  local_tar_ask()
   withr::local_options(list(cli.num_colors = 1L, cli.dynamic = FALSE))
   tar_runtime <- targets::tar_runtime_object()
   progress_bar <- tar_runtime$progress_bar
-  on.exit(tar_runtime$progress_bar <- progress_bar)
+  on.exit(tar_runtime$progress_bar <- progress_bar, add = TRUE)
   tar_runtime$progress_bar <- FALSE
   default_path <- tar_render_rep_default_path(path, params)
   args$output_file <- params[["output_file"]] %|||% default_path

@@ -209,6 +209,7 @@ tar_quarto_command <- function(
 #' })
 #' }
 tar_quarto_run <- function(args, deps, sources, output, input) {
+  local_tar_ask()
   rm(deps)
   gc()
   assert_quarto()

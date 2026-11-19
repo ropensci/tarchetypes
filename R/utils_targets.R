@@ -85,3 +85,10 @@ recurse_targets <- function(targets, counter, fun, ...) {
     fun(targets, ...)
   }
 }
+
+local_tar_ask <- function(envir = parent.frame()) {
+  if (identical(Sys.getenv("TAR_ASK"), "false") || targets::tar_active()) {
+    withr::local_envvar(c(TAR_ASK = "false"), .local_envir = envir)
+  }
+  invisible()
+}

@@ -335,6 +335,7 @@ tar_quarto_rep_run <- function(
   rep_workers
 ) {
   assert_quarto()
+  local_tar_ask()
   rm(deps)
   gc()
   execute_params <- split(execute_params, f = seq_len(nrow(execute_params)))
@@ -361,7 +362,7 @@ tar_quarto_rep_run <- function(
       # Quarto can't access the globals in the calling R process anyway.
       export = FALSE
     )
-    on.exit(parallel::stopCluster(cl = cluster))
+    on.exit(parallel::stopCluster(cl = cluster), add = TRUE)
     out <- parallel::clusterMap(
       cl = cluster,
       fun = fun,
@@ -415,6 +416,7 @@ tar_quarto_rep_rep <- function(
   default_output_file,
   seeds
 ) {
+  local_tar_ask()
   temporary_directory <- dirname(default_output_file)
   destination_directory <- dirname(
     execute_params[["output_file"]] %|||% default_output_file
@@ -432,7 +434,7 @@ tar_quarto_rep_rep <- function(
     basename(tempfile(fileext = paste0(".", fs::path_ext(args$input))))
   )
   file.copy(args$input, temporary_source)
-  on.exit(unlink(temporary_source))
+  on.exit(unlink(temporary_source), add = TRUE)
   args$input <- temporary_source
   args$output_file <- temporary_basename
   args$execute_params <- execute_params
