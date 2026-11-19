@@ -6,7 +6,7 @@ targets::tar_test("tar_assign() single statement", {
   targets::tar_make(callr_function = NULL)
   expect_equal(targets::tar_read(x), c(1L, 2L))
   targets::tar_script(tar_assign({
-    x = tar_target(c(1L, 2L))
+    x <- tar_target(c(1L, 2L))
   })) # nolint
   out <- targets::tar_manifest(callr_function = NULL)
   expect_equal(out$name, "x")
@@ -18,7 +18,7 @@ targets::tar_test("tar_assign() single statement", {
 targets::tar_test("tar_assign()", {
   targets::tar_script({
     tar_assign({
-      x = tar_target(c(1L, 2L)) # nolint
+      x <- tar_target(c(1L, 2L)) # nolint
       y <- tar_target(x + 1L, pattern = map(x))
       z <- tar_rep(TRUE, batches = 2L)
     })
