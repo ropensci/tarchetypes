@@ -3,6 +3,7 @@
 * [ ] I understand and agree to this repository's [code of conduct](https://ropensci.org/code-of-conduct/).
 * [ ] I understand and agree to this repository's [contributing guidelines](https://github.com/ropensci/tarchetypes/blob/main/CONTRIBUTING.md).
 * [ ] I have already submitted an [issue](http://github.com/ropensci/tarchetypes/issues) or [discussion thread](https://github.com/ropensci/tarchetypes/discussions) to discuss my idea with the maintainer.
+* [ ] This pull request does not disclose an unpatched security vulnerability. (Please report those privately as described in the [security policy](https://github.com/ropensci/tarchetypes/blob/main/.github/SECURITY.md).)
 
 # Related GitHub issues and pull requests
 

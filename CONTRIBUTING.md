@@ -22,6 +22,10 @@ At <https://github.com/ropensci/tarchetypes/discussions>, you can post general q
     * **Minimal**: reduce runtime wherever possible and remove complicated details that are irrelevant to the issue at hand.
     * **Readable**: format your code according to the [tidyverse style guide](https://style.tidyverse.org/).
 
+## Security
+
+Please report security vulnerabilities privately, not in public issues, discussions, or pull requests. See the [security policy](https://github.com/ropensci/tarchetypes/blob/main/.github/SECURITY.md).
+
 ## Development
 
 External code contributions are extremely helpful in the right circumstances. Here are the recommended steps.
